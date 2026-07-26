@@ -1,0 +1,218 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-ibm-plex), system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Fonts */
+  --font-display-lg: var(--font-ibm-plex);
+  --font-headline-md: var(--font-ibm-plex);
+  --font-display-lg-mobile: var(--font-ibm-plex);
+  --font-body-md: var(--font-ibm-plex);
+  --font-body-lg: var(--font-ibm-plex);
+  --font-label-sm: var(--font-ibm-plex);
+
+  /* Colors */
+  --color-on-tertiary-container: #111111;
+  --color-outline: #74777f;
+  --color-surface-variant: #f4f4f5;
+  --color-on-secondary-fixed-variant: #005235;
+  --color-inverse-on-surface: #ffffff;
+  --color-primary-fixed-dim: #a1a1aa;
+  --color-surface-container-highest: #f4f4f5;
+  --color-secondary: #1c7a40;
+  --color-on-background: #000000;
+  --color-tertiary-fixed: #f4f4f5;
+  --color-inverse-primary: #a1a1aa;
+  --color-on-error-container: #93000a;
+  --color-tertiary-container: #f4f4f5;
+  --color-primary-container: #fafafa;
+  --color-tertiary-fixed-dim: #d4d4d8;
+  --color-on-primary-container: #27272a;
+  --color-on-secondary-fixed: #002113;
+  --color-secondary-fixed: #e6fcf5;
+  --color-on-surface-variant: #52525b;
+  --color-surface-container: #f4f4f5;
+  --color-primary-fixed: #e4e4e7;
+  --color-on-primary: #ffffff;
+  --color-on-secondary: #ffffff;
+  --color-surface-container-high: #e4e4e7;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface: #111111;
+  --color-on-primary-fixed: #000000;
+  --color-secondary-fixed-dim: #c3fae8;
+  --color-error-container: #ffdad6;
+  --color-background: #ffffff;
+  --color-on-primary-fixed-variant: #27272a;
+  --color-tertiary: #52525b;
+  --color-inverse-surface: #18181b;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-fixed: #27272a;
+  --color-surface-tint: #1c7a40;
+  --color-outline-variant: #e4e4e7;
+  --color-secondary-container: #c3fae8;
+  --color-surface-container-low: #fafafa;
+  --color-on-secondary-container: #1c7a40;
+  --color-surface-bright: #ffffff;
+  --color-surface-dim: #f4f4f5;
+  --color-primary: #000000;
+  --color-surface: #ffffff;
+  --color-on-error: #ffffff;
+  --color-error: #ba1a1a;
+  --color-on-tertiary-fixed-variant: #27272a;
+
+  /* Spacing */
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 64px;
+  --spacing-stack-md: 24px;
+  --spacing-stack-sm: 8px;
+  --spacing-container-max: 1280px;
+  --spacing-stack-lg: 48px;
+
+  /* Font Sizes - using Tailwind v4 syntax */
+  --text-display-lg: 48px;
+  --text-display-lg--line-height: 60px;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-lg--font-weight: 700;
+
+  --text-headline-md: 24px;
+  --text-headline-md--line-height: 32px;
+  --text-headline-md--font-weight: 600;
+
+  --text-display-lg-mobile: 32px;
+  --text-display-lg-mobile--line-height: 40px;
+  --text-display-lg-mobile--font-weight: 700;
+
+  --text-body-md: 16px;
+  --text-body-md--line-height: 26px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-lg: 18px;
+  --text-body-lg--line-height: 30px;
+  --text-body-lg--font-weight: 400;
+
+  --text-label-sm: 14px;
+  --text-label-sm--line-height: 20px;
+  --text-label-sm--letter-spacing: 0.01em;
+  --text-label-sm--font-weight: 500;
+
+  /* Brand green ramp — derived from the El Waha logo green (#1C7A40).
+     Overrides Tailwind's emerald scale so all emerald-* utilities render brand color. */
+  --color-emerald-50: #e8f4eb;
+  --color-emerald-100: #d2ead9;
+  --color-emerald-200: #a8d5b7;
+  --color-emerald-300: #79bd92;
+  --color-emerald-400: #4a9e6b;
+  --color-emerald-500: #1c7a40;
+  --color-emerald-600: #176938;
+  --color-emerald-700: #125c2e;
+  --color-emerald-800: #0d4423;
+  --color-emerald-900: #092f19;
+  --color-emerald-950: #041b0e;
+
+  /* Brand accent from the logo's orange stroke — use sparingly */
+  --color-brand-amber: #e8a020;
+}
+
+/* Global scroll behavior */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #ffffff;
+  color: #111111;
+}
+
+/* Custom CSS Classes from HTML Snippet */
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  .glass-nav {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  }
+  
+  .industrial-gradient {
+    background: radial-gradient(circle at 70% 30%, rgba(147, 246, 195, 0.15) 0%, transparent 50%);
+  }
+  
+  .hero-bg-fixed {
+    background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLsnhTFbgOsoqJdDOlC8aPXmhV8pZ9UZmhDELW6cidT-CY9LSR_xjlF2_D5h2VXI7_yPgti5x67aYLNZs-cUw8kNp5l7wJF6FOO5LHRbuLWHxYbApLa526v6Lh8ZP5T-6iffnWts425hb_4dmybAAX9hRuPA6l6fkJ6kpwO2UZqL0Ecp-sTU78Hiu-8ocif4ekjUl3ReRVRvtM7CnpAe9FU3RSbE7goSyMlhahVUSJdcslGEqVf5qKcK5RA');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  .high-contrast-glass {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px 0 rgba(0, 16, 38, 0.15);
+  }
+}
+
+/* Micro-animations and utility classes */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: .95;
+    transform: scale(1.02);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s infinite ease-in-out;
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 32s linear infinite;
+}
+
+/* Custom Scrollbar for modern B2B look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1c7a40;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #125c2e;
+}
+
+/* Fix for active state scale effects */
+.active-scale-98:active {
+  transform: scale(0.98);
+}
