@@ -4,10 +4,13 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2, ShieldCheck, Truck, Phone, MessageSquare } from "lucide-react";
-import { ProductData } from "@/data/products";
+import type { CatalogProduct } from "@/lib/products";
+import { formatPrice, formatPriceRange } from "@/lib/price";
+import AddToCartButton from "@/components/cart/AddToCartButton";
+import ProductVariantSelector, { useVariantSelection } from "@/components/ProductVariantSelector";
 
 interface ProductDetailViewProps {
-  product: ProductData;
+  product: CatalogProduct;
   lang: string;
   dict: any;
   title: string;
@@ -37,17 +40,30 @@ function SpecsTable({ specs }: { specs: Record<string, string> }) {
 
 export default function ProductDetailView({ product, lang, dict, title, desc }: ProductDetailViewProps) {
   const [activeImage, setActiveImage] = useState(0);
-  const [selectedVariants, setSelectedVariants] = useState<Record<string, string>>({});
   const [activeDocTab, setActiveDocTab] = useState<"overview" | "technical">("overview");
 
-  const handleVariantSelect = (groupLabelEn: string, optionId: string) => {
-    setSelectedVariants(prev => ({
-      ...prev,
-      [groupLabelEn]: optionId
-    }));
-  };
-
   const isAr = lang === "ar";
+
+  // Size selectors and the price attached to the chosen combination.
+  const selection = useVariantSelection(product.options, product.variantRows);
+  const variant = selection.selected;
+  const hasVariants = product.variantRows.length > 0;
+
+  // Once a combination is picked its own price wins; otherwise fall back to the
+  // product-level range so the page never shows a bare "price on request" for
+  // something the sheet actually prices.
+  const shownPrice = variant
+    ? formatPrice(variant.price, variant.currency, lang)
+    : formatPriceRange(product.priceMin, product.priceMax, product.currency, lang);
+
+  // "6" · 7.5 HP · Cast Iron" — carried into the cart and the WhatsApp message so the
+  // enquiry names the exact size rather than just the product.
+  const variantLabel = selection.axes
+    .filter((a) => a.selected !== undefined)
+    .map((a) => a.values.find((v) => v.value === a.selected)?.label)
+    .filter(Boolean)
+    .join(" · ");
+
   const tableSpecs = isAr ? product.tableSpecsAr : product.tableSpecsEn;
   const features = isAr ? product.featuresAr : product.featuresEn;
   const hasDocs = Boolean(
@@ -105,9 +121,21 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             )}
             <h1 className="text-display-lg-mobile md:text-display-lg text-primary mb-2 font-display-lg">{title}</h1>
             <div className="flex items-center gap-4 text-label-sm text-outline mb-4">
-              <span className="flex items-center gap-1 text-secondary"><CheckCircle2 className="w-4 h-4" /> {isAr ? "متوفر بالمخزن" : "In Stock"}</span>
               <span className="flex items-center gap-1 text-primary"><ShieldCheck className="w-4 h-4" /> {isAr ? "ضمان معتمد" : "Certified Warranty"}</span>
             </div>
+
+            <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{shownPrice}</p>
+            {hasVariants && !variant && (
+              <p className="text-label-sm text-outline mb-4">
+                {isAr ? "اختر المقاس لعرض السعر" : "Choose a size to see the price"}
+              </p>
+            )}
+            {variant && Object.keys(variant.specs).length > 0 && (
+              <p className="text-label-sm text-outline mb-4">
+                {Object.values(variant.specs).join(" · ")}
+              </p>
+            )}
+
             <p className="text-body-md text-on-surface-variant leading-relaxed">
               {desc}
             </p>
@@ -115,37 +143,8 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
 
           <div className="h-px w-full bg-outline-variant/30 my-8"></div>
 
-          {/* Variants Selector */}
-          <div className="space-y-6 mb-8">
-            {product.variants.map((variantGroup, idx) => {
-              const label = isAr ? variantGroup.labelAr : variantGroup.labelEn;
-              const selectedId = selectedVariants[variantGroup.labelEn] || variantGroup.options[0].id;
-              
-              return (
-                <div key={idx}>
-                  <h3 className="font-headline-md text-[18px] text-primary mb-3">{label}</h3>
-                  <div className="flex flex-wrap gap-3">
-                    {variantGroup.options.map(opt => {
-                      const isSelected = selectedId === opt.id;
-                      return (
-                        <button
-                          key={opt.id}
-                          onClick={() => handleVariantSelect(variantGroup.labelEn, opt.id)}
-                          className={`px-5 py-2.5 rounded-lg border-2 font-label-sm transition-all ${
-                            isSelected 
-                              ? "border-secondary bg-secondary-container/20 text-secondary" 
-                              : "border-outline-variant text-on-surface-variant hover:border-primary/40 hover:bg-surface-container"
-                          }`}
-                        >
-                          {opt.name}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {/* Size selectors, priced from the catalogue sheet */}
+          <ProductVariantSelector axes={selection.axes} choose={selection.choose} />
 
           {/* Supplier Info & CTAs */}
           <div className="glass-card p-6 rounded-2xl bg-surface-container-lowest">
@@ -162,15 +161,30 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
               </div>
             </div>
 
+            <AddToCartButton
+              lang={lang}
+              className="w-full mb-4 py-4"
+              item={{
+                productId: product.id,
+                slug: product.id,
+                name: title,
+                unitPrice: variant ? variant.price : product.price,
+                currency: variant ? variant.currency : product.currency,
+                image: product.gallery[0],
+                variantId: variant?.id,
+                variantLabel: variantLabel || undefined,
+              }}
+            />
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Link 
+              <Link
                 href={`/${lang}/contact?subject=${encodeURIComponent(isAr ? `طلب عرض سعر: ${title}` : `Quote Request: ${title}`)}`}
                 className="bg-secondary hover:bg-secondary/90 text-white font-headline-md text-[16px] py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active-scale-98"
               >
                 <MessageSquare className="w-5 h-5" />
                 {isAr ? "طلب عرض سعر" : "Get Latest Price"}
               </Link>
-              <a 
+              <a
                 href="tel:+201066685532"
                 className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-headline-md text-[16px] py-4 rounded-xl flex items-center justify-center gap-2 transition-all active-scale-98"
               >

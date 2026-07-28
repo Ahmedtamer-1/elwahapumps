@@ -6,6 +6,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SplashScreen from "@/components/SplashScreen";
+import { CartProvider } from "@/components/cart/CartContext";
+import { getCatalogProducts } from "@/lib/products";
 import "../globals.css";
 
 // Load Google Fonts
@@ -19,6 +21,15 @@ const ibmPlex = IBM_Plex_Sans_Arabic({
 export async function generateStaticParams() {
   return [{ lang: "ar" }, { lang: "en" }];
 }
+
+/**
+ * Every page renders the header mega-menu, which is built from the product
+ * catalogue in the database — so nothing under this layout can be baked at
+ * build time without going stale when staff edit products. ISR keeps the
+ * static-site speed while capping staleness at a minute; product writes also
+ * call revalidatePath for an immediate refresh.
+ */
+export const revalidate = 60;
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -56,23 +67,35 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
     notFound();
   }
 
-  const dict = await getDictionary(lang as Locale);
+  const [dict, products] = await Promise.all([
+    getDictionary(lang as Locale),
+    getCatalogProducts(lang),
+  ]);
   const dir = lang === "ar" ? "rtl" : "ltr";
   const fontClass = ibmPlex.variable;
+
+  // The mega-menu only needs identity, not the full spec payload.
+  const menuProducts = products.map((p) => ({
+    id: p.id,
+    title: p.title,
+    category: p.category,
+  }));
 
   return (
     <html lang={lang} dir={dir} className={fontClass}>
       <body className="bg-white text-neutral-900 antialiased font-sans flex flex-col min-h-screen">
-        <SplashScreen />
-        <Header lang={lang} dict={dict} />
-        
-        {/* Main Content Area */}
-        <main className="flex-grow">
-          {children}
-        </main>
-        
-        <Footer lang={lang} dict={dict} />
-        <WhatsAppButton lang={lang} />
+        <CartProvider>
+          <SplashScreen />
+          <Header lang={lang} dict={dict} products={menuProducts} />
+
+          {/* Main Content Area */}
+          <main className="flex-grow">
+            {children}
+          </main>
+
+          <Footer lang={lang} dict={dict} />
+          <WhatsAppButton lang={lang} />
+        </CartProvider>
       </body>
     </html>
   );

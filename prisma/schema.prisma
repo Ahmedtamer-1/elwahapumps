@@ -1,0 +1,210 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserRole {
+  ADMIN
+  STAFF
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  QUOTED
+  WON
+  LOST
+}
+
+enum LeadSource {
+  CONTACT_FORM
+  WHATSAPP_CART
+  MANUAL
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+}
+
+enum ActivityType {
+  NOTE
+  CALL
+  EMAIL
+  STATUS_CHANGE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(STAFF)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  assignedLeads Lead[]
+  activities    Activity[]
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  slug     String    @unique
+  nameEn   String
+  nameAr   String
+  products Product[]
+}
+
+model Product {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  nameEn     String
+  nameAr     String
+  descEn     String?
+  descAr     String?
+  price      Float?
+  currency   String   @default("EGP")
+  sku        String?
+  stock      Int?
+  /// JSON array of image URLs
+  images     String   @default("[]")
+  /// JSON blob preserving the original ProductData shape (gallery, specs, variants, tableSpecs, modelGroups, specGroups)
+  specs      String   @default("{}")
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  /// Cheapest / priciest active variant, denormalised so listing pages can show a
+  /// range without loading every variant. Recomputed by the importer and by any
+  /// admin action that edits variant prices.
+  priceMin Float?
+  priceMax Float?
+
+  options  ProductOption[]
+  variants ProductVariant[]
+}
+
+/// One "size selector" axis on a product's detail page — e.g. Diameter or HP.
+model ProductOption {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  key       String
+  labelEn   String
+  labelAr   String
+  /// Display-only unit suffix, e.g. "HP", "bar", "mm²"
+  unit      String?
+  sortOrder Int     @default(0)
+
+  values ProductOptionValue[]
+
+  @@unique([productId, key])
+}
+
+model ProductOptionValue {
+  id        String        @id @default(cuid())
+  optionId  String
+  option    ProductOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  /// Canonical form used inside ProductVariant.comboKey and .selections
+  value     String
+  labelEn   String
+  labelAr   String
+  /// Parsed number where one exists, so 100 sorts after 15 rather than before it
+  numeric   Float?
+  sortOrder Int           @default(0)
+
+  @@unique([optionId, value])
+}
+
+/// A concrete purchasable combination: one value per ProductOption, with a price.
+model ProductVariant {
+  id         String   @id @default(cuid())
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  /// "diameter=6\";hp=7.5" — option keys sorted alphabetically. Resolves a
+  /// front-end selection to exactly one variant, and keeps re-imports idempotent.
+  comboKey   String
+  /// JSON map of option key -> canonical value
+  selections String   @default("{}")
+  /// JSON map of derived specs revealed after selection (model, motor kW, outlet…)
+  specs      String   @default("{}")
+  sku        String?
+  price      Float?
+  currency   String   @default("EGP")
+  isActive   Boolean  @default(true)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([productId, comboKey])
+  @@index([productId])
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  name      String
+  company   String?
+  email     String?
+  phone     String?
+  address   String?
+  source    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  leads      Lead[]
+  inquiries  CartInquiry[]
+  activities Activity[]
+}
+
+model Lead {
+  id           String     @id @default(cuid())
+  name         String
+  email        String?
+  phone        String?
+  subject      String?
+  message      String?
+  status       LeadStatus @default(NEW)
+  source       LeadSource @default(MANUAL)
+  customerId   String?
+  customer     Customer?  @relation(fields: [customerId], references: [id])
+  assignedToId String?
+  assignedTo   User?      @relation(fields: [assignedToId], references: [id])
+  activities   Activity[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model CartInquiry {
+  id             String        @id @default(cuid())
+  name           String?
+  phone          String?
+  customerId     String?
+  customer       Customer?     @relation(fields: [customerId], references: [id])
+  /// JSON array of { productId, name, qty, unitPrice }
+  items          String
+  totalEstimate  Float?
+  status         InquiryStatus @default(NEW)
+  whatsappSentAt DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Activity {
+  id         String       @id @default(cuid())
+  type       ActivityType @default(NOTE)
+  body       String
+  customerId String?
+  customer   Customer?    @relation(fields: [customerId], references: [id])
+  leadId     String?
+  lead       Lead?        @relation(fields: [leadId], references: [id])
+  authorId   String?
+  author     User?        @relation(fields: [authorId], references: [id])
+  createdAt  DateTime     @default(now())
+}

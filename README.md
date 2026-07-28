@@ -4,8 +4,9 @@ A fast, modern, and responsive B2B industrial website for **El Waha Pumps** (ش�
 
 ## Features
 - **Multi-language Support (RTL/LTR)**: Primary Arabic (RTL) and secondary English (LTR) with dynamic URL routing (`/ar` and `/en`) and a custom path-preserving language switcher.
-- **Performance Optimized**: Built using Next.js Static Site Generation (SSG), loading optimized Google Fonts (Tajawal and Inter), and utilizing native CSS animations to replace heavy slider plugins.
-- **Lead Generation Focused**: Custom contact form with Suspense, click-to-call links, and a floating WhatsApp button.
+- **Performance Optimized**: Incremental Static Regeneration (60s window) plus on-demand revalidation, optimized Google Fonts, and native CSS animations instead of heavy slider plugins.
+- **E-commerce**: Database-backed product catalogue with prices and stock, a localStorage cart, and WhatsApp checkout (no online payment — sales confirm final pricing).
+- **CRM + Admin Dashboard**: Protected `/admin` area for leads, customers, cart inquiries, products, and staff accounts.
 - **Clean Structure**: 100% type-safe components.
 
 ---
@@ -13,22 +14,104 @@ A fast, modern, and responsive B2B industrial website for **El Waha Pumps** (ش�
 ## Getting Started
 
 ### 1. Installation
-Install project dependencies:
 ```bash
 npm install
 ```
 
-### 2. Run Development Server
-Start the local server at `http://localhost:3000`:
+### 2. Environment variables
+Create a `.env` file in the project root:
+```bash
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="a-long-random-string"       # REQUIRED — see security note below
+WHATSAPP_PHONE="201066685532"
+```
+Generate a strong secret with:
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+```
+
+### 3. Set up the database
+Create the schema and load the catalogue plus the first admin account:
+```bash
+npx prisma migrate dev
+npx prisma db seed
+```
+The seed creates an admin user. Override the defaults with `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD`, otherwise it uses:
+
+| Field | Value |
+|---|---|
+| Email | `admin@elwahapumps.com` |
+| Password | `ChangeMe123!` |
+
+> **Change this password immediately** — sign in at `/admin`, then add your real staff accounts under **Staff** and remove the seeded one.
+
+### 4. Run Development Server
 ```bash
 npm run dev
 ```
+Public site at `http://localhost:3000`, dashboard at `http://localhost:3000/admin`.
 
-### 3. Production Build
-Build and optimize the application for deployment (outputs static/SSR optimized routes):
+### 5. Production Build
 ```bash
 npm run build
+npm run start
 ```
+
+---
+
+## Admin Dashboard
+
+`/admin` is protected by a signed httpOnly session cookie. `src/proxy.ts` redirects
+signed-out visitors, and **every admin page and server action independently
+re-checks the session** via `requireUser()` / `requireAdmin()` — per Next.js
+guidance, proxy alone is never treated as the authorization boundary.
+
+| Page | What it does |
+|---|---|
+| `/admin` | KPI tiles (new leads, open leads, cart inquiries, customers) + 12-week lead trend |
+| `/admin/leads` | Contact-form submissions; filter by status, assign owners, add notes, convert to customer |
+| `/admin/inquiries` | Carts visitors sent via WhatsApp, with the itemised list and estimate |
+| `/admin/customers` | Customer records with a linked lead/inquiry history and activity timeline |
+| `/admin/products` | Catalogue CRUD — prices, stock, images, visibility |
+| `/admin/users` | Staff accounts (ADMIN role only) |
+
+**Roles**: `STAFF` can use everything except staff-account management; `ADMIN` can do everything.
+
+---
+
+## How Products Work Now
+
+Products live in the **database**, not in `src/data/products.ts`. That file is now
+only the seed source and the shared TypeScript types — editing it has no effect on
+a running site. Use `/admin/products` instead.
+
+The rich technical content the site already had (variant groups, model tables,
+spec tables, feature lists) is preserved verbatim in the `Product.specs` JSON
+column and is re-rendered unchanged. The admin form edits the commercial fields
+(price, stock, images, description, summary chips); the deep spec tables remain
+seeded data and are untouched when you save.
+
+**Pricing**: leave the price blank and the product shows "Price on request" /
+"السعر عند الطلب". Cart totals are always **re-priced server-side** from the
+catalogue, so a tampered localStorage cart cannot change what gets recorded.
+
+---
+
+## Deploying to Hostinger
+
+This is no longer a static export — it needs a **Node.js server** (`npm run start`),
+not shared PHP hosting. Use Hostinger's Node.js hosting or a VPS.
+
+1. Set `DATABASE_URL`, `JWT_SECRET`, and `WHATSAPP_PHONE` in the host's environment.
+   **Do not reuse the development `JWT_SECRET`** — anyone with it can forge an admin session.
+2. Run `npx prisma migrate deploy` (not `migrate dev`) on the server.
+3. Run `npm run build`, then start with `npm run start`.
+4. The SQLite file must live on **persistent disk** and be included in your backups —
+   it holds all leads and customer data. Never commit it; `*.db` is gitignored.
+
+**Scaling note**: SQLite is a good fit for one server. If you ever run multiple
+instances, switch `prisma/schema.prisma` to `provider = "postgresql"` and swap the
+adapter in `src/lib/prisma.ts` — no application code changes.
 
 ---
 
@@ -71,30 +154,26 @@ Service details are dynamically compiled for pages like `/ar/services/[slug]` an
 ---
 
 ### 2. Adding/Modifying a Product
-Products are displayed on the showcase page (`/products`) and the home page.
 
-1. **Add Translations**:
-   Add a new product entry inside the `"productsData"` block in `ar.json` and `en.json`:
-   ```json
-   "productsData": {
-     "my-new-product": {
-       "title": "طلمبة أعماق موديل X",
-       "category": "pumps", // Can be "motors", "pumps", or "electrical"
-       "desc": "المواصفات والخصائص التفصيلية للطلمبة الجديدة..."
-     }
-   }
-   ```
+> **This no longer involves code.** Products moved to the database — sign in and use
+> **`/admin/products`**. Editing `src/data/products.ts` or the `productsData` block in
+> the dictionaries has **no effect** on a running site.
 
-2. **Register the Product**:
-   Open `src/components/ProductTabs.tsx` and append your product object to the `products` list:
-   ```typescript
-   {
-     id: "my-new-product",
-     title: dict.productsData["my-new-product"].title,
-     category: "pumps", // Match the category key
-     desc: dict.productsData["my-new-product"].desc,
-   }
-   ```
+In `/admin/products` → **New product**, fill in:
+
+| Field | Notes |
+|---|---|
+| Name (English / Arabic) | Both required — they drive the two locales |
+| URL slug | Lowercase and dashes; becomes `/en/products/your-slug` |
+| Category | One of the six existing categories |
+| Price / Currency | Leave price blank for "Price on request" |
+| Stock | Blank means "not tracked" (always shows In Stock) |
+| Image URLs | One per line, e.g. `/images/products/pump-kurlar.png` (put files in `public/images/products/`) |
+| Spec chips | Short highlights on the product card, one per line |
+| Visible | Uncheck to pull it from the public site without deleting it |
+
+Changes appear on the public site immediately. New categories still require a
+database row — add one in `prisma/seed.ts` and re-run `npx prisma db seed`.
 
 ---
 

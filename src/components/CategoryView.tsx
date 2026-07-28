@@ -4,7 +4,8 @@ import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
-import { ProductData } from "@/data/products";
+import type { CatalogProduct } from "@/lib/products";
+import { formatPrice, formatPriceRange } from "@/lib/price";
 
 export default function CategoryView({
   products,
@@ -12,7 +13,7 @@ export default function CategoryView({
   lang,
   dict,
 }: {
-  products: ProductData[];
+  products: CatalogProduct[];
   category: string;
   lang: string;
   dict: any;
@@ -115,8 +116,8 @@ export default function CategoryView({
       <main className="flex-1 bg-white p-6 pt-24 md:p-12 md:pt-32 lg:p-20 lg:pt-32">
         <div className="max-w-5xl mx-auto flex flex-col gap-12">
           {products.map((product) => {
-             const titleStr = dict.productsData[product.id]?.title || product.id;
-             
+             const titleStr = product.title;
+
              return (
                <div key={product.id} className="flex flex-col md:flex-row gap-8 items-center md:items-start group border-b border-neutral-200 pb-12 relative w-full">
                  {/* Product Image */}
@@ -143,13 +144,11 @@ export default function CategoryView({
                      ))}
                    </div>
 
-                   {/* Right aligned action block */}
-                   <div className={`absolute bottom-16 ${isAr ? 'left-0' : 'right-0'} flex flex-col items-end gap-6`}>
-                     <label className="flex items-center gap-2 cursor-pointer">
-                       <span className="text-xs font-semibold text-neutral-400">{isAr ? "مقارنة" : "Compare"}</span>
-                       <div className="w-5 h-5 bg-neutral-200 border border-neutral-300 flex items-center justify-center"></div>
-                     </label>
-                   </div>
+                   <p className="mt-4 text-lg font-bold text-neutral-900">
+                     {product.priceMin !== null
+                       ? formatPriceRange(product.priceMin, product.priceMax, product.currency, lang)
+                       : formatPrice(product.price, product.currency, lang)}
+                   </p>
                    
                    <Link href={`/${lang}/products/${product.id}`} className={`absolute bottom-0 ${isAr ? 'left-0' : 'right-0'} translate-y-1/2 w-12 h-12 bg-neutral-900 text-white rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-xl z-10`}>
                      {isAr ? <ArrowUpRight className="w-5 h-5 scale-x-[-1]" /> : <ArrowUpRight className="w-5 h-5" />}

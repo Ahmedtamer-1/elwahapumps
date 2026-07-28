@@ -5,17 +5,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Zap, Droplets, Settings, ChevronRight, Layers, CircleDot, Cable } from "lucide-react";
-import { products, ProductData } from "@/data/products";
+import type { ProductData } from "@/data/products";
+import type { CatalogProduct } from "@/lib/products";
+import { formatPrice, formatPriceRange } from "@/lib/price";
 
 interface ProductTabsProps {
   lang: string;
   dict: any;
+  products: CatalogProduct[];
   isTeaser?: boolean;
 }
 
-function ProductCard({ product, lang, dict, label }: { product: ProductData; lang: string; dict: any; label: string }) {
-  const productTitle = dict.productsData[product.id as keyof typeof dict.productsData]?.title || product.id;
-  const productDesc = dict.productsData[product.id as keyof typeof dict.productsData]?.desc || "";
+function ProductCard({ product, lang, label }: { product: CatalogProduct; lang: string; label: string }) {
+  const productTitle = product.title;
+  const productDesc = product.desc;
 
   return (
     <Link
@@ -55,7 +58,14 @@ function ProductCard({ product, lang, dict, label }: { product: ProductData; lan
         </div>
 
         <div className="flex items-center gap-3 mt-auto">
-          <span className="flex-1 text-center py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition-colors duration-200">
+          <div className="flex-1 min-w-0">
+            <p className="text-base font-bold text-neutral-900 truncate">
+              {product.priceMin !== null
+                       ? formatPriceRange(product.priceMin, product.priceMax, product.currency, lang)
+                       : formatPrice(product.price, product.currency, lang)}
+            </p>
+          </div>
+          <span className="shrink-0 text-center py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition-colors duration-200">
             {lang === "ar" ? "عرض التفاصيل" : "View Details"}
           </span>
         </div>
@@ -64,7 +74,7 @@ function ProductCard({ product, lang, dict, label }: { product: ProductData; lan
   );
 }
 
-function ProductTabsContent({ lang, dict, isTeaser = false }: ProductTabsProps) {
+function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductTabsProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -138,7 +148,7 @@ function ProductTabsContent({ lang, dict, isTeaser = false }: ProductTabsProps) 
           <div className="flex w-max gap-6 animate-marquee-left hover:[animation-play-state:paused]">
             {[...filteredProducts, ...filteredProducts].map((product, idx) => (
               <div key={`${product.id}-${idx}`} className="w-80 shrink-0">
-                <ProductCard product={product} lang={lang} dict={dict} label={categoryLabels[product.category]} />
+                <ProductCard product={product} lang={lang} label={categoryLabels[product.category]} />
               </div>
             ))}
           </div>
@@ -146,7 +156,7 @@ function ProductTabsContent({ lang, dict, isTeaser = false }: ProductTabsProps) 
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300">
           {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} lang={lang} dict={dict} label={categoryLabels[product.category]} />
+            <ProductCard key={product.id} product={product} lang={lang} label={categoryLabels[product.category]} />
           ))}
         </div>
       )}

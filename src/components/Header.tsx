@@ -5,14 +5,22 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone, Globe, ChevronDown } from "lucide-react";
-import { products } from "@/data/products";
+import CartButton from "@/components/cart/CartButton";
+
+/** Just enough of a product to build the mega-menu. */
+export interface HeaderProduct {
+  id: string;
+  title: string;
+  category: string;
+}
 
 interface HeaderProps {
   lang: string;
   dict: any;
+  products: HeaderProduct[];
 }
 
-export default function Header({ lang, dict }: HeaderProps) {
+export default function Header({ lang, dict, products }: HeaderProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -154,19 +162,16 @@ export default function Header({ lang, dict }: HeaderProps) {
                                       {category.label}
                                     </h3>
                                     <ul className="space-y-3">
-                                      {categoryProducts.map(product => {
-                                        const productTitle = dict.productsData[product.id as keyof typeof dict.productsData]?.title || product.id;
-                                        return (
-                                          <li key={product.id}>
-                                            <Link 
-                                              href={`/${lang}/products/${product.id}`}
-                                              className="text-sm font-medium transition-colors block text-neutral-600 hover:text-emerald-600"
-                                            >
-                                              {productTitle}
-                                            </Link>
-                                          </li>
-                                        );
-                                      })}
+                                      {categoryProducts.map(product => (
+                                        <li key={product.id}>
+                                          <Link
+                                            href={`/${lang}/products/${product.id}`}
+                                            className="text-sm font-medium transition-colors block text-neutral-600 hover:text-emerald-600"
+                                          >
+                                            {product.title}
+                                          </Link>
+                                        </li>
+                                      ))}
                                     </ul>
                                   </div>
                                 );
@@ -208,6 +213,8 @@ export default function Header({ lang, dict }: HeaderProps) {
 
             {/* Desktop Action Buttons */}
             <div className="hidden lg:flex items-center gap-4">
+              <CartButton lang={lang} isTransparent={isTransparent} />
+
               {/* Language Switcher */}
               <Link
                 href={toggleLanguage()}
@@ -234,6 +241,7 @@ export default function Header({ lang, dict }: HeaderProps) {
 
             {/* Mobile Actions */}
             <div className="flex items-center gap-3 lg:hidden">
+              <CartButton lang={lang} isTransparent={isTransparent} />
               <Link
                 href={toggleLanguage()}
                 className={`p-2 rounded-lg transition-colors ${

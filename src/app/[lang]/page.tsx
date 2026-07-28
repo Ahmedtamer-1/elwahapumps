@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import ServiceCard from "@/components/ServiceCard";
 import ProductTabs from "@/components/ProductTabs";
 import PartnerLogos from "@/components/PartnerLogos";
+import { getCatalogProducts } from "@/lib/products";
 import { Award, Clock, Briefcase, CheckCircle2, Phone, Mail, Factory } from "lucide-react";
 import Link from "next/link";
 
@@ -13,7 +14,10 @@ interface PageProps {
 
 export default async function HomePage({ params }: PageProps) {
   const { lang } = await params;
-  const dict = await getDictionary(lang as Locale);
+  const [dict, products] = await Promise.all([
+    getDictionary(lang as Locale),
+    getCatalogProducts(lang),
+  ]);
 
   return (
     <div className="flex flex-col w-full overflow-hidden bg-white text-neutral-900">
@@ -206,7 +210,7 @@ export default async function HomePage({ params }: PageProps) {
             </p>
           </div>
 
-          <ProductTabs lang={lang} dict={dict} isTeaser={true} />
+          <ProductTabs lang={lang} dict={dict} products={products} isTeaser={true} />
         </div>
       </section>
 

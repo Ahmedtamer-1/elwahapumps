@@ -37,8 +37,13 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
     setStatus("sending");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Contact form submitted data:", formData);
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+
       setStatus("success");
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
     } catch (error) {
