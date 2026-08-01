@@ -48,3 +48,7 @@ prisma/*.db
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python bytecode from the catalogue-extraction scripts
+__pycache__/
+*.pyc

@@ -1,0 +1,124 @@
+{
+  "$comment": [
+    "Hand-reviewed repairs for head values that the printed Kurlar catalogues get wrong.",
+    "",
+    "Every entry here was confirmed to be a PRINTING error, not an extraction error: the",
+    "PDF words sit correctly inside their table columns (verified by coordinate, see",
+    "extract_pump_curves.py) and the printed digits themselves contradict physics —",
+    "either head rising as flow rises within one pump, or head falling as identical",
+    "stages are added.",
+    "",
+    "`printed` is asserted against what the extractor actually read. If a catalogue is",
+    "ever replaced and the value changes, the correction refuses to apply and extraction",
+    "fails loudly rather than silently rewriting new data.",
+    "",
+    "ASK KURLAR TO CONFIRM these values. They are the best reconstruction available from",
+    "the surrounding table, not manufacturer-supplied figures."
+  ],
+
+  "motorCorrections": [
+    {
+      "code": "KM7-60",
+      "voltage": "380",
+      "field": "currentA",
+      "printed": "90.,3",
+      "corrected": 90.3,
+      "reason": "Typo in the printed motor table: a stray comma inside the number. The 400 V and 415 V rows of the same motor read 87.8 and 85.7, and current falls as voltage rises throughout the range, so 90.3 A is the only reading consistent with its own row. This is a transcription repair, not a reconstruction."
+    }
+  ],
+
+  "corrections": [
+    {
+      "code": "KP-610/30",
+      "column": 3,
+      "flowM3h": 9,
+      "printed": 375,
+      "corrected": 273,
+      "reason": "Breaks the row (317 m at 6 m3/h cannot rise to 375 m at 9 m3/h) and the column (/29=265, /31=280). Column runs +9..10 m per stage throughout. Linear interpolation between the two good neighbours gives 272.5. Likely a 2->3 digit slip; note 375 is the legitimate value 11 rows further down at /41."
+    },
+    {
+      "code": "KP-617/25",
+      "column": 1,
+      "flowM3h": 4,
+      "printed": 269,
+      "corrected": 277,
+      "reason": "Breaks the row: 269 m at 4 m3/h is below the 270 m printed at 8 m3/h. Column runs +11 m per stage; anchors /24=265 and /27=300 interpolate to 276.7. The printed 269/279 for /25 and /26 look copied from the 8 m3/h column (270/280)."
+    },
+    {
+      "code": "KP-617/26",
+      "column": 1,
+      "flowM3h": 4,
+      "printed": 279,
+      "corrected": 288,
+      "reason": "Same fault as /25: 279 m at 4 m3/h is below the 280 m printed at 8 m3/h. Interpolating /24=265 to /27=300 gives 288.3."
+    },
+    {
+      "code": "KP-877/18",
+      "column": 0,
+      "flowM3h": 0,
+      "printed": 342,
+      "corrected": 363,
+      "reason": "Breaks the column (/17=344 > /18=342, but adding a stage must add head) and the row (342 m shut-off is below the 355 m printed at 20 m3/h). Anchors /17=344 and /19=382 interpolate to 363, matching the column's steady +19..20 m per stage."
+    },
+
+    {
+      "code": "KP-10125/17",
+      "column": 1,
+      "flowM3h": 40,
+      "printed": 473,
+      "corrected": 494,
+      "reason": "Rows /17..21 of this one column advance by +8 m per stage where the column runs +28. Every other column in the same rows continues correctly (+29/+25/+23/+20/+18/+12), so a single column was mis-typeset. On all good rows this column sits 1-2 m under the shut-off column (/14 408/406, /15 436/435, /16 466/465); shut-off here is 495."
+    },
+    {
+      "code": "KP-10125/18",
+      "column": 1,
+      "flowM3h": 40,
+      "printed": 481,
+      "corrected": 523,
+      "reason": "Same mis-typeset column block as /17. Shut-off for this row is 524."
+    },
+    {
+      "code": "KP-10125/19",
+      "column": 1,
+      "flowM3h": 40,
+      "printed": 489,
+      "corrected": 552,
+      "reason": "Same mis-typeset column block as /17. Shut-off for this row is 553."
+    },
+    {
+      "code": "KP-10125/20",
+      "column": 1,
+      "flowM3h": 40,
+      "printed": 497,
+      "corrected": 581,
+      "reason": "Same mis-typeset column block as /17. Shut-off for this row is 582. The printed 497 also breaks the row, sitting below the 509 m printed at 80 m3/h."
+    },
+    {
+      "code": "KP-10125/21",
+      "column": 1,
+      "flowM3h": 40,
+      "printed": 505,
+      "corrected": 610,
+      "reason": "Same mis-typeset column block as /17. Shut-off for this row is 611. The printed 505 also breaks the row, sitting below the 534 m printed at 80 m3/h."
+    }
+  ],
+
+  "exclusions": [
+    {
+      "code": "KP-895/21",
+      "reason": "KP-895 rows /21../24 are unreliable across the whole curve, not in one column. Their per-stage increments are a flat ~9-10 m in EVERY flow column, whereas a real curve falls off with flow — this family runs +20/+20/+18/+15/+13/+10/+8 for its first twenty rows. Columns 0, 1 and 2 are all affected and /21 additionally breaks the row (432 m shut-off below 471 m at 20 m3/h) and the column (/22=426 < /21=471). Reconstructing these would mean inventing four complete pump curves, so they are withheld from selection instead. KP-895/01../20 are unaffected and remain available."
+    },
+    {
+      "code": "KP-895/22",
+      "reason": "See KP-895/21 — same unreliable trailing block."
+    },
+    {
+      "code": "KP-895/23",
+      "reason": "See KP-895/21 — same unreliable trailing block. Also breaks the row: 381 m at 20 m3/h is below the 393 m printed at 40 m3/h."
+    },
+    {
+      "code": "KP-895/24",
+      "reason": "See KP-895/21 — same unreliable trailing block. Also breaks the row: 336 m at 20 m3/h is below the 402 m printed at 40 m3/h."
+    }
+  ]
+}

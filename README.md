@@ -97,6 +97,58 @@ catalogue, so a tampered localStorage cart cannot change what gets recorded.
 
 ---
 
+## Pump Selector (`/ar/selector`, `/en/selector`)
+
+A duty-point pump selector over the Kurlar range — the customer enters flow and
+head, and gets a ranked shortlist with performance curves, a datasheet and a
+motor choice.
+
+**How selection works.** A pump is a candidate only if it *reaches* the required
+head at the required flow; delivering 95% of it lifts nothing. Candidates are then
+ranked by the efficiency the catalogue publishes for them **at that duty point**,
+because that is what sets the customer's electricity bill. Head fit breaks ties.
+Head overshoot is capped at +30%, relaxed only if nothing fits.
+
+**Where the numbers come from.**
+
+| Quantity | Source |
+|---|---|
+| Head | The printed variant tables — `scripts/extract_pump_curves.py` |
+| Efficiency, NPSH, recommended-flow band | The drawn curves on the chart pages — `scripts/extract_chart_curves.py` |
+| Shaft power | Derived: `rho*g*Q*H / eta`. The catalogues plot no power curve |
+| Motor electrical data and dimensions | The per-bore motor data sheets (pp. 40/42/44/46) |
+
+Efficiency is traced out of the PDF's **vector geometry** and mapped back through
+the printed axes, because it is never tabulated. Two details there are load-bearing:
+the flow axis unit is decided by testing the traced efficiency peak against the
+family's nominal flow (the KSX pages label that axis `l/s` while printing m³/h on
+it), and efficiency is `null` outside the range the catalogue actually draws rather
+than clamped — a 200 m³/h pump must not claim its best-point efficiency at 60 m³/h,
+or it wins the ranking and puts a 10" pump down a 6" well.
+
+**Regenerating the data** (only needed when Kurlar publish a new catalogue):
+
+```bash
+python scripts/extract_pump_curves.py     # writes src/data/*.json
+node scripts/verify-pump-curves.mjs       # must exit 0 before the data is used
+node --test src/lib/pump-selector.test.ts
+```
+
+`verify-pump-curves.mjs` asserts physical invariants, not style: efficiency peaks
+at the model's nominal flow, NPSH rises with flow, motor length and weight rise
+with power, and `sqrt(3)*V*I*cos(phi)*eta` reproduces each motor's rated kW. Misprints in
+the catalogues are repaired through `scripts/pump-curve-corrections.json`, which
+asserts the value it is overwriting so a re-issued catalogue cannot be silently
+rewritten with a stale fix.
+
+**Implementation.** `src/lib/pump-selector.ts` is the engine — pure functions, no
+data and no React, so `node --test` runs it directly. `src/lib/pump-data.ts` binds
+it to the JSON. The page is a **server component with a plain GET form**: no client
+JavaScript, the ~600 KB dataset never reaches the browser, and every selection is a
+shareable URL (`?q=100&qu=m3h&h=150&hu=m&pick=…&motor=…`).
+
+---
+
 ## Deploying to Hostinger
 
 This is no longer a static export — it needs a **Node.js server** (`npm run start`),

@@ -60,6 +60,7 @@ export default function Header({ lang, dict, products }: HeaderProps) {
     { href: `/${lang}`, label: dict.nav.home },
     { href: `/${lang}/about`, label: dict.nav.about },
     { href: `/${lang}/products`, label: dict.nav.products },
+    { href: `/${lang}/selector`, label: dict.nav.pumpSelector || "Pump Selector" },
     { href: `/${lang}/agents`, label: dict.nav.localDealer || "Local Dealer" },
     { href: `/${lang}/careers`, label: dict.nav.career || "Career" },
   ];
