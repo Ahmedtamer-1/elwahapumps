@@ -3,7 +3,6 @@ import { getDictionary, Locale } from "../../dictionaries";
 import { events } from "@/data/events";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Breadcrumb from "@/components/Breadcrumb";
 import EventGallery from "@/components/EventGallery";
 import { ArrowLeft, ArrowRight, Calendar, MapPin } from "lucide-react";
 
@@ -43,7 +42,6 @@ export default async function EventDetailPage({ params }: PageProps) {
       {/* Header Banner */}
       <section className="bg-black text-white py-16 border-b border-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb items={[{ label: dict.nav.events, href: `/${lang}/events` }, { label: data.title }]} lang={lang} />
           <Link
             href={`/${lang}/events`}
             className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"

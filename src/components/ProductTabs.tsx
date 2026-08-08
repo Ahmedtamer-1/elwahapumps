@@ -1,10 +1,11 @@
 "use client";
 
 import React, { Suspense } from "react";
+import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { Zap, Droplets, Settings, ChevronRight, Layers, CircleDot, Cable } from "lucide-react";
+import { Zap, Droplets, Settings, ChevronRight, Layers, Wrench, Cable } from "lucide-react";
 import type { ProductData } from "@/data/products";
 import type { CatalogProduct } from "@/lib/products";
 import { formatPrice, formatPriceRange } from "@/lib/price";
@@ -74,12 +75,19 @@ function ProductCard({ product, lang, label }: { product: CatalogProduct; lang: 
   );
 }
 
+/**
+ * Seconds of travel per card in the home-page teaser, chosen to preserve the
+ * scroll speed the three-card version ran at (a 320px card plus its 24px gap
+ * crossing the window in a little over ten seconds).
+ */
+const SECONDS_PER_CARD = 10.7;
+
 function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductTabsProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const activeTab = isTeaser ? "all" : (searchParams.get("category") as "all" | "motors" | "pumps" | "electrical" | "pipes" | "thrust-bearings" | "cables") || "all";
+  const activeTab = isTeaser ? "all" : (searchParams.get("category") as "all" | "motors" | "pumps" | "electrical" | "pipes" | "spare-parts" | "cables") || "all";
 
   const handleTabChange = (tabId: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -91,11 +99,8 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  let filteredProducts = activeTab === "all" ? products : products.filter((p) => p.category === activeTab);
-  
-  if (isTeaser) {
-    filteredProducts = filteredProducts.slice(0, 3);
-  }
+  const filteredProducts =
+    activeTab === "all" ? products : products.filter((p) => p.category === activeTab);
 
   const tabs = [
     { id: "all", label: dict.productsPage.all, icon: null },
@@ -103,18 +108,15 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
     { id: "pumps", label: dict.productsPage.pumps, icon: Droplets },
     { id: "electrical", label: dict.productsPage.electrical, icon: Zap },
     { id: "pipes", label: dict.productsPage.pipes, icon: Layers },
-    { id: "thrust-bearings", label: dict.productsPage.thrustBearings, icon: CircleDot },
+    { id: "spare-parts", label: dict.productsPage.spareParts, icon: Wrench },
     { id: "cables", label: dict.productsPage.cables, icon: Cable },
   ] as const;
 
-  const categoryLabels: Record<ProductData["category"], string> = {
-    motors: dict.productsPage.motors,
-    pumps: dict.productsPage.pumps,
-    electrical: dict.productsPage.electrical,
-    pipes: dict.productsPage.pipes,
-    "thrust-bearings": dict.productsPage.thrustBearings,
-    cables: dict.productsPage.cables,
-  };
+  // Built from the shared slug -> dictionary-key map so a renamed category
+  // cannot fall out of sync with the tab labels.
+  const categoryLabels = Object.fromEntries(
+    PRODUCT_CATEGORIES.map((slug) => [slug, categoryLabel(dict, slug)])
+  ) as Record<ProductData["category"], string>;
 
   return (
     <div className="w-full">
@@ -145,7 +147,17 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
       {/* Products */}
       {isTeaser ? (
         <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
-          <div className="flex w-max gap-6 animate-marquee-left hover:[animation-play-state:paused]">
+          <div
+            className="flex w-max gap-6 animate-marquee-left hover:[animation-play-state:paused]"
+            // The teaser shows the whole catalogue, so the row's width is not
+            // fixed — and the shared 32s keyframe would sprint through a long
+            // row and crawl through a short one. Pacing the duration by the
+            // card count instead holds one reading speed however many products
+            // the catalogue grows to.
+            style={{
+              animationDuration: `${(filteredProducts.length * SECONDS_PER_CARD).toFixed(1)}s`,
+            }}
+          >
             {[...filteredProducts, ...filteredProducts].map((product, idx) => (
               <div key={`${product.id}-${idx}`} className="w-80 shrink-0">
                 <ProductCard product={product} lang={lang} label={categoryLabels[product.category]} />

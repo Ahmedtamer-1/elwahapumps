@@ -3,7 +3,6 @@ import Link from "next/link";
 import { AlertTriangle, FileText, Info } from "lucide-react";
 
 import { getDictionary, Locale } from "../dictionaries";
-import Breadcrumb from "@/components/Breadcrumb";
 import PerformanceChart from "@/components/selector/PerformanceChart";
 import SelectorForm from "@/components/selector/SelectorForm";
 import { catalogueLimits, motorOptionsFor, selectFromCatalogue } from "@/lib/pump-data";
@@ -79,7 +78,6 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
     <div className="min-h-screen bg-black pb-24">
       <section className="relative bg-neutral-950 px-4 pb-10 pt-32">
         <div className="mx-auto max-w-6xl">
-          <Breadcrumb lang={lang} items={[{ label: t.title }]} />
           <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-sky-400">
             {t.eyebrow}
           </p>

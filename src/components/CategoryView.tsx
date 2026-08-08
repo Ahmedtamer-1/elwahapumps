@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { categoryLabel } from "@/data/categories";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
@@ -19,7 +20,7 @@ export default function CategoryView({
   dict: any;
 }) {
   const isAr = lang === "ar";
-  const title = dict.productsPage[category as keyof typeof dict.productsPage] || category;
+  const title = categoryLabel(dict, category);
 
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -133,7 +134,15 @@ export default function CategoryView({
                  {/* Product Info */}
                  <div className={`flex-1 flex flex-col pt-2 w-full ${isAr ? 'md:pr-4' : 'md:pl-4'}`}>
                    <h2 className="text-xl font-bold text-neutral-800 mb-1">{titleStr}</h2>
-                   <p className="text-sm text-neutral-400 mb-4">{product.modelNo ? `${product.modelNo} Series` : String(dict.productsPage[category as keyof typeof dict.productsPage] || category)}</p>
+                   {/* Some modelNo values already end in "Series" (e.g. "AP+
+                       Series"), which used to render as "AP+ Series Series". */}
+                   <p className="text-sm text-neutral-400 mb-4">
+                     {product.modelNo
+                       ? /series\s*$/i.test(product.modelNo)
+                         ? product.modelNo
+                         : `${product.modelNo} Series`
+                       : categoryLabel(dict, category)}
+                   </p>
                    
                    <div className="flex flex-col gap-1.5 text-xs text-neutral-500 font-medium">
                      {product.specs.slice(0, 3).map((spec, i) => (

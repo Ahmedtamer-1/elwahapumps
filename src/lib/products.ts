@@ -6,14 +6,9 @@ import type {
   ProductVariantGroup,
 } from "@/data/products";
 
-export const PRODUCT_CATEGORIES = [
-  "pumps",
-  "motors",
-  "electrical",
-  "pipes",
-  "thrust-bearings",
-  "cables",
-] as const;
+// Single source of truth lives in data/categories.ts, which is client-safe.
+// Re-exported here so existing server-side importers keep working.
+export { PRODUCT_CATEGORIES } from "@/data/categories";
 
 /**
  * A catalogue entry as the public site consumes it: the original `ProductData`

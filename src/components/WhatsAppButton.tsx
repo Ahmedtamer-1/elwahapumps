@@ -20,7 +20,9 @@ export default function WhatsAppButton({ lang }: WhatsAppButtonProps) {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg shadow-green-500/30 hover:bg-[#1ebe57] transition-all duration-300 hover:scale-110 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-green-300 start-auto end-6"
+      // Pine, not WhatsApp's #25D366. §04 permits no additional colours in
+      // the palette, and the glyph already identifies the channel.
+      className="fixed bottom-6 z-50 flex items-center justify-center w-14 h-14 bg-pine text-bone hover:bg-brass hover:text-ink transition-colors duration-300 start-auto end-6"
       aria-label="Chat on WhatsApp"
     >
       <svg

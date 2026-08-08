@@ -1,26 +1,41 @@
 import React from "react";
 import { getDictionary, Locale } from "../dictionaries";
-import Breadcrumb from "@/components/Breadcrumb";
-import { FileText, Download, Phone, Droplets, Settings, Zap, Layers, CircleDot, Cable } from "lucide-react";
+import { FileText, Download, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
 }
 
+/**
+ * Category line-art, one file per slug under /public/images/categories.
+ *
+ * The source images are black line art on a white ground. They are inverted
+ * to white and blended with `screen`, which drops the white ground to
+ * transparent and leaves the strokes over pine — the drawings then sit in
+ * the palette instead of arriving as white boxes (§04: flat pine, bone or
+ * white only, and no additional colours).
+ */
+const CATEGORY_ART: Record<string, string> = {
+  pumps: "/images/categories/pumps.jpeg",
+  motors: "/images/categories/motors.jpeg",
+  electrical: "/images/categories/electrical.jpeg",
+  pipes: "/images/categories/pipes.jpeg",
+  "spare-parts": "/images/categories/spare-parts.jpeg",
+  cables: "/images/categories/cables.jpeg",
+};
+
 export default async function ProductsPage({ params }: PageProps) {
   const { lang } = await params;
   const dict = await getDictionary(lang as Locale);
 
-  const productCategories = [
-    { id: "pumps", label: dict.productsPage.pumps, icon: Droplets },
-    { id: "motors", label: dict.productsPage.motors, icon: Settings },
-    { id: "electrical", label: dict.productsPage.electrical, icon: Zap },
-    { id: "pipes", label: dict.productsPage.pipes, icon: Layers },
-    { id: "thrust-bearings", label: dict.productsPage.thrustBearings, icon: CircleDot },
-    { id: "cables", label: dict.productsPage.cables, icon: Cable },
-  ];
+  const productCategories = PRODUCT_CATEGORIES.map((id) => ({
+    id,
+    label: categoryLabel(dict, id),
+    art: CATEGORY_ART[id],
+  }));
 
   const brandsList = [
     { id: "astral-pipes", name: "Astral Pipes", logo: "/images/brand/astral-logo.png" },
@@ -33,37 +48,50 @@ export default async function ProductsPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="bg-black min-h-screen pb-20">
-      {/* Hero Section with Product Categories */}
-      <section className="relative pt-32 pb-12 min-h-[50vh] flex flex-col justify-end bg-neutral-950 overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop" 
-            alt="Industrial Background" 
-            className="w-full h-full object-cover opacity-20" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/60 to-transparent" />
-        </div>
-
-        <div className="relative z-10 w-[95%] max-w-[1600px] mx-auto px-4 w-full">
-          <div className="mb-16 flex flex-col items-center text-center">
-            <Breadcrumb items={[{ label: dict.nav.products }]} lang={lang} />
-            <h1 className="text-3xl md:text-5xl font-black text-white mt-4">
+    <div className="bg-pine min-h-screen pb-20">
+      {/* Category wall. Flat pine — the stock Unsplash "industrial background"
+          that used to sit behind this is another company's photograph, which
+          §06 rules out, and a flat ground is what lets the line-art blend
+          cleanly anyway. */}
+      <section className="relative pt-32 pb-16 flex flex-col justify-end bg-pine overflow-hidden">
+        <div className="relative z-10 w-[95%] max-w-[1600px] mx-auto px-4">
+          <div className="mb-14 flex flex-col items-center text-center">
+            <h1 className="text-h1 sm:text-display font-extrabold text-bone mt-4">
               {dict.productsPage.title}
             </h1>
+            <div className="brass-rule mt-6" aria-hidden="true" />
           </div>
-          
-          {/* Category Placeholder Vectors Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-10 justify-items-center">
-            {productCategories.map(cat => (
-              <Link href={`/${lang}/products/category/${cat.id}`} key={cat.id} className="flex flex-col items-center group cursor-pointer w-full max-w-[200px]">
-                <div className="w-full aspect-square border border-neutral-600/50 group-hover:border-emerald-500 transition-all duration-300 flex items-center justify-center mb-6 relative bg-black/40 backdrop-blur-sm">
-                   {/* Placeholder icon until SVG/PNG is provided */}
-                   <cat.icon className="w-12 h-12 md:w-16 md:h-16 text-neutral-400 group-hover:text-emerald-400 transition-colors" strokeWidth={1} />
-                   <span className="absolute bottom-2 right-2 text-[8px] text-neutral-500 uppercase tracking-widest font-mono">Placeholder</span>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10 justify-items-center">
+            {productCategories.map((cat) => (
+              <Link
+                href={`/${lang}/products/category/${cat.id}`}
+                key={cat.id}
+                className="flex flex-col items-center group w-full max-w-[220px]"
+              >
+                {/* bg-pine here is load-bearing, not decoration: `screen`
+                    blends against whatever is painted below the image inside
+                    its own stacking context, and the ancestor's z-index
+                    isolates it from the section background. Without a pine
+                    ground on this wrapper the tiles render as black boxes. */}
+                <div className="relative w-full aspect-square bg-pine">
+                  <Image
+                    src={cat.art}
+                    // Decorative: the label below already names the category.
+                    alt=""
+                    aria-hidden="true"
+                    fill
+                    // The tile is capped at 220px at every breakpoint, so a
+                    // fixed hint is accurate. Leaving vw units here made Next
+                    // serve a 3840px-wide file into a 220px slot.
+                    sizes="220px"
+                    className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+                    // invert -> white strokes on black; screen -> the black
+                    // drops out, leaving the strokes over pine.
+                    style={{ filter: "invert(1)", mixBlendMode: "screen" }}
+                  />
                 </div>
-                <span className="text-neutral-300 font-medium text-sm md:text-base text-center group-hover:text-white transition-colors">
+                <span className="mt-4 text-[15px] md:text-base font-semibold text-bone/85 group-hover:text-brass transition-colors text-center">
                   {cat.label}
                 </span>
               </Link>
@@ -72,21 +100,32 @@ export default async function ProductsPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Our Brands Section */}
-      <section className="bg-neutral-950 py-16 lg:py-24 border-b border-neutral-900">
-        <div className="w-[95%] max-w-[1600px] mx-auto px-4 text-center">
-          <h2 className="text-xs font-bold text-neutral-500 tracking-widest uppercase mb-16">
-            {lang === "ar" ? "العلامات التجارية" : "OUR BRANDS"}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 md:gap-12 items-center justify-items-center w-full">
-            {brandsList.map(brand => (
-              <Link href={`/${lang}/agents/${brand.id}`} key={brand.id} className="relative w-full max-w-[140px] md:max-w-[220px] h-20 md:h-28 opacity-60 hover:opacity-100 transition-all duration-300 cursor-pointer grayscale hover:grayscale-0 brightness-200 hover:brightness-100">
+      {/* Our brands. §1.3 prescribed a fixed optical height and a single
+          tone for the partner wall; on pine that tone is bone, so each mark
+          is knocked out to white and comes back to full colour on hover. */}
+      <section className="bg-pine py-16 lg:py-24 border-t border-bone/15">
+        <div className="w-[95%] max-w-[1600px] mx-auto px-4">
+          <div className="border-t-2 border-brass pt-3 mb-12">
+            <h2 className="spec-label text-bone">
+              {lang === "ar" ? "العلامات التجارية" : "Our brands"}
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 md:gap-10 items-center justify-items-center w-full">
+            {brandsList.map((brand) => (
+              <Link
+                href={`/${lang}/agents/${brand.id}`}
+                key={brand.id}
+                className="group relative w-full max-w-[140px] md:max-w-[200px] h-16 md:h-20"
+                aria-label={brand.name}
+              >
                 <Image
                   src={brand.logo}
                   alt={brand.name}
                   fill
-                  className="object-contain"
-                  sizes="(max-width: 768px) 140px, 220px"
+                  // brightness-0 + invert flattens any logo to pure white,
+                  // which is what gives the wall one optical weight.
+                  className="object-contain brightness-0 invert opacity-70 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100 transition-all duration-300"
+                  sizes="(max-width: 768px) 140px, 200px"
                 />
               </Link>
             ))}
@@ -97,41 +136,40 @@ export default async function ProductsPage({ params }: PageProps) {
       {/* Main Content */}
       <section className="w-[95%] max-w-[1600px] mx-auto px-4 mt-12 mb-20">
 
-        {/* B2B Catalog Download Card */}
-        <div className="mt-8 text-white py-8 flex flex-col md:flex-row items-center justify-between gap-8 relative border-t border-neutral-900">
-          <div className="flex flex-col md:flex-row items-center gap-6 relative z-10 text-center md:text-start">
-            <div className="text-emerald-500 p-2">
-              <FileText className="w-10 h-10 md:w-12 md:h-12" />
-            </div>
+        {/* Catalogue prompt. The per-product datasheets now live on each
+            product page; this is the whole-range request. */}
+        <div className="mt-8 text-bone py-8 flex flex-col md:flex-row items-center justify-between gap-8 border-t border-bone/15">
+          <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-start">
+            <FileText className="w-10 h-10 text-brass shrink-0" aria-hidden="true" />
             <div>
-              <h3 className="text-xl md:text-2xl font-bold mb-2">
-                {lang === "ar" 
-                  ? "كتالوج المنتجات والمواصفات الفنية الكاملة" 
-                  : "Download Our Technical Product Catalog"}
-              </h3>
-              <p className="text-neutral-400 text-xs md:text-sm max-w-lg leading-relaxed">
+              <h3 className="text-h3 font-extrabold mb-2 text-bone">
                 {lang === "ar"
-                  ? "احصل على كتالوج شركة الواحة المفصل الذي يحتوي على كافة قياسات وموديلات المواتير، الطلمبات، ولوحات التحكم الكهربائية."
-                  : "Get El Waha's detailed catalog featuring all dimensions, ratings, and models for motors, pumps, and control panels."}
+                  ? "كتالوج المنتجات والمواصفات الفنية الكاملة"
+                  : "Request the full technical catalogue"}
+              </h3>
+              <p className="text-bone/70 text-[13px] max-w-lg leading-6">
+                {lang === "ar"
+                  ? "المقاسات والموديلات الكاملة للمواتير والطلمبات ولوحات التشغيل. الكتالوج الخاص بكل منتج متاح على صفحته."
+                  : "Full dimensions, ratings and models for motors, pumps and control panels. Each product's own catalogue is on its page."}
               </p>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 relative z-10 shrink-0 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">
             <Link
               href={`/${lang}/contact?subject=${encodeURIComponent(
                 lang === "ar" ? "طلب كتالوج المنتجات" : "Product Catalog Request"
               )}`}
-              className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-4 rounded-xl text-xs transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-brass hover:bg-bone text-ink font-semibold px-8 py-4 text-sm transition-colors"
             >
-              <Download className="w-4.5 h-4.5" />
+              <Download className="w-4 h-4" aria-hidden="true" />
               <span>{dict.productsPage.downloadCatalog}</span>
             </Link>
             <a
               href="tel:+201066685532"
-              className="inline-flex items-center justify-center gap-2 bg-transparent hover:bg-neutral-900 text-white border border-neutral-700 hover:border-neutral-500 font-bold px-8 py-4 rounded-xl text-xs transition-colors"
+              className="inline-flex items-center justify-center gap-2 text-bone border border-bone/30 hover:border-brass hover:text-brass font-semibold px-8 py-4 text-sm transition-colors"
             >
-              <Phone className="w-4 h-4" />
+              <Phone className="w-4 h-4" aria-hidden="true" />
               <span>{lang === "ar" ? "استفسار هاتفي" : "Phone Inquiry"}</span>
             </a>
           </div>

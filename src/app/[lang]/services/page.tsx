@@ -2,7 +2,6 @@ import React from "react";
 import { getDictionary, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
 import Link from "next/link";
-import Breadcrumb from "@/components/Breadcrumb";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -49,7 +48,6 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
       {/* Header */}
       <section className="bg-black text-white py-16 md:py-20 border-b border-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-          <Breadcrumb items={[{ label: dict.nav.services }]} lang={lang} />
           <span className="text-emerald-500 font-extrabold text-xs uppercase tracking-widest block mb-2 mt-4">
             {dict.nav.services}
           </span>

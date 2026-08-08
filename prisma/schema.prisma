@@ -196,6 +196,63 @@ model CartInquiry {
   updatedAt      DateTime      @updatedAt
 }
 
+/// An authorised distributor shown on the public locations map and list.
+/// Managed entirely from /admin/distributors.
+model Distributor {
+  id     String @id @default(cuid())
+  /// As the company writes it. Several are trading names, not people.
+  name   String
+  /// Egyptian mobile in local form, e.g. 01012345678.
+  phone  String
+  cityAr String
+  cityEn String
+  /// Grouping key for the list — see REGION_LABELS in data/distributors.ts.
+  region String
+  /// Map pin. Stored separately rather than as a string so the map can use
+  /// them without parsing, and so a bad paste fails validation not rendering.
+  lat    Float
+  lng    Float
+  /// Link out to the authoritative location. Derived from the city name when
+  /// left blank, matching the format of the company's own spreadsheet.
+  mapUrl String?
+  /// Unticked hides the distributor from the public page without deleting it.
+  isActive  Boolean  @default(true)
+  /// Lower sorts first within its region.
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, region, sortOrder])
+}
+
+/// A job advert on the public careers page. Managed entirely from /admin/jobs.
+model Job {
+  id           String   @id @default(cuid())
+  titleEn      String
+  titleAr      String
+  departmentEn String
+  departmentAr String
+  typeEn       String
+  typeAr       String
+  locationEn   String
+  locationAr   String
+  descEn       String
+  descAr       String
+  /// JSON array of { en, ar } — the "Requirements" bullet list, in order.
+  requirements String   @default("[]")
+  /// Unticked hides the advert from the public page without deleting it.
+  isActive     Boolean  @default(true)
+  /// Date the advert went up. Drives the "posted N days ago" line, so it is
+  /// settable rather than derived from createdAt — adverts get re-published.
+  postedOn     DateTime @default(now())
+  /// Lower sorts first; ties fall back to the newest posting.
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([isActive, sortOrder])
+}
+
 model Activity {
   id         String       @id @default(cuid())
   type       ActivityType @default(NOTE)

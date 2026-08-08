@@ -84,8 +84,8 @@ export default async function ContactPage({ params }: PageProps) {
                     <span className="block text-xs font-bold text-neutral-400 uppercase mb-1">
                       {dict.common.emailLabel}
                     </span>
-                    <a href="mailto:info@lwahapumps.com" className="text-neutral-700 text-xs font-semibold hover:text-emerald-600 transition-colors">
-                      info@lwahapumps.com
+                    <a href="mailto:info@elwahapumps.com" className="text-neutral-700 text-xs font-semibold hover:text-emerald-600 transition-colors">
+                      info@elwahapumps.com
                     </a>
                   </div>
                 </div>

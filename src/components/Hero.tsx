@@ -11,6 +11,13 @@ interface HeroProps {
   };
 }
 
+/**
+ * TODO(brand §06): these are Unsplash stock frames of other companies'
+ * installations, which the imagery direction rules out explicitly. They
+ * are placeholders until the shoot happens — report decision 05, two
+ * days, three sites and the workshop. Swap for real El Waha jobs;
+ * nothing else in this component needs to change.
+ */
 const HERO_IMAGES = [
   "https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=2070&auto=format&fit=crop", 
   "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
@@ -29,7 +36,7 @@ export default function Hero({ lang, dict }: HeroProps) {
   }, []);
 
   return (
-    <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-neutral-950 flex items-center">
+    <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-pine flex items-center">
       {/* Background Slider */}
       {HERO_IMAGES.map((src, idx) => (
         <div 
@@ -44,35 +51,57 @@ export default function Hero({ lang, dict }: HeroProps) {
             }`}
             style={{ backgroundImage: `url(${src})` }}
           />
-          {/* Dark Overlay for text readability */}
-          <div className={`absolute inset-0 bg-gradient-to-r ${isAr ? "from-black/10 via-black/60 to-black/90" : "from-black/90 via-black/60 to-black/10"}`} />
+          {/* Pine scrim rather than black, so the photography sits inside
+              the palette instead of beside it. Carries bone text at AAA. */}
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(to ${isAr ? "left" : "right"}, rgba(14,59,46,0.94) 0%, rgba(14,59,46,0.72) 45%, rgba(14,59,46,0.25) 100%)`,
+            }}
+          />
         </div>
       ))}
 
       {/* Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`max-w-2xl transition-all duration-1000 transform ${isAr ? "ml-auto" : ""} translate-y-0 opacity-100`}>
-          <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-400 drop-shadow-sm">
-            {isAr ? "تأسست ٢٠٠٤ · ٦ أكتوبر، الجيزة" : "Est. 2004 · 6th of October, Giza"}
+          {/* Eyebrow in brass — the accent pairing for dark grounds, 5.9:1.
+              Corrected to 2000: the company has traded since 2000, and the
+              old "Est. 2004" understated the record it owns (§1.1). Western
+              digits on both sites (§5.2 rule 5). */}
+          <span
+            className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-brass"
+            dir="ltr"
+          >
+            {isAr ? "منذ 2000 · 6 أكتوبر، الجيزة" : "Est. 2000 · 6th of October, Giza"}
           </span>
-          <div className={`w-14 h-[3px] bg-emerald-500 rounded-full my-6 shadow-sm ${isAr ? 'ml-auto' : ''}`} aria-hidden="true" />
-          
-          <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-black leading-[1.1] text-white text-balance drop-shadow-lg">
+          <div className={`w-16 h-[3px] bg-brass my-6 ${isAr ? "ml-auto" : ""}`} aria-hidden="true" />
+
+          {/* Display level, §05 Table 4. The Arabic uplift in size and
+              leading is carried by the [dir=rtl] rules in globals.css. */}
+          <h1 className="text-h1 sm:text-display font-extrabold text-bone text-balance">
             {dict.hero.title}
           </h1>
-          
-          <div className={`flex flex-wrap gap-4 mt-10 ${isAr ? 'justify-end' : ''}`}>
+
+          {/* The specifics the headline can't hold: six agencies, one point
+              of contact, a service team. §07 — a number or a name, not
+              "highest level". */}
+          <p className="mt-5 text-body text-bone/80 max-w-[52ch]">
+            {dict.hero.subtitle}
+          </p>
+
+          <div className={`flex flex-wrap gap-3 mt-9 ${isAr ? "justify-end" : ""}`}>
             <Link
               href={`/${lang}/contact`}
-              className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-8 py-4 rounded-xl transition-all shadow-lg hover:shadow-emerald-500/25 active-scale-98"
+              className="inline-flex items-center justify-center bg-brass hover:bg-bone text-ink font-semibold text-sm px-8 py-4 transition-colors active-scale-98"
             >
               {dict.common.requestQuote}
             </Link>
             <Link
               href={`/${lang}/products`}
-              className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold text-sm px-8 py-4 rounded-xl border border-white/20 transition-all active-scale-98"
+              className="inline-flex items-center justify-center text-bone font-semibold text-sm px-8 py-4 border border-bone/30 hover:border-brass hover:text-brass transition-colors active-scale-98"
             >
-              {isAr ? "تصفّح المنتجات" : "Browse the catalog"}
+              {isAr ? "تصفّح المنتجات" : "Browse the catalogue"}
             </Link>
           </div>
         </div>
@@ -84,10 +113,10 @@ export default function Hero({ lang, dict }: HeroProps) {
           <button
             key={idx}
             onClick={() => setCurrentSlide(idx)}
-            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-              idx === currentSlide 
-                ? "bg-emerald-500 w-8 shadow-[0_0_10px_rgba(16,185,129,0.5)]" 
-                : "bg-white/40 hover:bg-white/80"
+            // Brass marks the active slide. Pine would disappear into the
+            // photograph; brass is the system's accent for exactly this.
+            className={`h-[3px] transition-all duration-300 ${
+              idx === currentSlide ? "bg-brass w-10" : "bg-bone/40 hover:bg-bone/80 w-5"
             }`}
             aria-label={`Go to slide ${idx + 1}`}
           />

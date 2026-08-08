@@ -604,7 +604,12 @@ async function main() {
   // Every variant in the database comes from this script, so a product that is no
   // longer any sheet's target must be released — otherwise remapping a sheet to a
   // different product leaves the old one showing prices that nothing maintains.
-  const owned = SHEETS.map((s) => s.productSlug);
+  //
+  // …with one exception: the Tormac products are built from their manufacturer
+  // catalogues by prisma/add-tormac.ts, not from the price workbook. They own
+  // their own variants, so releasing them here would wipe the whole selector on
+  // every price update. Drop a slug from this list once its sheet exists.
+  const owned = [...SHEETS.map((s) => s.productSlug), "pump-tormac-ts", "motor-tormac-eco"];
   const orphans = await prisma.product.findMany({
     where: { slug: { notIn: owned }, variants: { some: {} } },
     select: { id: true, slug: true, _count: { select: { variants: true } } },

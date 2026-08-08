@@ -16,7 +16,7 @@ const categories = [
   { slug: "motors", nameEn: en.productsPage.motors, nameAr: ar.productsPage.motors },
   { slug: "electrical", nameEn: en.productsPage.electrical, nameAr: ar.productsPage.electrical },
   { slug: "pipes", nameEn: en.productsPage.pipes, nameAr: ar.productsPage.pipes },
-  { slug: "thrust-bearings", nameEn: en.productsPage.thrustBearings, nameAr: ar.productsPage.thrustBearings },
+  { slug: "spare-parts", nameEn: en.productsPage.spareParts, nameAr: ar.productsPage.spareParts },
   { slug: "cables", nameEn: en.productsPage.cables, nameAr: ar.productsPage.cables },
 ];
 

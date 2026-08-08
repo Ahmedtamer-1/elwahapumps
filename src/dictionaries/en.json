@@ -18,7 +18,7 @@
     "pumpSelector": "Pump Selector"
   },
   "common": {
-    "yearsExp": "20+ Years of Experience",
+    "yearsExp": "Trading since 2000",
     "isoCertified": "ISO 9001 Certified Quality",
     "support24": "24/7 Support & Service",
     "exclusiveAgent": "Exclusive Agent for Leading Brands",
@@ -35,8 +35,8 @@
     "socialMedia": "Follow Us"
   },
   "hero": {
-    "title": "We bring deep water up — and keep it flowing",
-    "subtitle": "Egypt's authorized agent for a curated set of international submersible pump & motor makers. We supply, install, and maintain complete well systems for contractors, industry, and agriculture.",
+    "title": "Deep-well pumps, supplied and serviced since 2000.",
+    "subtitle": "Supplied, installed and maintained across Egypt. Six exclusive agencies, one point of contact, and a service team on call.",
     "ctaCall": "Call Us Now",
     "ctaContact": "Contact Us"
   },
@@ -112,7 +112,7 @@
     "pumps": "Pumps",
     "electrical": "Electrical Component",
     "pipes": "Pipes",
-    "thrustBearings": "Thrust Bearings",
+    "spareParts": "Spare Parts",
     "cables": "Cables",
     "specs": "Technical Specifications",
     "downloadCatalog": "Download Catalog",
@@ -157,7 +157,7 @@
     },
     "thrust-bearing-heavy": {
       "title": "Heavy Duty Thrust Bearings",
-      "category": "thrust-bearings",
+      "category": "spare-parts",
       "desc": "Genuine Alka AP+ Series silicon carbide (SiC) ceramic thrust bearings, engineered for challenging deep-well applications where sand, ferrous debris, or high thrust loads exceed the capacity of conventional bearings. Retaining full strength at temperatures up to 1100°C and validated through in-house and field testing, they deliver outstanding wear resistance and reliability where standard stainless steel or carbon bearings fail."
     },
     "cable-submersible": {
@@ -221,8 +221,8 @@
   },
   "aboutPage": {
     "title": "El Waha Pumps Company",
-    "subtitle": "20+ Years of Excellence and Leadership Serving Our Clients in Egypt",
-    "p1": "El Waha for Well Services and Pumps was established to be the trusted partner and integrated engineering solution provider in Egypt's water and well sector. For over 20 years, we have successfully executed hundreds of agricultural, industrial, and municipal projects with utmost professionalism.",
+    "subtitle": "Supplying, installing and maintaining deep-well pumping equipment in Egypt since 2000",
+    "p1": "El Waha supplies, installs and maintains deep-well pumping equipment in Egypt. We have traded since 2000, we are the exclusive Egyptian agent for six international manufacturers, and we hold ISO 9001 certification. We have delivered agricultural, industrial and municipal projects across the country — and the same team maintains them afterwards.",
     "p2": "We specialize in drilling deep water wells and equipping them fully, starting from supplying and installing casing and column pipes, insulated submersible cables, to supplying and installing submersible pumps and motors, and designing custom electrical control panels and stabilizers.",
     "p3": "El Waha stands out with its fully equipped workshops featuring the latest testing, calibration, and rewinding machinery, alongside a mobile maintenance fleet ready for immediate 24/7 intervention to support our clients across all Egyptian governorates.",
     "vision": "Our Vision",

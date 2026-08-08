@@ -10,6 +10,8 @@ import {
   Package,
   ShoppingCart,
   Shield,
+  Briefcase,
+  MapPin,
   LogOut,
   Menu,
   X,
@@ -22,6 +24,8 @@ const links = [
   { href: "/admin/inquiries", label: "Cart Inquiries", icon: ShoppingCart },
   { href: "/admin/customers", label: "Customers", icon: UserRound },
   { href: "/admin/products", label: "Products", icon: Package },
+  { href: "/admin/jobs", label: "Jobs", icon: Briefcase },
+  { href: "/admin/distributors", label: "Distributors", icon: MapPin },
 ];
 
 interface AdminNavProps {

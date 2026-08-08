@@ -1,6 +1,6 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Archivo, IBM_Plex_Sans_Arabic, IBM_Plex_Mono } from "next/font/google";
 import { getDictionary, hasLocale, Locale } from "./dictionaries";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,11 +10,32 @@ import { CartProvider } from "@/components/cart/CartContext";
 import { getCatalogProducts } from "@/lib/products";
 import "../globals.css";
 
-// Load Google Fonts
-const ibmPlex = IBM_Plex_Sans_Arabic({
+/**
+ * Three families, one job each — Brand Report §05.
+ *
+ * Archivo sets Latin, IBM Plex Sans Arabic sets Arabic, and IBM Plex Mono
+ * is reserved for specifications, model numbers and eyebrow labels. The
+ * `--font-sans` stack in globals.css lists Archivo before Plex Arabic so
+ * the browser resolves each glyph to the family that covers it.
+ */
+const archivo = Archivo({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "800"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700"],
-  variable: "--font-ibm-plex",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plex-arabic",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -50,9 +71,11 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         ? "شركة الواحة لخدمات الآبار والطلمبات | توريد وصيانة طلمبات ومواتير"
         : "El Waha Pumps & Wells Services | Supply & Maintenance",
     },
+    // §07 voice: specific over superlative, and the record stated correctly.
+    // The old copy said "20+ years" — understated by six years since 2000.
     description: isAr
-      ? "شركة الواحة لخدمات الآبار والطلمبات بمصر، خبرة 20 عاماً في حفر الآبار وتوريد وصيانة الطلمبات الغاطسة، المحركات، لوحات التشغيل الكهربائية ومنظمات الجهد."
-      : "El Waha Pumps Company in Egypt, 20+ years of experience in drilling wells, supply, and maintenance of submersible pumps, motors, and electrical panels.",
+      ? "توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام 2000. وكالة حصرية لست شركات، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد."
+      : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2000. Exclusive Egyptian agent for six manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.",
     icons: {
       icon: "/favicon.ico",
     },
@@ -72,7 +95,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
     getCatalogProducts(lang),
   ]);
   const dir = lang === "ar" ? "rtl" : "ltr";
-  const fontClass = ibmPlex.variable;
+  const fontClass = `${archivo.variable} ${plexArabic.variable} ${plexMono.variable}`;
 
   // The mega-menu only needs identity, not the full spec payload.
   const menuProducts = products.map((p) => ({
@@ -83,7 +106,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
 
   return (
     <html lang={lang} dir={dir} className={fontClass}>
-      <body className="bg-white text-neutral-900 antialiased font-sans flex flex-col min-h-screen">
+      <body className="bg-white text-ink antialiased font-sans flex flex-col min-h-screen">
         <CartProvider>
           <SplashScreen />
           <Header lang={lang} dict={dict} products={menuProducts} />

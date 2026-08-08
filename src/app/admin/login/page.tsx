@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import LoginForm from "./LoginForm";
+import Logo from "@/components/Logo";
 
 export const metadata = { title: "Sign in" };
 
@@ -13,15 +13,10 @@ export default async function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-100">
       <div className="w-full max-w-sm">
+        {/* Last remaining use of the old logo PNG — now the same
+            direction-A lockup the public site draws. */}
         <div className="flex justify-center mb-8">
-          <Image
-            src="/images/brand/elwaha-logo-h.png"
-            alt="El Waha"
-            width={609}
-            height={183}
-            priority
-            className="h-12 w-auto"
-          />
+          <Logo variant="full" x={18} descriptor="PUMPS & WELLS SERVICES" />
         </div>
 
         <div className="bg-white p-8 rounded-2xl border border-neutral-200 shadow-sm">

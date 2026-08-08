@@ -39,7 +39,7 @@ export interface ProductSpecGroup {
 
 export interface ProductData {
   id: string;
-  category: "motors" | "pumps" | "electrical" | "pipes" | "thrust-bearings" | "cables";
+  category: "motors" | "pumps" | "electrical" | "pipes" | "spare-parts" | "cables";
   gallery: string[];
   specs: string[];
   variants: ProductVariantGroup[];
@@ -500,7 +500,7 @@ export const products: ProductData[] = [
   },
   {
     id: "thrust-bearing-heavy",
-    category: "thrust-bearings",
+    category: "spare-parts",
     gallery: [
       "/images/products/thrust-bearing-alka.png"
     ],

@@ -1,7 +1,6 @@
 import React from "react";
 import { getDictionary, Locale } from "../dictionaries";
 import { events } from "@/data/events";
-import Breadcrumb from "@/components/Breadcrumb";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, ImageIcon, ArrowLeft, ArrowRight } from "lucide-react";
@@ -19,7 +18,6 @@ export default async function EventsPage({ params }: PageProps) {
       {/* Page Header */}
       <section className="bg-black text-white py-16 md:py-20 border-b border-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Breadcrumb items={[{ label: dict.nav.events }]} lang={lang} />
           <span className="text-emerald-500 font-extrabold text-xs uppercase tracking-widest block mb-2">
             {dict.nav.events}
           </span>

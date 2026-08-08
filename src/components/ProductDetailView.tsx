@@ -8,6 +8,7 @@ import type { CatalogProduct } from "@/lib/products";
 import { formatPrice, formatPriceRange } from "@/lib/price";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductVariantSelector, { useVariantSelection } from "@/components/ProductVariantSelector";
+import CatalogueButton from "@/components/CatalogueButton";
 
 interface ProductDetailViewProps {
   product: CatalogProduct;
@@ -193,6 +194,11 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
               </a>
             </div>
             
+            {/* The datasheet, in the buy box. §1.3: a buyer who cannot find
+                specifications leaves to find them elsewhere — so the
+                catalogue sits beside the price, not buried further down. */}
+            <CatalogueButton productId={product.id} lang={lang} className="mt-6" />
+
             <div className="mt-4 flex items-center justify-center gap-6 text-label-sm text-outline">
               <span className="flex items-center gap-1"><Truck className="w-4 h-4" /> {isAr ? "شحن لجميع المحافظات" : "Nationwide Shipping"}</span>
               <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4" /> {isAr ? "حماية المشتري" : "Buyer Protection"}</span>

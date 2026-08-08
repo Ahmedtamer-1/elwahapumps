@@ -3,7 +3,6 @@ import { getDictionary, Locale, hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail, Wrench, Shield } from "lucide-react";
-import Breadcrumb from "@/components/Breadcrumb";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -95,13 +94,6 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       {/* Header Banner */}
       <section className="bg-black text-white py-16 border-b border-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Breadcrumb 
-            lang={lang} 
-            items={[
-              { label: dict.nav.services, href: `/${lang}/services` },
-              { label: service.title }
-            ]} 
-          />
           <Link
             href={`/${lang}/services`}
             className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"
@@ -196,11 +188,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                   {dict.common.requestQuote}
                 </Link>
                 <a
-                  href="mailto:info@lwahapumps.com"
+                  href="mailto:info@elwahapumps.com"
                   className="flex items-center justify-center gap-2 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold border border-neutral-800 rounded-xl text-xs transition-all"
                 >
                   <Mail className="w-4 h-4" />
-                  <span>info@lwahapumps.com</span>
+                  <span>info@elwahapumps.com</span>
                 </a>
               </div>
             </div>

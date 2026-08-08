@@ -1,88 +1,191 @@
 @import "tailwindcss";
 
+/* ============================================================
+   El Waha — "Deep Oasis" identity system
+   Source: El Waha Brand Report, August 2026 (§04 colour, §05 type)
+
+   Five colours carry the brand. Three families set the type:
+   Archivo for Latin, IBM Plex Sans Arabic for Arabic, and
+   IBM Plex Mono for specifications only — never body, never headlines.
+   ============================================================ */
+
 @theme {
-  --font-sans: var(--font-ibm-plex), system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* --- Type families -------------------------------------------------
+     One stack, two scripts. Archivo has no Arabic coverage, so the
+     browser falls through to Plex Arabic per-glyph: Latin renders in
+     Archivo and Arabic in Plex Arabic from the same declaration.     */
+  --font-sans: var(--font-archivo), var(--font-plex-arabic), system-ui, sans-serif;
+  --font-arabic: var(--font-plex-arabic), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Fonts */
-  --font-display-lg: var(--font-ibm-plex);
-  --font-headline-md: var(--font-ibm-plex);
-  --font-display-lg-mobile: var(--font-ibm-plex);
-  --font-body-md: var(--font-ibm-plex);
-  --font-body-lg: var(--font-ibm-plex);
-  --font-label-sm: var(--font-ibm-plex);
+  --font-display-lg: var(--font-sans);
+  --font-headline-md: var(--font-sans);
+  --font-display-lg-mobile: var(--font-sans);
+  --font-body-md: var(--font-sans);
+  --font-body-lg: var(--font-sans);
+  --font-label-sm: var(--font-mono);
 
-  /* Colors */
-  --color-on-tertiary-container: #111111;
-  --color-outline: #74777f;
-  --color-surface-variant: #f4f4f5;
-  --color-on-secondary-fixed-variant: #005235;
-  --color-inverse-on-surface: #ffffff;
-  --color-primary-fixed-dim: #a1a1aa;
-  --color-surface-container-highest: #f4f4f5;
-  --color-secondary: #1c7a40;
-  --color-on-background: #000000;
-  --color-tertiary-fixed: #f4f4f5;
-  --color-inverse-primary: #a1a1aa;
-  --color-on-error-container: #93000a;
-  --color-tertiary-container: #f4f4f5;
-  --color-primary-container: #fafafa;
-  --color-tertiary-fixed-dim: #d4d4d8;
-  --color-on-primary-container: #27272a;
-  --color-on-secondary-fixed: #002113;
-  --color-secondary-fixed: #e6fcf5;
-  --color-on-surface-variant: #52525b;
-  --color-surface-container: #f4f4f5;
-  --color-primary-fixed: #e4e4e7;
-  --color-on-primary: #ffffff;
-  --color-on-secondary: #ffffff;
-  --color-surface-container-high: #e4e4e7;
-  --color-surface-container-lowest: #ffffff;
-  --color-on-surface: #111111;
-  --color-on-primary-fixed: #000000;
-  --color-secondary-fixed-dim: #c3fae8;
-  --color-error-container: #ffdad6;
+  /* --- The five colours (§04, Fig. 6) -------------------------------- */
+  --color-pine: #0e3b2e;  /* brand. primary surface, headings, the mark. no limit */
+  --color-field: #16624a;  /* tonal. shapes, dividers, oversized mark — ON PINE ONLY */
+  --color-brass: #d2ab5c;  /* accent. rules, numerals, one button — under 10% of a surface */
+  --color-bone: #f6f5ef;  /* paper. secondary sections */
+  --color-ink: #141414;  /* body text, spec plates — never a large field */
+
+  /* Supporting greys used throughout the report for secondary text */
+  --color-stone: #5a5a54;  /* secondary body, captions */
+  --color-stone-light: #8a8a82;  /* figure labels, tertiary */
+
+  /* Rules and hairlines, as used in the report */
+  --color-rule: rgba(20, 20, 20, 0.14);
+  --color-rule-light: rgba(20, 20, 20, 0.1);
+
+  /* --- Approved pairings (§04, Fig. 7) ------------------------------
+     bone on pine .... 13.1:1 AAA
+     ink on bone ..... 15.9:1 AAA
+     pine on white ... 11.6:1 AAA
+     brass on pine .... 5.9:1 AA
+     Never: brass on bone or white, field on white, green on green.  */
+
+  /* --- Brand green ramp ---------------------------------------------
+     Overrides Tailwind's emerald scale so every existing emerald-*
+     utility across the site resolves to Deep Oasis without touching
+     the call sites. 500 and 600 are both Pine on purpose: Field is a
+     tonal colour that may only sit on pine (§04 Table 3), so no
+     utility is allowed to put it on white.                          */
+  --color-emerald-50: #f1f6f3;
+  --color-emerald-100: #dce9e3;
+  --color-emerald-200: #b4cfc3;
+  --color-emerald-300: #85b09e;
+  --color-emerald-400: #6fa98f;  /* light tint — for text on pine only */
+  --color-emerald-500: #0e3b2e;  /* Pine */
+  --color-emerald-600: #0e3b2e;  /* Pine — primary button, links */
+  --color-emerald-700: #0a2c22;  /* hover / pressed */
+  --color-emerald-800: #08251d;
+  --color-emerald-900: #061b15;
+  --color-emerald-950: #03100c;
+
+  /* Brass replaces the old logo-orange accent. Same token name so
+     existing brand-amber usages inherit the corrected accent. */
+  --color-brand-amber: #d2ab5c;
+
+  /* --- Semantic surface tokens --------------------------------------- */
   --color-background: #ffffff;
-  --color-on-primary-fixed-variant: #27272a;
-  --color-tertiary: #52525b;
-  --color-inverse-surface: #18181b;
-  --color-on-tertiary: #ffffff;
-  --color-on-tertiary-fixed: #27272a;
-  --color-surface-tint: #1c7a40;
-  --color-outline-variant: #e4e4e7;
-  --color-secondary-container: #c3fae8;
-  --color-surface-container-low: #fafafa;
-  --color-on-secondary-container: #1c7a40;
-  --color-surface-bright: #ffffff;
-  --color-surface-dim: #f4f4f5;
-  --color-primary: #000000;
+  --color-on-background: #141414;
   --color-surface: #ffffff;
-  --color-on-error: #ffffff;
-  --color-error: #ba1a1a;
-  --color-on-tertiary-fixed-variant: #27272a;
+  --color-on-surface: #141414;
+  --color-surface-variant: #f6f5ef;
+  --color-surface-dim: #f6f5ef;
+  --color-surface-bright: #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #fbfaf6;
+  --color-surface-container: #f6f5ef;
+  --color-surface-container-high: #ecebe2;
+  --color-surface-container-highest: #e3e1d6;
+  --color-on-surface-variant: #5a5a54;
+  --color-inverse-surface: #0e3b2e;
+  --color-inverse-on-surface: #f6f5ef;
+  --color-inverse-primary: #6fa98f;
 
-  /* Spacing */
+  --color-primary: #0e3b2e;
+  --color-on-primary: #f6f5ef;
+  --color-primary-container: #f1f6f3;
+  --color-on-primary-container: #0a2c22;
+  --color-primary-fixed: #dce9e3;
+  --color-primary-fixed-dim: #b4cfc3;
+  --color-on-primary-fixed: #061b15;
+  --color-on-primary-fixed-variant: #0a2c22;
+
+  --color-secondary: #16624a;
+  --color-on-secondary: #f6f5ef;
+  --color-secondary-container: #dce9e3;
+  --color-on-secondary-container: #0e3b2e;
+  --color-secondary-fixed: #f1f6f3;
+  --color-secondary-fixed-dim: #b4cfc3;
+  --color-on-secondary-fixed: #061b15;
+  --color-on-secondary-fixed-variant: #0a2c22;
+
+  --color-tertiary: #d2ab5c;
+  --color-on-tertiary: #141414;
+  --color-tertiary-container: #f6f5ef;
+  --color-on-tertiary-container: #141414;
+  --color-tertiary-fixed: #f6f5ef;
+  --color-tertiary-fixed-dim: #e3e1d6;
+  --color-on-tertiary-fixed: #141414;
+  --color-on-tertiary-fixed-variant: #5a5a54;
+
+  --color-outline: #8a8a82;
+  --color-outline-variant: #e3e1d6;
+  --color-surface-tint: #0e3b2e;
+
+  /* Status colours. §04: a status red and a status green for forms are
+     the only permitted additions, and they never appear in marketing. */
+  --color-error: #8a2a2a;
+  --color-on-error: #ffffff;
+  --color-error-container: #f7e4e4;
+  --color-on-error-container: #6b1f1f;
+
+  /* --- Spacing -------------------------------------------------------- */
   --spacing-gutter: 24px;
   --spacing-margin-mobile: 16px;
   --spacing-margin-desktop: 64px;
-  --spacing-stack-md: 24px;
   --spacing-stack-sm: 8px;
-  --spacing-container-max: 1280px;
+  --spacing-stack-md: 24px;
   --spacing-stack-lg: 48px;
+  --spacing-container-max: 1280px;
 
-  /* Font Sizes - using Tailwind v4 syntax */
-  --text-display-lg: 48px;
+  /* --- Type scale (§05, Table 4) --------------------------------------
+     Latin figures. The Arabic uplift (6–8% size, ~1.15x leading,
+     zero tracking) is applied by the [dir="rtl"] rules further down. */
+  --text-display: 64px;
+  --text-display--line-height: 60px;
+  --text-display--letter-spacing: -0.035em;
+  --text-display--font-weight: 800;
+
+  --text-h1: 40px;
+  --text-h1--line-height: 44px;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h1--font-weight: 800;
+
+  --text-h2: 28px;
+  --text-h2--line-height: 34px;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h2--font-weight: 800;
+
+  --text-h3: 19px;
+  --text-h3--line-height: 26px;
+  --text-h3--font-weight: 800;
+
+  --text-body: 16px;
+  --text-body--line-height: 26px;
+  --text-body--font-weight: 400;
+
+  --text-small: 13px;
+  --text-small--line-height: 20px;
+  --text-small--font-weight: 400;
+
+  /* Label & spec — mono, wide. The element that makes a spec plate
+     read as a spec plate (§05). */
+  --text-spec: 11px;
+  --text-spec--line-height: 16px;
+  --text-spec--letter-spacing: 0.16em;
+  --text-spec--font-weight: 500;
+
+  /* Legacy aliases kept so existing pages keep compiling */
+  --text-display-lg: 64px;
   --text-display-lg--line-height: 60px;
-  --text-display-lg--letter-spacing: -0.02em;
-  --text-display-lg--font-weight: 700;
+  --text-display-lg--letter-spacing: -0.035em;
+  --text-display-lg--font-weight: 800;
 
-  --text-headline-md: 24px;
-  --text-headline-md--line-height: 32px;
-  --text-headline-md--font-weight: 600;
+  --text-headline-md: 28px;
+  --text-headline-md--line-height: 34px;
+  --text-headline-md--letter-spacing: -0.02em;
+  --text-headline-md--font-weight: 800;
 
-  --text-display-lg-mobile: 32px;
-  --text-display-lg-mobile--line-height: 40px;
-  --text-display-lg-mobile--font-weight: 700;
+  --text-display-lg-mobile: 40px;
+  --text-display-lg-mobile--line-height: 44px;
+  --text-display-lg-mobile--letter-spacing: -0.03em;
+  --text-display-lg-mobile--font-weight: 800;
 
   --text-body-md: 16px;
   --text-body-md--line-height: 26px;
@@ -92,27 +195,10 @@
   --text-body-lg--line-height: 30px;
   --text-body-lg--font-weight: 400;
 
-  --text-label-sm: 14px;
-  --text-label-sm--line-height: 20px;
-  --text-label-sm--letter-spacing: 0.01em;
+  --text-label-sm: 11px;
+  --text-label-sm--line-height: 16px;
+  --text-label-sm--letter-spacing: 0.16em;
   --text-label-sm--font-weight: 500;
-
-  /* Brand green ramp — derived from the El Waha logo green (#1C7A40).
-     Overrides Tailwind's emerald scale so all emerald-* utilities render brand color. */
-  --color-emerald-50: #e8f4eb;
-  --color-emerald-100: #d2ead9;
-  --color-emerald-200: #a8d5b7;
-  --color-emerald-300: #79bd92;
-  --color-emerald-400: #4a9e6b;
-  --color-emerald-500: #1c7a40;
-  --color-emerald-600: #176938;
-  --color-emerald-700: #125c2e;
-  --color-emerald-800: #0d4423;
-  --color-emerald-900: #092f19;
-  --color-emerald-950: #041b0e;
-
-  /* Brand accent from the logo's orange stroke — use sparingly */
-  --color-brand-amber: #e8a020;
 }
 
 /* Global scroll behavior */
@@ -124,54 +210,150 @@ html {
 body {
   font-family: var(--font-sans);
   background-color: #ffffff;
-  color: #111111;
+  color: var(--color-ink);
 }
 
-/* Custom CSS Classes from HTML Snippet */
+/* ============================================================
+   §05.2 — Setting Arabic beside Latin
+
+   The six rules from the report, enforced globally so no page has
+   to remember them. Arabic runs 6–8% larger with ~1.15x the
+   leading, is never letterspaced, and never gets synthesised
+   weights or all-caps.
+   ============================================================ */
+[dir="rtl"] {
+  /* Rule 1 & 2: larger, and more leading. */
+  --text-display: 68px;
+  --text-display--line-height: 78px;
+  --text-h1: 43px;
+  --text-h1--line-height: 58px;
+  --text-h2: 30px;
+  --text-h2--line-height: 46px;
+  --text-h3: 21px;
+  --text-h3--line-height: 34px;
+  --text-body: 17px;
+  --text-body--line-height: 32px;
+  --text-small: 14px;
+  --text-small--line-height: 26px;
+  --text-spec: 13px;
+  --text-spec--line-height: 22px;
+}
+
+/* Rule 3: never letterspace Arabic — tracking breaks the joins.
+   Rule 4: no faux bold, no faux italic, no all-caps.
+   Applied to Arabic text nodes rather than the whole document so
+   Latin fragments inside an Arabic page (model codes, "ISO 9001")
+   keep their own setting. */
+[dir="rtl"] :is(h1, h2, h3, h4, h5, h6, p, li, td, th, span, a, button, label, div) {
+  letter-spacing: normal;
+  font-synthesis: none;
+}
+
+[dir="rtl"] :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 700; /* Arabic display weight — the real 700, not a synthesised 800 */
+}
+
+/* Arabic has no capital forms; a browser asked to uppercase it does
+   nothing useful, and the tracking that usually rides along with
+   uppercase does damage. Latin-only elements opt back in with
+   .force-caps below. */
+[dir="rtl"] .uppercase:not(.force-caps) {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Latin fragments that must stay uppercase and tracked even on an
+   Arabic page: spec labels, model codes, the logo descriptor. */
+.force-caps {
+  text-transform: uppercase !important;
+}
+
+/* Rule 5: one numeral set, held. Western digits everywhere including
+   Arabic pages — specs and phone numbers get copied across both
+   languages, and mixing sets is how errors get into orders. */
+[dir="rtl"] {
+  font-variant-numeric: lining-nums;
+}
+
+/* ============================================================
+   Brand primitives
+   ============================================================ */
 @layer components {
+  /* Eyebrow / spec label — mono, wide, uppercase. §05 Fig. 8 */
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-stone);
+  }
+
+  /* The section rule that opens every chapter of the report:
+     a pine hairline above, brass number, stone label. */
+  .section-rule {
+    border-top: 2px solid var(--color-pine);
+    padding-top: 10px;
+  }
+
+  /* Brass accent rule under a heading. Kept short — brass stays
+     under 10% of any surface (§04 Table 3). */
+  .brass-rule {
+    display: block;
+    height: 3px;
+    width: 64px;
+    background: var(--color-brass);
+  }
+
+  /* Spec plate — the §07.1 rewrite pattern. Mono keys, mono values,
+     hairline between rows. */
+  .spec-plate {
+    border-top: 2px solid var(--color-pine);
+  }
+
+  .spec-plate dl,
+  .spec-plate .spec-row {
+    display: grid;
+    grid-template-columns: minmax(88px, 30%) 1fr;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-rule-light);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* Pine panel — the report's dark callout. Bone text, brass eyebrow. */
+  .pine-panel {
+    background: var(--color-pine);
+    color: var(--color-bone);
+  }
+
+  /* Bone note with a brass edge — the report's aside treatment. */
+  .bone-note {
+    background: var(--color-bone);
+    border-inline-start: 3px solid var(--color-brass);
+  }
+
+  /* Was a frosted-glass panel. The system allows flat pine, bone or
+     white only (§03.5), so this is now a flat bone card on a hairline.
+     Kept under the old name because ProductDetailView still calls it. */
   .glass-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-  }
-  
-  .glass-nav {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-  }
-  
-  .industrial-gradient {
-    background: radial-gradient(circle at 70% 30%, rgba(147, 246, 195, 0.15) 0%, transparent 50%);
-  }
-  
-  .hero-bg-fixed {
-    background-image: url('https://lh3.googleusercontent.com/aida/AP1WRLsnhTFbgOsoqJdDOlC8aPXmhV8pZ9UZmhDELW6cidT-CY9LSR_xjlF2_D5h2VXI7_yPgti5x67aYLNZs-cUw8kNp5l7wJF6FOO5LHRbuLWHxYbApLa526v6Lh8ZP5T-6iffnWts425hb_4dmybAAX9hRuPA6l6fkJ6kpwO2UZqL0Ecp-sTU78Hiu-8ocif4ekjUl3ReRVRvtM7CnpAe9FU3RSbE7goSyMlhahVUSJdcslGEqVf5qKcK5RA');
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  
-  .high-contrast-glass {
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 8px 32px 0 rgba(0, 16, 38, 0.15);
+    background: var(--color-bone);
+    border: 1px solid var(--color-rule);
   }
 }
 
 /* Micro-animations and utility classes */
 @keyframes pulse-subtle {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
   50% {
-    opacity: .95;
+    opacity: 0.95;
     transform: scale(1.02);
   }
 }
@@ -189,27 +371,72 @@ body {
   }
 }
 
+/*
+ * Same travel, mirrored, for the Arabic side.
+ *
+ * The marquee rows are `w-max` blocks inside an `overflow-hidden` parent, so
+ * they are pinned to the inline-start edge and spill out of the other one.
+ * Under `dir="rtl"` that start edge is the right, and the row spills leftwards
+ * — a leftward translate then drags the logos straight out of the clip instead
+ * of pulling the queued ones through it, which is why the partner wall and the
+ * product teaser both went blank in Arabic. Reversing the sign scrolls with the
+ * reading direction and keeps the second copy of the list landing exactly where
+ * the first began, so the loop stays seamless in both languages.
+ */
+@keyframes marquee-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+
 .animate-marquee-left {
   animation: marquee-left 32s linear infinite;
 }
 
-/* Custom Scrollbar for modern B2B look */
+[dir="rtl"] .animate-marquee-left {
+  animation-name: marquee-right;
+}
+
+/* Respect users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* The `[dir="rtl"]` variant above outranks a bare class, so it is named here
+     too — otherwise it would put its animation back on for Arabic readers. */
+  .animate-marquee-left,
+  [dir="rtl"] .animate-marquee-left,
+  .animate-pulse-subtle {
+    animation: none;
+  }
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-surface);
+  background: var(--color-bone);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1c7a40;
-  border-radius: 4px;
+  background: var(--color-pine);
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #125c2e;
+  background: var(--color-field);
+}
+
+/* Visible focus ring — brass on pine, pine on light. */
+:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
 }
 
 /* Fix for active state scale effects */

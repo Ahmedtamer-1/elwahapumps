@@ -1,12 +1,11 @@
-import React from "react";
 import { getDictionary, Locale } from "./dictionaries";
 import Hero from "@/components/Hero";
-import ServiceCard from "@/components/ServiceCard";
 import ProductTabs from "@/components/ProductTabs";
-import PartnerLogos from "@/components/PartnerLogos";
+import SuccessPartners from "@/components/SuccessPartners";
 import { getCatalogProducts } from "@/lib/products";
-import { Award, Clock, Briefcase, CheckCircle2, Phone, Mail, Factory } from "lucide-react";
+import { CheckCircle2, Phone, Mail } from "lucide-react";
 import Link from "next/link";
+import { yearsOfService } from "@/lib/company";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -18,79 +17,19 @@ export default async function HomePage({ params }: PageProps) {
     getDictionary(lang as Locale),
     getCatalogProducts(lang),
   ]);
+  const years = yearsOfService();
 
   return (
     <div className="flex flex-col w-full overflow-hidden bg-white text-neutral-900">
       {/* 1. Hero Slider */}
       <Hero lang={lang} dict={dict} />
 
-      {/* 2. Trust Bar */}
-      <section className="bg-neutral-50 border-b border-neutral-100 text-neutral-800 py-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center md:text-start">
-            {/* Feature 1 */}
-            <div className="flex flex-col md:flex-row items-center gap-4 px-4">
-              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl shrink-0">
-                <Briefcase className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-base text-neutral-900">{dict.common.yearsExp}</h3>
-                <p className="text-xs text-neutral-500 mt-1">
-                  {lang === "ar" ? "خبرة تفوق عشرين عاماً في السوق المصري" : "Over 20 years of trusted industry service"}
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="flex flex-col md:flex-row items-center gap-4 px-4 border-y md:border-y-0 md:border-s border-neutral-200 py-6 md:py-0">
-              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl shrink-0">
-                <Award className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-base text-neutral-900">{dict.common.isoCertified}</h3>
-                <p className="text-xs text-neutral-500 mt-1">
-                  {lang === "ar" ? "نلتزم بأعلى معايير الجودة والتصنيع" : "Adhering to high engineering and supply standards"}
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 3 — partner brands */}
-            <div className="flex flex-col md:flex-row items-center gap-4 px-4 md:border-s border-neutral-200">
-              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl shrink-0">
-                <Factory className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-base text-neutral-900">
-                  {lang === "ar" ? "٨ علامات شريكة" : "8 Partner Brands"}
-                </h3>
-                <p className="text-xs text-neutral-500 mt-1">
-                  {lang === "ar" ? "وكلاء معتمدون لكبرى المصانع العالمية" : "Authorized agents for leading global factories"}
-                </p>
-              </div>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="flex flex-col md:flex-row items-center gap-4 px-4 md:border-s border-neutral-200">
-              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl shrink-0">
-                <Clock className="w-6 h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-base text-neutral-900">{dict.common.support24}</h3>
-                <p className="text-xs text-neutral-500 mt-1">
-                  {lang === "ar" ? "فريق جاهز لخدمتكم وصيانة الطلمبات" : "Quick response support for emergency wells maintenance"}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Two-Column Supply vs Maintenance Highlight Block */}
+      {/* 2. Two-Column Supply vs Maintenance Highlight Block */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Supply block - White background with green accent top line */}
-            <div className="bg-white border-t-4 border-emerald-500 border-x border-b border-neutral-200 text-neutral-900 p-8 md:p-12 rounded-3xl shadow-md flex flex-col justify-between group hover:shadow-lg transition-all duration-300">
+            <div className="bg-white border-t-4 border-pine border-x border-b border-rule text-ink p-8 md:p-12 flex flex-col justify-between group transition-colors duration-300">
               <div>
                 <span className="text-xs font-bold text-emerald-600 uppercase tracking-widest block mb-4">
                   {dict.servicesPage.categories.supply}
@@ -114,15 +53,17 @@ export default async function HomePage({ params }: PageProps) {
             </div>
 
             {/* Maintenance block - Black background with green accent top line */}
-            <div className="bg-neutral-950 border-t-4 border-emerald-500 text-white p-8 md:p-12 rounded-3xl shadow-xl flex flex-col justify-between group hover:shadow-2xl transition-all duration-300 border border-neutral-800">
+            <div className="bg-pine border-t-4 border-brass text-bone p-8 md:p-12 flex flex-col justify-between group transition-colors duration-300">
               <div>
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest block mb-4">
+                {/* Brass is the accent for eyebrows on pine (§04 Fig. 7). */}
+                <span className="spec-label text-brass block mb-4">
                   {dict.servicesPage.categories.maintenance}
                 </span>
-                <h2 className="text-2xl md:text-3xl font-black mb-6 text-white">
+                <h2 className="text-2xl md:text-3xl font-extrabold mb-6 text-bone">
                   {dict.servicesPage.maintenanceTitle}
                 </h2>
-                <p className="text-neutral-400 text-sm leading-relaxed mb-8">
+                {/* Bone at 75% on pine still clears AA; neutral-400 did not. */}
+                <p className="text-bone/75 text-sm leading-relaxed mb-8">
                   {dict.servicesPage.maintenanceDesc}
                 </p>
               </div>
@@ -140,62 +81,7 @@ export default async function HomePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* 4. How It Works (3-Step Guide) */}
-      <section className="py-20 bg-white border-t border-neutral-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-emerald-600 font-extrabold text-xs uppercase tracking-widest">
-              {lang === "ar" ? "كيف نعمل" : "How It Works"}
-            </span>
-            <h2 className="text-3xl font-black text-neutral-900 mt-3 mb-4">
-              {lang === "ar" ? "ثلاث خطوات لضمان استمرار أعمالك" : "Three steps to ensure your operations never stop"}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            {/* Connecting Line */}
-            <div className="hidden md:block absolute top-12 left-[16%] right-[16%] h-0.5 bg-neutral-100 -z-10" />
-
-            {/* Step 1 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 mx-auto bg-white border border-neutral-100 shadow-md shadow-neutral-100/50 rounded-3xl flex items-center justify-center mb-6 relative group-hover:-translate-y-2 transition-transform duration-300">
-                <span className="absolute -top-3 -right-3 w-8 h-8 bg-emerald-600 text-white font-black rounded-full flex items-center justify-center text-sm">1</span>
-                <Phone className="w-10 h-10 text-emerald-600" />
-              </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">{lang === "ar" ? "تواصل معنا" : "Contact Us"}</h3>
-              <p className="text-neutral-500 text-sm leading-relaxed max-w-xs mx-auto">
-                {lang === "ar" ? "ارسل استفسارك أو طلبك وسنقوم بالرد الفوري من قبل فريق الدعم الفني." : "Send your inquiry and our technical support team will respond immediately."}
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 mx-auto bg-white border border-neutral-100 shadow-md shadow-neutral-100/50 rounded-3xl flex items-center justify-center mb-6 relative group-hover:-translate-y-2 transition-transform duration-300">
-                <span className="absolute -top-3 -right-3 w-8 h-8 bg-emerald-600 text-white font-black rounded-full flex items-center justify-center text-sm">2</span>
-                <CheckCircle2 className="w-10 h-10 text-emerald-600" />
-              </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">{lang === "ar" ? "المعاينة والاستشارة" : "Inspection & Consulting"}</h3>
-              <p className="text-neutral-500 text-sm leading-relaxed max-w-xs mx-auto">
-                {lang === "ar" ? "نقوم بدراسة متطلبات البئر أو المحطة وتقديم الحلول الفنية والمالية الأنسب." : "We study your well or station requirements and provide the optimal technical & financial solution."}
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="text-center group">
-              <div className="w-24 h-24 mx-auto bg-white border border-neutral-100 shadow-md shadow-neutral-100/50 rounded-3xl flex items-center justify-center mb-6 relative group-hover:-translate-y-2 transition-transform duration-300">
-                <span className="absolute -top-3 -right-3 w-8 h-8 bg-emerald-600 text-white font-black rounded-full flex items-center justify-center text-sm">3</span>
-                <Award className="w-10 h-10 text-emerald-600" />
-              </div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">{lang === "ar" ? "التنفيذ والضمان" : "Execution & Warranty"}</h3>
-              <p className="text-neutral-500 text-sm leading-relaxed max-w-xs mx-auto">
-                {lang === "ar" ? "نبدأ فوراً في أعمال التوريد والتركيب أو الصيانة مع تقديم ضمان معتمد." : "We immediately start supply, installation or maintenance with a certified warranty."}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Products Showcase Section */}
+      {/* 3. Products Showcase Section */}
       <section className="py-20 bg-neutral-50 border-y border-neutral-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -214,8 +100,8 @@ export default async function HomePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* 6. Why El Waha Section */}
-      <section className="py-20 bg-black text-white relative">
+      {/* 4. Why El Waha Section */}
+      <section className="py-20 bg-pine text-bone relative">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.08),transparent_50%)]" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -247,12 +133,12 @@ export default async function HomePage({ params }: PageProps) {
             {/* Icons Pillars */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Pillar 1 */}
-              <div className="p-6 bg-neutral-900/40 backdrop-blur-xs rounded-2xl border border-neutral-800">
+              <div className="p-6 bg-field/40 border border-bone/15">
                 <div className="w-10 h-10 flex items-center justify-center bg-emerald-500/10 text-emerald-400 rounded-xl mb-4">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold mb-2">
-                  {lang === "ar" ? "خبرة 20+ عاماً" : "20+ Years Experience"}
+                  {lang === "ar" ? `${years} عاماً من الخبرة` : `${years} Years Experience`}
                 </h3>
                 <p className="text-neutral-400 text-xs leading-relaxed">
                   {lang === "ar"
@@ -262,7 +148,7 @@ export default async function HomePage({ params }: PageProps) {
               </div>
 
               {/* Pillar 2 */}
-              <div className="p-6 bg-neutral-900/40 backdrop-blur-xs rounded-2xl border border-neutral-800">
+              <div className="p-6 bg-field/40 border border-bone/15">
                 <div className="w-10 h-10 flex items-center justify-center bg-emerald-500/10 text-emerald-400 rounded-xl mb-4">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
@@ -277,7 +163,7 @@ export default async function HomePage({ params }: PageProps) {
               </div>
 
               {/* Pillar 3 */}
-              <div className="p-6 bg-neutral-900/40 backdrop-blur-xs rounded-2xl border border-neutral-800 sm:col-span-2">
+              <div className="p-6 bg-field/40 border border-bone/15 sm:col-span-2">
                 <div className="w-10 h-10 flex items-center justify-center bg-emerald-500/10 text-emerald-400 rounded-xl mb-4">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
@@ -295,11 +181,11 @@ export default async function HomePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* 7. Partners Strip */}
-      <PartnerLogos lang={lang} />
+      {/* 5. Success Partners Strip — the client roster. */}
+      <SuccessPartners lang={lang} />
 
-      {/* 8. Contact CTA Band */}
-      <section className="bg-black text-white py-16 border-t border-neutral-800 relative overflow-hidden">
+      {/* 6. Contact CTA Band */}
+      <section className="bg-pine text-bone py-16 border-t border-bone/15 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(16,185,129,0.04),transparent_50%)]" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center lg:text-start lg:flex items-center justify-between gap-8">
           <div className="mb-8 lg:mb-0 max-w-2xl">
@@ -325,7 +211,7 @@ export default async function HomePage({ params }: PageProps) {
             </a>
             <Link
               href={`/${lang}/contact`}
-              className="inline-flex items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white font-bold border border-neutral-700 px-6 py-3.5 rounded-xl transition-all"
+              className="inline-flex items-center justify-center gap-2 text-bone font-semibold border border-bone/30 hover:border-brass hover:text-brass px-6 py-3.5 transition-colors"
             >
               <Mail className="w-5 h-5" />
               <span>{dict.common.bookNow}</span>

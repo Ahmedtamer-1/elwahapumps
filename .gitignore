@@ -52,3 +52,10 @@ next-env.d.ts
 # python bytecode from the catalogue-extraction scripts
 __pycache__/
 *.pyc
+
+# nested next.js build traces
+.next/
+
+# local database backups (never commit real customer/lead data)
+*.db.bak-*
+*.bak
