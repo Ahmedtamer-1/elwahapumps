@@ -1,36 +1,41 @@
 import React from "react";
+import Image from "next/image";
 
 /**
- * El Waha logo system — Brand Report §03.
+ * El Waha logo system.
  *
- * Direction A ("Refined original") is the primary lockup: heavy green
- * capitals, a structural bar under the name, the founding date split to
- * the bar's ends, a hairline divider, and the descriptor set wide in
- * monospace. Direction C's concentric ring is the standalone mark.
+ * The lockup is the supplied artwork — the Arabic calligraphic droplet, a
+ * divider, and the Latin wordmark — rather than type set from tokens. It
+ * ships in two colourways keyed out of the same drawing: pine for light
+ * grounds, bone for pine ones (§3.5). It is never set in brass, never on a
+ * gradient, never re-tracked.
  *
- * Every measurement derives from `x`, the cap height of the wordmark
- * (§3.2), so the lockup scales without being redrawn. Nothing here is
- * set in absolute units except the value of `x` itself.
+ * Sizing still derives from `x`, the cap height of the wordmark (§3.2), so
+ * call sites are unchanged and the lockup scales without being redrawn.
  */
 
-/** Cap-height ratios of the two families, measured from the metrics. */
-const ARCHIVO_CAP = 0.72;
+/** Cap height of "EL WAHA" as a fraction of the artwork's height. */
+const CAP_RATIO = 165 / 553;
+/** Cap-height ratio of IBM Plex Mono, measured from the metrics. */
 const MONO_CAP = 0.68;
 
+const LOCKUP = { width: 1367, height: 553 };
+const MARK = { width: 390, height: 553 };
+
 export type LogoVariant =
-  /** Wordmark, bar, EST/2000, divider, descriptor. Min 120px wide. */
+  /** Lockup plus the Latin descriptor. Min 120px wide. */
   | "full"
-  /** Wordmark and bar only. Used below 120px, where the descriptor
-   *  would be unreadable — it is dropped, never shrunk (§3.3). */
+  /** Lockup alone. Used below 120px, where the descriptor would be
+   *  unreadable — it is dropped, never shrunk (§3.3). */
   | "short"
-  /** The concentric ring alone: avatars, favicons, stamped parts. */
+  /** The calligraphic droplet alone: avatars, favicons, stamped parts. */
   | "mark";
 
 export interface LogoProps {
   variant?: LogoVariant;
   /** Cap height of the wordmark in px. Everything else derives from it. */
   x?: number;
-  /** Reversed colourway for pine grounds: bone wordmark, brass bar. */
+  /** Reversed colourway for pine grounds: the bone drawing. */
   reversed?: boolean;
   /** Latin descriptor. Three words at most, naming an activity (§3.4). */
   descriptor?: string;
@@ -38,6 +43,8 @@ export interface LogoProps {
   descriptorAr?: string;
   /** Accessible name. Defaults to the company name plus descriptor. */
   title?: string;
+  /** Preload the artwork. Set on the header instance, which is the LCP. */
+  preload?: boolean;
   /**
    * Note: the root sets `display` as an inline style so the lockup's
    * internal geometry holds wherever it lands. An inline style beats a
@@ -56,88 +63,42 @@ export default function Logo({
   descriptor = "PUMPS & WELLS SERVICES",
   descriptorAr,
   title,
+  preload = false,
   className = "",
   style,
 }: LogoProps) {
-  // §3.5: the lockup is only ever pine on light, or bone-and-brass on pine.
-  // It is never set in brass, never on a gradient, never re-tracked.
-  const wordmarkColor = reversed ? "var(--color-bone)" : "var(--color-pine)";
-  const barColor = reversed ? "var(--color-brass)" : "var(--color-pine)";
-  const dateColor = "var(--color-brass)";
-  const descriptorColor = reversed ? "rgba(246,245,239,0.8)" : "var(--color-ink)";
-  const dividerColor = reversed ? "rgba(246,245,239,0.3)" : "rgba(14,59,46,0.3)";
-
   const label = title ?? `El Waha — ${descriptor}`;
 
   if (variant === "mark") {
     return (
-      <RingMark
+      <Mark
         size={x * 2}
         reversed={reversed}
         title={title ?? "El Waha"}
+        preload={preload}
         className={className}
         style={style}
       />
     );
   }
 
-  // Derived from x (§3.2 measurement table).
-  const wordmarkSize = x / ARCHIVO_CAP;
-  const barHeight = 0.1 * x;
-  const gapToBar = 0.22 * x;
-  const dateSize = (0.22 * x) / MONO_CAP;
-  const descriptorSize = (0.26 * x) / MONO_CAP;
+  // The artwork is placed by the cap height of its wordmark, so a given
+  // `x` yields the same optical size it did when the mark was drawn here.
+  const artHeight = x / CAP_RATIO;
+  const artWidth = (artHeight * LOCKUP.width) / LOCKUP.height;
 
-  // The descriptor breaks to two lines and aligns to the wordmark's cap
-  // height and baseline, rather than floating as it did in the old mark.
-  const descriptorWords = descriptor.split(" ");
-  const descriptorLines =
-    descriptorWords.length > 2
-      ? [descriptorWords.slice(0, -1).join(" "), descriptorWords.slice(-1)[0]]
-      : [descriptor];
-
-  const wordmarkBlock = (
-    <span style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-      <span
-        style={{
-          fontFamily: "var(--font-archivo), sans-serif",
-          fontWeight: 800,
-          fontSize: `${wordmarkSize}px`,
-          lineHeight: 0.9,
-          // Part of the drawing, not a style choice (§3.5).
-          letterSpacing: "-0.03em",
-          color: wordmarkColor,
-          whiteSpace: "nowrap",
-        }}
-      >
-        EL WAHA
-      </span>
-      <span
-        style={{
-          height: `${barHeight}px`,
-          background: barColor,
-          marginTop: `${gapToBar}px`,
-        }}
-      />
-      {/* The founding date splits to the bar's ends so it reads at small
-          sizes instead of vanishing, as it did set as "-SINCE 2000-". */}
-      <span
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          marginTop: `${0.24 * x}px`,
-          fontFamily: "var(--font-plex-mono), monospace",
-          fontWeight: 500,
-          fontSize: `${dateSize}px`,
-          lineHeight: 1,
-          letterSpacing: "0.22em",
-          color: dateColor,
-        }}
-      >
-        <span>EST</span>
-        <span style={{ marginInlineEnd: "-0.22em" }}>2000</span>
-      </span>
-    </span>
+  const lockup = (
+    <Image
+      src={reversed ? "/images/brand/elwaha-logo-reversed.png" : "/images/brand/elwaha-logo.png"}
+      alt=""
+      width={LOCKUP.width}
+      height={LOCKUP.height}
+      preload={preload}
+      // The intrinsic drawing is far larger than any rendered size; this
+      // tells the optimiser what it actually has to serve.
+      sizes={`${Math.ceil(artWidth)}px`}
+      style={{ width: `${artWidth}px`, height: `${artHeight}px` }}
+    />
   );
 
   if (variant === "short") {
@@ -151,10 +112,22 @@ export default function Logo({
         className={className}
         style={{ display: "inline-flex", ...style }}
       >
-        {wordmarkBlock}
+        {lockup}
       </span>
     );
   }
+
+  const descriptorSize = (0.26 * x) / MONO_CAP;
+  const descriptorColor = reversed ? "rgba(246,245,239,0.8)" : "var(--color-ink)";
+  const dividerColor = reversed ? "rgba(246,245,239,0.3)" : "rgba(14,59,46,0.3)";
+
+  // The descriptor breaks to two lines so it sits within the artwork's
+  // height instead of running past it.
+  const descriptorWords = descriptor.split(" ");
+  const descriptorLines =
+    descriptorWords.length > 2
+      ? [descriptorWords.slice(0, -1).join(" "), descriptorWords.slice(-1)[0]]
+      : [descriptor];
 
   return (
     <span
@@ -164,10 +137,15 @@ export default function Logo({
       className={className}
       style={{ display: "inline-flex", alignItems: "stretch", gap: `${0.5 * x}px`, ...style }}
     >
-      {wordmarkBlock}
+      {lockup}
 
-      {/* Hairline, not the old heavy bar. */}
-      <span style={{ width: 1, background: dividerColor, flexShrink: 0 }} aria-hidden="true" />
+      {/* Hairline, lighter than the divider drawn inside the artwork: that
+          one separates the symbol from the name, this one separates the
+          name from the descriptor. */}
+      <span
+        style={{ width: 1, background: dividerColor, flexShrink: 0, margin: `${0.35 * x}px 0` }}
+        aria-hidden="true"
+      />
 
       <span
         style={{
@@ -222,45 +200,36 @@ export default function Logo({
 }
 
 /**
- * Direction C's ring: a borehole seen from above, and equally a pipe in
- * section. Fills the square and small-scale gaps the wordmark cannot —
- * favicons, social avatars, stamped parts, embroidery.
- *
- * The report notes the geometry there is indicative and wants a designer
- * to draw the final mark; this is built to the stated proportions so it
- * can stand in until that happens.
+ * The calligraphic droplet alone. Fills the square and small-scale gaps
+ * the lockup cannot — favicons, social avatars, stamped parts.
  */
-export function RingMark({
+export function Mark({
   size = 40,
   reversed = false,
   title = "El Waha",
+  preload = false,
   className = "",
   style,
 }: {
   size?: number;
   reversed?: boolean;
   title?: string;
+  preload?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }) {
-  const outer = reversed ? "var(--color-bone)" : "var(--color-pine)";
-  const inner = "var(--color-brass)";
+  const width = (size * MARK.width) / MARK.height;
 
-  // Ratios taken from §3.1 direction C: outer ring stroke 0.10 of the
-  // diameter, inner ring at half the diameter, centre dot 0.133.
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 60 60"
+    <Image
+      src={reversed ? "/images/brand/elwaha-mark-reversed.png" : "/images/brand/elwaha-mark.png"}
+      alt={title}
+      width={MARK.width}
+      height={MARK.height}
+      preload={preload}
+      sizes={`${Math.ceil(width)}px`}
       className={className}
-      style={style}
-      role="img"
-      aria-label={title}
-    >
-      <circle cx="30" cy="30" r="27" fill="none" stroke={outer} strokeWidth="6" />
-      <circle cx="30" cy="30" r="12.5" fill="none" stroke={inner} strokeWidth="5" />
-      <circle cx="30" cy="30" r="4" fill={outer} />
-    </svg>
+      style={{ width: `${width}px`, height: `${size}px`, ...style }}
+    />
   );
 }

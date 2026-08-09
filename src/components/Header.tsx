@@ -114,11 +114,11 @@ export default function Header({ lang, dict, products }: HeaderProps) {
         <div className={`w-full transition-all duration-300 ${isScrolled ? 'py-3' : isHome ? 'py-5' : 'py-5'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
-            {/* Logo — direction A, drawn from tokens rather than loaded as
-                three PNGs in three different greens (§1.2b). Reversed over
-                the hero, pine once the header goes solid. The full lockup
-                carries the descriptor; below 120px the short one drops it
-                rather than shrinking it (§3.3). */}
+            {/* Logo — the lockup artwork, keyed to one pine and one bone
+                colourway rather than three PNGs in three different greens
+                (§1.2b). Reversed over the hero, pine once the header goes
+                solid. The full lockup carries the descriptor; below 120px
+                the short one drops it rather than shrinking it (§3.3). */}
             {/* Responsive switch lives on these wrappers, not on Logo:
                 Logo sets its own `display` inline, which would beat a
                 `hidden` utility class and render both variants at once. */}
@@ -129,6 +129,7 @@ export default function Header({ lang, dict, products }: HeaderProps) {
                   x={18}
                   reversed={isTransparent}
                   descriptor="PUMPS & WELLS SERVICES"
+                  preload
                 />
               </span>
               <span className="block sm:hidden">
