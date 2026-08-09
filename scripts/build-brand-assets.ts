@@ -6,8 +6,8 @@
  * The original arrives as solid green artwork on an opaque white field,
  * padded, at 1708x960. Serving that directly would put a white box on every
  * pine surface, so this keys the white out to alpha, trims to the drawing,
- * and repaints the ink in the exact brand tokens — one pine copy for light
- * grounds, one bone copy for pine ones. Re-run it if the artwork is redrawn;
+ * and repaints the ink — one pine copy for light grounds, one white copy for
+ * dark ones. Re-run it if the artwork is redrawn;
  * the crop boxes below were measured from this source and would need
  * re-measuring for another.
  */
@@ -21,7 +21,10 @@ const SRC = "assets/brand/elwaha-logo-source.png";
 const OUT = "public/images/brand";
 
 const PINE: [number, number, number] = [0x0e, 0x3b, 0x2e];
-const BONE: [number, number, number] = [0xf6, 0xf5, 0xef];
+// The reversed drawing goes pure white rather than bone. Bone is the right
+// paper colour for a page, but as ink over the hero photography it loses a
+// little against the brighter parts of the image; white holds everywhere.
+const WHITE: [number, number, number] = [0xff, 0xff, 0xff];
 
 // Content bounds and part segmentation, measured from the source: the full
 // lockup, and the calligraphic droplet alone up to the divider.
@@ -109,9 +112,9 @@ async function emitFavicon(dest: string) {
 
 async function main() {
   await emit(FULL, PINE, "elwaha-logo.png");
-  await emit(FULL, BONE, "elwaha-logo-reversed.png");
+  await emit(FULL, WHITE, "elwaha-logo-reversed.png");
   await emit(MARK, PINE, "elwaha-mark.png");
-  await emit(MARK, BONE, "elwaha-mark-reversed.png");
+  await emit(MARK, WHITE, "elwaha-mark-reversed.png");
   await emitFavicon("src/app/favicon.ico");
 }
 

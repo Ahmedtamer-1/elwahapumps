@@ -7,8 +7,9 @@ import Image from "next/image";
  * The lockup is the supplied artwork — the Arabic calligraphic droplet, a
  * divider, and the Latin wordmark — rather than type set from tokens. It
  * ships in two colourways keyed out of the same drawing: pine for light
- * grounds, bone for pine ones (§3.5). It is never set in brass, never on a
- * gradient, never re-tracked.
+ * grounds, white for dark ones (§3.5) — white rather than bone, so it holds
+ * over the brighter parts of the hero photography. It is never set in brass,
+ * never on a gradient, never re-tracked.
  *
  * It stands alone. The "PUMPS & WELLS SERVICES" descriptor that used to
  * hang off a hairline beside it has been dropped: the nav, the headline
