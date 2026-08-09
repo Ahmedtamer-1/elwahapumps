@@ -65,17 +65,10 @@ export default function Hero({ lang, dict }: HeroProps) {
       {/* Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className={`max-w-2xl transition-all duration-1000 transform ${isAr ? "ml-auto" : ""} translate-y-0 opacity-100`}>
-          {/* Eyebrow in brass — the accent pairing for dark grounds, 5.9:1.
-              Corrected to 2000: the company has traded since 2000, and the
-              old "Est. 2004" understated the record it owns (§1.1). Western
-              digits on both sites (§5.2 rule 5). */}
-          <span
-            className="font-mono text-[11px] font-medium uppercase tracking-[0.2em] text-brass"
-            dir="ltr"
-          >
-            {isAr ? "منذ 2000 · 6 أكتوبر، الجيزة" : "Est. 2000 · 6th of October, Giza"}
-          </span>
-          <div className={`w-16 h-[3px] bg-brass my-6 ${isAr ? "ml-auto" : ""}`} aria-hidden="true" />
+          {/* Brass rule opens the block — the accent pairing for dark
+              grounds. The founding date and city that used to sit above it
+              are carried by the About page and the footer instead. */}
+          <div className={`w-16 h-[3px] bg-brass mb-6 ${isAr ? "ml-auto" : ""}`} aria-hidden="true" />
 
           {/* Display level, §05 Table 4. The Arabic uplift in size and
               leading is carried by the [dir=rtl] rules in globals.css. */}

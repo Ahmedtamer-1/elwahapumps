@@ -38,7 +38,7 @@ export default function SplashScreen() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
-            <Logo variant="full" x={26} reversed descriptor="PUMPS & WELLS SERVICES" />
+            <Logo variant="lockup" x={26} reversed />
             {/* Brass rule draws in under the lockup — the accent, kept to
                 a hairline rather than a rounded bar in green. */}
             <motion.div

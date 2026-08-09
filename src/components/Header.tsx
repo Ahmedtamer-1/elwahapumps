@@ -117,23 +117,17 @@ export default function Header({ lang, dict, products }: HeaderProps) {
             {/* Logo — the lockup artwork, keyed to one pine and one bone
                 colourway rather than three PNGs in three different greens
                 (§1.2b). Reversed over the hero, pine once the header goes
-                solid. The full lockup carries the descriptor; below 120px
-                the short one drops it rather than shrinking it (§3.3). */}
+                solid. It stands alone: the descriptor that used to hang off
+                it repeated what the nav and the headline already say. */}
             {/* Responsive switch lives on these wrappers, not on Logo:
                 Logo sets its own `display` inline, which would beat a
-                `hidden` utility class and render both variants at once. */}
+                `hidden` utility class and render both sizes at once. */}
             <Link href={`/${lang}`} aria-label="El Waha" className="flex items-center min-w-0">
               <span className="hidden sm:block">
-                <Logo
-                  variant="full"
-                  x={18}
-                  reversed={isTransparent}
-                  descriptor="PUMPS & WELLS SERVICES"
-                  preload
-                />
+                <Logo variant="lockup" x={18} reversed={isTransparent} preload />
               </span>
               <span className="block sm:hidden">
-                <Logo variant="short" x={16} reversed={isTransparent} />
+                <Logo variant="lockup" x={16} reversed={isTransparent} />
               </span>
             </Link>
 
@@ -320,7 +314,7 @@ export default function Header({ lang, dict, products }: HeaderProps) {
           {/* Header Inside Drawer — the real short lockup, not "EL WAHA"
               faked in a monospace face (§1.2a). */}
           <div className="flex items-center justify-between pb-5 border-b border-rule">
-            <Logo variant="short" x={16} />
+            <Logo variant="lockup" x={16} />
             <button
               type="button"
               onClick={() => setIsOpen(false)}

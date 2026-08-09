@@ -13,10 +13,9 @@ export default async function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-100">
       <div className="w-full max-w-sm">
-        {/* Last remaining use of the old logo PNG — now the same
-            direction-A lockup the public site draws. */}
+        {/* The same lockup the public site uses. */}
         <div className="flex justify-center mb-8">
-          <Logo variant="full" x={18} descriptor="PUMPS & WELLS SERVICES" />
+          <Logo variant="lockup" x={18} />
         </div>
 
         <div className="bg-white p-8 rounded-2xl border border-neutral-200 shadow-sm">
