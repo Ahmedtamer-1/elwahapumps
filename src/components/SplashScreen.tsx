@@ -40,12 +40,18 @@ export default function SplashScreen() {
           >
             <Logo variant="lockup" x={26} reversed />
             {/* Brass rule draws in under the lockup — the accent, kept to
-                a hairline rather than a rounded bar in green. */}
+                a hairline rather than a rounded bar in green.
+
+                It runs the full width of the lockup: `self-stretch` takes
+                the width from the column's cross size, and the draw-in is a
+                scaleX from the centre rather than an animated `width`, which
+                resolved against a box the rule was itself helping to size
+                and so stopped short of the logo. */}
             <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
               transition={{ delay: 0.2, duration: 0.5, ease: "easeInOut" }}
-              className="h-[3px] bg-brass mt-7"
+              className="h-[3px] bg-brass mt-7 self-stretch origin-center"
             />
           </motion.div>
         </motion.div>
