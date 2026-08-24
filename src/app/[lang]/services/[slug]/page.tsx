@@ -11,14 +11,12 @@ interface PageProps {
 const serviceSlugs = [
   "pump-supply",
   "panel-design",
-  "regulator-design",
-  "inverter-supply",
   "marine-cable-supply",
   "well-pipe-supply",
+  "spare-parts-supply",
   "pump-maintenance",
   "motor-maintenance",
   "panel-maintenance",
-  "regulator-maintenance",
 ];
 
 export async function generateStaticParams() {
@@ -51,10 +49,9 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const isSupply = [
     "pump-supply",
     "panel-design",
-    "regulator-design",
-    "inverter-supply",
     "marine-cable-supply",
     "well-pipe-supply",
+    "spare-parts-supply",
   ].includes(slug);
 
   // Features list depending on language
@@ -77,15 +74,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
     .filter((s) => s !== slug && (isSupply ? [
       "pump-supply",
       "panel-design",
-      "regulator-design",
-      "inverter-supply",
       "marine-cable-supply",
       "well-pipe-supply",
+      "spare-parts-supply",
     ].includes(s) : [
       "pump-maintenance",
       "motor-maintenance",
       "panel-maintenance",
-      "regulator-maintenance",
     ].includes(s)))
     .slice(0, 3);
 

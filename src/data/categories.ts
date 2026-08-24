@@ -8,6 +8,7 @@
 
 export const PRODUCT_CATEGORIES = [
   "pumps",
+  "surface-pumps",
   "motors",
   "electrical",
   "pipes",
@@ -28,6 +29,7 @@ export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
  */
 export const CATEGORY_DICT_KEY: Record<ProductCategory, string> = {
   pumps: "pumps",
+  "surface-pumps": "surfacePumps",
   motors: "motors",
   electrical: "electrical",
   pipes: "pipes",

@@ -47,11 +47,11 @@ const DRAFTS: DraftJob[] = [
     typeEn: "Full time",
     typeAr: "دوام كامل",
     locationEn: "6th of October workshop",
-    locationAr: "ورشة 6 أكتوبر",
+    locationAr: "مركز صيانة 6 أكتوبر",
     descEn:
       "Rewinding and overhauling submersible motors in our workshop, from stator stripping through winding, testing and reassembly.",
     descAr:
-      "لف وعمرة المواتير الغاطسة داخل الورشة، من فك الستيتور حتى اللف والاختبار وإعادة التجميع.",
+      "لف وعمرة المواتير الغاطسة داخل مركز الصيانة، من فك الستيتور حتى اللف والاختبار وإعادة التجميع.",
     requirements: [
       {
         en: "Industrial secondary school or technical institute, electrical section",
@@ -120,7 +120,7 @@ const DRAFTS: DraftJob[] = [
     typeEn: "Full time",
     typeAr: "دوام كامل",
     locationEn: "6th of October workshop",
-    locationAr: "ورشة 6 أكتوبر",
+    locationAr: "مركز صيانة 6 أكتوبر",
     descEn:
       "Building, wiring and commissioning starter and control panels for pump sets, including soft starters and variable frequency drives.",
     descAr:

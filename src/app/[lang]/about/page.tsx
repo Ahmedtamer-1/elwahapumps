@@ -1,6 +1,17 @@
 import React from "react";
+import Image from "next/image";
 import { getDictionary, Locale } from "../dictionaries";
-import { ShieldCheck, Target, Eye, Users, FileCheck, CheckSquare } from "lucide-react";
+import { AGENCIES, AGENCY_COUNT, yearsOfService } from "@/lib/company";
+import {
+  ShieldCheck,
+  Target,
+  Eye,
+  Users,
+  FileCheck,
+  Warehouse,
+  Clock,
+  BadgeCheck,
+} from "lucide-react";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -10,107 +21,176 @@ export default async function AboutPage({ params }: PageProps) {
   const { lang } = await params;
   const dict = await getDictionary(lang as Locale);
 
-  const stats = [
-    { value: "20+", label: dict.aboutPage.stats.experience, icon: Users },
-    { value: "500+", label: dict.aboutPage.stats.projects, icon: FileCheck },
-    { value: "5", label: dict.aboutPage.stats.brands, icon: ShieldCheck },
-    { value: "98%", label: dict.aboutPage.stats.satisfaction, icon: CheckSquare },
+  /**
+   * Six facts, not four. The old grid padded to four with "98% customer
+   * satisfaction", which is unverifiable and drags the credibility of the
+   * three real numbers down with it. Every figure here is one the company
+   * can stand behind, and the year count derives from FOUNDED so it cannot
+   * go stale.
+   */
+  const facts = [
+    { value: `${yearsOfService()}+`, label: dict.aboutPage.stats.experience, icon: Clock },
+    { value: String(AGENCY_COUNT), label: dict.aboutPage.stats.brands, icon: ShieldCheck },
+    { value: "230+", label: dict.aboutPage.stats.projects, icon: FileCheck },
+    { value: "80+", label: dict.aboutPage.stats.team, icon: Users },
+    { value: "3,000 m²", label: dict.aboutPage.stats.facility, icon: Warehouse },
+    { value: "24/7", label: dict.aboutPage.stats.support, icon: BadgeCheck },
   ];
 
   return (
     <div className="bg-white">
       {/* Page Header */}
-      <section className="bg-black text-white py-16 md:py-20 relative border-b border-neutral-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <h1 className="text-3xl md:text-5xl font-black text-center mb-4">
+      <section className="bg-pine text-bone py-16 md:py-20 border-b border-field">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h1 className="text-h1 md:text-display font-extrabold text-center mb-4">
             {dict.nav.about}
           </h1>
-          <p className="text-neutral-400 text-center text-sm max-w-xl mx-auto leading-relaxed">
+          <p className="text-emerald-400 text-center text-small max-w-xl mx-auto">
             {dict.aboutPage.subtitle}
           </p>
         </div>
       </section>
 
-      {/* Main Content */}
+      {/* Story, with the team alongside it */}
       <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start mb-20">
           <div>
-            <h2 className="text-2xl md:text-3xl font-black text-neutral-900 mb-6">
-              {dict.aboutPage.title}
-            </h2>
-            <div className="space-y-4 text-neutral-600 text-sm leading-relaxed">
+            <div className="border-t-2 border-brass pt-3 mb-6">
+              <h2 className="text-h2 md:text-h1 font-extrabold text-pine">
+                {dict.aboutPage.title}
+              </h2>
+            </div>
+            <div className="space-y-4 text-stone text-body">
               <p>{dict.aboutPage.p1}</p>
               <p>{dict.aboutPage.p2}</p>
               <p>{dict.aboutPage.p3}</p>
             </div>
           </div>
-          {/* Visual block */}
-          <div className="relative h-96 bg-black rounded-3xl overflow-hidden shadow-xl flex items-center justify-center p-8 text-center text-white border border-neutral-800">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(16,185,129,0.08),transparent_60%)]" />
-            <div className="relative z-10">
-              <span className="text-emerald-400 font-extrabold text-xs uppercase tracking-widest block mb-2">
-                شركة الواحة لخدمات الآبار
-              </span>
-              <p className="text-2xl font-black max-w-sm mx-auto leading-relaxed mb-4">
-                {lang === "ar" 
-                  ? "أكثر من عقدين من الالتزام بتوفير المياه بأحدث الحلول الهندسية" 
-                  : "More than two decades of commitment to providing water with the latest engineering solutions"}
-              </p>
-              <div className="inline-block px-4 py-2 bg-emerald-500/15 backdrop-blur-md rounded-xl text-xs font-bold border border-emerald-500/20 text-emerald-400">
-                {dict.common.isoCertified}
+
+          {/* The people behind the paragraphs — the workshop team, so the
+              headcount in the text has a face rather than staying a figure. */}
+          <figure className="lg:sticky lg:top-28">
+            <div className="relative aspect-[3/2] border border-rule bg-bone">
+              <Image
+                src="/images/about/team.jpg"
+                alt={lang === "ar" ? "فريق شركة الواحة للمضخات" : "The El Waha Pumps team"}
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+                priority
+              />
+            </div>
+            <figcaption className="mt-3 text-spec uppercase text-stone">
+              {lang === "ar"
+                ? "فريق الواحة — مركز الصيانة والمخازن، الجيزة"
+                : "The El Waha team — workshop and stores, Giza"}
+            </figcaption>
+          </figure>
+        </div>
+
+        {/*
+          The two halves of the business, stated plainly. Prospects arrive
+          wanting one or the other — a new well equipped, or an existing one
+          kept running — so the split is worth naming rather than leaving
+          them to infer it from the service list.
+        */}
+        <div className="mb-20">
+          <span className="text-spec uppercase text-stone-light block mb-5">
+            {dict.aboutPage.divisionsLabel}
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-rule border border-rule">
+            <div className="bg-white p-8">
+              <div className="border-t-2 border-brass pt-3 mb-3">
+                <h3 className="text-h3 font-extrabold text-pine">
+                  {dict.aboutPage.divisions.supplyTitle}
+                </h3>
               </div>
+              <p className="text-small text-stone">{dict.aboutPage.divisions.supplyDesc}</p>
+            </div>
+            <div className="bg-white p-8">
+              <div className="border-t-2 border-brass pt-3 mb-3">
+                <h3 className="text-h3 font-extrabold text-pine">
+                  {dict.aboutPage.divisions.serviceTitle}
+                </h3>
+              </div>
+              <p className="text-small text-stone">{dict.aboutPage.divisions.serviceDesc}</p>
             </div>
           </div>
         </div>
 
-        {/* Statistics Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
-          {stats.map((stat, idx) => {
-            const Icon = stat.icon;
+        {/* Facts */}
+        <div className="grid grid-cols-2 md:grid-cols-3 border-t border-l border-rule mb-20">
+          {facts.map((fact) => {
+            const Icon = fact.icon;
             return (
               <div
-                key={idx}
-                className="p-6 bg-white border border-neutral-200 rounded-2xl text-center shadow-xs hover:shadow-md hover:border-emerald-500/40 transition-all"
+                key={fact.label}
+                className="p-6 sm:p-8 border-b border-r border-rule bg-white hover:bg-bone transition-colors"
               >
-                <div className="w-10 h-10 mx-auto flex items-center justify-center bg-emerald-50 text-emerald-600 rounded-xl mb-4">
-                  <Icon className="w-5 h-5" />
+                <Icon className="w-5 h-5 text-brass mb-4" />
+                <div className="text-h1 font-extrabold text-pine mb-1 tabular-nums">
+                  {fact.value}
                 </div>
-                <div className="text-3xl font-black text-neutral-900 mb-1">{stat.value}</div>
-                <div className="text-xs text-neutral-500 font-semibold">{stat.label}</div>
+                <div className="text-small text-stone">{fact.label}</div>
               </div>
             );
           })}
         </div>
 
+        {/* Exclusive agencies — the proof behind the "11 agencies" claim */}
+        <div className="mb-20">
+          <div className="border-t-2 border-pine pt-3 mb-4">
+            <h2 className="text-h3 sm:text-h2 font-extrabold text-pine">
+              {dict.aboutPage.agenciesTitle}
+            </h2>
+          </div>
+          <p className="text-small text-stone max-w-2xl mb-8">
+            {dict.aboutPage.agenciesSubtitle}
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 border-t border-l border-rule">
+            {AGENCIES.map((agency) => (
+              <div
+                key={agency.name}
+                className="group relative h-28 flex items-center justify-center border-b border-r border-rule bg-bone"
+              >
+                <div className="relative w-full h-14">
+                  <Image
+                    src={agency.logo}
+                    alt={agency.name}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                    className="object-contain px-6 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Vision & Mission */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Vision card */}
-          <div className="p-8 bg-neutral-50 border border-neutral-200 rounded-3xl flex gap-6 hover:border-emerald-500/40 transition-all">
-            <div className="w-12 h-12 flex items-center justify-center bg-emerald-600 text-white rounded-2xl shrink-0">
-              <Eye className="w-6 h-6" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-rule border border-rule">
+          <div className="p-8 sm:p-10 bg-bone flex gap-6">
+            <div className="w-11 h-11 flex items-center justify-center bg-pine text-bone shrink-0">
+              <Eye className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">
+              <h3 className="text-h3 font-extrabold text-pine mb-3">
                 {dict.aboutPage.vision}
               </h3>
-              <p className="text-neutral-500 text-sm leading-relaxed">
-                {dict.aboutPage.visionText}
-              </p>
+              <p className="text-stone text-small">{dict.aboutPage.visionText}</p>
             </div>
           </div>
 
-          {/* Mission card */}
-          <div className="p-8 bg-neutral-50 border border-neutral-200 rounded-3xl flex gap-6 hover:border-emerald-500/40 transition-all">
-            <div className="w-12 h-12 flex items-center justify-center bg-emerald-600 text-white rounded-2xl shrink-0">
-              <Target className="w-6 h-6" />
+          <div className="p-8 sm:p-10 bg-bone flex gap-6">
+            <div className="w-11 h-11 flex items-center justify-center bg-pine text-bone shrink-0">
+              <Target className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-neutral-900 mb-3">
+              <h3 className="text-h3 font-extrabold text-pine mb-3">
                 {dict.aboutPage.mission}
               </h3>
-              <p className="text-neutral-500 text-sm leading-relaxed">
-                {dict.aboutPage.missionText}
-              </p>
+              <p className="text-stone text-small">{dict.aboutPage.missionText}</p>
             </div>
           </div>
         </div>

@@ -138,6 +138,48 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 1.2,
     pages: 2,
     category: "electrical",
+    logo: "/images/brand/voltson.png",
+  },
+  {
+    id: "franklin-motors",
+    // Franklin Electric's motors & control boxes catalogue, 4"-12". Arrived as
+    // "franklien.pdf" and was renamed — the filename shows in the URL bar.
+    file: "Franklin Submersible Motors and Control Boxes.pdf",
+    brand: "Franklin Electric",
+    titleEn: "Submersible Motors & Control Boxes",
+    titleAr: "مواتير غاطسة وصناديق تحكم",
+    sizeMb: 3.0,
+    pages: 60,
+    category: "motors",
+    logo: "/images/brand/franklin.jpeg",
+  },
+  {
+    id: "rovatti-borehole",
+    // Rovatti's general borehole catalogue, 6"-16", 50 Hz. Arrived as
+    // "Rovati CU_IGFDE_6-16E-ER-ERC-EC50HZ (1).pdf" — the brand is spelt with
+    // two t's — and was renamed, since the filename shows in the URL bar.
+    file: "Rovatti 6-16 inch Borehole Pumps.pdf",
+    brand: "Rovatti",
+    titleEn: "6\"-16\" Borehole Pumps, 50 Hz",
+    titleAr: "طلمبات آبار 6-16 بوصة، 50 هرتز",
+    sizeMb: 9.8,
+    pages: 132,
+    category: "pumps",
+    logo: "/images/brand/rovatti.jpeg",
+  },
+  {
+    id: "panelli-sx",
+    // Panelli's 140/180/230/270 SX semiaxial range, 6"-12". Arrived as
+    // "paneli 140-sx-500.pdf" and was renamed — the filename shows in the
+    // URL bar when the PDF opens. No Panelli logo file has been supplied,
+    // so the catalogues index sets the name in mono instead.
+    file: "Panelli SX Submersible Pumps.pdf",
+    brand: "Panelli",
+    titleEn: "140-270 SX Semiaxial Submersible Pumps",
+    titleAr: "طلمبات غاطسة نصف محورية 140-270 SX",
+    sizeMb: 6.6,
+    pages: 52,
+    category: "pumps",
   },
   {
     id: "untel-flat-cable",
@@ -166,13 +208,21 @@ export const CATALOGUES: Catalogue[] = [
  */
 const BY_PRODUCT: Record<string, string[]> = {
   // KP - KPS series
-  "pump-submersible": ["kurlar-2025", "tormac-pumps"],
+  "pump-submersible": ["kurlar-2025"],
   // KSX series
-  "pump-cast-stainless": ["kurlar-ksx", "kurlar-2025"],
+  "pump-cast-stainless": ["kurlar-ksx"],
+  // 140/180/230/270 SX series. The one catalogue covers both the pump and the
+  // motor pages — it is the only Panelli document supplied so far, and its
+  // curves carry the 6"/8"/10"/12" motor sizing each pump needs.
+  "pump-panelli-sx": ["panelli-sx"],
+  "motor-panelli": ["panelli-sx"],
+  // 8E/8ER/10E/10ER series, from the 6"-16" general catalogue.
+  "pump-rovatti": ["rovatti-borehole"],
+  "motor-franklin": ["franklin-motors"],
   // TS - TN series
   "pump-tormac-ts": ["tormac-pumps"],
   // KM series
-  "motor-hitemp": ["kurlar-2025", "tormac-motors"],
+  "motor-hitemp": ["kurlar-2025"],
   // D4 - D10 ECO series
   "motor-tormac-eco": ["tormac-motors"],
   "elec-inverter": ["novo-inverters"],
@@ -182,7 +232,7 @@ const BY_PRODUCT: Record<string, string[]> = {
   "thrust-bearing-heavy": ["alka-thrust"],
   // Confirmed against the catalogue cover: Voltson's EXCELGRIP is a
   // poly-wrapped winding wire, which is this product and not the cables.
-  "elec-winding-wire": ["voltson-winding-wire"],
+  "winding-wire-voltson": ["voltson-winding-wire"],
   // H07VVH6-F (UNFLAT), confirmed against the catalogue's own product pages.
   "cable-flat-untel": ["untel-flat-cable"],
   // Still unmapped, because no catalogue has been supplied for it:

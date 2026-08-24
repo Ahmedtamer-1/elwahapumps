@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
 import type { CatalogProduct } from "@/lib/products";
-import { formatPrice, formatPriceRange } from "@/lib/price";
+import { priceOnRequestLabel } from "@/lib/price";
 
 export default function CategoryView({
   products,
@@ -154,9 +154,7 @@ export default function CategoryView({
                    </div>
 
                    <p className="mt-4 text-lg font-bold text-neutral-900">
-                     {product.priceMin !== null
-                       ? formatPriceRange(product.priceMin, product.priceMax, product.currency, lang)
-                       : formatPrice(product.price, product.currency, lang)}
+                     {priceOnRequestLabel(lang)}
                    </p>
                    
                    <Link href={`/${lang}/products/${product.id}`} className={`absolute bottom-0 ${isAr ? 'left-0' : 'right-0'} translate-y-1/2 w-12 h-12 bg-neutral-900 text-white rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-xl z-10`}>

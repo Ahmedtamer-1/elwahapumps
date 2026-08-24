@@ -3,12 +3,10 @@ import Link from "next/link";
 import {
   Droplet,
   Cpu,
-  Zap,
-  Activity,
   Layers,
   Wrench,
   Settings,
-  Sliders,
+  Package,
   Grid
 } from "lucide-react";
 
@@ -16,14 +14,12 @@ import {
 const iconMap = {
   "pump-supply": Droplet,
   "panel-design": Cpu,
-  "regulator-design": Zap,
-  "inverter-supply": Activity,
   "marine-cable-supply": Layers,
   "well-pipe-supply": Grid,
+  "spare-parts-supply": Package,
   "pump-maintenance": Wrench,
   "motor-maintenance": Settings,
   "panel-maintenance": HammerIcon, // We'll map below
-  "regulator-maintenance": Sliders,
 };
 
 // Simple wrapper since Hammer might not be in all lucide versions or named differently

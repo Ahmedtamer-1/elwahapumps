@@ -16,17 +16,15 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
   const supplyServiceIds = [
     "pump-supply",
     "panel-design",
-    "regulator-design",
-    "inverter-supply",
     "marine-cable-supply",
     "well-pipe-supply",
+    "spare-parts-supply",
   ];
 
   const maintenanceServiceIds = [
     "pump-maintenance",
     "motor-maintenance",
     "panel-maintenance",
-    "regulator-maintenance",
   ];
 
   let displayServices: { id: string; category: "supply" | "maintenance" }[] = [];

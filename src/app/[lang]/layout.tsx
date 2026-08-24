@@ -7,7 +7,6 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SplashScreen from "@/components/SplashScreen";
 import { CartProvider } from "@/components/cart/CartContext";
-import { getCatalogProducts } from "@/lib/products";
 import "../globals.css";
 
 /**
@@ -72,10 +71,11 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         : "El Waha Pumps & Wells Services | Supply & Maintenance",
     },
     // §07 voice: specific over superlative, and the record stated correctly.
-    // The old copy said "20+ years" — understated by six years since 2000.
+    // Founding year and agency count are the ones in lib/company.ts — keep
+    // them in step if that file changes.
     description: isAr
-      ? "توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام 2000. وكالة حصرية لست شركات، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد."
-      : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2000. Exclusive Egyptian agent for six manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.",
+      ? "توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام 2013. توكيلات حصرية لإحدى عشرة شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد."
+      : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for 11 manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.",
     icons: {
       icon: "/favicon.ico",
     },
@@ -90,26 +90,16 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
     notFound();
   }
 
-  const [dict, products] = await Promise.all([
-    getDictionary(lang as Locale),
-    getCatalogProducts(lang),
-  ]);
+  const dict = await getDictionary(lang as Locale);
   const dir = lang === "ar" ? "rtl" : "ltr";
   const fontClass = `${archivo.variable} ${plexArabic.variable} ${plexMono.variable}`;
-
-  // The mega-menu only needs identity, not the full spec payload.
-  const menuProducts = products.map((p) => ({
-    id: p.id,
-    title: p.title,
-    category: p.category,
-  }));
 
   return (
     <html lang={lang} dir={dir} className={fontClass}>
       <body className="bg-white text-ink antialiased font-sans flex flex-col min-h-screen">
         <CartProvider>
           <SplashScreen />
-          <Header lang={lang} dict={dict} products={menuProducts} />
+          <Header lang={lang} dict={dict} />
 
           {/* Main Content Area */}
           <main className="flex-grow">

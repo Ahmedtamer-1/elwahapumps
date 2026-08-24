@@ -172,7 +172,7 @@ export default async function HomePage({ params }: PageProps) {
                 </h3>
                 <p className="text-neutral-400 text-xs leading-relaxed">
                   {lang === "ar"
-                    ? "ورش صيانة مجهزة بالكامل للف وصيانة المواتير، مع أسطول صيانة متنقل مستعد لدعم بئرك على مدار الساعة."
+                    ? "مراكز صيانة مجهزة بالكامل للف وصيانة المواتير، مع أسطول صيانة متنقل مستعد لدعم بئرك على مدار الساعة."
                     : "State-of-the-art workshops for motor rewinding, paired with a mobile maintenance fleet ready round the clock."}
                 </p>
               </div>
@@ -196,7 +196,7 @@ export default async function HomePage({ params }: PageProps) {
             </h2>
             <p className="text-neutral-400 text-sm leading-relaxed">
               {lang === "ar"
-                ? "تواصل مع مهندسينا الآن للحصول على استشارة مجانية وطلب عرض أسعار مخصص لمشروعك."
+                ? "تواصل مع المهندسين الآن للحصول على استشارة مجانية وطلب عرض أسعار مخصص لمشروعك."
                 : "Get in touch with our engineers today for a free technical consultation and a custom quotation."}
             </p>
           </div>

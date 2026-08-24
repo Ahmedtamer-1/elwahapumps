@@ -6,18 +6,16 @@ import Link from "next/link";
 import { Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
 import { useCart } from "./CartContext";
 import { lineKey } from "./cartStore";
-import { formatPrice } from "@/lib/price";
+import { priceOnRequestLabel } from "@/lib/price";
 
 const WHATSAPP_PHONE = "201066685532";
 
 export default function CartView({ lang }: { lang: string }) {
-  const { items, total, count, ready, setQty, remove, clear } = useCart();
+  const { items, count, ready, setQty, remove, clear } = useCart();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [sending, setSending] = useState(false);
   const isAr = lang === "ar";
-
-  const currency = items[0]?.currency ?? "EGP";
 
   const buildMessage = () => {
     const header = isAr
@@ -27,21 +25,15 @@ export default function CartView({ lang }: { lang: string }) {
     const lines = items.map(
       (i, idx) =>
         `${idx + 1}. ${i.name}${i.variantLabel ? ` (${i.variantLabel})` : ""}` +
-        ` — ${isAr ? "الكمية" : "Qty"}: ${i.qty}` +
-        (i.unitPrice !== null ? ` — ${formatPrice(i.unitPrice, i.currency, lang)}` : ""),
+        ` — ${isAr ? "الكمية" : "Qty"}: ${i.qty}`,
     );
-
-    const totalLine =
-      total > 0
-        ? `\n${isAr ? "الإجمالي التقديري" : "Estimated total"}: ${formatPrice(total, currency, lang)}`
-        : "";
 
     const contact = [
       name ? `\n${isAr ? "الاسم" : "Name"}: ${name}` : "",
       phone ? `\n${isAr ? "الهاتف" : "Phone"}: ${phone}` : "",
     ].join("");
 
-    return `${header}\n\n${lines.join("\n")}${totalLine}${contact}`;
+    return `${header}\n\n${lines.join("\n")}${contact}`;
   };
 
   const handleSend = async () => {
@@ -123,10 +115,6 @@ export default function CartView({ lang }: { lang: string }) {
               {item.variantLabel && (
                 <p className="text-xs text-neutral-500 mt-0.5">{item.variantLabel}</p>
               )}
-              <p className="text-sm text-neutral-500 mt-1">
-                {formatPrice(item.unitPrice, item.currency, lang)}
-              </p>
-
               <div className="flex items-center gap-3 mt-3">
                 <div className="flex items-center border border-neutral-200 rounded-lg">
                   <button
@@ -155,14 +143,6 @@ export default function CartView({ lang }: { lang: string }) {
                 </button>
               </div>
             </div>
-
-            {item.unitPrice !== null && (
-              <div className="text-end shrink-0">
-                <p className="font-bold text-neutral-900 text-sm whitespace-nowrap">
-                  {formatPrice(item.unitPrice * item.qty, item.currency, lang)}
-                </p>
-              </div>
-            )}
           </div>
         ))}
 
@@ -186,9 +166,9 @@ export default function CartView({ lang }: { lang: string }) {
               <dd className="font-semibold text-neutral-900 tabular-nums">{count}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-neutral-500">{isAr ? "الإجمالي التقديري" : "Estimated total"}</dt>
+              <dt className="text-neutral-500">{isAr ? "السعر" : "Price"}</dt>
               <dd className="font-bold text-neutral-900">
-                {total > 0 ? formatPrice(total, currency, lang) : isAr ? "عند الطلب" : "On request"}
+                {priceOnRequestLabel(lang)}
               </dd>
             </div>
           </dl>

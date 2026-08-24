@@ -50,8 +50,8 @@ function CatalogueCard({ catalogue, lang }: { catalogue: Catalogue; lang: string
             className="object-contain px-10 py-6 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
           />
         ) : (
-          // Voltson supplied no logo file. The name, set in mono, is a
-          // deliberate placeholder rather than an empty box.
+          // Fallback for any brand with no logo file yet. The name, set in
+          // mono, is a deliberate placeholder rather than an empty box.
           <span
             className="font-mono text-[15px] font-medium uppercase tracking-[0.2em] text-stone"
             dir="ltr"

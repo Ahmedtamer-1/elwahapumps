@@ -8,7 +8,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Zap, Droplets, Settings, ChevronRight, Layers, Wrench, Cable } from "lucide-react";
 import type { ProductData } from "@/data/products";
 import type { CatalogProduct } from "@/lib/products";
-import { formatPrice, formatPriceRange } from "@/lib/price";
+import { priceOnRequestLabel } from "@/lib/price";
 
 interface ProductTabsProps {
   lang: string;
@@ -61,9 +61,7 @@ function ProductCard({ product, lang, label }: { product: CatalogProduct; lang: 
         <div className="flex items-center gap-3 mt-auto">
           <div className="flex-1 min-w-0">
             <p className="text-base font-bold text-neutral-900 truncate">
-              {product.priceMin !== null
-                       ? formatPriceRange(product.priceMin, product.priceMax, product.currency, lang)
-                       : formatPrice(product.price, product.currency, lang)}
+              {priceOnRequestLabel(lang)}
             </p>
           </div>
           <span className="shrink-0 text-center py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition-colors duration-200">

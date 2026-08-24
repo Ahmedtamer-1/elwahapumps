@@ -18,7 +18,7 @@
     "pumpSelector": "Pump Selector"
   },
   "common": {
-    "yearsExp": "Trading since 2000",
+    "yearsExp": "In the market since 2013",
     "isoCertified": "ISO 9001 Certified Quality",
     "support24": "24/7 Support & Service",
     "exclusiveAgent": "Exclusive Agent for Leading Brands",
@@ -35,8 +35,8 @@
     "socialMedia": "Follow Us"
   },
   "hero": {
-    "title": "Deep-well pumps, supplied and serviced since 2000.",
-    "subtitle": "Supplied, installed and maintained across Egypt. Six exclusive agencies, one point of contact, and a service team on call.",
+    "title": "Deep-well pumps, supplied and serviced since 2013.",
+    "subtitle": "Supplied, installed and maintained across Egypt. Eleven exclusive agencies, one point of contact, and a service team on call.",
     "ctaCall": "Call Us Now",
     "ctaContact": "Contact Us"
   },
@@ -63,16 +63,6 @@
       "short": "Design and supply of smart electrical control and protection panels to safeguard motors and pumps.",
       "desc": "We design and assemble electrical control panels (Control Panels) of various capacities and operating systems (Star-Delta, Soft Starter, Inverter). We use the highest quality global electrical components to ensure full protection for pumps and motors against phase loss, overcurrent, or under-voltage."
     },
-    "regulator-design": {
-      "title": "Design & Supply of Voltage Regulators",
-      "short": "Voltage stabilization and regulation systems to protect industrial facilities and well stations.",
-      "desc": "We excel in designing and supplying high-capacity voltage regulators (Stabilizers) to protect sensitive equipment and well motors from voltage fluctuations in remote and industrial areas, extending the lifetime of pumps and ensuring full operational stability."
-    },
-    "inverter-supply": {
-      "title": "Supply of Inverters & Variable Frequency Drives",
-      "short": "VFDs for precise water flow control, energy saving, and solar power operations.",
-      "desc": "We supply and program variable speed drives (Inverters / VFDs) that allow smart and smooth control of motor speed and water flow. We also provide eco-friendly solar-powered pump operation solutions, which ensure excellent economical operation for agricultural irrigation stations and wells."
-    },
     "marine-cable-supply": {
       "title": "Supply of Marine/Submersible Cables",
       "short": "High-quality insulated submersible cables resistant to water and pressure in deep wells.",
@@ -82,6 +72,11 @@
       "title": "Supply of Deep Well Pipes",
       "short": "Iron and reinforced plastic (uPVC) pipes customized for wells to resist corrosion and high pressure.",
       "desc": "Supply of metal well pipes and reinforced plastic pipes (uPVC) customized for submersible wells. Our products are highly resistant to corrosion, rust, soil pressure, and tension, ensuring smooth water flow and the integrity of the well structure for decades."
+    },
+    "spare-parts-supply": {
+      "title": "Supply of Spare Parts",
+      "short": "Thrust bearings and motor winding wire, supplied from stock for rewinding and overhaul work.",
+      "desc": "Supply of pump and motor spare parts: silicon carbide (SiC) thrust bearings for sandy, heavily loaded wells, and enamelled copper winding wire in the full range of sizes for rewinding submersible and surface motors. Parts are stocked and supplied as genuine items."
     },
     "pump-maintenance": {
       "title": "Pumps Maintenance",
@@ -97,11 +92,6 @@
       "title": "Electrical Control Panels Maintenance",
       "short": "Troubleshooting, upgrading control systems, and replacing damaged electrical components.",
       "desc": "Our engineers and technicians inspect and maintain electrical control panels, diagnose faults, program protection devices and inverters, and replace damaged breakers and contactors to ensure continuous, automatic, and safe station operation."
-    },
-    "regulator-maintenance": {
-      "title": "Voltage Regulators Maintenance",
-      "short": "Inspection and maintenance of voltage stabilization devices and replacing transformers and circuits.",
-      "desc": "Specialized maintenance service for voltage regulators and stabilizers of various sizes and industrial capacities, including replacing electronic cards and copper coils and calibrating measuring instruments to ensure precise, continuous voltage regulation."
     }
   },
   "productsPage": {
@@ -110,6 +100,7 @@
     "all": "All Products",
     "motors": "Motors",
     "pumps": "Pumps",
+    "surfacePumps": "Surface Pumps",
     "electrical": "Electrical Component",
     "pipes": "Pipes",
     "spareParts": "Spare Parts",
@@ -127,38 +118,91 @@
     "tableFlow": "Flow Rate (m³/h)",
     "tableHead": "Head (m)",
     "tableMotor": "Motor (kW)",
-    "tableOutlet": "Outlet"
+    "tableHp": "Motor (HP)",
+    "tableWeight": "Weight (kg)",
+    "tableOutlet": "Outlet",
+    "types": {
+      "submersiblePumps": "Submersible Pumps",
+      "surfacePumps": "Surface Pumps",
+      "submersibleMotors": "Submersible Motors",
+      "inverter": "Inverter",
+      "controlPanels": "Electrical Control Panels",
+      "pipes": "Pipes",
+      "thrustBearings": "Thrust Bearings",
+      "wires": "Wires",
+      "cables": "Cables"
+    }
   },
   "productsData": {
     "motor-hitemp": {
-      "title": "HI-TEMP Submersible Motors",
+      "title": "Kurlar Submersible Motors",
       "category": "motors",
-      "desc": "Genuine Kurlar KM HI-TEMP submersible motors (6\"-10\"), rewindable and rated for continuous operation up to 90°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors, manufactured in ISO 9001 certified facilities."
+      "desc": "Genuine Kurlar submersible motors (6\"-8\"-10\"), rewindable and rated for continuous operation up to 60°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors, manufactured in ISO 9001 certified facilities."
     },
     "pump-submersible": {
-      "title": "Deep Well Submersible Pumps",
+      "title": "Kurlar Stainless Steel Submersible Pumps",
       "category": "pumps",
-      "desc": "Genuine Kurlar KP/KPS stainless steel submersible pumps. Their corrosion-resistant AISI 304 construction delivers long service life and reliable performance for demanding agricultural irrigation, industrial water supply, and groundwater dewatering applications."
+      "desc": "Genuine Kurlar KP stainless steel submersible pumps. Their corrosion-resistant AISI 304 and AISI 316 construction delivers long service life and reliable performance for demanding agricultural irrigation, industrial water supply, and groundwater dewatering applications."
     },
     "pump-cast-stainless": {
       "title": "Cast Stainless Submersible Pumps",
       "category": "pumps",
       "desc": "Genuine Kurlar KSX cast stainless steel submersible pumps (6\"-8\"-10\"). All wetted parts — diffusers, impellers, and suction/discharge chambers — are cast in AISI 304 stainless steel for outstanding corrosion resistance, high efficiency, and long service life. Suitable for both horizontal and vertical installation; full AISI 316L construction available on request."
     },
+    "pump-rovatti": {
+      "title": "Rovatti Borehole Pumps",
+      "category": "pumps",
+      "desc": "Italian-built borehole pumps from Rovatti Pompe, in cast iron and cast steel with AISI 316 stainless available, in the 8\" and 10\" sizes most Egyptian wells are cased for. Each size comes in two hydraulics: radial for high head — the 8\" reaches 675 m — and mixed-flow for high volume, where the 10\" carries up to 420 m³/h. The check valve is built into the delivery bowl."
+    },
+    "pump-rovatti-surface": {
+      "title": "Rovatti Surface Pumps",
+      "category": "surface-pumps",
+      "desc": "Italian-built surface pumps from Rovatti Pompe, carried as a complete range: single-stage and multistage centrifugal electric pumps in horizontal and vertical execution, bare-shaft surface pumps for coupling to a motor or engine, and waste water electric submersible pumps with single-channel, double-channel and vortex impellers. Suited to irrigation, water supply and pressure boosting, industrial service water and drainage."
+    },
+    "pump-tormac-surface": {
+      "title": "Tormac Surface Pumps",
+      "category": "surface-pumps",
+      "desc": "Tormac surface pumps, carried across the range: TCCH close coupled units, TEH and TEC horizontal end-suction centrifugals, THSC horizontal split case pumps for high flows, and TV vertical multistage pumps for high head from a small footprint — with matched induction motors supplied alongside. Used for irrigation, water supply and pressure boosting, and industrial and building services, in 50 Hz."
+    },
+    "pump-panelli-sx": {
+      "title": "Panelli Submersible Pumps",
+      "category": "pumps",
+      "desc": "Italian-built submersible pumps from Panelli, in cast iron and cast steel as well as micro-cast AISI 304 stainless, with 8\" and 10\" the sizes most Egyptian wells are cased for. The 8\" 180 SX covers 78 to 140 m³/h at 10 to 150 HP, and the 10\" 230 SX covers 200 to 280 m³/h at 25 to 340 HP. Semiaxial impellers suit mid-to-high flows at moderate head, which is the shape of most irrigation and water-network duty. Tell us the well's yield and depth and our engineers will size the pump for it."
+    },
+    "motor-franklin": {
+      "title": "Franklin Electric Submersible Motors",
+      "category": "motors",
+      "desc": "Franklin Electric submersible motors in 8\" and 10\". The 8\" runs 40 to 200 HP at 50 Hz, with a Hi-Temp 75 build rated to 75°C ambient for hot or slow-flowing wells, tripping before an overheat burns the winding. The 10\" is rewindable at 175 to 250 HP on 380-415 V. Both use the Sand Fighter seal system, and both are available in full 316 stainless or 904 L."
+    },
+    "motor-panelli": {
+      "title": "Panelli Submersible Motors",
+      "category": "motors",
+      "desc": "Water-filled rewindable submersible motors from Panelli of Italy, in 8\" and 10\" to match the SX pump ends, with the wider range running from 0.37 kW up to 300 kW. Cast iron and stainless steel bodies are both available to suit the water the motor will sit in."
+    },
+    "elec-control-panel": {
+      "title": "Electrical Control Panels",
+      "category": "electrical",
+      "desc": "Pump and motor control panels built up in El Waha's own workshop, in three starting types: inverter (VFD) for variable-speed control, soft starter for a gradual ramp up to full speed, and star-delta for stepped starting on larger motors. Each panel is specified against the motor it will run, and brings the starting current down so the well starts without the shock that shortens motor and pump life. Housed in a floor-standing steel enclosure with MCCB incoming protection, copper busbars, DIN-rail control gear, and door-mounted indication."
+    },
     "elec-inverter": {
-      "title": "Solar & Well Variable Frequency Inverter",
+      "title": "NOVO Inverter",
       "category": "electrical",
       "desc": "An advanced, high-efficiency solar-driven pump controller with Dynamic MPPT technology, delivering stable performance, intelligent power management, and long-life reliability for agricultural, industrial, and off-grid water pumping applications. Supports solar-only or hybrid solar + grid operation with automatic switching."
     },
     "pipe-upvc-column": {
-      "title": "uPVC Column Pipes",
+      "title": "Astral Pipes",
       "category": "pipes",
       "desc": "Genuine Astral Bore-Well lead-free column pipes for submersible pumps. Manufactured with square-thread couplers, EPDM 'O' Ring seals, and a double stainless steel stud pin locking system, they are 100% free of lead and heavy metals, UV-stabilised, and rigorously tested for leak-proof, long-lasting performance in deep well and borehole installations."
     },
     "thrust-bearing-heavy": {
-      "title": "Heavy Duty Thrust Bearings",
+      "title": "ALKA Thrust Bearings",
       "category": "spare-parts",
       "desc": "Genuine Alka AP+ Series silicon carbide (SiC) ceramic thrust bearings, engineered for challenging deep-well applications where sand, ferrous debris, or high thrust loads exceed the capacity of conventional bearings. Retaining full strength at temperatures up to 1100°C and validated through in-house and field testing, they deliver outstanding wear resistance and reliability where standard stainless steel or carbon bearings fail."
+    },
+    "winding-wire-voltson": {
+      "title": "Voltson Wires",
+      "category": "spare-parts",
+      "desc": "Genuine Voltson EXCELGRIP poly-wrapped winding wire for rewinding submersible pump motors. Built on EC grade ETP copper of 99.95% minimum purity and wrapped in bi-axially oriented polypropylene, it holds its insulation up to 120°C and is heavily annealed so it lays into stator slots without cracking. Every coil is high-voltage tested at 3.5 kV rms and the range is tested to IS 8783, in sizes from 0.40 to 2.40 mm² on 500 m and 1000 m coils."
     },
     "cable-submersible": {
       "title": "Submersible Motor Cables",
@@ -166,7 +210,7 @@
       "desc": "Water-resistant, copper-conductor cables designed to safely power submersible motors in deep well installations."
     },
     "cable-flat-untel": {
-      "title": "PVC Flat Power & Control Cable",
+      "title": "Untel Cable",
       "category": "cables",
       "desc": "Genuine Üntel H07VVH6-F PVC flat power and control cable, rated 450/750V, used for power and control wiring inside pump control panels, starter cabinets, and deep well pump stations. IPX8 tested by TÜV for permanent submersion up to 10 bar (100 m), UV resistant, and flame retardant."
     }
@@ -204,6 +248,39 @@
       "desc": "The leading manufacturer and supplier of high-quality thrust bearings for submersible motors, ensuring reduced friction and absorption of vertical mechanical loads in deep wells."
     }
   },
+  "supportPage": {
+    "title": "Aftersales Support",
+    "subtitle": "A well that has stopped is not a technical fault — it is a growing season at risk. Our mobile maintenance fleet responds around the clock in every Egyptian governorate.",
+    "statsTitle": "What you can count on",
+    "stat1Value": "24/7",
+    "stat1Label": "Response, every day of the year",
+    "stat2Value": "27",
+    "stat2Label": "Governorates covered",
+    "stat3Value": "80+",
+    "stat3Label": "Engineers and technicians",
+    "stat4Value": "3,000 m²",
+    "stat4Label": "Workshop and warehouse",
+    "servicesTitle": "What we service",
+    "servicesDesc": "Whatever we supply, we maintain. Our workshops carry their own testing, calibration and rewinding equipment, so repairs happen under our supervision rather than at a third party.",
+    "processTitle": "How a callout works",
+    "processDesc": "Four steps from the phone call to the well running again.",
+    "step1Title": "Call or message us",
+    "step1Desc": "Tell us the well, the equipment and what it is doing. Phone or WhatsApp, day or night.",
+    "step2Title": "We diagnose",
+    "step2Desc": "An engineer attends the site, or the unit comes into the workshop for testing on our own equipment.",
+    "step3Title": "We repair",
+    "step3Desc": "Rewinding, machining, part replacement and recalibration — with genuine spare parts from our agencies.",
+    "step4Title": "Back in service",
+    "step4Desc": "The unit is tested against its duty point before it goes back down the borehole.",
+    "warrantyTitle": "Genuine parts, held in stock",
+    "warrantyDesc": "We are the exclusive Egyptian agent for eleven international manufacturers, and we carry their spare parts in our own warehouse. That is the difference between a repair that takes a day and one that waits on an import.",
+    "ctaTitle": "Need a well back in service?",
+    "ctaDesc": "Call us directly, or send the details and an engineer will come back to you.",
+    "ctaCall": "Call Now",
+    "ctaWhatsapp": "WhatsApp Us",
+    "ctaContact": "Send an Enquiry",
+    "viewAllServices": "View all services"
+  },
   "eventsPage": {
     "title": "Events & Exhibitions",
     "subtitle": "Follow El Waha's participation in industry exhibitions and trade shows across Egypt.",
@@ -217,23 +294,50 @@
       "title": "Sahara Expo 2025",
       "location": "Cairo, Egypt",
       "desc": "El Waha for Wells and Pump Services took part in Sahara Expo 2025 alongside major companies in the agricultural sector. We showcased our full range of submersible pumps, motors, control panels, and well piping from Kurlar, Tormac, Astral Pipes, PMC, and NOVO, and welcomed clients and partners from across the industry to our stand."
+    },
+    "dinner-2025": {
+      "title": "El Waha Annual Dinner 2025",
+      "location": "Cairo, Egypt",
+      "desc": "El Waha for Wells and Pump Services hosted its annual dinner in 2025, bringing together our team, partners, and clients to celebrate another year of growth and shared success across Egypt's agricultural sector."
+    },
+    "waterx-2025": {
+      "title": "WaterX 2025",
+      "location": "Cairo, Egypt",
+      "desc": "El Waha for Wells and Pump Services exhibited at WaterX 2025, presenting our range of submersible pumps, motors, control panels, and well piping to clients and partners from across the water and irrigation sector."
     }
   },
   "aboutPage": {
-    "title": "El Waha Pumps Company",
-    "subtitle": "Supplying, installing and maintaining deep-well pumping equipment in Egypt since 2000",
-    "p1": "El Waha supplies, installs and maintains deep-well pumping equipment in Egypt. We have traded since 2000, we are the exclusive Egyptian agent for six international manufacturers, and we hold ISO 9001 certification. We have delivered agricultural, industrial and municipal projects across the country — and the same team maintains them afterwards.",
-    "p2": "We specialize in drilling deep water wells and equipping them fully, starting from supplying and installing casing and column pipes, insulated submersible cables, to supplying and installing submersible pumps and motors, and designing custom electrical control panels and stabilizers.",
-    "p3": "El Waha stands out with its fully equipped workshops featuring the latest testing, calibration, and rewinding machinery, alongside a mobile maintenance fleet ready for immediate 24/7 intervention to support our clients across all Egyptian governorates.",
+    "title": "Two Decades of Deep-Well Engineering",
+    "subtitle": "Supplying, installing and maintaining deep-well pumping equipment in Egypt since 2013",
+    "p1": "El Waha for Wells and Pump Services began in 2013 as a small 200 m² maintenance centre in Giza, run by a team of five. Today the company operates a 3,000 m² warehouse and workshop with a team of more than 80 specialist engineers and technicians, covers every governorate in Egypt, and has delivered more than 230 agricultural projects.",
+    "p2": "We equip deep water wells end to end: column pipes, insulated submersible cable, submersible pumps and motors, and control panels and voltage stabilizers designed for each individual well. Because no two wells are alike, our engineers size every installation against the well's own yield and head before anything is supplied — so the pump that goes down the borehole is the one that will draw the least energy and last the longest in service. That difference shows up in the electricity bill every month, and in how often the irrigation stops.",
+    "p3": "We hold exclusive Egyptian agencies for eleven international manufacturers and work to ISO 9001. Our workshops carry current testing, calibration and rewinding equipment, which means repair and calibration happen under our own supervision rather than at a third party. Our mobile maintenance fleet stays ready to respond around the clock in every Egyptian governorate — because a well that has stopped is not merely a technical fault, it is a growing season at risk.",
     "vision": "Our Vision",
-    "visionText": "To be the leading and preferred company in Egypt and Africa for sustainable, smart water pumping solutions and water infrastructure development, with engineering excellence and uncompromised quality.",
+    "visionText": "To be the first choice in Egypt and Africa for sustainable, intelligent water pumping — advancing the water infrastructure that agriculture, industry and communities depend on.",
     "mission": "Our Mission",
-    "missionText": "To deliver original high-quality products and design innovative engineering solutions that guarantee sustainable water flow, reduce energy consumption, and provide superior ongoing maintenance services.",
+    "missionText": "To supply genuine, high-quality equipment and engineer solutions that keep water flowing reliably and at the lowest possible energy cost, backed by maintenance that outlasts the installation.",
+    "milestonesLabel": "How we got here",
+    "milestones": {
+      "founded": "A 200 m² maintenance centre in Giza, run by a team of five",
+      "todayLabel": "Today",
+      "today": "3,000 m² of warehouse and workshop, 80+ engineers and technicians, service in every Egyptian governorate"
+    },
+    "divisionsLabel": "Our work rests on two core groups",
+    "divisions": {
+      "supplyTitle": "Equipment & Supply",
+      "supplyDesc": "Engineering design and the complete set of well components.",
+      "serviceTitle": "Operations & Maintenance",
+      "serviceDesc": "Workshops, the mobile fleet, and spare parts."
+    },
+    "agenciesTitle": "Exclusive Egyptian Agencies",
+    "agenciesSubtitle": "We are the authorized agent for these manufacturers in Egypt — every unit we supply is genuine and carries its factory warranty.",
     "stats": {
-      "experience": "Years of Experience",
-      "projects": "Successful Projects",
-      "brands": "Global Brands",
-      "satisfaction": "Customer Satisfaction"
+      "experience": "Years in the Market",
+      "projects": "Agricultural Projects Delivered",
+      "brands": "Exclusive Agencies",
+      "team": "Engineers & Technicians",
+      "facility": "Warehouse & Workshop",
+      "support": "Aftersales, Every Governorate"
     }
   },
   "contactPage": {

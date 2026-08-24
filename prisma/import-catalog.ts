@@ -190,8 +190,8 @@ const SHEETS: SheetSpec[] = [
     ],
     create: {
       categorySlug: "electrical",
-      nameEn: "Motor Winding Wire",
-      nameAr: "سلك لف مواتير",
+      nameEn: "PMC Wires",
+      nameAr: "أسلاك PMC",
       descEn:
         "Enamelled copper winding wire for rewinding submersible and surface motors, stocked from 13 mm up to 31 mm.",
       descAr:

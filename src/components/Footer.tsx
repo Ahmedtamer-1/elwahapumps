@@ -29,7 +29,6 @@ export default function Footer({ lang, dict }: FooterProps) {
   const serviceLinks = [
     "pump-supply",
     "panel-design",
-    "inverter-supply",
     "pump-maintenance",
     "motor-maintenance",
   ].map((slug) => ({
@@ -51,8 +50,8 @@ export default function Footer({ lang, dict }: FooterProps) {
                 the certification and the agencies instead. */}
             <p className="text-[13px] leading-6 text-bone/70 mb-6 max-w-[42ch]">
               {isAr
-                ? "توريد وتركيب وصيانة طلمبات الأعماق في مصر منذ عام 2000. وكالة حصرية لست شركات عالمية، وشهادة ISO 9001، ونفس الفريق يقوم بالصيانة بعد التوريد."
-                : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2000. Exclusive Egyptian agent for six manufacturers, ISO 9001 certified — and the same team services it afterwards."}
+                ? "توريد وتركيب وصيانة طلمبات الأعماق في مصر منذ عام 2013. توكيلات حصرية لإحدى عشرة شركة عالمية، وشهادة ISO 9001، ونفس الفريق يقوم بالصيانة بعد التوريد."
+                : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for 11 manufacturers, ISO 9001 certified — and the same team services it afterwards."}
             </p>
 
             <div className="flex gap-3">

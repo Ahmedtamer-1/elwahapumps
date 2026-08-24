@@ -149,7 +149,7 @@ export default async function CareersPage({ params }: PageProps) {
       icon: Users,
       title: isAr ? "فريق تسنده الخبرة" : "A team that backs you",
       desc: isAr
-        ? "تعمل بجانب فنيين ومهندسين قضوا سنوات في الآبار والورش، ويُسلّمون ما تعلّموه."
+        ? "تعمل بجانب فنيين ومهندسين قضوا سنوات في الآبار ومراكز الصيانة، ويُسلّمون ما تعلّموه."
         : "You work beside technicians and engineers who have spent years on wells and benches, and who pass on what they know.",
     },
     {
@@ -161,17 +161,17 @@ export default async function CareersPage({ params }: PageProps) {
     },
     {
       icon: Wrench,
-      title: isAr ? "ورش وأدوات مجهّزة" : "Equipped workshops",
+      title: isAr ? "مراكز صيانة وأدوات مجهّزة" : "Equipped workshops",
       desc: isAr
-        ? "ورش لف وصيانة مجهزة بالكامل وأسطول صيانة متنقل — أدوات تعمل بها لا تبحث عنها."
+        ? "مراكز صيانة ولف مجهزة بالكامل وأسطول صيانة متنقل — أدوات تعمل بها لا تبحث عنها."
         : "Fully equipped rewinding and service workshops with a mobile maintenance fleet — tools you work with, not tools you hunt for.",
     },
     {
       icon: ShieldCheck,
       title: isAr ? "عمل مستقر" : "Steady work",
       desc: isAr
-        ? `شركة قائمة منذ عام 2000 بعقود صيانة سنوية — ${years} سنة من العمل المتصل.`
-        : `A company trading since 2000 on annual maintenance contracts — ${years} years of continuous work.`,
+        ? `شركة قائمة على عقود صيانة سنوية — ${years} سنة من العمل المتصل في السوق.`
+        : `A company built on annual maintenance contracts — ${years} years of continuous work in the market.`,
     },
   ];
 

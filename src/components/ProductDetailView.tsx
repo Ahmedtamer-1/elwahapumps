@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2, ShieldCheck, Truck, Phone, MessageSquare } from "lucide-react";
 import type { CatalogProduct } from "@/lib/products";
-import { formatPrice, formatPriceRange } from "@/lib/price";
+import type { ProductModelRow } from "@/data/products";
+import { priceOnRequestLabel } from "@/lib/price";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductVariantSelector, { useVariantSelection } from "@/components/ProductVariantSelector";
 import CatalogueButton from "@/components/CatalogueButton";
@@ -17,6 +18,16 @@ interface ProductDetailViewProps {
   title: string;
   desc: string;
 }
+
+/** Every column a model table can show, in display order, past the model name. */
+const MODEL_COLUMNS = [
+  { key: "flow", labelKey: "tableFlow" },
+  { key: "head", labelKey: "tableHead" },
+  { key: "motor", labelKey: "tableMotor" },
+  { key: "hp", labelKey: "tableHp" },
+  { key: "weight", labelKey: "tableWeight" },
+  { key: "outlet", labelKey: "tableOutlet" },
+] as const satisfies ReadonlyArray<{ key: keyof ProductModelRow; labelKey: string }>;
 
 function SpecsTable({ specs }: { specs: Record<string, string> }) {
   return (
@@ -45,17 +56,13 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
 
   const isAr = lang === "ar";
 
-  // Size selectors and the price attached to the chosen combination.
+  // Size selectors for the chosen combination.
   const selection = useVariantSelection(product.options, product.variantRows);
   const variant = selection.selected;
-  const hasVariants = product.variantRows.length > 0;
 
-  // Once a combination is picked its own price wins; otherwise fall back to the
-  // product-level range so the page never shows a bare "price on request" for
-  // something the sheet actually prices.
-  const shownPrice = variant
-    ? formatPrice(variant.price, variant.currency, lang)
-    : formatPriceRange(product.priceMin, product.priceMax, product.currency, lang);
+  // Prices are not shown publicly — every enquiry is quoted by phone, so the
+  // price slot carries the call-us label instead of a figure.
+  const shownPrice = priceOnRequestLabel(lang);
 
   // "6" · 7.5 HP · Cast Iron" — carried into the cart and the WhatsApp message so the
   // enquiry names the exact size rather than just the product.
@@ -126,11 +133,6 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             </div>
 
             <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{shownPrice}</p>
-            {hasVariants && !variant && (
-              <p className="text-label-sm text-outline mb-4">
-                {isAr ? "اختر المقاس لعرض السعر" : "Choose a size to see the price"}
-              </p>
-            )}
             {variant && Object.keys(variant.specs).length > 0 && (
               <p className="text-label-sm text-outline mb-4">
                 {Object.values(variant.specs).join(" · ")}
@@ -256,7 +258,15 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
 
               {product.modelGroups && product.modelGroups.length > 0 && (
                 <div className="space-y-8">
-                  {product.modelGroups.map((group) => (
+                  {product.modelGroups.map((group) => {
+                    // Catalogues differ in which figures they quote, so show only
+                    // the columns this group's rows actually fill — an empty
+                    // "Outlet" column reads as missing data rather than N/A.
+                    const columns = MODEL_COLUMNS.filter((col) =>
+                      group.rows.some((row) => row[col.key])
+                    );
+
+                    return (
                     <div key={group.diameter}>
                       <h3 className="font-headline-md text-xl text-primary mb-1">
                         {group.diameter} {t.modelSeries}
@@ -267,27 +277,30 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                           <thead>
                             <tr className="bg-surface-container">
                               <th className="py-3 px-4 text-label-sm font-bold text-outline uppercase tracking-wide rtl:text-right">{t.tableModel}</th>
-                              <th className="py-3 px-4 text-label-sm font-bold text-outline uppercase tracking-wide rtl:text-right">{t.tableFlow}</th>
-                              <th className="py-3 px-4 text-label-sm font-bold text-outline uppercase tracking-wide rtl:text-right">{t.tableHead}</th>
-                              <th className="py-3 px-4 text-label-sm font-bold text-outline uppercase tracking-wide rtl:text-right">{t.tableMotor}</th>
-                              <th className="py-3 px-4 text-label-sm font-bold text-outline uppercase tracking-wide rtl:text-right">{t.tableOutlet}</th>
+                              {columns.map((col) => (
+                                <th key={col.key} className="py-3 px-4 text-label-sm font-bold text-outline uppercase tracking-wide rtl:text-right">
+                                  {t[col.labelKey]}
+                                </th>
+                              ))}
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-outline-variant/20">
                             {group.rows.map((row, rIdx) => (
                               <tr key={row.model} className={rIdx % 2 === 0 ? "bg-surface-container-lowest" : "bg-white"}>
                                 <td className="py-3 px-4 font-bold text-primary text-body-md rtl:text-right">{row.model}</td>
-                                <td className="py-3 px-4 text-on-surface-variant rtl:text-right">{row.flow}</td>
-                                <td className="py-3 px-4 text-on-surface-variant rtl:text-right">{row.head}</td>
-                                <td className="py-3 px-4 text-on-surface-variant rtl:text-right">{row.motor}</td>
-                                <td className="py-3 px-4 text-on-surface-variant rtl:text-right">{row.outlet}</td>
+                                {columns.map((col) => (
+                                  <td key={col.key} className="py-3 px-4 text-on-surface-variant rtl:text-right">
+                                    {row[col.key] ?? "—"}
+                                  </td>
+                                ))}
                               </tr>
                             ))}
                           </tbody>
                         </table>
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
 

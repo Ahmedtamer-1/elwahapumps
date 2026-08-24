@@ -20,6 +20,7 @@ interface PageProps {
  */
 const CATEGORY_ART: Record<string, string> = {
   pumps: "/images/categories/pumps.jpeg",
+  "surface-pumps": "/images/products/rovatti-surface.png",
   motors: "/images/categories/motors.jpeg",
   electrical: "/images/categories/electrical.jpeg",
   pipes: "/images/categories/pipes.jpeg",

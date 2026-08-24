@@ -7,20 +7,12 @@ import { Menu, X, Phone, Globe, ChevronDown } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
 import Logo from "@/components/Logo";
 
-/** Just enough of a product to build the mega-menu. */
-export interface HeaderProduct {
-  id: string;
-  title: string;
-  category: string;
-}
-
 interface HeaderProps {
   lang: string;
   dict: any;
-  products: HeaderProduct[];
 }
 
-export default function Header({ lang, dict, products }: HeaderProps) {
+export default function Header({ lang, dict }: HeaderProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -138,13 +130,55 @@ export default function Header({ lang, dict, products }: HeaderProps) {
                 const isProducts = link.href === `/${lang}/products`;
 
                 if (isProducts) {
+                  /*
+                    The menu names equipment types, not individual models. A
+                    buyer scanning it is deciding what kind of unit they need;
+                    the brand names belong on the category page, where they can
+                    be compared side by side. Every type links to its category.
+                  */
+                  const types = dict.productsPage.types;
                   const productCategories = [
-                    { id: "pumps", label: dict.productsPage.pumps },
-                    { id: "motors", label: dict.productsPage.motors },
-                    { id: "electrical", label: dict.productsPage.electrical },
-                    { id: "pipes", label: dict.productsPage.pipes },
-                    { id: "spare-parts", label: dict.productsPage.spareParts },
-                    { id: "cables", label: dict.productsPage.cables },
+                    {
+                      id: "pumps",
+                      label: dict.productsPage.pumps,
+                      // Surface pumps are their own category, so that entry
+                      // leaves the Pumps column for its own page.
+                      items: [
+                        { label: types.submersiblePumps, category: "pumps" },
+                        { label: types.surfacePumps, category: "surface-pumps" },
+                      ],
+                    },
+                    {
+                      id: "motors",
+                      label: dict.productsPage.motors,
+                      items: [{ label: types.submersibleMotors, category: "motors" }],
+                    },
+                    {
+                      id: "electrical",
+                      label: dict.productsPage.electrical,
+                      items: [
+                        { label: types.inverter, category: "electrical" },
+                        { label: types.controlPanels, category: "electrical" },
+                      ],
+                    },
+                    {
+                      id: "pipes",
+                      label: dict.productsPage.pipes,
+                      items: [{ label: types.pipes, category: "pipes" }],
+                    },
+                    {
+                      id: "spare-parts",
+                      label: dict.productsPage.spareParts,
+                      items: [
+                        { label: types.thrustBearings, category: "spare-parts" },
+                        { label: types.wires, category: "spare-parts" },
+                      ],
+                    },
+                    {
+                      id: "cables",
+                      label: dict.productsPage.cables,
+                      items: [{ label: types.cables, category: "cables" }],
+                    },
                   ];
 
                   return (
@@ -167,31 +201,27 @@ export default function Header({ lang, dict, products }: HeaderProps) {
                         <div className="w-full bg-white shadow-lg pb-6 border-t-2 border-brass">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                              {productCategories.map(category => {
-                                const categoryProducts = products.filter(p => p.category === category.id);
-                                if (categoryProducts.length === 0) return null;
-                                return (
-                                  <div key={category.id} className="flex flex-col">
-                                    {/* Column heads sit on a pine rule, the
-                                        report's section-head treatment. */}
-                                    <h3 className="font-extrabold text-[15px] leading-6 mb-4 pt-2 text-pine border-t-2 border-pine">
-                                      {category.label}
-                                    </h3>
-                                    <ul className="space-y-2.5">
-                                      {categoryProducts.map(product => (
-                                        <li key={product.id}>
-                                          <Link
-                                            href={`/${lang}/products/${product.id}`}
-                                            className="text-[13px] leading-5 transition-colors block text-stone hover:text-pine"
-                                          >
-                                            {product.title}
-                                          </Link>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                );
-                              })}
+                              {productCategories.map(category => (
+                                <div key={category.id} className="flex flex-col">
+                                  {/* Column heads sit on a pine rule, the
+                                      report's section-head treatment. */}
+                                  <h3 className="font-extrabold text-[15px] leading-6 mb-4 pt-2 text-pine border-t-2 border-pine">
+                                    {category.label}
+                                  </h3>
+                                  <ul className="space-y-2.5">
+                                    {category.items.map((item: { label: string; category: string }) => (
+                                      <li key={item.label}>
+                                        <Link
+                                          href={`/${lang}/products/category/${item.category}`}
+                                          className="text-[13px] leading-5 transition-colors block text-stone hover:text-pine"
+                                        >
+                                          {item.label}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
                             </div>
 
                             {/* Bottom banner — §07 voice: name the scope

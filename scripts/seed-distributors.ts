@@ -105,19 +105,6 @@ const ROWS: SeedRow[] = [
     sortOrder: 1,
   },
   {
-    name: "الاتحاد الاليكتريك",
-    phone: "01005723053",
-    cityAr: "السادات - المنيا",
-    cityEn: "El Sadat, Minya",
-    region: "upper-egypt",
-    lat: 28.1099,
-    lng: 30.7503,
-    sheetQuery: "السادات- المنيا, Egypt",
-    sortOrder: 2,
-    needsConfirmation:
-      "Sadat City is in Menoufia, ~300 km from Minya. Pinned on Minya — confirm which is meant.",
-  },
-  {
     name: "Star Sun",
     phone: "01120204442",
     cityAr: "أسيوط",
@@ -176,7 +163,7 @@ const ROWS: SeedRow[] = [
     sortOrder: 3,
   },
   {
-    name: "عبد الحميد جمعة",
+    name: "عبد الحميد جاما",
     phone: "01212972544",
     cityAr: "الواحات",
     cityEn: "El Wahat (Bahariya)",
