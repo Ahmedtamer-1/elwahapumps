@@ -9,9 +9,11 @@ interface SuccessPartnersProps {
 /**
  * The client wall — who El Waha has actually supplied and maintained.
  *
- * Same treatment as the old agency wall (Brand Report §1.3): one optical
- * height, one grey, brand colour returning only on hover, so twenty-two marks
- * at twenty-two scales read as a roster rather than as a jumble of logos.
+ * The logos were re-cut as one set (same canvas, background removed, mark
+ * centred), so the §1.3 "one optical height" fix no longer needs a grey wash
+ * to hold the wall together: a single fixed box does it. Brand colour is on
+ * from the start rather than appearing on hover — on a touch screen there is
+ * no hover, and half the roster was reading as grey smudges.
  *
  * These are clients, not agencies, so the tiles carry no type/best-for plate
  * and link nowhere — the name is the claim.
@@ -33,19 +35,18 @@ export default function SuccessPartners({ lang }: SuccessPartnersProps) {
             {[...SUCCESS_PARTNERS, ...SUCCESS_PARTNERS].map((partner, idx) => (
               <div
                 key={`${partner.id}-${idx}`}
-                className={`group flex w-52 h-28 shrink-0 items-center justify-center border border-rule hover:border-pine transition-colors duration-300 ${
-                  // A white mark on a transparent ground is invisible on bone,
-                  // so it gets a pine tile instead of being dropped.
-                  partner.onDark ? "bg-pine" : "bg-bone"
-                }`}
+                className="flex w-52 h-28 shrink-0 items-center justify-center bg-white border border-rule hover:border-pine transition-colors duration-300"
               >
-                <div className="relative w-full h-16">
+                {/* Every source file is 669×373 with the mark centred, so one
+                    box and `object-contain` scales the whole roster alike. */}
+                <div className="relative w-full h-20">
                   <Image
                     src={partner.logo}
                     alt={isAr ? partner.name.ar : partner.name.en}
                     fill
-                    sizes="208px"
-                    className="object-contain px-6 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    sizes="(max-width: 640px) 208px, 416px"
+                    quality={95}
+                    className="object-contain px-5"
                   />
                 </div>
               </div>
@@ -53,7 +54,7 @@ export default function SuccessPartners({ lang }: SuccessPartnersProps) {
           </div>
         </div>
 
-        
+
       </div>
     </div>
   );

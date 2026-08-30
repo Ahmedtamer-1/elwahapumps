@@ -57,7 +57,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 8.4,
     pages: 48,
     category: "pumps",
-    logo: "/images/brand/kurlar-logo.png",
+    logo: "/images/brand/kurlar-mark.png",
   },
   {
     id: "kurlar-ksx",
@@ -68,7 +68,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 7.0,
     pages: 44,
     category: "pumps",
-    logo: "/images/brand/kurlar-logo.png",
+    logo: "/images/brand/kurlar-mark.png",
   },
   {
     id: "tormac-pumps",
@@ -79,7 +79,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 25.4,
     pages: 124,
     category: "pumps",
-    logo: "/images/brand/Tormac.png",
+    logo: "/images/brand/tormac-mark.png",
   },
   {
     id: "tormac-motors",
@@ -90,7 +90,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 4.5,
     pages: 42,
     category: "motors",
-    logo: "/images/brand/Tormac.png",
+    logo: "/images/brand/tormac-mark.png",
   },
   {
     id: "novo-inverters",
@@ -101,7 +101,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 9.5,
     pages: 8,
     category: "electrical",
-    logo: "/images/brand/NOVO.png",
+    logo: "/images/brand/novo-mark.png",
   },
   {
     id: "astral-borewell",
@@ -113,7 +113,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 2.4,
     pages: 36,
     category: "pipes",
-    logo: "/images/brand/astral-logo.png",
+    logo: "/images/brand/astral-mark.png",
   },
   {
     id: "alka-thrust",
@@ -124,7 +124,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 3.5,
     pages: 12,
     category: "spare-parts",
-    logo: "/images/brand/alka-logo.png",
+    logo: "/images/brand/alka-mark.png",
   },
   {
     id: "voltson-winding-wire",
@@ -138,7 +138,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 1.2,
     pages: 2,
     category: "electrical",
-    logo: "/images/brand/voltson.png",
+    logo: "/images/brand/voltson-mark.png",
   },
   {
     id: "franklin-motors",
@@ -151,7 +151,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 3.0,
     pages: 60,
     category: "motors",
-    logo: "/images/brand/franklin.jpeg",
+    logo: "/images/brand/franklin-mark.png",
   },
   {
     id: "rovatti-borehole",
@@ -165,14 +165,13 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 9.8,
     pages: 132,
     category: "pumps",
-    logo: "/images/brand/rovatti.jpeg",
+    logo: "/images/brand/rovatti-mark.png",
   },
   {
     id: "panelli-sx",
     // Panelli's 140/180/230/270 SX semiaxial range, 6"-12". Arrived as
     // "paneli 140-sx-500.pdf" and was renamed — the filename shows in the
-    // URL bar when the PDF opens. No Panelli logo file has been supplied,
-    // so the catalogues index sets the name in mono instead.
+    // URL bar when the PDF opens.
     file: "Panelli SX Submersible Pumps.pdf",
     brand: "Panelli",
     titleEn: "140-270 SX Semiaxial Submersible Pumps",
@@ -180,6 +179,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 6.6,
     pages: 52,
     category: "pumps",
+    logo: "/images/brand/panelli-mark.png",
   },
   {
     id: "untel-flat-cable",
@@ -192,7 +192,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 4.0,
     pages: 3,
     category: "cables",
-    logo: "/images/brand/Untel.png",
+    logo: "/images/brand/untel-mark.png",
   },
 ];
 

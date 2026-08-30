@@ -37,17 +37,18 @@ function CatalogueCard({ catalogue, lang }: { catalogue: Catalogue; lang: string
 
   return (
     <article className="group flex flex-col border border-rule bg-white hover:border-pine transition-colors duration-300">
-      {/* The mark, at one optical height across every card — the same
-          normalisation the partner wall uses, so nine logos at nine scales
-          read as a library rather than as a jumble. */}
-      <div className="relative flex h-28 items-center justify-center border-b border-rule-light bg-bone">
+      {/* The mark, at one optical height across every card. Every brand file
+          is cut to the same 669x373 transparent canvas, so the box does the
+          normalising and the artwork keeps its own colour. */}
+      <div className="relative flex h-28 items-center justify-center border-b border-rule-light bg-white">
         {catalogue.logo ? (
           <Image
             src={catalogue.logo}
             alt={catalogue.brand}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-contain px-10 py-6 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+            quality={95}
+            className="object-contain px-8 py-5"
           />
         ) : (
           // Fallback for any brand with no logo file yet. The name, set in

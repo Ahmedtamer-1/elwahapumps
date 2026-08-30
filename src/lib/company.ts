@@ -21,21 +21,23 @@ export function yearsOfService(now: Date = new Date()): number {
  * because a competitor without the agencies cannot copy the list.
  *
  * AGENCY_COUNT is the true total; AGENCIES holds the ones we have logo
- * artwork for. The last two are pending artwork — add them here and drop
- * the file in public/images/brand and the logo row picks them up.
+ * artwork for — which, since the marks were re-cut as one set, is all of
+ * them. To add another, drop the file in public/images/brand on the same
+ * 669x373 transparent canvas as the rest and add the row here.
  */
-export const AGENCY_COUNT = 11;
+export const AGENCY_COUNT = 12;
 
 export const AGENCIES = [
-  { name: "Kurlar", logo: "/images/brand/kurlar-logo.png" },
-  { name: "Pedrollo", logo: "/images/brand/Pedrollo.jpg" },
-  { name: "Astral Pipes", logo: "/images/brand/astral-logo.png" },
-  { name: "PMC", logo: "/images/brand/pmc-logo.png" },
-  { name: "NOVO", logo: "/images/brand/NOVO.png" },
-  { name: "Tormac", logo: "/images/brand/Tormac.png" },
-  { name: "Untel", logo: "/images/brand/Untel.png" },
-  { name: "Alka", logo: "/images/brand/alka-logo.png" },
-  { name: "Voltson", logo: "/images/brand/voltson.png" },
-  { name: "Rovatti", logo: "/images/brand/rovatti.jpeg" },
-  { name: "Franklin Electric", logo: "/images/brand/franklin.jpeg" },
+  { name: "Kurlar", logo: "/images/brand/kurlar-mark.png" },
+  { name: "Panelli", logo: "/images/brand/panelli-mark.png" },
+  { name: "Astral Pipes", logo: "/images/brand/astral-mark.png" },
+  { name: "PMC", logo: "/images/brand/pmc-mark.png" },
+  { name: "NOVO", logo: "/images/brand/novo-mark.png" },
+  { name: "Tormac", logo: "/images/brand/tormac-mark.png" },
+  { name: "Untel", logo: "/images/brand/untel-mark.png" },
+  { name: "Alka", logo: "/images/brand/alka-mark.png" },
+  { name: "Voltson", logo: "/images/brand/voltson-mark.png" },
+  { name: "Rovatti", logo: "/images/brand/rovatti-mark.png" },
+  { name: "Franklin Electric", logo: "/images/brand/franklin-mark.png" },
+  { name: "Aristoncavi", logo: "/images/brand/aristoncavi-mark.png" },
 ] as const;

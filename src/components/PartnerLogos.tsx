@@ -14,9 +14,11 @@ interface PartnerLogosProps {
  * fixed optical height and a single grey, so exclusive agency for a set of
  * international manufacturers reads as the moat it is.
  *
- * Each mark is therefore normalised: same box, same height, desaturated to
- * one grey, and brought to full ink only on hover. The per-brand accent
- * colours are gone — §04 permits no additional colours in the palette.
+ * Each mark is therefore normalised at the source: the brand files are all
+ * cut to the same 669x373 transparent canvas with the artwork centred, so
+ * one box holds them at one optical height without a grey wash over the top.
+ * Colour is on from the start — a hover-only reveal shows nothing at all on
+ * a touch screen, which is most of this traffic.
  *
  * Logos are served locally — do not hotlink the old WordPress site.
  */
@@ -24,14 +26,14 @@ const partners = [
   {
     id: "kurlar",
     name: "Kurlar",
-    logo: "/images/brand/kurlar-logo.png",
+    logo: "/images/brand/kurlar-mark.png",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Heavy industrial & deep wells", ar: "صناعي ثقيل وآبار عميقة" },
   },
   {
     id: "astral-pipes",
     name: "Astral Pipes",
-    logo: "/images/brand/astral-logo.png",
+    logo: "/images/brand/astral-mark.png",
     type: { en: "Specialist supplier", ar: "مورّد متخصص" },
     // Western digits on the Arabic side too (§5.2 rule 5): specs and
     // warranties get copied across both languages.
@@ -40,35 +42,35 @@ const partners = [
   {
     id: "pmc",
     name: "PMC",
-    logo: "/images/brand/pmc-logo.png",
+    logo: "/images/brand/pmc-mark.png",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Pump systems", ar: "منظومات طلمبات" },
   },
   {
     id: "alka",
     name: "ALKA Thrust Bearing",
-    logo: "/images/brand/alka-logo.png",
+    logo: "/images/brand/alka-mark.png",
     type: { en: "Component supplier", ar: "مورّد مكوّنات" },
     bestFor: { en: "Thrust bearings & wear parts", ar: "كراسي تحميل وقطع غيار" },
   },
   {
     id: "novo",
     name: "Novo Solar Inverter",
-    logo: "/images/brand/NOVO.png",
+    logo: "/images/brand/novo-mark.png",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Solar & VFD inverters", ar: "عاكسات شمسية ومغيرات تردد" },
   },
   {
     id: "tormac",
     name: "Tormac Pumps",
-    logo: "/images/brand/Tormac.png",
+    logo: "/images/brand/tormac-mark.png",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Surface & submersible pumps", ar: "طلمبات سطحية وغاطسة" },
   },
   {
     id: "untel",
     name: "Üntel",
-    logo: "/images/brand/Untel.png",
+    logo: "/images/brand/untel-mark.png",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Submersible motor cables", ar: "كابلات المواتير الغاطسة" },
   },
@@ -95,7 +97,7 @@ export default function PartnerLogos({ lang }: PartnerLogosProps) {
               <Link
                 key={`${partner.id}-${idx}`}
                 href={`/${lang}/agents/${partner.id}`}
-                className="group flex flex-col w-60 shrink-0 bg-bone border border-rule hover:border-pine transition-colors duration-300"
+                className="group flex flex-col w-60 shrink-0 bg-white border border-rule hover:border-pine transition-colors duration-300"
               >
                 {/* Fixed optical height: every mark gets the same box and the
                     same padding, so none of them shouts louder than the rest. */}
@@ -105,9 +107,8 @@ export default function PartnerLogos({ lang }: PartnerLogosProps) {
                     alt={partner.name}
                     fill
                     sizes="240px"
-                    // Single grey, per §1.3. Full colour returns on hover so
-                    // the real mark is still verifiable.
-                    className="object-contain px-6 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    quality={95}
+                    className="object-contain px-6"
                   />
                 </div>
                 <div className="px-5 pb-5 pt-1 flex flex-col gap-2 border-t border-rule-light">
@@ -128,8 +129,8 @@ export default function PartnerLogos({ lang }: PartnerLogosProps) {
 
         <p className="mt-5 font-mono text-[11px] leading-4 text-stone-light">
           {isAr
-            ? "الشعارات معروضة بارتفاع بصري واحد وبلون رمادي واحد؛ اللون الأصلي يظهر عند المرور."
-            : "Marks are shown at one optical height in a single grey; brand colour returns on hover."}
+            ? "الشعارات معروضة بارتفاع بصري واحد وبألوانها الأصلية."
+            : "Marks are shown at one optical height, in their own brand colour."}
         </p>
       </div>
     </div>

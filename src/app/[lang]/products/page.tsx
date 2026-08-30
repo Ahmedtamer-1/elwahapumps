@@ -39,13 +39,13 @@ export default async function ProductsPage({ params }: PageProps) {
   }));
 
   const brandsList = [
-    { id: "astral-pipes", name: "Astral Pipes", logo: "/images/brand/astral-logo.png" },
-    { id: "pmc", name: "PMC", logo: "/images/brand/pmc-logo.png" },
-    { id: "kurlar", name: "Kurlar", logo: "/images/brand/kurlar-logo.png" },
-    { id: "alka", name: "ALKA Thrust Bearing", logo: "/images/brand/alka-logo.png" },
-    { id: "novo", name: "Novo Solar Inverter", logo: "/images/brand/NOVO.png" },
-    { id: "tormac", name: "Tormac Pumps", logo: "/images/brand/Tormac.png" },
-    { id: "untel", name: "Üntel", logo: "/images/brand/Untel.png" },
+    { id: "astral-pipes", name: "Astral Pipes", logo: "/images/brand/astral-mark.png" },
+    { id: "pmc", name: "PMC", logo: "/images/brand/pmc-mark.png" },
+    { id: "kurlar", name: "Kurlar", logo: "/images/brand/kurlar-mark.png" },
+    { id: "alka", name: "ALKA Thrust Bearing", logo: "/images/brand/alka-mark.png" },
+    { id: "novo", name: "Novo Solar Inverter", logo: "/images/brand/novo-mark.png" },
+    { id: "tormac", name: "Tormac Pumps", logo: "/images/brand/tormac-mark.png" },
+    { id: "untel", name: "Üntel", logo: "/images/brand/untel-mark.png" },
   ];
 
   return (
@@ -116,16 +116,20 @@ export default async function ProductsPage({ params }: PageProps) {
               <Link
                 href={`/${lang}/agents/${brand.id}`}
                 key={brand.id}
-                className="group relative w-full max-w-[140px] md:max-w-[200px] h-16 md:h-20"
+                className="group relative flex w-full max-w-[140px] md:max-w-[200px] h-16 md:h-20 items-center justify-center bg-white border border-transparent hover:border-brass transition-colors duration-300"
                 aria-label={brand.name}
               >
+                {/* The marks used to be flattened to white with
+                    brightness-0 + invert, which is what a dark ground forces
+                    on a colour logo. They read in their own colours instead
+                    now, on a white tile — one tile size for all seven is what
+                    carries the optical weight the flattening used to. */}
                 <Image
                   src={brand.logo}
                   alt={brand.name}
                   fill
-                  // brightness-0 + invert flattens any logo to pure white,
-                  // which is what gives the wall one optical weight.
-                  className="object-contain brightness-0 invert opacity-70 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100 transition-all duration-300"
+                  quality={95}
+                  className="object-contain p-3"
                   sizes="(max-width: 768px) 140px, 200px"
                 />
               </Link>

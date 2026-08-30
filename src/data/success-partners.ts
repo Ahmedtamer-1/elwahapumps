@@ -8,129 +8,107 @@
  * Logos live in `public/images/partners/`, one file per entry. Filenames are
  * ASCII slugs on purpose — several arrived as `download (2).png` or with an
  * Arabic filename, which makes for fragile image URLs.
+ *
+ * The whole set was re-cut in one pass: every file is a 669×373 PNG with the
+ * background removed and the mark centred, so a single fixed box renders them
+ * all at the same optical scale with no per-logo tuning.
  */
 
 export interface SuccessPartner {
   id: string;
   name: { en: string; ar: string };
   logo: string;
-  /**
-   * The mark is white or near-white with a transparent ground, so it
-   * disappears on a light tile and has to be shown on pine instead.
-   */
-  onDark?: boolean;
 }
 
 export const SUCCESS_PARTNERS: SuccessPartner[] = [
   {
     id: "juhayna",
     name: { en: "Juhayna", ar: "جهينة" },
-    logo: "/images/partners/juhayna.png",
-  },
-  {
-    id: "dina-farms",
-    name: { en: "Dina Farms", ar: "مزارع دينا" },
-    logo: "/images/partners/dina-farms.png",
+    logo: "/images/partners/juhayna-mark.png",
   },
   {
     id: "wadi-elnour",
     name: { en: "Wadi ElNour Agricultural Investment & Development", ar: "وادي النور للاستثمار والتنمية الزراعية" },
-    logo: "/images/partners/wadi-elnour.webp",
+    logo: "/images/partners/wadi-elnour-mark.png",
   },
   {
     id: "sharbatly-fruit",
     name: { en: "Sharbatly Fruit", ar: "الشربتلي للفاكهة" },
-    logo: "/images/partners/sharbatly-fruit.png",
+    logo: "/images/partners/sharbatly-fruit-mark.png",
   },
   {
     id: "mostakbal-misr",
     name: { en: "Mostakbal Misr for Sustainable Development", ar: "مستقبل مصر للزراعة المستدامة" },
-    logo: "/images/partners/mostakbal-misr.jpg",
+    logo: "/images/partners/mostakbal-misr-mark.png",
   },
   {
     id: "el-arosa-tea",
     name: { en: "El Arosa Tea", ar: "شاي العروسة" },
-    logo: "/images/partners/el-arosa-tea.jpg",
+    logo: "/images/partners/el-arosa-tea-mark.png",
   },
   {
     id: "aldahra",
     name: { en: "Al Dahra", ar: "الظاهرة" },
-    logo: "/images/partners/aldahra.png",
+    logo: "/images/partners/aldahra-mark.png",
   },
   {
     id: "blue-nile",
     name: { en: "Blue Nile — Growers, Packers & Exporters", ar: "بلو نايل للتصدير والتعبئة" },
-    logo: "/images/partners/blue-nile.png",
-    onDark: true,
+    logo: "/images/partners/blue-nile-mark.png",
   },
   {
     id: "linah-farms",
     name: { en: "Linah Farms", ar: "مزارع لينة" },
-    logo: "/images/partners/linah-farms.png",
+    logo: "/images/partners/linah-farms-mark.png",
   },
   {
     id: "mozare3",
     name: { en: "Mozare3 — Farmers' Partner", ar: "مزارع — شريك الفلاح" },
-    logo: "/images/partners/mozare3.png",
+    logo: "/images/partners/mozare3-mark.png",
   },
   {
     id: "ata-group",
     name: { en: "ATA Group — International Agricultural Fertilizers", ar: "مجموعة عطا — الشركة الدولية للأسمدة الزراعية" },
-    logo: "/images/partners/ata-group.jpg",
+    logo: "/images/partners/ata-group-mark.png",
   },
   {
     id: "belco",
     name: { en: "Belco", ar: "بلكو" },
-    logo: "/images/partners/belco.png",
+    logo: "/images/partners/belco-mark.png",
   },
   {
     id: "garden-fresh",
     name: { en: "Garden Fresh", ar: "جاردن فريش" },
-    logo: "/images/partners/garden-fresh.jpg",
-  },
-  {
-    id: "royal-fruits",
-    name: { en: "Royal Fruits", ar: "رويال فروتس" },
-    logo: "/images/partners/royal-fruits.png",
+    logo: "/images/partners/garden-fresh-mark.png",
   },
   {
     id: "green-hand",
     name: { en: "Green Hand", ar: "جرين هاند" },
-    logo: "/images/partners/green-hand.png",
-  },
-  {
-    id: "lotus-agriculture",
-    name: { en: "Lotus Agriculture Development", ar: "لوتس للتنمية الزراعية" },
-    logo: "/images/partners/lotus-agriculture.jpeg",
+    logo: "/images/partners/green-hand-mark.png",
   },
   {
     id: "rakha",
     name: { en: "Rakha for Agricultural Investment & Development", ar: "رخاء للاستثمار الزراعي والتنمية" },
-    logo: "/images/partners/rakha.png",
+    logo: "/images/partners/rakha-mark.png",
   },
   {
     id: "agricultural-investment-development",
     name: { en: "Agricultural Investment & Development Company", ar: "شركة الاستثمارات والتنمية الزراعية" },
-    logo: "/images/partners/agricultural-investment-development.png",
+    logo: "/images/partners/agricultural-investment-development-mark.png",
   },
   {
     id: "jk-agricultural-investment",
     name: { en: "JK for Agricultural Investment", ar: "جي كي للاستثمار الزراعي" },
-    logo: "/images/partners/jk-agricultural-investment.png",
-  },
-  {
-    id: "el-nour-el-amal",
-    name: { en: "El Nour & El Amal — Heavy Equipment", ar: "النور والأمل للشحن والتفريغ وتأجير المعدات الثقيلة" },
-    logo: "/images/partners/el-nour-el-amal.png",
+    logo: "/images/partners/jk-agricultural-investment-mark.png",
   },
   {
     id: "nana",
     name: { en: "Nana", ar: "نانا" },
-    logo: "/images/partners/nana.jpg",
+    logo: "/images/partners/nana-mark.png",
   },
   {
     id: "med",
     name: { en: "Mechanical & Electrical Department", ar: "إدارة الميكانيكا والكهرباء" },
-    logo: "/images/partners/med-mechanical-electrical.jpg",
+    logo: "/images/partners/med-mechanical-electrical-mark.png",
   },
 ];

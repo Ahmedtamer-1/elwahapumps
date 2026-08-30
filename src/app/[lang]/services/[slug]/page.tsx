@@ -2,6 +2,7 @@ import React from "react";
 import { getDictionary, Locale, hasLocale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail, Wrench, Shield } from "lucide-react";
 
 interface PageProps {
@@ -18,6 +19,84 @@ const serviceSlugs = [
   "motor-maintenance",
   "panel-maintenance",
 ];
+
+/**
+ * Services we have photographs of, keyed by slug. A service with two frames
+ * gets them side by side behind the header band; the second is dropped on
+ * narrow screens, where half a photograph reads as a mistake. Services with
+ * no entry keep the plain pine band.
+ */
+const SERVICE_PHOTO: Record<
+  string,
+  {
+    srcs: string[];
+    alt: { en: string; ar: string };
+    position?: string;
+    /** "contain" shows the whole frame — for portrait shots that a wide band would crop. */
+    fit?: "cover" | "contain";
+  }
+> = {
+  "pump-supply": {
+    srcs: ["/images/services/well-site.jpg", "/images/services/pump-crate.jpg"],
+    alt: {
+      en: "A rig setting a pump on a well site, and a crated Kurlar pump leaving the store",
+      ar: "معدات التركيب في موقع البئر، وطلمبة كورلار في صندوقها أثناء الخروج من المخزن",
+    },
+  },
+  "panel-design": {
+    srcs: ["/images/services/panel-assembly.jpeg"],
+    alt: {
+      en: "Control panels being assembled at the El Waha panel shop",
+      ar: "تجميع لوحات التحكم داخل مركز صيانة الواحة",
+    },
+  },
+  "marine-cable-supply": {
+    srcs: ["/images/services/cable-store.jpg"],
+    alt: {
+      en: "Submersible cable drums being moved in the El Waha store",
+      ar: "بكر الكابلات الغاطسة داخل مخزن الواحة",
+    },
+  },
+  "well-pipe-supply": {
+    srcs: ["/images/services/pipe-delivery.jpg"],
+    // Portrait frame in a wide band. Cropping it to fill loses the load, so the
+    // whole photograph is shown, parked on the side the type does not use.
+    fit: "contain",
+    position: "ltr:object-right rtl:object-left",
+    alt: {
+      en: "An El Waha crew loading a delivery of Astral well pipe",
+      ar: "فريق الواحة أثناء تحميل شحنة مواسير أعماق من Astral",
+    },
+  },
+  "pump-maintenance": {
+    srcs: ["/images/services/pump-strip.jpg", "/images/services/lathe-work.jpg"],
+    alt: {
+      en: "A submersible pump stripped on the bench, and a worn part being machined on the lathe",
+      ar: "فك طلمبة غاطسة على المنضدة، وخرط جزء تالف على المخرطة",
+    },
+  },
+  "motor-maintenance": {
+    srcs: ["/images/services/motor-bay.jpg", "/images/services/rewinding-wire.jpg"],
+    alt: {
+      en: "Motors stripped for rewinding in the El Waha service centre, and winding wire being sized",
+      ar: "مواتير تحت إعادة اللف في مركز صيانة الواحة، وقياس سلك اللف قبل التركيب",
+    },
+  },
+  "panel-maintenance": {
+    srcs: ["/images/services/panel-service.jpg", "/images/services/panel-wiring.jpg"],
+    alt: {
+      en: "An El Waha technician working inside a control panel, and contactors being wired on the backplate",
+      ar: "فني الواحة أثناء العمل داخل لوحة تحكم، وتوصيل الكونتاكتورات على لوحة التركيب",
+    },
+  },
+  "spare-parts-supply": {
+    srcs: ["/images/services/parts-store.jpg", "/images/services/parts-wire.jpg"],
+    alt: {
+      en: "Thrust bearings and winding wire on the shelves of the El Waha parts store",
+      ar: "كراسي التحميل وأسلاك اللف على أرفف مخزن قطع الغيار بالواحة",
+    },
+  },
+};
 
 export async function generateStaticParams() {
   const locales = ["ar", "en"];
@@ -69,6 +148,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         "Continuous technical support and ongoing maintenance options",
       ];
 
+  const photo = SERVICE_PHOTO[slug];
+
   // Filter related services
   const relatedSlugs = serviceSlugs
     .filter((s) => s !== slug && (isSupply ? [
@@ -86,33 +167,76 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   return (
     <div className="bg-white min-h-screen pb-20">
-      {/* Header Banner */}
-      <section className="bg-black text-white py-16 border-b border-neutral-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Link
-            href={`/${lang}/services`}
-            className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"
-          >
-            {lang === "ar" ? <ArrowRight className="w-4 h-4 me-1" /> : <ArrowLeft className="w-4 h-4 me-1" />}
-            {lang === "ar" ? "العودة للخدمات" : "Back to Services"}
-          </Link>
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-                {isSupply ? dict.servicesPage.categories.supply : dict.servicesPage.categories.maintenance}
-              </span>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black mt-3">
-                {service.title}
-              </h1>
+      {/*
+        Header band. The page is a sales document, so it opens the way the
+        printed one does: a brass rule, the service named at display size, the
+        one-line summary under it, and a single solid call button — no chip
+        repeating the tab the visitor just clicked, and no back link competing
+        with the site's own navigation. The photograph, where a service has
+        one, sits behind at low opacity under a pine wash.
+      */}
+      <section className="relative bg-pine text-bone border-b border-field overflow-hidden">
+        {photo && (
+          <>
+            <div className="absolute inset-0 flex">
+              {photo.srcs.map((src, idx) => (
+                <div
+                  key={src}
+                  className={`relative flex-1 ${idx > 0 ? "hidden md:block" : ""}`}
+                >
+                  <Image
+                    src={src}
+                    alt={idx === 0 ? (lang === "ar" ? photo.alt.ar : photo.alt.en) : ""}
+                    fill
+                    sizes={photo.srcs.length > 1 ? "(max-width: 768px) 100vw, 50vw" : "100vw"}
+                    priority
+                    className={`${photo.fit === "contain" ? "object-contain" : "object-cover"} ${
+                      photo.position ?? ""
+                    }`}
+                  />
+                </div>
+              ))}
             </div>
-            {/* Action buttons */}
-            <div className="flex gap-4 shrink-0">
+            {/*
+              Two scrims rather than one flat wash. A photograph dimmed evenly
+              to 30% reads as a texture, not a picture — the subject is lost and
+              the band may as well be empty. Instead the pine runs opaque behind
+              the column of type, where contrast has to hold, and clears away
+              across the rest of the frame so the photograph is legible as a
+              photograph. The light tint on top only keeps it in brand colour.
+            */}
+            <div
+              aria-hidden
+              className="absolute inset-0 ltr:bg-gradient-to-r rtl:bg-gradient-to-l from-pine via-pine/85 to-pine/15"
+            />
+            <div aria-hidden className="absolute inset-0 bg-pine/20" />
+          </>
+        )}
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+          <div className="max-w-3xl">
+            <span aria-hidden className="block h-0.5 w-16 bg-brass mb-6" />
+            <h1 className="text-h1 md:text-display font-extrabold">{service.title}</h1>
+            {service.short && (
+              <p className="mt-5 text-body text-bone/75 leading-relaxed max-w-2xl">
+                {service.short}
+              </p>
+            )}
+            <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="tel:+201066685532"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-md shadow-emerald-500/10 transition-colors"
+                className="inline-flex items-center gap-2 bg-brass hover:bg-brass/90 text-pine px-6 py-3 text-[13px] font-semibold transition-colors"
               >
-                <Phone className="w-4 h-4" />
+                <Phone className="w-4 h-4" aria-hidden="true" />
                 <span>{lang === "ar" ? "اتصل الآن" : "Call Now"}</span>
+              </a>
+              <a
+                href={`https://wa.me/201066685532`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-bone/30 hover:border-brass hover:text-brass text-bone px-6 py-3 text-[13px] font-semibold transition-colors"
+              >
+                {lang === "ar" ? "تواصل عبر واتساب" : "Message on WhatsApp"}
               </a>
             </div>
           </div>

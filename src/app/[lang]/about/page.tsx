@@ -152,15 +152,16 @@ export default async function AboutPage({ params }: PageProps) {
             {AGENCIES.map((agency) => (
               <div
                 key={agency.name}
-                className="group relative h-28 flex items-center justify-center border-b border-r border-rule bg-bone"
+                className="group relative h-28 flex items-center justify-center border-b border-r border-rule bg-white"
               >
-                <div className="relative w-full h-14">
+                <div className="relative w-full h-16">
                   <Image
                     src={agency.logo}
                     alt={agency.name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                    className="object-contain px-6 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    quality={95}
+                    className="object-contain px-4"
                   />
                 </div>
               </div>
