@@ -5,10 +5,13 @@ import Image from "next/image";
  * El Waha logo system.
  *
  * The lockup is the supplied artwork — the Arabic calligraphic droplet, a
- * divider, and the Latin wordmark — rather than type set from tokens. It
- * ships in two colourways keyed out of the same drawing: pine for light
- * grounds, white for dark ones (§3.5) — white rather than bone, so it holds
- * over the brighter parts of the hero photography. It is never set in brass,
+ * divider, and the Latin wordmark — rather than type set from tokens.
+ *
+ * The drawing is two-tone: the calligraphy in brand green, the alif struck
+ * through it in brass. It ships in two colourways keyed out of that same
+ * drawing — green on light grounds, white on dark ones (§3.5); white rather
+ * than bone, so it holds over the brighter parts of the hero photography.
+ * The brass accent is part of the artwork and rides along in both. It is
  * never on a gradient, never re-tracked.
  *
  * It stands alone. The "PUMPS & WELLS SERVICES" descriptor that used to
@@ -22,8 +25,8 @@ import Image from "next/image";
 /** Cap height of "EL WAHA" as a fraction of the artwork's height. */
 const CAP_RATIO = 165 / 553;
 
-const LOCKUP = { width: 1367, height: 553 };
-const MARK = { width: 390, height: 553 };
+const LOCKUP = { width: 1360, height: 553 };
+const MARK = { width: 382, height: 553 };
 
 export type LogoVariant =
   /** The full artwork: droplet, divider, wordmark. */
@@ -35,7 +38,7 @@ export interface LogoProps {
   variant?: LogoVariant;
   /** Cap height of the wordmark in px. Everything else derives from it. */
   x?: number;
-  /** Reversed colourway for pine grounds: the bone drawing. */
+  /** Reversed colourway for pine grounds: the white drawing. */
   reversed?: boolean;
   /** Accessible name. Defaults to the company name. */
   title?: string;
