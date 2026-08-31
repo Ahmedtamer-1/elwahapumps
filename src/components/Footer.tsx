@@ -43,7 +43,7 @@ export default function Footer({ lang, dict }: FooterProps) {
           {/* Company brief & socials */}
           <div>
             <Link href={`/${lang}`} aria-label="El Waha" className="inline-block mb-6">
-              <Logo variant="lockup" x={20} reversed />
+              <Logo variant="mark" x={20} reversed />
             </Link>
             {/* §07 voice: specific over superlative. The old copy claimed
                 "leading company" and "20+ years"; this names the record,

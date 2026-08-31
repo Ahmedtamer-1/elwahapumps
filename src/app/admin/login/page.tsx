@@ -13,9 +13,9 @@ export default async function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-100">
       <div className="w-full max-w-sm">
-        {/* The same lockup the public site uses. */}
+        {/* The same mark the public site uses. */}
         <div className="flex justify-center mb-8">
-          <Logo variant="lockup" x={18} />
+          <Logo variant="mark" x={18} />
         </div>
 
         <div className="bg-white p-8 rounded-2xl border border-neutral-200 shadow-sm">

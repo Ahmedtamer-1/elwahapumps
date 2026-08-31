@@ -106,20 +106,19 @@ export default function Header({ lang, dict }: HeaderProps) {
         <div className={`w-full transition-all duration-300 ${isScrolled ? 'py-3' : isHome ? 'py-5' : 'py-5'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
-            {/* Logo — the lockup artwork, keyed to one pine and one bone
-                colourway rather than three PNGs in three different greens
-                (§1.2b). Reversed over the hero, pine once the header goes
-                solid. It stands alone: the descriptor that used to hang off
-                it repeated what the nav and the headline already say. */}
+            {/* Logo — the calligraphic mark alone, no wordmark: green with the
+                brass alif on light grounds, white with brass reversed over
+                the hero. One drawing in two colourways rather than three
+                PNGs in three different greens (§1.2b). */}
             {/* Responsive switch lives on these wrappers, not on Logo:
                 Logo sets its own `display` inline, which would beat a
                 `hidden` utility class and render both sizes at once. */}
             <Link href={`/${lang}`} aria-label="El Waha" className="flex items-center min-w-0">
               <span className="hidden sm:block">
-                <Logo variant="lockup" x={18} reversed={isTransparent} preload />
+                <Logo variant="mark" x={18} reversed={isTransparent} preload />
               </span>
               <span className="block sm:hidden">
-                <Logo variant="lockup" x={16} reversed={isTransparent} />
+                <Logo variant="mark" x={16} reversed={isTransparent} />
               </span>
             </Link>
 
@@ -341,10 +340,10 @@ export default function Header({ lang, dict }: HeaderProps) {
         }`}
       >
         <div>
-          {/* Header Inside Drawer — the real short lockup, not "EL WAHA"
-              faked in a monospace face (§1.2a). */}
+          {/* Header Inside Drawer — the real mark, not "EL WAHA" faked in a
+              monospace face (§1.2a). */}
           <div className="flex items-center justify-between pb-5 border-b border-rule">
-            <Logo variant="lockup" x={16} />
+            <Logo variant="mark" x={16} />
             <button
               type="button"
               onClick={() => setIsOpen(false)}

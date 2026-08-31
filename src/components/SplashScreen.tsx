@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import Logo from "@/components/Logo";
 
 /**
- * First paint. Pine ground with the reversed lockup — this was the third
+ * First paint. Pine ground with the reversed mark — this was the third
  * place the old logo PNG was loaded, each in a slightly different green
- * (§1.2b). It now draws the same lockup as the header and footer.
+ * (§1.2b). It now draws the same mark as the header and footer.
  */
 export default function SplashScreen() {
   const [isVisible, setIsVisible] = useState(true);
@@ -38,11 +38,11 @@ export default function SplashScreen() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="flex flex-col items-center"
           >
-            <Logo variant="lockup" x={26} reversed />
-            {/* Brass rule draws in under the lockup — the accent, kept to
+            <Logo variant="mark" x={26} reversed />
+            {/* Brass rule draws in under the mark — the accent, kept to
                 a hairline rather than a rounded bar in green.
 
-                It runs the full width of the lockup: `self-stretch` takes
+                It runs the full width of the mark: `self-stretch` takes
                 the width from the column's cross size, and the draw-in is a
                 scaleX from the centre rather than an animated `width`, which
                 resolved against a box the rule was itself helping to size

@@ -36,7 +36,11 @@ export type LogoVariant =
 
 export interface LogoProps {
   variant?: LogoVariant;
-  /** Cap height of the wordmark in px. Everything else derives from it. */
+  /**
+   * Cap height of the wordmark in px. Everything else derives from it —
+   * including the mark, which renders at the height it stands in the
+   * lockup, so swapping variant does not resize the drawing.
+   */
   x?: number;
   /** Reversed colourway for pine grounds: the white drawing. */
   reversed?: boolean;
@@ -67,7 +71,7 @@ export default function Logo({
   if (variant === "mark") {
     return (
       <Mark
-        size={x * 2}
+        size={x / CAP_RATIO}
         reversed={reversed}
         title={title}
         preload={preload}
