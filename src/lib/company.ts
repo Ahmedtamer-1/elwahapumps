@@ -28,16 +28,16 @@ export function yearsOfService(now: Date = new Date()): number {
 export const AGENCY_COUNT = 12;
 
 export const AGENCIES = [
-  { name: "Kurlar", logo: "/images/brand/kurlar-mark.png" },
-  { name: "Panelli", logo: "/images/brand/panelli-mark.png" },
-  { name: "Astral Pipes", logo: "/images/brand/astral-mark.png" },
-  { name: "PMC", logo: "/images/brand/pmc-mark.png" },
-  { name: "NOVO", logo: "/images/brand/novo-mark.png" },
-  { name: "Tormac", logo: "/images/brand/tormac-mark.png" },
-  { name: "Untel", logo: "/images/brand/untel-mark.png" },
-  { name: "Alka", logo: "/images/brand/alka-mark.png" },
-  { name: "Voltson", logo: "/images/brand/voltson-mark.png" },
-  { name: "Rovatti", logo: "/images/brand/rovatti-mark.png" },
-  { name: "Franklin Electric", logo: "/images/brand/franklin-mark.png" },
-  { name: "Aristoncavi", logo: "/images/brand/aristoncavi-mark.png" },
+  { name: "Kurlar", logo: "/images/brand/kurlar-mark.webp" },
+  { name: "Panelli", logo: "/images/brand/panelli-mark.webp" },
+  { name: "Astral Pipes", logo: "/images/brand/astral-mark.webp" },
+  { name: "PMC", logo: "/images/brand/pmc-mark.webp" },
+  { name: "NOVO", logo: "/images/brand/novo-mark.webp" },
+  { name: "Tormac", logo: "/images/brand/tormac-mark.webp" },
+  { name: "Untel", logo: "/images/brand/untel-mark.webp" },
+  { name: "Alka", logo: "/images/brand/alka-mark.webp" },
+  { name: "Voltson", logo: "/images/brand/voltson-mark.webp" },
+  { name: "Rovatti", logo: "/images/brand/rovatti-mark.webp" },
+  { name: "Franklin Electric", logo: "/images/brand/franklin-mark.webp" },
+  { name: "Aristoncavi", logo: "/images/brand/aristoncavi-mark.webp" },
 ] as const;

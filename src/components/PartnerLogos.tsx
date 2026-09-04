@@ -26,14 +26,14 @@ const partners = [
   {
     id: "kurlar",
     name: "Kurlar",
-    logo: "/images/brand/kurlar-mark.png",
+    logo: "/images/brand/kurlar-mark.webp",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Heavy industrial & deep wells", ar: "صناعي ثقيل وآبار عميقة" },
   },
   {
     id: "astral-pipes",
     name: "Astral Pipes",
-    logo: "/images/brand/astral-mark.png",
+    logo: "/images/brand/astral-mark.webp",
     type: { en: "Specialist supplier", ar: "مورّد متخصص" },
     // Western digits on the Arabic side too (§5.2 rule 5): specs and
     // warranties get copied across both languages.
@@ -42,35 +42,35 @@ const partners = [
   {
     id: "pmc",
     name: "PMC",
-    logo: "/images/brand/pmc-mark.png",
+    logo: "/images/brand/pmc-mark.webp",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Pump systems", ar: "منظومات طلمبات" },
   },
   {
     id: "alka",
     name: "ALKA Thrust Bearing",
-    logo: "/images/brand/alka-mark.png",
+    logo: "/images/brand/alka-mark.webp",
     type: { en: "Component supplier", ar: "مورّد مكوّنات" },
     bestFor: { en: "Thrust bearings & wear parts", ar: "كراسي تحميل وقطع غيار" },
   },
   {
     id: "novo",
     name: "Novo Solar Inverter",
-    logo: "/images/brand/novo-mark.png",
+    logo: "/images/brand/novo-mark.webp",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Solar & VFD inverters", ar: "عاكسات شمسية ومغيرات تردد" },
   },
   {
     id: "tormac",
     name: "Tormac Pumps",
-    logo: "/images/brand/tormac-mark.png",
+    logo: "/images/brand/tormac-mark.webp",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Surface & submersible pumps", ar: "طلمبات سطحية وغاطسة" },
   },
   {
     id: "untel",
     name: "Üntel",
-    logo: "/images/brand/untel-mark.png",
+    logo: "/images/brand/untel-mark.webp",
     type: { en: "Manufacturer", ar: "مصنّع" },
     bestFor: { en: "Submersible motor cables", ar: "كابلات المواتير الغاطسة" },
   },

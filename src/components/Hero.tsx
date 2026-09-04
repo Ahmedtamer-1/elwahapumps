@@ -36,7 +36,7 @@ export default function Hero({ lang, dict }: HeroProps) {
   }, []);
 
   return (
-    <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-pine flex items-center">
+    <section className="relative w-full md:h-[85vh] md:min-h-[600px] overflow-hidden bg-pine flex items-center">
       {/* Background Slider */}
       {HERO_IMAGES.map((src, idx) => (
         <div 
@@ -53,8 +53,8 @@ export default function Hero({ lang, dict }: HeroProps) {
           />
           {/* Pine scrim rather than black, so the photography sits inside
               the palette instead of beside it. Carries bone text at AAA. */}
-          <div
-            className="absolute inset-0"
+          <div 
+            className="absolute inset-0 max-md:bg-gradient-to-b max-md:from-pine/92 max-md:to-pine/72 md:!bg-none"
             style={{
               backgroundImage: `linear-gradient(to ${isAr ? "left" : "right"}, rgba(14,59,46,0.94) 0%, rgba(14,59,46,0.72) 45%, rgba(14,59,46,0.25) 100%)`,
             }}
@@ -63,36 +63,36 @@ export default function Hero({ lang, dict }: HeroProps) {
       ))}
 
       {/* Content */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-11 md:py-0">
         <div className={`max-w-2xl transition-all duration-1000 transform ${isAr ? "ml-auto" : ""} translate-y-0 opacity-100`}>
           {/* Brass rule opens the block — the accent pairing for dark
               grounds. The founding date and city that used to sit above it
               are carried by the About page and the footer instead. */}
-          <div className={`w-16 h-[3px] bg-brass mb-6 ${isAr ? "ml-auto" : ""}`} aria-hidden="true" />
+          <div className={`w-[52px] md:w-16 h-[3px] bg-brass mb-5 md:mb-6 ${isAr ? "ml-auto" : ""}`} aria-hidden="true" />
 
           {/* Display level, §05 Table 4. The Arabic uplift in size and
               leading is carried by the [dir=rtl] rules in globals.css. */}
-          <h1 className="text-h1 sm:text-display font-extrabold text-bone text-balance">
+          <h1 className="text-[34px] leading-[36px] tracking-[-0.03em] md:text-h1 sm:text-display font-extrabold text-bone text-balance">
             {dict.hero.title}
           </h1>
 
           {/* The specifics the headline can't hold: six agencies, one point
               of contact, a service team. §07 — a number or a name, not
               "highest level". */}
-          <p className="mt-5 text-body text-bone/80 max-w-[52ch]">
+          <p className="mt-4 md:mt-5 text-[14px] leading-[23px] md:text-body text-bone/80 max-w-[52ch]">
             {dict.hero.subtitle}
           </p>
 
-          <div className={`flex flex-wrap gap-3 mt-9 ${isAr ? "justify-end" : ""}`}>
+          <div className={`flex flex-col md:flex-row gap-2.5 md:gap-3 mt-6 md:mt-9 ${isAr ? "md:justify-end" : ""}`}>
             <Link
               href={`/${lang}/contact`}
-              className="inline-flex items-center justify-center bg-brass hover:bg-bone text-ink font-semibold text-sm px-8 py-4 transition-colors active-scale-98"
+              className="inline-flex items-center justify-center bg-brass hover:bg-bone text-ink font-semibold text-[14px] w-full md:w-auto px-4 md:px-8 py-4 transition-colors active-scale-98 text-center"
             >
               {dict.common.requestQuote}
             </Link>
             <Link
               href={`/${lang}/products`}
-              className="inline-flex items-center justify-center text-bone font-semibold text-sm px-8 py-4 border border-bone/30 hover:border-brass hover:text-brass transition-colors active-scale-98"
+              className="inline-flex items-center justify-center text-bone font-semibold text-[14px] w-full md:w-auto px-4 md:px-8 py-4 border border-bone/30 hover:border-brass hover:text-brass transition-colors active-scale-98 text-center"
             >
               {isAr ? "تصفّح المنتجات" : "Browse the catalogue"}
             </Link>

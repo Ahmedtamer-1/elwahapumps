@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 interface ContactFormProps {
   lang: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dict: any;
 }
 
@@ -23,11 +24,12 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
   useEffect(() => {
     const subjectParam = searchParams.get("subject");
     if (subjectParam) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFormData((prev) => ({ ...prev, subject: subjectParam }));
     }
   }, [searchParams]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -53,44 +55,47 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
   };
 
   return (
-    <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm">
-      <h3 className="text-xl font-bold text-neutral-900 mb-6 border-b border-neutral-100 pb-4">
-        {dict.contactPage.formTitle}
-      </h3>
+    <div className="w-full bg-white border border-rule border-t-[3px] border-t-pine px-4 py-6 md:p-10">
+      <span className="font-mono font-medium text-[10px] md:text-[11px] tracking-[0.16em] uppercase text-stone mb-2 md:mb-3 block">
+        {dict.contactPage.formTitle || "Send an Inquiry"}
+      </span>
+      <h2 className="text-[21px] md:text-2xl font-extrabold text-ink tracking-tight mb-5 md:mb-7">
+        Tell us about the well
+      </h2>
 
       {status === "success" && (
-        <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 text-sm font-semibold rounded-xl border border-emerald-100">
+        <div className="mb-6 p-4 bg-bone text-pine text-sm font-bold border-l-4 border-pine">
           {dict.contactPage.success}
         </div>
       )}
 
       {status === "error" && (
-        <div className="mb-6 p-4 bg-red-50 text-red-700 text-sm font-semibold rounded-xl border border-red-100">
+        <div className="mb-6 p-4 bg-red-50 text-error text-sm font-bold border-l-4 border-error">
           {dict.contactPage.error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.name} <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            value={formData.name}
-            onChange={handleChange}
-            placeholder={lang === "ar" ? "مثال: أحمد محمد" : "e.g., John Doe"}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-            <label htmlFor="phone" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-              {dict.contactPage.phone} <span className="text-red-500">*</span>
+            <label htmlFor="name" className="block text-[12px] font-bold text-ink mb-1.5">
+              {dict.contactPage.name}
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              value={formData.name}
+              onChange={handleChange}
+              placeholder={lang === "ar" ? "مثال: أحمد محمد" : "e.g., John Doe"}
+              className="w-full px-3.5 py-3.5 border border-rule/60 focus:border-pine outline-none text-[13.5px] text-ink transition-colors bg-white font-normal rounded-none"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="phone" className="block text-[12px] font-bold text-ink mb-1.5">
+              {dict.contactPage.phone}
             </label>
             <input
               type="tel"
@@ -100,12 +105,12 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
               value={formData.phone}
               onChange={handleChange}
               placeholder={lang === "ar" ? "مثال: 01066685532" : "e.g., +20 106 668 5532"}
-              className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+              className="w-full px-3.5 py-3.5 border border-rule/60 focus:border-pine outline-none text-[13.5px] text-stone font-mono transition-colors bg-white rounded-none"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
+            <label htmlFor="email" className="block text-[12px] font-bold text-ink mb-1.5">
               {dict.contactPage.email}
             </label>
             <input
@@ -115,54 +120,67 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
               value={formData.email}
               onChange={handleChange}
               placeholder={lang === "ar" ? "مثال: client@example.com" : "e.g., client@example.com"}
-              className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+              className="w-full px-3.5 py-3.5 border border-rule/60 focus:border-pine outline-none text-[13.5px] text-stone font-mono transition-colors bg-white rounded-none"
             />
+          </div>
+
+          <div>
+            <label htmlFor="subject" className="block text-[12px] font-bold text-ink mb-1.5">
+              {dict.contactPage.subject}
+            </label>
+            <div className="relative">
+              <select
+                id="subject"
+                name="subject"
+                required
+                value={formData.subject}
+                onChange={handleChange}
+                className="w-full px-3.5 py-3.5 border border-rule/60 focus:border-pine outline-none text-[13.5px] text-ink transition-colors bg-white font-normal appearance-none rounded-none pr-10"
+              >
+                <option value="">{lang === "ar" ? "اختر الخدمة المطلوبة" : "Select required service"}</option>
+                <option value="Supply & Installation">{lang === "ar" ? "توريد وتركيب" : "Supply & installation"}</option>
+                <option value="Maintenance">{lang === "ar" ? "صيانة" : "Maintenance"}</option>
+                <option value="Other">{lang === "ar" ? "أخرى" : "Other"}</option>
+              </select>
+              <div className="absolute top-0 right-0 h-full flex items-center pr-3.5 pointer-events-none text-stone">
+                <span className="text-[10px]">▼</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div>
-          <label htmlFor="subject" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.subject} <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="subject"
-            name="subject"
-            required
-            value={formData.subject}
-            onChange={handleChange}
-            placeholder={lang === "ar" ? "الموضوع أو الخدمة المطلوبة" : "Subject or required service"}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="message" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.message} <span className="text-red-500">*</span>
+        <div className="mt-5">
+          <label htmlFor="message" className="block text-[12px] font-bold text-ink mb-1.5">
+            {dict.contactPage.message}
           </label>
           <textarea
             id="message"
             name="message"
-            rows={4}
+            rows={5}
             required
             value={formData.message}
             onChange={handleChange}
-            placeholder={lang === "ar" ? "تفاصيل الطلب أو الاستفسار..." : "Inquiry details..."}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors resize-none"
+            placeholder={lang === "ar" ? "عمق البئر، الإنتاجية المقاسة، المنسوب الثابت، والمحافظة..." : "Well depth, measured yield, static head and the governorate..."}
+            className="w-full px-3.5 py-3.5 border border-rule/60 focus:border-pine outline-none text-[13.5px] leading-[22px] text-stone transition-colors resize-none bg-white font-normal rounded-none"
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={status === "sending"}
-          className={`w-full py-3 px-6 rounded-lg text-white font-bold text-sm shadow-md transition-all duration-300 ${
-            status === "sending"
-              ? "bg-neutral-400 cursor-not-allowed shadow-none"
-              : "bg-emerald-600 hover:bg-emerald-700 hover:shadow-emerald-500/20 active:scale-98"
-          }`}
-        >
-          {status === "sending" ? dict.contactPage.sending : dict.contactPage.submit}
-        </button>
+        <div className="mt-5 md:mt-6 flex flex-col md:flex-row items-center gap-4 md:gap-5">
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className={`w-full md:w-auto py-4 px-8 text-bone font-bold text-[13.5px] transition-colors rounded-none ${
+              status === "sending"
+                ? "bg-pine/70 cursor-not-allowed"
+                : "bg-pine hover:bg-field active-scale-98"
+            }`}
+          >
+            {status === "sending" ? dict.contactPage.sending : dict.contactPage.submit || "Send Message"}
+          </button>
+          <span className="text-[12px] leading-[20px] text-stone-light max-w-full md:max-w-[36ch] text-center md:text-left">
+            {lang === "ar" ? "نرد خلال يوم عمل واحد. إذا كان البئر متوقفًا، يرجى الاتصال بدلاً من ذلك." : "We reply within one working day. For a well that has stopped, call instead."}
+          </span>
+        </div>
       </form>
     </div>
   );
@@ -171,18 +189,17 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
 export default function ContactForm(props: ContactFormProps) {
   return (
     <Suspense fallback={
-      <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm animate-pulse">
-        <div className="h-6 bg-neutral-200 rounded w-1/3 mb-6"></div>
-        <div className="space-y-4">
-          <div className="h-10 bg-neutral-100 rounded w-full"></div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="h-10 bg-neutral-100 rounded"></div>
-            <div className="h-10 bg-neutral-100 rounded"></div>
-          </div>
-          <div className="h-10 bg-neutral-100 rounded w-full"></div>
-          <div className="h-28 bg-neutral-100 rounded w-full"></div>
-          <div className="h-12 bg-neutral-200 rounded w-full"></div>
+      <div className="w-full bg-white border border-rule border-t-[3px] border-t-pine p-10 animate-pulse">
+        <div className="h-4 bg-bone w-1/4 mb-3"></div>
+        <div className="h-8 bg-bone w-2/3 mb-7"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+          <div className="h-[50px] bg-bone"></div>
+          <div className="h-[50px] bg-bone"></div>
+          <div className="h-[50px] bg-bone"></div>
+          <div className="h-[50px] bg-bone"></div>
         </div>
+        <div className="h-[130px] bg-bone mb-6"></div>
+        <div className="h-[50px] bg-bone w-40"></div>
       </div>
     }>
       <ContactFormContent {...props} />

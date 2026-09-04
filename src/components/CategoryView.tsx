@@ -124,7 +124,7 @@ export default function CategoryView({
                  {/* Product Image */}
                  <Link href={`/${lang}/products/${product.id}`} className="w-full md:w-72 aspect-[4/3] bg-neutral-100 relative shrink-0 cursor-pointer overflow-hidden">
                    <Image 
-                     src={product.gallery[0] || "/images/placeholder.jpg"} 
+                     src={product.gallery[0] || "/images/placeholder.webp"} 
                      alt={titleStr}
                      fill
                      className="object-contain p-4 mix-blend-multiply group-hover:scale-105 transition-transform duration-500"

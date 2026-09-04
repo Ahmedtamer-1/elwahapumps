@@ -128,7 +128,7 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
         </Field>
       </div>
 
-      <Field label="Image URLs" hint="One per line, e.g. /images/products/pump-kurlar.png">
+      <Field label="Image URLs" hint="One per line, e.g. /images/products/pump-kurlar.webp">
         <textarea
           name="images"
           rows={3}

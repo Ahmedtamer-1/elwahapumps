@@ -20,52 +20,42 @@ interface ProductTabsProps {
 function ProductCard({ product, lang, label }: { product: CatalogProduct; lang: string; label: string }) {
   const productTitle = product.title;
   const productDesc = product.desc;
+  const specsLabel = product.specs.join(' ');
 
   return (
     <Link
       href={`/${lang}/products/${product.id}`}
-      className="flex flex-col justify-between h-full overflow-hidden bg-white rounded-2xl border border-neutral-200 hover:border-neutral-300 shadow-xs hover:shadow-lg transition-all duration-300 group"
+      className="flex flex-col bg-white border border-rule group h-full"
     >
-      {/* Product Image */}
-      <div className="relative w-full h-48 bg-neutral-50 flex items-center justify-center p-4">
+      <div className="relative h-[210px] w-full bg-white border-b border-rule/70 flex items-center justify-center p-4">
         <Image
-          src={product.gallery[0]}
+          src={product.gallery[0] || "/images/placeholder.png"}
           alt={productTitle}
           fill
-          className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+          className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute top-4 left-4">
-          <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 bg-white/90 backdrop-blur-sm shadow-sm text-emerald-600 rounded-md border border-neutral-100">
-            {label}
-          </span>
+        <div className="absolute top-0 left-0 bg-pine text-bone font-mono font-medium text-[10px] tracking-[0.14em] px-[9px] py-[5px] uppercase">
+          {label}
         </div>
       </div>
 
-      <div className="p-6 flex flex-col flex-grow">
-        <h4 className="text-lg font-bold text-neutral-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200 line-clamp-2">
+      <div className="p-[22px_24px_24px] flex flex-col flex-grow">
+        <div className="font-mono font-medium text-[10.5px] tracking-[0.14em] uppercase text-neutral-500 mb-2">
+          {product.category}
+        </div>
+        <h3 className="font-extrabold text-[17px] leading-[23px] text-ink mb-2.5">
           {productTitle}
-        </h4>
-        <p className="text-neutral-500 text-sm leading-relaxed mb-4 line-clamp-3">
+        </h3>
+        <p className="font-normal text-[13px] leading-[21px] text-neutral-600 line-clamp-3">
           {productDesc}
         </p>
 
-        {/* Specs Chips */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {product.specs.map((spec, idx) => (
-            <span key={idx} className="inline-flex items-center text-[10px] font-semibold text-neutral-600 bg-neutral-100 px-2 py-1 rounded-sm">
-              {spec}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-3 mt-auto">
-          <div className="flex-1 min-w-0">
-            <p className="text-base font-bold text-neutral-900 truncate">
-              {priceOnRequestLabel(lang)}
-            </p>
-          </div>
-          <span className="shrink-0 text-center py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition-colors duration-200">
-            {lang === "ar" ? "عرض التفاصيل" : "View Details"}
+        <div className="mt-auto pt-3.5 border-t border-rule/70 flex items-center justify-between">
+          <span className="font-mono font-medium text-[10.5px] tracking-[0.14em] uppercase text-pine group-hover:text-brass transition-colors">
+            {lang === 'ar' ? 'عرض المنتج ←' : 'View product →'}
+          </span>
+          <span className="font-mono font-normal text-[11px] text-neutral-500 line-clamp-1 max-w-[50%] text-right">
+            {specsLabel || (lang === 'ar' ? 'التفاصيل' : 'Details')}
           </span>
         </div>
       </div>
@@ -120,25 +110,34 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
     <div className="w-full">
       {/* Tab Buttons - Hide if teaser */}
       {!isTeaser && (
-        <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => handleTabChange(tab.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-                  isActive
-                    ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                    : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 border border-neutral-200"
-                }`}
-              >
-                {Icon && <Icon className="w-4 h-4" />}
-                {tab.label}
-              </button>
-            );
-          })}
+        <div className="bg-white border-b border-rule">
+          <div className="w-[95%] max-w-[1152px] mx-auto flex flex-nowrap md:flex-wrap overflow-x-auto items-center">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              const count = tab.id === "all" 
+                ? products.length 
+                : products.filter((p) => p.category === tab.id).length;
+              
+              if (count === 0 && tab.id !== "all") return null;
+
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabChange(tab.id)}
+                  className={`whitespace-nowrap px-3.5 py-3.5 md:px-5 md:py-4 font-semibold text-[12px] md:text-[12.5px] border-b-[3px] transition-colors ${
+                    isActive
+                      ? "text-pine border-pine"
+                      : "text-neutral-500 border-transparent hover:text-pine hover:border-rule"
+                  }`}
+                >
+                  {tab.label} <span className="font-mono text-[11px] text-neutral-400 ml-1">{count}</span>
+                </button>
+              );
+            })}
+            <div className="ml-auto font-mono font-medium text-[10.5px] tracking-[0.14em] uppercase text-neutral-400 py-4 hidden md:block">
+              {lang === "ar" ? "مرتبة حسب الفئة" : "Sorted by category"}
+            </div>
+          </div>
         </div>
       )}
 
@@ -151,6 +150,7 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
             // fixed — and the shared 32s keyframe would sprint through a long
             // row and crawl through a short one. Pacing the duration by the
             // card count instead holds one reading speed however many products
+
             // the catalogue grows to.
             style={{
               animationDuration: `${(filteredProducts.length * SECONDS_PER_CARD).toFixed(1)}s`,
@@ -164,10 +164,14 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} lang={lang} label={categoryLabels[product.category]} />
-          ))}
+        <div className={`w-full ${!isTeaser ? "bg-bone py-11 pb-16" : ""}`}>
+          <div className={!isTeaser ? "w-[95%] max-w-[1152px] mx-auto" : ""}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} lang={lang} label={categoryLabels[product.category]} />
+              ))}
+            </div>
+          </div>
         </div>
       )}
 
@@ -175,7 +179,7 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
         <div className="mt-12 text-center">
           <Link
             href={`/${lang}/products`}
-            className="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white px-8 py-3.5 rounded-xl font-bold transition-colors"
+            className="inline-flex items-center gap-2 bg-pine hover:bg-emerald-950 text-bone px-8 py-3.5 font-bold transition-colors"
           >
             <span>{lang === "ar" ? "استعرض كل المنتجات" : "View All Products"}</span>
             <ChevronRight className="w-5 h-5 rtl:rotate-180" />
@@ -188,7 +192,7 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
 
 export default function ProductTabs(props: ProductTabsProps) {
   return (
-    <Suspense fallback={<div className="h-96 w-full animate-pulse bg-neutral-100 rounded-3xl"></div>}>
+    <Suspense fallback={<div className="h-96 w-full animate-pulse bg-field"></div>}>
       <ProductTabsContent {...props} />
     </Suspense>
   );

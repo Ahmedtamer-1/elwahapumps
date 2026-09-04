@@ -3,9 +3,25 @@ import { getDictionary, Locale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShieldCheck, Mail, Phone, ChevronRight } from "lucide-react";
+import type { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang, slug } = await params;
+  const dict = await getDictionary(lang as Locale);
+  const agent = dict.agentsData[slug as keyof typeof dict.agentsData];
+
+  if (!agent) {
+    return { title: "Agent Not Found" };
+  }
+
+  return {
+    title: agent.name,
+    description: agent.desc,
+  };
 }
 
 const agentSlugs = ["astral-pipes", "jee-pumps", "pmc", "kurlar", "alka"];

@@ -196,7 +196,7 @@ const SHEETS: SheetSpec[] = [
         "Enamelled copper winding wire for rewinding submersible and surface motors, stocked from 13 mm up to 31 mm.",
       descAr:
         "سلك نحاس معزول للف المواتير الغاطسة والسطحية، متوفر من مقاس 13 مم حتى 31 مم.",
-      image: "/images/products/pmc-winding-wire.png",
+      image: "/images/products/pmc-winding-wire.webp",
       specsBlob: {
         specs: ["Enamelled Copper", "Submersible Grade", "13–31 mm"],
         variants: [],

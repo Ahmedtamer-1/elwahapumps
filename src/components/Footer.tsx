@@ -22,6 +22,7 @@ export default function Footer({ lang, dict }: FooterProps) {
     { href: `/${lang}`, label: dict.nav.home },
     { href: `/${lang}/about`, label: dict.nav.about },
     { href: `/${lang}/products`, label: dict.nav.products },
+    { href: `/${lang}/projects`, label: dict.nav.projects || (lang === "ar" ? "المشاريع" : "Projects") },
     { href: `/${lang}/agents`, label: dict.nav.agents },
     { href: `/${lang}/contact`, label: dict.nav.contact },
   ];

@@ -57,7 +57,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 8.4,
     pages: 48,
     category: "pumps",
-    logo: "/images/brand/kurlar-mark.png",
+    logo: "/images/brand/kurlar-mark.webp",
   },
   {
     id: "kurlar-ksx",
@@ -68,7 +68,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 7.0,
     pages: 44,
     category: "pumps",
-    logo: "/images/brand/kurlar-mark.png",
+    logo: "/images/brand/kurlar-mark.webp",
   },
   {
     id: "tormac-pumps",
@@ -79,7 +79,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 25.4,
     pages: 124,
     category: "pumps",
-    logo: "/images/brand/tormac-mark.png",
+    logo: "/images/brand/tormac-mark.webp",
   },
   {
     id: "tormac-motors",
@@ -90,7 +90,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 4.5,
     pages: 42,
     category: "motors",
-    logo: "/images/brand/tormac-mark.png",
+    logo: "/images/brand/tormac-mark.webp",
   },
   {
     id: "novo-inverters",
@@ -101,7 +101,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 9.5,
     pages: 8,
     category: "electrical",
-    logo: "/images/brand/novo-mark.png",
+    logo: "/images/brand/novo-mark.webp",
   },
   {
     id: "astral-borewell",
@@ -113,7 +113,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 2.4,
     pages: 36,
     category: "pipes",
-    logo: "/images/brand/astral-mark.png",
+    logo: "/images/brand/astral-mark.webp",
   },
   {
     id: "alka-thrust",
@@ -124,7 +124,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 3.5,
     pages: 12,
     category: "spare-parts",
-    logo: "/images/brand/alka-mark.png",
+    logo: "/images/brand/alka-mark.webp",
   },
   {
     id: "voltson-winding-wire",
@@ -138,7 +138,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 1.2,
     pages: 2,
     category: "electrical",
-    logo: "/images/brand/voltson-mark.png",
+    logo: "/images/brand/voltson-mark.webp",
   },
   {
     id: "franklin-motors",
@@ -151,7 +151,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 3.0,
     pages: 60,
     category: "motors",
-    logo: "/images/brand/franklin-mark.png",
+    logo: "/images/brand/franklin-mark.webp",
   },
   {
     id: "rovatti-borehole",
@@ -165,7 +165,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 9.8,
     pages: 132,
     category: "pumps",
-    logo: "/images/brand/rovatti-mark.png",
+    logo: "/images/brand/rovatti-mark.webp",
   },
   {
     id: "panelli-sx",
@@ -179,7 +179,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 6.6,
     pages: 52,
     category: "pumps",
-    logo: "/images/brand/panelli-mark.png",
+    logo: "/images/brand/panelli-mark.webp",
   },
   {
     id: "untel-flat-cable",
@@ -192,7 +192,7 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 4.0,
     pages: 3,
     category: "cables",
-    logo: "/images/brand/untel-mark.png",
+    logo: "/images/brand/untel-mark.webp",
   },
 ];
 

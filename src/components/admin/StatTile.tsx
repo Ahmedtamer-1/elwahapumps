@@ -27,7 +27,7 @@ function Sparkline({ points }: { points: number[] }) {
   return (
     <svg
       viewBox={`0 0 ${data.length * 8} 24`}
-      className="w-full h-6 mt-3"
+      className="w-full h-6 mt-[14px]"
       preserveAspectRatio="none"
       aria-hidden="true"
     >
@@ -41,8 +41,7 @@ function Sparkline({ points }: { points: number[] }) {
             y={24 - h}
             width={6}
             height={h}
-            rx={2}
-            fill={i === lastIndex ? "#1c7a40" : "#d4d4d8"}
+            fill={i === lastIndex ? "#d2ab5c" : "rgba(20,20,20,0.12)"}
           />
         );
       })}
@@ -53,22 +52,21 @@ function Sparkline({ points }: { points: number[] }) {
 export default function StatTile({ label, value, delta, upIsGood = true, trend, href }: StatTileProps) {
   const deltaIsGood = delta ? (delta.value >= 0) === upIsGood : true;
   const deltaColor = !delta || delta.value === 0
-    ? "text-neutral-500"
+    ? "text-stone"
     : deltaIsGood
-      ? "text-emerald-700"
-      : "text-red-600";
+      ? "text-pine"
+      : "text-red-700";
 
   const body = (
     <>
-      <p className="text-xs font-bold text-neutral-500 uppercase tracking-wide">{label}</p>
-      {/* Proportional figures — tabular-nums is reserved for aligned columns. */}
-      <p className="text-3xl font-semibold text-neutral-900 mt-2 leading-none">
+      <p className="font-medium text-[10px] font-mono tracking-[0.14em] uppercase text-stone-light">{label}</p>
+      <p className="font-extrabold text-[26px] text-pine mt-[8px] leading-none">
         {compactNumber(value)}
       </p>
       {delta && (
         <p className={`text-xs font-semibold mt-2 ${deltaColor}`}>
           {delta.value > 0 ? "+" : ""}
-          {delta.value} <span className="text-neutral-500 font-medium">vs {delta.period}</span>
+          {delta.value} <span className="text-stone font-medium">vs {delta.period}</span>
         </p>
       )}
       {trend && trend.length > 0 && <Sparkline points={trend} />}
@@ -76,11 +74,13 @@ export default function StatTile({ label, value, delta, upIsGood = true, trend, 
   );
 
   const className =
-    "block bg-white rounded-2xl border border-neutral-200 p-5 shadow-sm transition-colors";
+    "block h-full bg-white p-[22px_24px] transition-colors";
 
   return href ? (
-    <Link href={href} className={`${className} hover:border-emerald-300`}>
-      {body}
+    <Link href={href} className={`${className} hover:bg-bone/30 group`}>
+      <div className="group-hover:text-field transition-colors">
+        {body}
+      </div>
     </Link>
   ) : (
     <div className={className}>{body}</div>

@@ -12,11 +12,11 @@ import {
   Shield,
   Briefcase,
   MapPin,
-  LogOut,
   Menu,
   X,
 } from "lucide-react";
 import { logout } from "@/lib/actions/auth";
+import Logo from "@/components/Logo";
 
 const links = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
@@ -43,19 +43,18 @@ export default function AdminNav({ userName, role }: AdminNavProps) {
     exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
   const nav = (
-    <nav className="space-y-1">
-      {navItems.map(({ href, label, icon: Icon, exact }) => (
+    <nav className="py-5 flex flex-col">
+      {navItems.map(({ href, label, exact }) => (
         <Link
           key={href}
           href={href}
           onClick={() => setOpen(false)}
-          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
+          className={`px-6 py-[12px] font-semibold text-[13px] transition-colors border-l-[3px] ${
             isActive(href, exact)
-              ? "bg-emerald-50 text-emerald-700"
-              : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
+              ? "text-bone bg-bone/10 border-brass"
+              : "text-bone/70 border-transparent hover:text-bone hover:bg-bone/5"
           }`}
         >
-          <Icon className="w-4.5 h-4.5 shrink-0" />
           {label}
         </Link>
       ))}
@@ -63,17 +62,19 @@ export default function AdminNav({ userName, role }: AdminNavProps) {
   );
 
   const footer = (
-    <div className="border-t border-neutral-200 pt-4 mt-4">
-      <div className="px-3 mb-3">
-        <p className="text-sm font-bold text-neutral-900 truncate">{userName}</p>
-        <p className="text-xs text-neutral-500">{role === "ADMIN" ? "Administrator" : "Staff"}</p>
+    <div className="mt-auto px-6 pt-5 border-t border-bone/15 pb-6">
+      <div className="font-medium text-[10px] font-mono tracking-[0.14em] uppercase text-bone/50">
+        Signed in as
+      </div>
+      <div className="mt-2 font-semibold text-[13px] text-bone truncate">{userName}</div>
+      <div className="mt-[3px] font-normal text-[11px] font-mono text-bone/60">
+        {role === "ADMIN" ? "Administrator" : "Staff"}
       </div>
       <form action={logout}>
         <button
           type="submit"
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-neutral-600 hover:bg-red-50 hover:text-red-600 transition-colors"
+          className="mt-4 text-left font-medium text-[10.5px] font-mono tracking-[0.14em] uppercase text-brass hover:text-bone transition-colors"
         >
-          <LogOut className="w-4.5 h-4.5" />
           Sign out
         </button>
       </form>
@@ -83,29 +84,29 @@ export default function AdminNav({ userName, role }: AdminNavProps) {
   return (
     <>
       {/* Mobile top bar */}
-      <div className="lg:hidden sticky top-0 z-30 flex items-center justify-between bg-white border-b border-neutral-200 px-4 h-14">
-        <span className="font-black text-emerald-600 font-mono text-sm">EL WAHA</span>
+      <div className="lg:hidden sticky top-0 z-30 flex items-center justify-between bg-pine border-b border-bone/15 px-4 h-14">
+        <Logo variant="lockup" x={14} reversed />
         <button
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
-          className="p-2 rounded-lg hover:bg-neutral-100 text-neutral-600"
+          className="p-2 text-bone hover:text-brass transition-colors"
         >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
       {/* Mobile drawer */}
       {open && (
-        <div className="lg:hidden fixed inset-0 z-30 bg-black/40" onClick={() => setOpen(false)} />
+        <div className="lg:hidden fixed inset-0 z-30 bg-black/60" onClick={() => setOpen(false)} />
       )}
       <aside
-        className={`lg:hidden fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-neutral-200 p-4 flex flex-col transition-transform duration-300 ${
+        className={`lg:hidden fixed inset-y-0 left-0 z-40 w-64 bg-pine border-r border-bone/15 flex flex-col transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between mb-6 px-3">
-          <span className="font-black text-emerald-600 font-mono">EL WAHA</span>
-          <button onClick={() => setOpen(false)} className="p-1 text-neutral-500">
+        <div className="px-6 py-6 border-b border-bone/15 flex justify-between items-center">
+          <Logo variant="lockup" x={14} reversed />
+          <button onClick={() => setOpen(false)} className="text-bone/50 hover:text-bone">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -114,12 +115,9 @@ export default function AdminNav({ userName, role }: AdminNavProps) {
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-64 bg-white border-r border-neutral-200 p-4 flex-col">
-        <div className="px-3 py-4 mb-2">
-          <span className="font-black text-emerald-600 font-mono text-lg">EL WAHA</span>
-          <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mt-0.5">
-            Admin Dashboard
-          </p>
+      <aside className="hidden lg:flex fixed inset-y-0 left-0 w-[248px] bg-pine pt-[26px] pb-6 flex-col">
+        <div className="px-6 pb-6 border-b border-bone/15">
+          <Logo variant="lockup" x={14} reversed />
         </div>
         <div className="flex-1 overflow-y-auto">{nav}</div>
         {footer}

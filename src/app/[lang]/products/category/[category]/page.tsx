@@ -3,9 +3,26 @@ import { notFound } from "next/navigation";
 import { getDictionary, Locale } from "../../../dictionaries";
 import CategoryView from "@/components/CategoryView";
 import { PRODUCT_CATEGORIES, getCatalogProductsByCategory } from "@/lib/products";
+import { categoryLabel } from "@/data/categories";
+import type { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ lang: string; category: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang, category } = await params;
+  
+  if (!PRODUCT_CATEGORIES.includes(category as (typeof PRODUCT_CATEGORIES)[number])) {
+    return { title: "Category Not Found" };
+  }
+
+  const dict = await getDictionary(lang as Locale);
+  const label = categoryLabel(dict, category);
+
+  return {
+    title: label,
+  };
 }
 
 export default async function CategoryPage({ params }: PageProps) {

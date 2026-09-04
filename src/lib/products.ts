@@ -123,7 +123,7 @@ function toCatalogProduct(row: ProductRow, lang: string): CatalogProduct {
   return {
     id: row.slug,
     category: row.category.slug as ProductData["category"],
-    gallery: gallery.length > 0 ? gallery : ["/images/products/pump-kurlar.png"],
+    gallery: gallery.length > 0 ? gallery : ["/images/products/pump-kurlar.webp"],
     specs: blob.specs ?? [],
     variants: blob.variants ?? [],
     tableSpecsEn: blob.tableSpecsEn ?? {},

@@ -31,7 +31,7 @@ const MODEL_COLUMNS = [
 
 function SpecsTable({ specs }: { specs: Record<string, string> }) {
   return (
-    <div className="glass-card rounded-2xl overflow-hidden border border-outline-variant/30">
+    <div className="glass-card overflow-hidden border border-outline-variant/30">
       <table className="w-full text-left border-collapse">
         <tbody className="divide-y divide-outline-variant/20">
           {Object.entries(specs).map(([key, value], idx) => (
@@ -88,7 +88,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
         {/* Left Column - Gallery */}
         <div className="lg:col-span-5">
           <div className="sticky top-24">
-            <div className="glass-card rounded-2xl overflow-hidden mb-4 p-4 aspect-square relative flex items-center justify-center bg-white shadow-sm">
+            <div className="glass-card overflow-hidden mb-4 p-4 aspect-square relative flex items-center justify-center bg-white shadow-sm">
               <Image 
                 src={product.gallery[activeImage]} 
                 alt={title} 
@@ -104,7 +104,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                   <button 
                     key={idx}
                     onClick={() => setActiveImage(idx)}
-                    className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 bg-white ${
+                    className={`relative w-20 h-20 overflow-hidden border-2 transition-all flex-shrink-0 bg-white ${
                       activeImage === idx ? "border-secondary shadow-md" : "border-outline-variant hover:border-secondary/50"
                     }`}
                   >
@@ -122,7 +122,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             {product.modelNo && (
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-label-sm font-mono uppercase tracking-wider text-outline">{t.modelNo}:</span>
-                <span className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 font-bold text-label-sm text-primary">
+                <span className="px-2.5 py-1 bg-surface-container border border-outline-variant/40 font-bold text-label-sm text-primary">
                   {product.modelNo}
                 </span>
               </div>
@@ -150,9 +150,9 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
           <ProductVariantSelector axes={selection.axes} choose={selection.choose} />
 
           {/* Supplier Info & CTAs */}
-          <div className="glass-card p-6 rounded-2xl bg-surface-container-lowest">
+          <div className="glass-card p-6 bg-surface-container-lowest">
             <div className="flex items-center gap-4 mb-6 pb-6 border-b border-outline-variant/30">
-              <div className="w-14 h-14 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-14 h-14 bg-primary flex items-center justify-center text-white font-bold text-xl">
                 EW
               </div>
               <div>
@@ -182,14 +182,14 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Link
                 href={`/${lang}/contact?subject=${encodeURIComponent(isAr ? `طلب عرض سعر: ${title}` : `Quote Request: ${title}`)}`}
-                className="bg-secondary hover:bg-secondary/90 text-white font-headline-md text-[16px] py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active-scale-98"
+                className="bg-secondary hover:bg-secondary/90 text-white font-headline-md text-[16px] py-4 flex items-center justify-center gap-2 transition-all shadow-md active-scale-98"
               >
                 <MessageSquare className="w-5 h-5" />
                 {isAr ? "طلب عرض سعر" : "Get Latest Price"}
               </Link>
               <a
                 href="tel:+201066685532"
-                className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-headline-md text-[16px] py-4 rounded-xl flex items-center justify-center gap-2 transition-all active-scale-98"
+                className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-headline-md text-[16px] py-4 flex items-center justify-center gap-2 transition-all active-scale-98"
               >
                 <Phone className="w-5 h-5" />
                 {isAr ? "اتصل الآن" : "Call Now"}
@@ -215,7 +215,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
           <div className="flex items-center gap-3 mb-8">
             <button
               onClick={() => setActiveDocTab("overview")}
-              className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+              className={`px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
                 activeDocTab === "overview"
                   ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
                   : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 border border-neutral-200"
@@ -225,7 +225,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             </button>
             <button
               onClick={() => setActiveDocTab("technical")}
-              className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
+              className={`px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
                 activeDocTab === "technical"
                   ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
                   : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 border border-neutral-200"
@@ -272,7 +272,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                         {group.diameter} {t.modelSeries}
                         <span className="text-label-sm font-normal text-outline ms-2">({group.flowRange})</span>
                       </h3>
-                      <div className="glass-card rounded-2xl border border-outline-variant/30 overflow-x-auto mt-4">
+                      <div className="glass-card border border-outline-variant/30 overflow-x-auto mt-4">
                         <table className="w-full text-left border-collapse min-w-[560px]">
                           <thead>
                             <tr className="bg-surface-container">
@@ -314,7 +314,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                           <span className="block text-label-sm font-normal text-outline mt-1">{group.subtitle}</span>
                         )}
                       </h3>
-                      <div className="glass-card rounded-2xl border border-outline-variant/30 overflow-x-auto mt-4">
+                      <div className="glass-card border border-outline-variant/30 overflow-x-auto mt-4">
                         <table className="w-full text-left border-collapse min-w-[720px]">
                           <thead>
                             <tr className="bg-surface-container">

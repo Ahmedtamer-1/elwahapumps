@@ -10,52 +10,74 @@ export default function LoginForm() {
   const [state, formAction, pending] = useActionState<LoginState, FormData>(login, {});
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="flex flex-col">
       <input type="hidden" name="next" value={next} />
 
       {state.error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700 text-sm font-semibold">
+        <div className="p-4 mb-6 bg-red-50 border border-red-200 text-red-700 text-[13px] font-semibold rounded-none">
           {state.error}
         </div>
       )}
 
-      <div>
-        <label htmlFor="email" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="username"
-          className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-colors"
-        />
-      </div>
+      <label htmlFor="email" className="block font-semibold text-[12px] text-ink mb-[7px]">
+        Email address
+      </label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        required
+        autoComplete="username"
+        className="w-full px-[15px] py-[15px] border border-rule/25 focus:border-pine outline-none text-[13.5px] font-mono text-stone-light focus:text-ink bg-transparent rounded-none transition-colors mb-5"
+        placeholder="name@company.com"
+      />
 
-      <div>
-        <label htmlFor="password" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-          Password
-        </label>
+      <label htmlFor="password" className="block font-semibold text-[12px] text-ink mb-[7px]">
+        Password
+      </label>
+      <div className="relative mb-[16px]">
         <input
           id="password"
           name="password"
           type="password"
           required
           autoComplete="current-password"
-          className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-colors"
+          className="w-full px-[15px] py-[15px] border border-rule/25 focus:border-pine outline-none text-[15px] font-mono text-ink tracking-[0.2em] bg-transparent rounded-none transition-colors"
+          placeholder="••••••••••"
         />
+        <span className="absolute right-[15px] top-1/2 -translate-y-1/2 font-medium text-[10.5px] font-mono tracking-[0.14em] uppercase text-stone cursor-pointer select-none hover:text-ink">
+          Show
+        </span>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <label className="flex items-center gap-[9px] cursor-pointer group">
+          <div className="relative w-[15px] h-[15px] border border-ink/35 bg-pine transition-colors"></div>
+          <span className="font-normal text-[12.5px] text-ink group-hover:text-pine transition-colors">Keep me signed in</span>
+        </label>
+        <span className="font-semibold text-[12.5px] text-pine cursor-pointer hover:text-field transition-colors">
+          Forgot password?
+        </span>
       </div>
 
       <button
         type="submit"
         disabled={pending}
-        className={`w-full py-3 px-6 rounded-lg text-white font-bold text-sm shadow-md transition-all ${
-          pending ? "bg-neutral-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700"
+        className={`mt-[26px] w-full py-[17px] px-4 bg-pine text-bone font-semibold text-[13.5px] text-center rounded-none transition-colors ${
+          pending ? "opacity-70 cursor-not-allowed" : "hover:bg-field"
         }`}
       >
         {pending ? "Signing in…" : "Sign in"}
       </button>
+
+      <div className="mt-[28px] border-t border-rule-light pt-[20px] font-normal text-[13px] leading-[22px] text-stone">
+        No account yet? Raise an enquiry and we will open one for you, or{" "}
+        <span className="text-pine font-semibold cursor-pointer hover:text-field transition-colors">request access</span>.
+      </div>
+      
+      <div className="mt-[18px] font-normal text-[11px] leading-[18px] font-mono text-stone-light">
+        Staff accounts sign in at the same door and land in the CRM instead.
+      </div>
     </form>
   );
 }

@@ -10,12 +10,16 @@ export function PageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+    <div className="bg-white border-b border-rule p-[22px_40px] flex items-center justify-between mb-8 -mt-4 sm:-mt-6 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8">
       <div>
-        <h1 className="text-2xl font-bold text-neutral-900">{title}</h1>
-        {subtitle && <p className="text-sm text-neutral-500 mt-1">{subtitle}</p>}
+        <div className="font-medium text-[10.5px] font-mono tracking-[0.16em] uppercase text-stone-light">
+          {subtitle || "Account overview"}
+        </div>
+        <h1 className="mt-[8px] font-extrabold text-[24px] leading-[28px] tracking-[-0.02em] text-ink">
+          {title}
+        </h1>
       </div>
-      {action}
+      {action && <div className="flex gap-3">{action}</div>}
     </div>
   );
 }
@@ -32,22 +36,25 @@ export function Card({
   className?: string;
 }) {
   return (
-    <section className={`bg-white rounded-2xl border border-neutral-200 shadow-sm ${className}`}>
+    <section className={`bg-white border border-rule ${className}`}>
       {title && (
-        <div className="px-5 pt-5 pb-3 border-b border-neutral-100">
-          <h2 className="text-sm font-bold text-neutral-900">{title}</h2>
-          {subtitle && <p className="text-xs text-neutral-500 mt-1">{subtitle}</p>}
+        <div className="p-[20px_26px] border-b border-rule flex items-center justify-between">
+          <div>
+            <h2 className="m-0 font-extrabold text-[16px] text-ink">{title}</h2>
+            {subtitle && <p className="text-[11px] font-mono text-stone mt-1">{subtitle}</p>}
+          </div>
         </div>
       )}
-      <div className="p-5">{children}</div>
+      <div className="p-[20px_26px]">{children}</div>
     </section>
   );
 }
 
 export function Badge({ label, className }: { label: string; className: string }) {
+  // Let parent pass custom coloring, but we apply the core layout and typography for badges
   return (
     <span
-      className={`inline-flex items-center px-2 py-0.5 rounded-md border text-[11px] font-bold uppercase tracking-wide ${className}`}
+      className={`inline-flex items-center px-2 py-1 border font-medium text-[9.5px] font-mono tracking-[0.14em] uppercase whitespace-nowrap rounded-none ${className}`}
     >
       {label}
     </span>
@@ -56,7 +63,7 @@ export function Badge({ label, className }: { label: string; className: string }
 
 export function EmptyState({ message }: { message: string }) {
   return (
-    <div className="text-center py-12 text-sm text-neutral-500">{message}</div>
+    <div className="text-center py-12 text-sm text-stone">{message}</div>
   );
 }
 
@@ -66,15 +73,15 @@ export function SubmitButton({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" | "danger" }) {
   const styles = {
-    primary: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm",
-    ghost: "bg-white border border-neutral-200 hover:border-neutral-300 text-neutral-700",
+    primary: "bg-pine hover:bg-field text-bone",
+    ghost: "bg-white border border-rule hover:border-pine text-ink",
     danger: "bg-white border border-red-200 hover:bg-red-50 text-red-600",
   }[variant];
 
   return (
     <button
       {...props}
-      className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${styles} ${props.className ?? ""}`}
+      className={`px-5 py-3 font-semibold text-[12.5px] transition-colors rounded-none disabled:opacity-50 disabled:cursor-not-allowed ${styles} ${props.className ?? ""}`}
     >
       {children}
     </button>
@@ -82,7 +89,7 @@ export function SubmitButton({
 }
 
 export const inputClass =
-  "w-full px-3 py-2 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-colors bg-white";
+  "w-full px-[15px] py-[15px] border border-rule/25 focus:border-pine outline-none text-[13.5px] font-mono text-stone-light focus:text-ink bg-transparent rounded-none transition-colors";
 
 export function Field({
   label,
@@ -95,9 +102,9 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-xs font-bold text-neutral-500 uppercase mb-1">{label}</span>
+      <span className="block text-[12px] font-semibold text-ink mb-[7px]">{label}</span>
       {children}
-      {hint && <span className="block text-[11px] text-neutral-400 mt-1">{hint}</span>}
+      {hint && <span className="block text-[11px] text-stone mt-2">{hint}</span>}
     </label>
   );
 }

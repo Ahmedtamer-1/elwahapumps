@@ -97,7 +97,7 @@ export default function Logo({
       style={{ display: "inline-flex", ...style }}
     >
       <Image
-        src={reversed ? "/images/brand/elwaha-logo-reversed.png" : "/images/brand/elwaha-logo.png"}
+        src={reversed ? "/images/brand/elwaha-logo-reversed.webp" : "/images/brand/elwaha-logo.webp"}
         alt=""
         width={LOCKUP.width}
         height={LOCKUP.height}
@@ -134,7 +134,7 @@ export function Mark({
 
   return (
     <Image
-      src={reversed ? "/images/brand/elwaha-mark-reversed.png" : "/images/brand/elwaha-mark.png"}
+      src={reversed ? "/images/brand/elwaha-mark-reversed.webp" : "/images/brand/elwaha-mark.webp"}
       alt={title}
       width={MARK.width}
       height={MARK.height}

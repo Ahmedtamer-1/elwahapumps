@@ -1,185 +1,55 @@
 import React from "react";
 import { getDictionary, Locale } from "../dictionaries";
-import { FileText, Download, Phone } from "lucide-react";
+import { getCatalogProducts } from "@/lib/products";
+import ProductTabs from "@/components/ProductTabs";
 import Link from "next/link";
-import Image from "next/image";
-import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
 }
 
-/**
- * Category line-art, one file per slug under /public/images/categories.
- *
- * The source images are black line art on a white ground. They are inverted
- * to white and blended with `screen`, which drops the white ground to
- * transparent and leaves the strokes over pine — the drawings then sit in
- * the palette instead of arriving as white boxes (§04: flat pine, bone or
- * white only, and no additional colours).
- */
-const CATEGORY_ART: Record<string, string> = {
-  pumps: "/images/categories/pumps.jpeg",
-  "surface-pumps": "/images/products/rovatti-surface.png",
-  motors: "/images/categories/motors.jpeg",
-  electrical: "/images/categories/electrical.jpeg",
-  pipes: "/images/categories/pipes.jpeg",
-  "spare-parts": "/images/categories/spare-parts.jpeg",
-  cables: "/images/categories/cables.jpeg",
-};
-
 export default async function ProductsPage({ params }: PageProps) {
   const { lang } = await params;
   const dict = await getDictionary(lang as Locale);
-
-  const productCategories = PRODUCT_CATEGORIES.map((id) => ({
-    id,
-    label: categoryLabel(dict, id),
-    art: CATEGORY_ART[id],
-  }));
-
-  const brandsList = [
-    { id: "astral-pipes", name: "Astral Pipes", logo: "/images/brand/astral-mark.png" },
-    { id: "pmc", name: "PMC", logo: "/images/brand/pmc-mark.png" },
-    { id: "kurlar", name: "Kurlar", logo: "/images/brand/kurlar-mark.png" },
-    { id: "alka", name: "ALKA Thrust Bearing", logo: "/images/brand/alka-mark.png" },
-    { id: "novo", name: "Novo Solar Inverter", logo: "/images/brand/novo-mark.png" },
-    { id: "tormac", name: "Tormac Pumps", logo: "/images/brand/tormac-mark.png" },
-    { id: "untel", name: "Üntel", logo: "/images/brand/untel-mark.png" },
-  ];
+  const products = await getCatalogProducts(lang);
 
   return (
-    <div className="bg-pine min-h-screen pb-20">
-      {/* Category wall. Flat pine — the stock Unsplash "industrial background"
-          that used to sit behind this is another company's photograph, which
-          §06 rules out, and a flat ground is what lets the line-art blend
-          cleanly anyway. */}
-      <section className="relative pt-32 pb-16 flex flex-col justify-end bg-pine overflow-hidden">
-        <div className="relative z-10 w-[95%] max-w-[1600px] mx-auto px-4">
-          <div className="mb-14 flex flex-col items-center text-center">
-            <h1 className="text-h1 sm:text-display font-extrabold text-bone mt-4">
+    <div className="bg-bone min-h-screen">
+      <section className="bg-pine pt-8 pb-7 md:pt-32 md:pb-14 border-t border-bone/15">
+        <div className="w-[95%] max-w-[1152px] mx-auto flex flex-col md:flex-row items-start md:items-end justify-between gap-6 md:gap-14">
+          <div>
+            <div className="font-mono font-medium text-[10px] md:text-[11px] leading-4 tracking-[0.16em] uppercase text-brass">
+              {lang === "ar" ? "الكتالوج" : "Catalogue"}
+            </div>
+            <h1 className="mt-2.5 md:mt-3.5 font-extrabold text-[30px] leading-[33px] md:text-[46px] md:leading-[48px] tracking-[-0.03em] md:tracking-[-0.035em] text-bone">
               {dict.productsPage.title}
             </h1>
-            <div className="brass-rule mt-6" aria-hidden="true" />
+            <div className="h-[3px] w-[52px] md:w-16 bg-brass my-4 md:my-5" aria-hidden="true" />
+            <p className="m-0 font-normal text-[13.5px] leading-[22px] md:text-[14.5px] md:leading-[25px] text-bone/75 max-w-[60ch]">
+              {lang === "ar"
+                ? "نوفر مجموعة واسعة من المعدات والآلات الصناعية الموثوقة وعالية الجودة لقطاعات الزراعة والمياه والبناء."
+                : "We provide a wide range of high-quality, reliable industrial equipment and machinery for agriculture, water, and construction sectors."}
+            </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10 justify-items-center">
-            {productCategories.map((cat) => (
-              <Link
-                href={`/${lang}/products/category/${cat.id}`}
-                key={cat.id}
-                className="flex flex-col items-center group w-full max-w-[220px]"
-              >
-                {/* bg-pine here is load-bearing, not decoration: `screen`
-                    blends against whatever is painted below the image inside
-                    its own stacking context, and the ancestor's z-index
-                    isolates it from the section background. Without a pine
-                    ground on this wrapper the tiles render as black boxes. */}
-                <div className="relative w-full aspect-square bg-pine">
-                  <Image
-                    src={cat.art}
-                    // Decorative: the label below already names the category.
-                    alt=""
-                    aria-hidden="true"
-                    fill
-                    // The tile is capped at 220px at every breakpoint, so a
-                    // fixed hint is accurate. Leaving vw units here made Next
-                    // serve a 3840px-wide file into a 220px slot.
-                    sizes="220px"
-                    className="object-contain transition-transform duration-500 ease-out group-hover:scale-[1.06]"
-                    // invert -> white strokes on black; screen -> the black
-                    // drops out, leaving the strokes over pine.
-                    style={{ filter: "invert(1)", mixBlendMode: "screen" }}
-                  />
-                </div>
-                <span className="mt-4 text-[15px] md:text-base font-semibold text-bone/85 group-hover:text-brass transition-colors text-center">
-                  {cat.label}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Our brands. §1.3 prescribed a fixed optical height and a single
-          tone for the partner wall; on pine that tone is bone, so each mark
-          is knocked out to white and comes back to full colour on hover. */}
-      <section className="bg-pine py-16 lg:py-24 border-t border-bone/15">
-        <div className="w-[95%] max-w-[1600px] mx-auto px-4">
-          <div className="border-t-2 border-brass pt-3 mb-12">
-            <h2 className="spec-label text-bone">
-              {lang === "ar" ? "العلامات التجارية" : "Our brands"}
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-8 md:gap-10 items-center justify-items-center w-full">
-            {brandsList.map((brand) => (
-              <Link
-                href={`/${lang}/agents/${brand.id}`}
-                key={brand.id}
-                className="group relative flex w-full max-w-[140px] md:max-w-[200px] h-16 md:h-20 items-center justify-center bg-white border border-transparent hover:border-brass transition-colors duration-300"
-                aria-label={brand.name}
-              >
-                {/* The marks used to be flattened to white with
-                    brightness-0 + invert, which is what a dark ground forces
-                    on a colour logo. They read in their own colours instead
-                    now, on a white tile — one tile size for all seven is what
-                    carries the optical weight the flattening used to. */}
-                <Image
-                  src={brand.logo}
-                  alt={brand.name}
-                  fill
-                  quality={95}
-                  className="object-contain p-3"
-                  sizes="(max-width: 768px) 140px, 200px"
-                />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="w-[95%] max-w-[1600px] mx-auto px-4 mt-12 mb-20">
-
-        {/* Catalogue prompt. The per-product datasheets now live on each
-            product page; this is the whole-range request. */}
-        <div className="mt-8 text-bone py-8 flex flex-col md:flex-row items-center justify-between gap-8 border-t border-bone/15">
-          <div className="flex flex-col md:flex-row items-center gap-6 text-center md:text-start">
-            <FileText className="w-10 h-10 text-brass shrink-0" aria-hidden="true" />
-            <div>
-              <h3 className="text-h3 font-extrabold mb-2 text-bone">
-                {lang === "ar"
-                  ? "كتالوج المنتجات والمواصفات الفنية الكاملة"
-                  : "Request the full technical catalogue"}
-              </h3>
-              <p className="text-bone/70 text-[13px] max-w-lg leading-6">
-                {lang === "ar"
-                  ? "المقاسات والموديلات الكاملة للمواتير والطلمبات ولوحات التشغيل. الكتالوج الخاص بكل منتج متاح على صفحته."
-                  : "Full dimensions, ratings and models for motors, pumps and control panels. Each product's own catalogue is on its page."}
-              </p>
+          <div className="shrink-0 md:border md:border-bone/25 md:p-5 w-full md:w-auto md:min-w-[250px]">
+            <div className="hidden md:block font-mono font-medium text-[10.5px] tracking-[0.16em] uppercase text-bone/55">
+              {lang === "ar" ? "لست متأكداً من المضخة؟" : "Not sure which pump?"}
             </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0 w-full sm:w-auto">
+            <div className="hidden md:block mt-2.5 font-semibold text-[15px] leading-[22px] text-bone">
+              {lang === "ar" ? "حدد الحجم حسب نقطة التشغيل" : "Size it by duty point"}
+            </div>
             <Link
-              href={`/${lang}/contact?subject=${encodeURIComponent(
-                lang === "ar" ? "طلب كتالوج المنتجات" : "Product Catalog Request"
-              )}`}
-              className="inline-flex items-center justify-center gap-2 bg-brass hover:bg-bone text-ink font-semibold px-8 py-4 text-sm transition-colors"
+              href={`/${lang}/selector`}
+              className="mt-5 md:mt-4 block bg-brass text-ink font-semibold text-[13px] md:text-[12.5px] p-[15px] md:p-3 text-center hover:bg-white transition-colors"
             >
-              <Download className="w-4 h-4" aria-hidden="true" />
-              <span>{dict.productsPage.downloadCatalog}</span>
+              {lang === "ar" ? "افتح محدد المضخات" : "Open the pump selector"}
             </Link>
-            <a
-              href="tel:+201066685532"
-              className="inline-flex items-center justify-center gap-2 text-bone border border-bone/30 hover:border-brass hover:text-brass font-semibold px-8 py-4 text-sm transition-colors"
-            >
-              <Phone className="w-4 h-4" aria-hidden="true" />
-              <span>{lang === "ar" ? "استفسار هاتفي" : "Phone Inquiry"}</span>
-            </a>
           </div>
         </div>
       </section>
+
+      <ProductTabs lang={lang} dict={dict} products={products} isTeaser={false} />
     </div>
   );
 }

@@ -4,9 +4,25 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail, Wrench, Shield } from "lucide-react";
+import type { Metadata } from "next";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang, slug } = await params;
+  const dict = await getDictionary(lang as Locale);
+  const service = dict.servicesData[slug as keyof typeof dict.servicesData];
+
+  if (!service) {
+    return { title: "Service Not Found" };
+  }
+
+  return {
+    title: service.title,
+    description: service.short || service.desc,
+  };
 }
 
 const serviceSlugs = [

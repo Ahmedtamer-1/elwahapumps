@@ -67,7 +67,7 @@ export const products: ProductData[] = [
     id: "pump-submersible",
     category: "pumps",
     gallery: [
-      "/images/products/pump-kurlar.png"
+      "/images/products/pump-kurlar.webp"
     ],
     specs: ["High Efficiency", "Stainless Steel", "Deep Well"],
     modelNo: "KP",
@@ -168,7 +168,7 @@ export const products: ProductData[] = [
     id: "pump-cast-stainless",
     category: "pumps",
     gallery: [
-      "/images/products/pump-ksx-cast.png"
+      "/images/products/pump-ksx-cast.webp"
     ],
     specs: ["Cast Stainless Steel", "Corrosion Resistant", "6\"-10\""],
     modelNo: "KSX",
@@ -261,7 +261,7 @@ export const products: ProductData[] = [
     id: "pump-rovatti",
     category: "pumps",
     gallery: [
-      "/images/products/rovatti-pump.jpeg"
+      "/images/products/rovatti-pump.webp"
     ],
     specs: ["Cast Iron & Cast Steel", "8\" to 10\"", "Made in Italy"],
     modelNo: "8E - 8ER - 10E - 10ER",
@@ -309,7 +309,7 @@ export const products: ProductData[] = [
     id: "pump-panelli-sx",
     category: "pumps",
     gallery: [
-      "/images/products/panelli-pump.jpeg"
+      "/images/products/panelli-pump.webp"
     ],
     specs: ["Cast Iron & Cast Steel", "8\" & 10\"", "Made in Italy"],
     modelNo: "140-270 SX",
@@ -365,7 +365,7 @@ export const products: ProductData[] = [
     id: "pump-rovatti-surface",
     category: "surface-pumps",
     gallery: [
-      "/images/products/rovatti-surface.png"
+      "/images/products/rovatti-surface.webp"
     ],
     specs: ["Surface & Waste Water", "Single & Multistage", "Made in Italy"],
     variants: [],
@@ -407,7 +407,7 @@ export const products: ProductData[] = [
     id: "pump-tormac-surface",
     category: "surface-pumps",
     gallery: [
-      "/images/products/tormac-surface.jpeg"
+      "/images/products/tormac-surface.webp"
     ],
     specs: ["Close Coupled to Split Case", "50 Hz", "Motors Included"],
     variants: [],
@@ -452,7 +452,7 @@ export const products: ProductData[] = [
     id: "motor-franklin",
     category: "motors",
     gallery: [
-      "/images/products/franklin-motors.png"
+      "/images/products/franklin-motors.webp"
     ],
     specs: ["8\" & 10\"", "40-250 HP", "Class F"],
     variants: [],
@@ -501,7 +501,7 @@ export const products: ProductData[] = [
     id: "motor-panelli",
     category: "motors",
     gallery: [
-      "/images/products/panelli-motor.jpeg"
+      "/images/products/panelli-motor.webp"
     ],
     specs: ["Rewindable", "8\" & 10\"", "Made in Italy"],
     variants: [],
@@ -546,7 +546,7 @@ export const products: ProductData[] = [
     id: "elec-inverter",
     category: "electrical",
     gallery: [
-      "/images/products/electrical-inverter-novo.png"
+      "/images/products/electrical-inverter-novo.webp"
     ],
     specs: ["Dynamic MPPT", "Solar + Grid Hybrid", "0.37-400 kW"],
     variants: [
@@ -609,8 +609,8 @@ export const products: ProductData[] = [
     id: "elec-control-panel",
     category: "electrical",
     gallery: [
-      "/images/products/panel-inverter.png",
-      "/images/products/panel-star-delta.png"
+      "/images/products/panel-inverter.webp",
+      "/images/products/panel-star-delta.webp"
     ],
     specs: ["Built In-House", "Inverter · Soft Start · Star-Delta", "Motor Protection"],
     variants: [],
@@ -659,7 +659,7 @@ export const products: ProductData[] = [
     id: "motor-hitemp",
     category: "motors",
     gallery: [
-      "/images/products/motor-kurlar.png"
+      "/images/products/motor-kurlar.webp"
     ],
     specs: ["HI-TEMP 60°C", "IP68", "Water-Cooled"],
     modelNo: "KM",
@@ -803,7 +803,7 @@ export const products: ProductData[] = [
     id: "pipe-upvc-column",
     category: "pipes",
     gallery: [
-      "/images/products/astral-pipes.png"
+      "/images/products/astral-pipes.webp"
     ],
     specs: ["Lead-Free uPVC", "EPDM Sealed", "1\"-6\""],
     modelNo: "Bore-Well",
@@ -855,7 +855,7 @@ export const products: ProductData[] = [
     id: "thrust-bearing-heavy",
     category: "spare-parts",
     gallery: [
-      "/images/products/thrust-bearing-alka.png"
+      "/images/products/thrust-bearing-alka.webp"
     ],
     specs: ["Silicon Carbide", "1100°C Rated", "Sand Resistant"],
     modelNo: "AP+ Series",
@@ -912,8 +912,8 @@ export const products: ProductData[] = [
     id: "winding-wire-voltson",
     category: "spare-parts",
     gallery: [
-      "/images/products/VOLTSON.jpeg",
-      "/images/products/voltson-wire.png"
+      "/images/products/VOLTSON.webp",
+      "/images/products/voltson-wire.webp"
     ],
     specs: ["ETP Copper 99.95%", "120°C Rated", "IS 8783"],
     modelNo: "EXCELGRIP",
@@ -995,8 +995,8 @@ export const products: ProductData[] = [
     id: "cable-submersible",
     category: "cables",
     gallery: [
-      "/images/products/cable-untel.png",
-      "/images/products/pmc-winding-wire.png"
+      "/images/products/cable-untel.webp",
+      "/images/products/pmc-winding-wire.webp"
     ],
     specs: ["PVC Insulated", "Water Resistant", "Copper Conductor"],
     variants: [
@@ -1025,7 +1025,7 @@ export const products: ProductData[] = [
     id: "cable-flat-untel",
     category: "cables",
     gallery: [
-      "/images/products/cable-flat-untel.png"
+      "/images/products/cable-flat-untel.webp"
     ],
     specs: ["IPX8 Submersible", "450/750V", "3x10-3x120 mm²"],
     modelNo: "H07VVH6-F",
