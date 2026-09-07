@@ -362,6 +362,24 @@ body {
   animation: pulse-subtle 3s infinite ease-in-out;
 }
 
+/* Per-route entrance, replacing a framer-motion `motion.div` in
+   [lang]/template.tsx — same fade-and-rise, done with CSS so
+   framer-motion no longer has to ship on every route. */
+@keyframes page-in {
+  from {
+    opacity: 0.7;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-in {
+  animation: page-in 0.4s ease-out;
+}
+
 @keyframes marquee-left {
   from {
     transform: translateX(0);
@@ -409,7 +427,8 @@ body {
      too — otherwise it would put its animation back on for Arabic readers. */
   .animate-marquee-left,
   [dir="rtl"] .animate-marquee-left,
-  .animate-pulse-subtle {
+  .animate-pulse-subtle,
+  .animate-page-in {
     animation: none;
   }
 }

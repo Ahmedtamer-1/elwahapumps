@@ -90,10 +90,11 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
         <div className="lg:col-span-5">
           <div className="sticky top-24">
             <div className="glass-card rounded-2xl overflow-hidden mb-4 p-4 aspect-square relative flex items-center justify-center bg-white shadow-sm">
-              <Image 
-                src={product.gallery[activeImage]} 
-                alt={title} 
-                fill 
+              <Image
+                src={product.gallery[activeImage]}
+                alt={title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 40vw"
                 className="object-contain p-6"
               />
             </div>
@@ -109,7 +110,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                       activeImage === idx ? "border-secondary shadow-md" : "border-outline-variant hover:border-secondary/50"
                     }`}
                   >
-                    <Image src={img} alt={`Thumbnail ${idx}`} fill className="object-contain p-2" />
+                    <Image src={img} alt={`Thumbnail ${idx}`} fill sizes="80px" className="object-contain p-2" />
                   </button>
                 ))}
               </div>

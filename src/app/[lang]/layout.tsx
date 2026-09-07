@@ -6,7 +6,6 @@ import { getDictionary, hasLocale, Locale } from "./dictionaries";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import SplashScreen from "@/components/SplashScreen";
 import { CartProvider } from "@/components/cart/CartContext";
 import { AGENCY_COUNT, FOUNDED, NAME_AR, NAME_EN } from "@/lib/company";
 import { SITE_URL, localizedAlternates } from "@/lib/seo";
@@ -142,7 +141,6 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
         <script {...jsonLdScriptProps(organizationSchema(lang))} />
         <script {...jsonLdScriptProps(websiteSchema(lang))} />
         <CartProvider>
-          <SplashScreen />
           <Header lang={lang} dict={dict} />
 
           {/* Main Content Area */}

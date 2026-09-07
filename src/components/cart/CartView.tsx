@@ -102,7 +102,7 @@ export default function CartView({ lang }: { lang: string }) {
               href={`/${lang}/products/${item.slug}`}
               className="relative w-20 h-20 shrink-0 bg-neutral-50 rounded-lg overflow-hidden"
             >
-              <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
+              <Image src={item.image} alt={item.name} fill sizes="80px" className="object-contain p-2" />
             </Link>
 
             <div className="flex-1 min-w-0">

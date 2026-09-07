@@ -204,7 +204,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                     alt={idx === 0 ? (lang === "ar" ? photo.alt.ar : photo.alt.en) : ""}
                     fill
                     sizes={photo.srcs.length > 1 ? "(max-width: 768px) 100vw, 50vw" : "100vw"}
-                    priority
+                    // Only the first frame is ever visible below `md` — the
+                    // second is `hidden md:block` — so only it should be
+                    // preloaded. Preloading both meant mobile visitors
+                    // fetched an image they'd never see.
+                    preload={idx === 0}
                     className={`${photo.fit === "contain" ? "object-contain" : "object-cover"} ${
                       photo.position ?? ""
                     }`}

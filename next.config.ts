@@ -58,17 +58,40 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'elwahapumps.com',
-      },
-    ],
+    // The Unsplash hero placeholder (S4-T01) is gone — every image now
+    // comes from this site's own /public, so no remote host needs to be
+    // allow-listed any more.
+    remotePatterns: [],
     // Next 16 rejects any `quality` prop not in this list (default: [75]).
     // A few logo/partner components request 95 for crisp small marks — add
     // it explicitly instead of stripping their quality prop, since without
     // this the optimizer 400s and every one of those images breaks in prod.
     qualities: [75, 95],
+    // AVIF first, WebP as the fallback for browsers that don't support it
+    // yet — next/image picks whichever the request's Accept header allows.
+    formats: ["image/avif", "image/webp"],
+    // Re-encoded source photographs (S4-T04) don't change once published;
+    // a long TTL means the optimizer doesn't have to regenerate the same
+    // variant on every cache eviction. 30 days.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+  },
+
+  async headers() {
+    return [
+      {
+        // Re-encoded, static, and named by content — safe to cache hard.
+        // immutable is honest here: these files don't change in place,
+        // a replacement gets a new filename.
+        source: "/images/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        // Datasheets are updated occasionally without a filename change,
+        // so a shorter max-age plus revalidation instead of immutable.
+        source: "/Catalogue/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, must-revalidate" }],
+      },
+    ];
   },
 
   async redirects() {

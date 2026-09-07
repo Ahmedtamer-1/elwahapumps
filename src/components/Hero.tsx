@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { AGENCY_COUNT } from "@/lib/company";
 import { fill } from "@/lib/format";
@@ -14,16 +15,15 @@ interface HeroProps {
 }
 
 /**
- * TODO(brand §06): these are Unsplash stock frames of other companies'
- * installations, which the imagery direction rules out explicitly. They
- * are placeholders until the shoot happens — report decision 05, two
- * days, three sites and the workshop. Swap for real El Waha jobs;
- * nothing else in this component needs to change.
+ * El Waha's own jobs, replacing the Unsplash stock frames of other
+ * companies' installations the imagery direction ruled out. A well site
+ * under construction, the workshop rewinding motors, and a Kurlar crate
+ * going out on the forklift — real work, not stock photography.
  */
 const HERO_IMAGES = [
-  "https://images.unsplash.com/photo-1542332213-9b5a5a3fad35?q=80&w=2070&auto=format&fit=crop", 
-  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?q=80&w=2070&auto=format&fit=crop"
+  { src: "/images/services/well-site.jpg", alt: { en: "A well site under construction", ar: "موقع حفر بئر أثناء الإنشاء" } },
+  { src: "/images/services/motor-bay.jpg", alt: { en: "Rewinding submersible motors in the workshop", ar: "إعادة لف موتورات غاطسة في الورشة" } },
+  { src: "/images/services/pump-crate.jpg", alt: { en: "A Kurlar pump crate loaded for delivery", ar: "صندوق طلمبة كورلار جاهز للتسليم" } },
 ];
 
 export default function Hero({ lang, dict }: HeroProps) {
@@ -40,19 +40,32 @@ export default function Hero({ lang, dict }: HeroProps) {
   return (
     <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-pine flex items-center">
       {/* Background Slider */}
-      {HERO_IMAGES.map((src, idx) => (
-        <div 
-          key={idx}
+      {HERO_IMAGES.map((image, idx) => (
+        <div
+          key={image.src}
           className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out ${
             idx === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
           }`}
         >
-          <div 
-            className={`absolute inset-0 bg-cover bg-center transition-transform duration-[10000ms] ease-out origin-center ${
+          <div
+            className={`absolute inset-0 transition-transform duration-[10000ms] ease-out origin-center ${
               idx === currentSlide ? "scale-110" : "scale-100"
             }`}
-            style={{ backgroundImage: `url(${src})` }}
-          />
+          >
+            <Image
+              src={image.src}
+              alt={isAr ? image.alt.ar : image.alt.en}
+              fill
+              sizes="100vw"
+              // Only the slide painted first has any chance of being the
+              // LCP element — the rest sit at opacity-0 behind it and
+              // load lazily, exactly the browser's own default for an
+              // offscreen image.
+              preload={idx === 0}
+              loading={idx === 0 ? undefined : "lazy"}
+              className="object-cover"
+            />
+          </div>
           {/* Pine scrim rather than black, so the photography sits inside
               the palette instead of beside it. Carries bone text at AAA. */}
           <div

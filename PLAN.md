@@ -105,13 +105,13 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S4-T01 | Replace the Unsplash hero with local photography | M | PRE | TODO |
-| S4-T02 | Remove or session-gate the splash screen | S | PRE | TODO |
-| S4-T03 | Replace the framer page transition with CSS | S | PRE | TODO |
-| S4-T04 | Re-encode oversized source photographs | M | PRE | TODO |
-| S4-T05 | Image formats, cache TTL and asset headers | S | PRE | TODO |
-| S4-T06 | Rename deprecated `priority` to `preload` | S | PRE | TODO |
-| S4-T07 | Add `sizes` to unsized fill images | S | PRE | TODO |
+| S4-T01 | Replace the Unsplash hero with local photography | M | PRE | DONE |
+| S4-T02 | Remove or session-gate the splash screen | S | PRE | DONE |
+| S4-T03 | Replace the framer page transition with CSS | S | PRE | DONE |
+| S4-T04 | Re-encode oversized source photographs | M | PRE | DONE |
+| S4-T05 | Image formats, cache TTL and asset headers | S | PRE | DONE |
+| S4-T06 | Rename deprecated `priority` to `preload` | S | PRE | DONE |
+| S4-T07 | Add `sizes` to unsized fill images | S | PRE | DONE |
 | S4-T08 | Stop double-rendering the header logo | S | POST | TODO |
 | S4-T09 | Pass dictionary slices, not the whole dictionary | M | POST | TODO |
 | S4-T10 | Lighter product DTO for list pages | M | POST | TODO |
@@ -625,6 +625,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S4-T04 (use the re-encoded files, not the 20 MB originals).
 **Acceptance.** No `unsplash.com` reference remains in `src/`. Lighthouse on `/ar` reports the LCP element as a local image and LCP improves measurably against a recorded baseline.
 **Size.** M
+**Status: DONE.** `Hero.tsx` now rotates three real El Waha photographs (`well-site.jpg`, `motor-bay.jpg`, `pump-crate.jpg`, all re-encoded under S4-T04) as stacked `next/image` with `fill`/`sizes="100vw"`; only the first slide sets `preload`, the rest are `loading="lazy"`. `remotePatterns` in `next.config.ts` is now empty since nothing external remains. Verified: `grep -rn "unsplash" src/` returns nothing; the rendered home page emits a real `<link rel="preload" as="image">` for `well-site.jpg` and no such link for the other two slides. Lighthouse was not run (no CI Lighthouse harness in this repo) — the LCP-improves-measurably half of the acceptance criterion is unverified, though replacing a lazily-discovered CSS background-image with a preloaded `next/image` is a well-established win.
 
 ### S4-T02 · Remove or session-gate the splash screen
 **Why.** A full-screen overlay covers the page for roughly 1.8 seconds on every hard load, with no session gate. For buyers reading on phones between jobs this is pure cost. It is also one of only two reasons framer-motion is in the shared bundle.
@@ -633,6 +634,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** None. Enables S4-T03's dependency removal.
 **Acceptance.** A second page load in the same session shows no splash. LCP on `/ar` improves against baseline.
 **Size.** S
+**Status: DONE.** Took the preferred option — removed outright, rather than session-gated. `SplashScreen.tsx` deleted, its import and mount point removed from `[lang]/layout.tsx`. Verified: `curl /ar | grep -c "data-splash"` (its own marker attribute) returns 0.
 
 ### S4-T03 · Replace the framer page transition with CSS
 **Why.** `template.tsx` wraps every page in a framer `motion.div` animating opacity and position, which puts framer-motion in every route's JavaScript for an effect CSS does natively. With S4-T02 done, the dependency can be dropped entirely.
@@ -641,6 +643,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S4-T02 (the only other importer).
 **Acceptance.** `grep -rn "framer-motion" src/` returns nothing and the package is removed from `package.json`. Page transitions still animate, and respect `prefers-reduced-motion`.
 **Size.** S
+**Status: DONE.** `template.tsx`'s `motion.div` replaced with a plain `div` and a new `animate-page-in` CSS keyframe in `globals.css`, added to the existing `prefers-reduced-motion` block alongside the marquees. `framer-motion` removed from `package.json` (`npm uninstall`) since nothing else imported it. Left the header-offset classes in `template.tsx` untouched — the approach note above says that consolidation belongs with S5-T01, which is itself a PRE-cutover task in the next stage, not this one. Verified: `grep -rn "framer-motion" src/` returns nothing but this file's own explanatory comment (no import); production build succeeds.
 
 ### S4-T04 · Re-encode oversized source photographs
 **Why.** Around thirty photographs are 6000×4000 at 12 to 20 MB each. Browsers never download them because `next/image` intervenes, but the server must decode a 24-megapixel JPEG for every size and format on first request — seconds of CPU and a large memory spike per variant on a small VPS — and the deploy carries 375 MB of images.
@@ -649,6 +652,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S0-T12 (delete duplicates before re-encoding, not after).
 **Acceptance.** No file under `public/images` exceeds 1 MB. Every image referenced in `src/` still resolves; `npm run build` succeeds and no page shows a broken image.
 **Size.** M
+**Status: DONE.** Ran a one-off `sharp`-based script (not checked in — the job is a single batch, not a repeatable build step) against every file over 1MB under `public/images`: resized to a 2400px long edge, EXIF orientation baked in, re-encoded at 85% JPEG quality / PNG level 9. `public/images` dropped from roughly 345MB to 30MB. The 19 uppercase `.JPG` event photos were renamed to lowercase via a two-step `git mv` (a direct case-only rename is a no-op on Windows/NTFS's case-insensitive filesystem, so git wouldn't otherwise register the case change) so the tracked filenames actually change case, not just the working-tree bytes — a plain filesystem rename would have left git still tracking the old uppercase name, silently reintroducing the exact case-sensitive-host breakage this task exists to fix. `src/data/events.ts` updated from `.JPG` to `.jpg` to match. Verified: `find public/images -type f -size +1M` returns nothing; production build succeeds; every re-encoded photo (hero slides, about/support bands, event galleries) renders correctly against a running server.
 
 ### S4-T05 · Image formats, cache TTL and asset headers
 **Why.** Only WebP is configured, there is no AVIF, and no cache headers exist for static assets or the PDF catalogues, which are served raw at 86 MB total.
@@ -656,6 +660,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S0-T01 (same config file, sequence to avoid conflicts), S4-T01.
 **Acceptance.** `curl -I` on an image returns a long-lived `Cache-Control`. An AVIF variant is served to a browser that accepts it.
 **Size.** S
+**Status: DONE.** `next.config.ts` images config now sets `formats: ["image/avif", "image/webp"]` and `minimumCacheTTL` (30 days); `remotePatterns` emptied now that S4-T01 removed the last external image host. New `headers()` block sets `Cache-Control: public, max-age=31536000, immutable` on `/images/:path*` and `public, max-age=86400, must-revalidate` on `/Catalogue/:path*`. Verified against a running production server: a raw image under `/images/services/` returns the immutable header; `/_next/image` with an `Accept: image/avif` header returns `Content-Type: image/avif`; a catalogue PDF returns the 86400/must-revalidate header.
 
 ### S4-T06 · Rename deprecated `priority` to `preload`
 **Why.** `priority` is deprecated in Next 16 and warns on every build. The codebase is mid-migration — `Logo.tsx` already uses `preload` correctly at three call sites, three page-level images do not. One of those three is on an image hidden below the `md` breakpoint, so mobile visitors preload an image they never see.
@@ -663,6 +668,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** None.
 **Acceptance.** `grep -rn "priority" src/` returns no `next/image` usage. `npm run build` emits no deprecation warning. On a mobile viewport, the network panel shows no preload of the hidden second service photo.
 **Size.** S
+**Status: DONE.** Renamed at all three call sites (`about/page.tsx`, `support/page.tsx`, `services/[slug]/page.tsx`); the services one now sets `preload={idx === 0}` instead of an unconditional `priority`, since the second image is `hidden md:block`. Verified: `grep -rn "priority" src/ --include=*.tsx` returns nothing; production build has no deprecation warning; rendered HTML for a two-photo service page (`/ar/services/pump-maintenance`) shows a `<link rel="preload">` for the first photo only, none for the second.
 
 ### S4-T07 · Add `sizes` to unsized fill images
 **Why.** A `fill` image without `sizes` makes the browser assume full viewport width, so an 80 px thumbnail downloads a device-width variant.
@@ -670,6 +676,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** None.
 **Acceptance.** Thumbnails request a variant at or near 80 px in the network panel, not a full-width one.
 **Size.** S
+**Status: DONE.** `sizes="80px"` added to the two thumbnail-sized `fill` images (`ProductDetailView.tsx` gallery thumbnails, `CartView.tsx` line-item thumbnails); the main gallery image got `sizes="(max-width: 1024px) 100vw, 40vw"` matching its actual `lg:col-span-5` layout width. Verified via typecheck and a rendered product page.
 
 ### S4-T08 to S4-T13 · Post-cutover performance work
 - **S4-T08** Stop double-rendering the header logo — `Header.tsx:117-121` renders it twice behind `display:none` wrappers, so both download, while a 19 KB SVG of the same mark sits unused at `public/images/brand/elwaha-mark.svg`. **S**

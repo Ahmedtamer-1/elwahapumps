@@ -65,7 +65,7 @@ export default async function SupportPage({ params }: PageProps) {
           alt={isAr ? "أسطول الصيانة المتنقل لشركة الواحة" : "The El Waha mobile maintenance fleet"}
           fill
           sizes="100vw"
-          priority
+          preload
           className="object-cover opacity-35"
         />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />

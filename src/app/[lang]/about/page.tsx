@@ -90,7 +90,7 @@ export default async function AboutPage({ params }: PageProps) {
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
-                priority
+                preload
               />
             </div>
             <figcaption className="mt-3 text-spec uppercase text-stone">
