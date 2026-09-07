@@ -2,11 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { AlertTriangle, FileText, Info } from "lucide-react";
 
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import PerformanceChart from "@/components/selector/PerformanceChart";
 import SelectorForm from "@/components/selector/SelectorForm";
 import { catalogueLimits, motorOptionsFor, selectFromCatalogue } from "@/lib/pump-data";
 import { fill } from "@/lib/format";
+import { localizedAlternates } from "@/lib/seo";
 import {
   assembly,
   curveOf,
@@ -21,13 +22,26 @@ import {
   type HeadUnit,
 } from "@/lib/pump-selector";
 
-export const metadata = {
-  title: "Pump Selector | El Waha Pumps",
-};
-
 interface PageProps {
   params: Promise<{ lang: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export async function generateMetadata({ params, searchParams }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  const query = await searchParams;
+  // Bare /selector is a genuine, indexable page; a result URL with
+  // flow/head parameters is a near-duplicate of every other duty point —
+  // noindex those and canonicalise to the bare form (S1-T08).
+  const hasQuery = Object.keys(query).length > 0;
+  return {
+    title: dict.pumpSelector.title,
+    description: dict.pumpSelector.subtitle,
+    alternates: localizedAlternates(lang, "/selector"),
+    robots: hasQuery ? { index: false, follow: true } : undefined,
+  };
 }
 
 const one = (value: string | string[] | undefined): string =>

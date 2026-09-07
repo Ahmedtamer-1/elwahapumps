@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import {
   applyByEmail,
   applyByWhatsApp,
@@ -10,6 +10,8 @@ import {
 } from "@/data/jobs";
 import { getPublishedJobs, type JobView } from "@/lib/jobs";
 import { yearsOfService } from "@/lib/company";
+import { localizedAlternates } from "@/lib/seo";
+import { jobPostingSchema, jsonLdScriptProps } from "@/lib/schema";
 import {
   Briefcase,
   Check,
@@ -25,6 +27,19 @@ import {
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const isAr = lang === "ar";
+  return {
+    title: isAr ? "الوظائف" : "Careers",
+    description: isAr
+      ? "انضم لفريق الواحة — فنيون ومهندسون يوردون ويركّبون ويصونون الطلمبات والمواتير في الآبار والمحطات على مستوى الجمهورية."
+      : "Join the El Waha team — technicians and engineers who supply, install and maintain pumps and motors on wells and stations across Egypt.",
+    alternates: localizedAlternates(lang, "/careers"),
+  };
 }
 
 /**
@@ -57,6 +72,18 @@ function JobCard({ job, lang }: { job: JobView; lang: string }) {
 
   return (
     <article className="border border-rule bg-white p-6 transition-colors duration-300 hover:border-pine md:p-8">
+      <script
+        {...jsonLdScriptProps(
+          jobPostingSchema(lang as Locale, {
+            id: job.id,
+            title: t(job.title),
+            description: t(job.description),
+            location: t(job.location),
+            type: job.type.en,
+            postedOn: job.postedOn,
+          }, "/careers"),
+        )}
+      />
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="flex-1">
           <div className="mb-3 flex flex-wrap items-center gap-3">

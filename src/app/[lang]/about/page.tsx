@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import { AGENCIES, AGENCY_COUNT, yearsOfService } from "@/lib/company";
 import { fill } from "@/lib/format";
+import { localizedAlternates } from "@/lib/seo";
 import {
   ShieldCheck,
   Target,
@@ -16,6 +17,17 @@ import {
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.aboutPage.title,
+    description: dict.aboutPage.subtitle,
+    alternates: localizedAlternates(lang, "/about"),
+  };
 }
 
 export default async function AboutPage({ params }: PageProps) {

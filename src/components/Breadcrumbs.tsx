@@ -1,0 +1,66 @@
+import Link from "next/link";
+import { ChevronRight, ChevronLeft } from "lucide-react";
+import { breadcrumbSchema, jsonLdScriptProps, type BreadcrumbSegment } from "@/lib/schema";
+import type { Locale } from "@/app/[lang]/dictionaries";
+
+export interface Crumb {
+  name: string;
+  /** Locale-less path, e.g. "/products" or "/products/pump-submersible". */
+  path: string;
+}
+
+/**
+ * Visible breadcrumb nav + matching BreadcrumbList JSON-LD, from the same
+ * list of crumbs — the two can't disagree because there's only one source.
+ *
+ * There were no breadcrumbs anywhere on the site before this, and product
+ * pages had no link back to their own category at all — only a "Back to
+ * Products" link straight to the top-level list.
+ */
+export default function Breadcrumbs({
+  lang,
+  items,
+  dark = false,
+}: {
+  lang: Locale;
+  items: Crumb[];
+  /** For a breadcrumb sitting on a dark ground (e.g. CategoryView's sidebar). */
+  dark?: boolean;
+}) {
+  const isAr = lang === "ar";
+  const Chevron = isAr ? ChevronLeft : ChevronRight;
+  const segments: BreadcrumbSegment[] = items.map((c) => ({ name: c.name, path: c.path }));
+  const chevronClass = dark ? "text-neutral-500" : "text-neutral-400";
+  const linkClass = dark ? "text-neutral-400 hover:text-white" : "text-neutral-400 hover:text-pine";
+  const currentClass = dark ? "text-neutral-300" : "text-neutral-500";
+
+  return (
+    <>
+      <script {...jsonLdScriptProps(breadcrumbSchema(lang, segments))} />
+      <nav aria-label={isAr ? "مسار التصفح" : "Breadcrumb"} className="text-xs">
+        <ol className="flex flex-wrap items-center gap-1.5">
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+            return (
+              <li key={item.path} className="flex items-center gap-1.5">
+                {index > 0 && <Chevron className={`w-3.5 h-3.5 shrink-0 ${chevronClass}`} aria-hidden="true" />}
+                {isLast ? (
+                  <span className={currentClass} aria-current="page">
+                    {item.name}
+                  </span>
+                ) : (
+                  <Link
+                    href={`/${lang}${item.path === "/" ? "" : item.path}`}
+                    className={`transition-colors ${linkClass}`}
+                  >
+                    {item.name}
+                  </Link>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    </>
+  );
+}

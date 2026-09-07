@@ -208,12 +208,15 @@ export default function Footer({ lang, dict }: FooterProps) {
 }
 
 /** Column head: brass rule above, bone label. Matches the report's
- *  section-head treatment rather than a left border in green. */
+ *  section-head treatment rather than a left border in green. Not a
+ *  heading element — these are link-group labels inside the footer
+ *  landmark, and pages whose content never reaches h2/h3 were jumping
+ *  straight from the page's h1 to four of these as h4. */
 function FooterHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h4 className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-bone border-t-2 border-brass pt-3 mb-5">
+    <p className="text-[13px] font-extrabold uppercase tracking-[0.1em] text-bone border-t-2 border-brass pt-3 mb-5">
       {children}
-    </h4>
+    </p>
   );
 }
 

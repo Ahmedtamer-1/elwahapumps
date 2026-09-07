@@ -1,13 +1,28 @@
 import React from "react";
-import { getDictionary, Locale } from "../../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../../dictionaries";
 import { events } from "@/data/events";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import EventGallery from "@/components/EventGallery";
 import { ArrowLeft, ArrowRight, Calendar, MapPin } from "lucide-react";
+import { localizedAlternates } from "@/lib/seo";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang, slug } = await params;
+  if (!hasLocale(lang) || !events.some((e) => e.id === slug)) return {};
+  const dict = await getDictionary(lang);
+  const data = dict.eventsData[slug as keyof typeof dict.eventsData];
+  if (!data) return {};
+  return {
+    title: data.title,
+    description: data.desc,
+    alternates: localizedAlternates(lang, `/events/${slug}`),
+  };
 }
 
 export async function generateStaticParams() {
@@ -42,6 +57,17 @@ export default async function EventDetailPage({ params }: PageProps) {
       {/* Header Banner */}
       <section className="bg-black text-white py-16 border-b border-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-4">
+            <Breadcrumbs
+              lang={lang as Locale}
+              dark
+              items={[
+                { name: dict.nav.home, path: "/" },
+                { name: dict.nav.events, path: "/events" },
+                { name: data.title, path: `/events/${slug}` },
+              ]}
+            />
+          </div>
           <Link
             href={`/${lang}/events`}
             className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"

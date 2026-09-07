@@ -7,7 +7,8 @@ import Link from "next/link";
 import { ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
 import type { CatalogProduct } from "@/lib/products";
 import { priceOnRequestLabel } from "@/lib/price";
-import type { Dictionary } from "../app/[lang]/dictionaries";
+import type { Dictionary, Locale } from "../app/[lang]/dictionaries";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export default function CategoryView({
   products,
@@ -45,19 +46,37 @@ export default function CategoryView({
     <div className={`flex flex-col md:flex-row min-h-screen bg-white ${isAr ? "md:flex-row-reverse" : ""}`}>
       {/* Sidebar */}
       <aside className="w-full md:w-72 lg:w-80 bg-[#3f3f3f] text-white shrink-0 p-6 pt-24 md:p-10 md:pt-32 flex flex-col md:min-h-screen">
+        <div className="mb-4">
+          <Breadcrumbs
+            lang={lang as Locale}
+            dark
+            items={[
+              { name: dict.nav.home, path: "/" },
+              { name: dict.nav.products, path: "/products" },
+              { name: title, path: `/products/category/${category}` },
+            ]}
+          />
+        </div>
         <Link href={`/${lang}/products`} className={`text-sm text-neutral-400 hover:text-white flex items-center gap-2 mb-8 group w-fit ${isAr ? "flex-row-reverse" : ""}`}>
           <ArrowLeft className={`w-4 h-4 group-hover:-translate-x-1 transition-transform ${isAr ? "rotate-180 group-hover:translate-x-1" : ""}`} />
           {isAr ? "العودة للمنتجات" : "Back to Products"}
         </Link>
 
         <div className="flex justify-between items-center mb-6 md:mb-8">
-          <h1 className="text-2xl font-light flex items-center gap-4">
-            <div className="w-10 h-10 border border-neutral-500 flex items-center justify-center opacity-70">
+          {/* The decorative icon is a block-level div, which isn't valid
+              content inside h1 (heading content is phrasing content) — it
+              now sits beside the h1 in a shared flex wrapper instead of
+              nested inside it. */}
+          <div className="flex items-center gap-4">
+            <div
+              className="w-10 h-10 border border-neutral-500 flex items-center justify-center opacity-70"
+              aria-hidden="true"
+            >
               <div className="w-4 h-4 border border-current rounded-sm"></div>
             </div>
-            {title}
-          </h1>
-          <button 
+            <h1 className="text-2xl font-light">{title}</h1>
+          </div>
+          <button
             className="md:hidden border border-neutral-500 px-3 py-1.5 text-xs font-medium uppercase tracking-wider"
             onClick={() => setIsFiltersOpen(!isFiltersOpen)}
           >
@@ -80,7 +99,11 @@ export default function CategoryView({
               like model codes until products carry a proper brand. */}
           {availableBrands.length > 0 && (
             <div className="flex flex-col gap-3">
-              <h3 className="font-bold text-lg mb-1">{isAr ? "الماركة" : "Brand"}</h3>
+              {/* A filter-group label, not a heading — matches Footer's and
+                  the mega-menu's column labels, and keeps this from
+                  sitting as an h3 before the page's first h2 (the product
+                  titles in the main column). */}
+              <p className="font-bold text-lg mb-1">{isAr ? "الماركة" : "Brand"}</p>
               <div className="h-px w-full bg-neutral-500/50 mb-2"></div>
               {availableBrands.map(brand => (
                 <label key={brand} className="flex items-center gap-3 text-sm cursor-pointer group">

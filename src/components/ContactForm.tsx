@@ -55,9 +55,9 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
 
   return (
     <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm">
-      <h3 className="text-xl font-bold text-neutral-900 mb-6 border-b border-neutral-100 pb-4">
+      <h2 className="text-xl font-bold text-neutral-900 mb-6 border-b border-neutral-100 pb-4">
         {dict.contactPage.formTitle}
-      </h3>
+      </h2>
 
       {status === "success" && (
         <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 text-sm font-semibold rounded-xl border border-emerald-100">

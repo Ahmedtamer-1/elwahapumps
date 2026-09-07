@@ -157,7 +157,9 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 EW
               </div>
               <div>
-                <h4 className="font-headline-md text-[18px] text-primary">{isAr ? "شركة الواحة لخدمات الآبار والطلمبات" : "El Waha Pumps"}</h4>
+                {/* Not a heading — a label inside the supplier card, same
+                    level as the "Verified Supplier" line below it. */}
+                <p className="font-headline-md text-[18px] text-primary">{isAr ? "شركة الواحة لخدمات الآبار والطلمبات" : "El Waha Pumps"}</p>
                 <p className="text-label-sm text-outline flex items-center gap-1 mt-1">
                   <ShieldCheck className="w-4 h-4 text-secondary" /> 
                   {isAr ? "مورد موثوق" : "Verified Supplier"}
@@ -239,7 +241,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
           {activeDocTab === "overview" ? (
             features && features.length > 0 && (
               <div>
-                <h3 className="font-headline-md text-xl text-primary mb-5">{t.features}</h3>
+                <h2 className="font-headline-md text-xl text-primary mb-5">{t.features}</h2>
                 <ul className="grid sm:grid-cols-2 gap-3">
                   {features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-body-md text-on-surface-variant">
@@ -253,7 +255,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
           ) : (
             <div className="space-y-12">
               <div>
-                <h3 className="font-headline-md text-xl text-primary mb-5">{t.specs}</h3>
+                <h2 className="font-headline-md text-xl text-primary mb-5">{t.specs}</h2>
                 <SpecsTable specs={tableSpecs} />
               </div>
 

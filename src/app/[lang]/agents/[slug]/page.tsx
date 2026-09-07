@@ -1,8 +1,10 @@
 import React from "react";
-import { getDictionary, Locale } from "../../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../../dictionaries";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShieldCheck, Mail, Phone, ChevronRight } from "lucide-react";
+import { localizedAlternates } from "@/lib/seo";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -12,7 +14,20 @@ interface PageProps {
 // (products/page.tsx) without a matching entry here, so those three tiles
 // 404'd. Added with real agentsData entries above rather than dropping the
 // tiles, since the brands are genuinely represented (see catalogues.ts).
-const agentSlugs = ["astral-pipes", "jee-pumps", "pmc", "kurlar", "alka", "novo", "tormac", "untel"];
+export const agentSlugs = ["astral-pipes", "jee-pumps", "pmc", "kurlar", "alka", "novo", "tormac", "untel"];
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang, slug } = await params;
+  if (!hasLocale(lang) || !agentSlugs.includes(slug)) return {};
+  const dict = await getDictionary(lang);
+  const agent = dict.agentsData[slug as keyof typeof dict.agentsData];
+  if (!agent) return {};
+  return {
+    title: agent.name,
+    description: `${agent.title} — ${agent.desc}`,
+    alternates: localizedAlternates(lang, `/agents/${slug}`),
+  };
+}
 
 export async function generateStaticParams() {
   const locales = ["ar", "en"];
@@ -134,6 +149,17 @@ export default async function AgentDetailPage({ params }: PageProps) {
       {/* Header Banner */}
       <section className="bg-black text-white py-16 border-b border-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-4">
+            <Breadcrumbs
+              lang={lang as Locale}
+              dark
+              items={[
+                { name: dict.nav.home, path: "/" },
+                { name: dict.nav.agents, path: "/agents" },
+                { name: agent.name, path: `/agents/${slug}` },
+              ]}
+            />
+          </div>
           <Link
             href={`/${lang}/agents`}
             className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"

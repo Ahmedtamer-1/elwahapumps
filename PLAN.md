@@ -53,22 +53,22 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S1-T01 | Add `metadataBase` and site-wide Open Graph defaults | S | PRE | TODO |
-| S1-T02 | Build the `seo.ts` canonical + hreflang helper | M | PRE | TODO |
-| S1-T03 | Page metadata for the 8 static routes | M | PRE | TODO |
-| S1-T04 | Page metadata for the 8 dynamic routes | M | PRE | TODO |
-| S1-T05 | Fix the selector and cart metadata | S | PRE | TODO |
-| S1-T06 | Add `robots.ts` | S | PRE | TODO |
-| S1-T07 | Add `sitemap.ts` with locale alternates | M | PRE | TODO |
-| S1-T08 | Mark cart and selector results noindex | S | PRE | TODO |
-| S1-T09 | Organization + LocalBusiness + WebSite JSON-LD | M | PRE | TODO |
-| S1-T10 | Breadcrumb component + BreadcrumbList JSON-LD | M | PRE | TODO |
-| S1-T11 | Product / ProductGroup JSON-LD | M | PRE | TODO |
-| S1-T12 | Event and JobPosting JSON-LD | M | POST | TODO |
-| S1-T13 | Open Graph image route | M | PRE | TODO |
-| S1-T14 | Icons, manifest and theme colour | S | PRE | TODO |
-| S1-T15 | Repair heading hierarchy | M | PRE | TODO |
-| S1-T16 | Canonicalise `?tab=` and `?subject=` variants | S | PRE | TODO |
+| S1-T01 | Add `metadataBase` and site-wide Open Graph defaults | S | PRE | DONE |
+| S1-T02 | Build the `seo.ts` canonical + hreflang helper | M | PRE | DONE |
+| S1-T03 | Page metadata for the 8 static routes | M | PRE | DONE |
+| S1-T04 | Page metadata for the 8 dynamic routes | M | PRE | DONE |
+| S1-T05 | Fix the selector and cart metadata | S | PRE | DONE |
+| S1-T06 | Add `robots.ts` | S | PRE | DONE |
+| S1-T07 | Add `sitemap.ts` with locale alternates | M | PRE | DONE |
+| S1-T08 | Mark cart and selector results noindex | S | PRE | DONE |
+| S1-T09 | Organization + LocalBusiness + WebSite JSON-LD | M | PRE | DONE |
+| S1-T10 | Breadcrumb component + BreadcrumbList JSON-LD | M | PRE | DONE |
+| S1-T11 | Product / ProductGroup JSON-LD | M | PRE | DONE |
+| S1-T12 | Event and JobPosting JSON-LD | M | POST | PARTIAL — JobPosting shipped; Event schema still blocked on real dates (S8-T01) |
+| S1-T13 | Open Graph image route | M | PRE | DONE |
+| S1-T14 | Icons, manifest and theme colour | S | PRE | DONE |
+| S1-T15 | Repair heading hierarchy | M | PRE | DONE |
+| S1-T16 | Canonicalise `?tab=` and `?subject=` variants | S | PRE | DONE |
 
 ### Stage 2 — Migration safety
 

@@ -4,12 +4,27 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail, Wrench, Shield } from "lucide-react";
+import { localizedAlternates } from "@/lib/seo";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
 }
 
-const serviceSlugs = [
+export async function generateMetadata({ params }: PageProps) {
+  const { lang, slug } = await params;
+  if (!hasLocale(lang) || !serviceSlugs.includes(slug)) return {};
+  const dict = await getDictionary(lang);
+  const service = dict.servicesData[slug as keyof typeof dict.servicesData];
+  if (!service) return {};
+  return {
+    title: service.title,
+    description: service.short,
+    alternates: localizedAlternates(lang, `/services/${slug}`),
+  };
+}
+
+export const serviceSlugs = [
   "pump-supply",
   "panel-design",
   "marine-cable-supply",
@@ -215,6 +230,17 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <div className="max-w-3xl">
+            <div className="mb-6">
+              <Breadcrumbs
+                lang={lang as Locale}
+                dark
+                items={[
+                  { name: dict.nav.home, path: "/" },
+                  { name: dict.nav.services, path: "/services" },
+                  { name: service.title, path: `/services/${slug}` },
+                ]}
+              />
+            </div>
             <span aria-hidden className="block h-0.5 w-16 bg-brass mb-6" />
             <h1 className="text-h1 md:text-display font-extrabold">{service.title}</h1>
             {service.short && (

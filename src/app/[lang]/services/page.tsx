@@ -1,11 +1,25 @@
 import React from "react";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
 import Link from "next/link";
+import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
   searchParams: Promise<{ tab?: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.servicesPage.title,
+    description: dict.servicesPage.subtitle,
+    // Canonical to the bare path regardless of ?tab= — the home page and
+    // this page's own tab bar link three different ?tab= variants.
+    alternates: localizedAlternates(lang, "/services"),
+  };
 }
 
 export default async function ServicesPage({ params, searchParams }: PageProps) {

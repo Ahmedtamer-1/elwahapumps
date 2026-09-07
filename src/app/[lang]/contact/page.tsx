@@ -1,11 +1,26 @@
 import React from "react";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import ContactForm from "@/components/ContactForm";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
   searchParams: Promise<{ subject?: string | string[] }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.contactPage.title,
+    description: dict.contactPage.subtitle,
+    // Canonical is the bare path regardless of ?subject= — every product,
+    // agent and service page links here with a different subject param, so
+    // without this each of those would be a crawlable near-duplicate.
+    alternates: localizedAlternates(lang, "/contact"),
+  };
 }
 
 export default async function ContactPage({ params, searchParams }: PageProps) {
@@ -38,9 +53,9 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
           <div className="lg:col-span-5 space-y-6">
             {/* Information Card */}
             <div className="bg-white p-6 md:p-8 rounded-3xl border border-neutral-200 shadow-sm space-y-6">
-              <h3 className="text-xl font-bold text-neutral-900 border-b border-neutral-100 pb-4">
+              <h2 className="text-xl font-bold text-neutral-900 border-b border-neutral-100 pb-4">
                 {dict.contactPage.infoTitle}
-              </h3>
+              </h2>
 
               <div className="space-y-4">
                 {/* Office */}
@@ -149,9 +164,9 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
 
         {/* Embedded Map */}
         <div className="mt-12 bg-white p-4 rounded-3xl border border-neutral-200 shadow-sm overflow-hidden h-[450px]">
-          <h3 className="text-base font-bold text-neutral-900 mb-3 px-2">
+          <h2 className="text-base font-bold text-neutral-900 mb-3 px-2">
             {dict.contactPage.findUs}
-          </h3>
+          </h2>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d110594.39455122175!2d30.730303102377227!3d29.977259695663737!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1458564c7dcbe185%3A0xe54e60cf0b621fe8!2sCPC%20Industrial%20Complex!5e0!3m2!1sen!2seg!4v1700000000000!5m2!1sen!2seg"
             width="100%"

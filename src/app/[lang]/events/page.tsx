@@ -1,12 +1,24 @@
 import React from "react";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import { events } from "@/data/events";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, ImageIcon, ArrowLeft, ArrowRight } from "lucide-react";
+import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.eventsPage.title,
+    description: dict.eventsPage.subtitle,
+    alternates: localizedAlternates(lang, "/events"),
+  };
 }
 
 export default async function EventsPage({ params }: PageProps) {
@@ -63,9 +75,11 @@ export default async function EventsPage({ params }: PageProps) {
                       {dict.eventsPage.eventTag}
                     </span>
                   </div>
-                  <h3 className="text-xl font-extrabold text-neutral-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200">
+                  {/* h2, not h3 — there's no section heading between this
+                      and the page's own h1, so h3 here would skip a level. */}
+                  <h2 className="text-xl font-extrabold text-neutral-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200">
                     {data.title}
-                  </h3>
+                  </h2>
                   <p className="text-neutral-500 text-xs font-semibold mb-4">
                     {data.location}
                   </p>

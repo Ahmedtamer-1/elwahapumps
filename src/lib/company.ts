@@ -49,3 +49,42 @@ export const AGENCIES = [
   { name: "Franklin Electric", logo: "/images/brand/franklin-mark.png" },
   { name: "Aristoncavi", logo: "/images/brand/aristoncavi-mark.png" },
 ] as const;
+
+/**
+ * Short brand form, for places a full legal name is too long — the <title>
+ * tag template (a 60-character budget shared with the page's own title),
+ * og:site_name, and similar. LEGAL_NAME is the registered name, used where
+ * precision matters (JSON-LD, the footer copyright line).
+ */
+export const NAME_EN = "El Waha Pumps";
+export const NAME_AR = "الواحة للطلمبات";
+export const LEGAL_NAME_EN = "El Waha Pumps & Wells Services";
+export const LEGAL_NAME_AR = "شركة الواحة لخدمات الآبار والطلمبات";
+
+/** Sales/WhatsApp line, then the second support line — src/app/[lang]/contact/page.tsx. */
+export const PHONE_SALES = "+201066685532";
+export const PHONE_SUPPORT = "+201068155336";
+
+/** From src/dictionaries/{ar,en}.json common.addressValue, kept in one place for JSON-LD. */
+export const ADDRESS = {
+  streetEn: "CPC Industrial Complex, 6th Industrial Zone",
+  streetAr: "مجمع سي بي سي الصناعي، المنطقة الصناعية السادسة",
+  localityEn: "6th of October City",
+  localityAr: "مدينة 6 أكتوبر",
+  regionEn: "Giza",
+  regionAr: "الجيزة",
+  countryCode: "EG",
+};
+
+/**
+ * From the Google Maps embed already published on the contact page
+ * (src/app/[lang]/contact/page.tsx) — reused here rather than re-guessed,
+ * not independently re-surveyed against the actual plot.
+ */
+export const GEO = { latitude: 29.977259695663737, longitude: 30.730303102377227 };
+
+/** Already linked from the footer; reused here for JSON-LD sameAs. */
+export const SOCIAL = {
+  facebook: "https://facebook.com/elwahapumps",
+  youtube: "https://youtube.com/@elwahapumps",
+};

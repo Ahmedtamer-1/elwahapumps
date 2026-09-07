@@ -1,12 +1,24 @@
 import React from "react";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import { FileText, Download, Phone } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
+import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.productsPage.title,
+    description: dict.productsPage.subtitle,
+    alternates: localizedAlternates(lang, "/products"),
+  };
 }
 
 /**

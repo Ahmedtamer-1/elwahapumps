@@ -204,10 +204,14 @@ export default function Header({ lang, dict }: HeaderProps) {
                               {productCategories.map(category => (
                                 <div key={category.id} className="flex flex-col">
                                   {/* Column heads sit on a pine rule, the
-                                      report's section-head treatment. */}
-                                  <h3 className="font-extrabold text-[15px] leading-6 mb-4 pt-2 text-pine border-t-2 border-pine">
+                                      report's section-head treatment. A `p`,
+                                      not a heading — this menu renders on
+                                      every page ahead of the page's own h1,
+                                      so six of these as h3 put six headings
+                                      before the actual page content. */}
+                                  <p className="font-extrabold text-[15px] leading-6 mb-4 pt-2 text-pine border-t-2 border-pine">
                                     {category.label}
-                                  </h3>
+                                  </p>
                                   <ul className="space-y-2.5">
                                     {category.items.map((item: { label: string; category: string }) => (
                                       <li key={item.label}>

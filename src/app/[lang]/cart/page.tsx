@@ -1,5 +1,5 @@
 import React from "react";
-import { getDictionary, Locale } from "../dictionaries";
+import { localizedAlternates } from "@/lib/seo";
 import CartView from "@/components/cart/CartView";
 
 interface PageProps {
@@ -8,12 +8,16 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   const { lang } = await params;
-  return { title: lang === "ar" ? "سلة الطلب" : "Request Cart" };
+  return {
+    title: lang === "ar" ? "سلة الطلب" : "Request Cart",
+    alternates: localizedAlternates(lang === "ar" ? "ar" : "en", "/cart"),
+    // A visitor's own working list, not content — nothing to rank on.
+    robots: { index: false, follow: true },
+  };
 }
 
 export default async function CartPage({ params }: PageProps) {
   const { lang } = await params;
-  const dict = await getDictionary(lang as Locale);
   const isAr = lang === "ar";
 
   return (

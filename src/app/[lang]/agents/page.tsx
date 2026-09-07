@@ -1,22 +1,41 @@
 import React from "react";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShieldCheck, ExternalLink } from "lucide-react";
+import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.agentsPage.title,
+    description: dict.agentsPage.subtitle,
+    alternates: localizedAlternates(lang, "/agents"),
+  };
 }
 
 export default async function AgentsPage({ params }: PageProps) {
   const { lang } = await params;
   const dict = await getDictionary(lang as Locale);
 
+  // Kept in step with agentSlugs in agents/[slug]/page.tsx by hand, same as
+  // before — this list was missing novo/tormac/untel (added there in
+  // Stage 0 to fix the Products-page brand tiles that linked to them),
+  // so this index page still showed only 5 of the 8 working agent pages.
   const agents = [
     { id: "astral-pipes", name: "Astral Pipes" },
     { id: "jee-pumps", name: "JEE Pumps" },
     { id: "pmc", name: "PMC" },
     { id: "kurlar", name: "Kurlar" },
     { id: "alka", name: "ALKA Thrust Bearing" },
+    { id: "novo", name: "NOVO" },
+    { id: "tormac", name: "Tormac" },
+    { id: "untel", name: "Üntel" },
   ];
 
   return (
@@ -56,12 +75,15 @@ export default async function AgentsPage({ params }: PageProps) {
                     </div>
                   </div>
 
-                  <h3 className="text-xl font-extrabold text-neutral-800 mb-2 font-sans group-hover:text-emerald-600 transition-colors duration-200">
+                  {/* h2, not h3 — no section heading sits between this and
+                      the page's own h1. The tagline underneath is a label,
+                      not a second heading level, so it's a styled p. */}
+                  <h2 className="text-xl font-extrabold text-neutral-800 mb-2 font-sans group-hover:text-emerald-600 transition-colors duration-200">
                     {data.name}
-                  </h3>
-                  <h4 className="text-emerald-600 font-bold text-xs mb-4">
+                  </h2>
+                  <p className="text-emerald-600 font-bold text-xs mb-4">
                     {data.title}
-                  </h4>
+                  </p>
                   <p className="text-neutral-500 text-xs leading-relaxed mb-8">
                     {data.desc}
                   </p>

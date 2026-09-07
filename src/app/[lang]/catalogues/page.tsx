@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import { categoryLabel } from "@/data/categories";
 import {
   catalogueHref,
@@ -10,9 +10,24 @@ import {
   type Catalogue,
 } from "@/data/catalogues";
 import { ArrowUpRight, Download, Phone } from "lucide-react";
+import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  const isAr = lang === "ar";
+  return {
+    title: dict.nav.catalogues,
+    description: isAr
+      ? "كتالوجات المصنّعين الأصلية للمنتجات التي نوردها: معدل التصريف، الرفع، القطر، القدرة والمواد."
+      : "The manufacturers' own catalogues for the equipment we supply: flow rate, head, bore diameter, power and materials.",
+    alternates: localizedAlternates(lang, "/catalogues"),
+  };
 }
 
 /**

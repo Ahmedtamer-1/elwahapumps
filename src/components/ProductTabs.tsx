@@ -43,9 +43,9 @@ function ProductCard({ product, lang, label }: { product: CatalogProduct; lang: 
       </div>
 
       <div className="p-6 flex flex-col flex-grow">
-        <h4 className="text-lg font-bold text-neutral-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200 line-clamp-2">
+        <h3 className="text-lg font-bold text-neutral-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200 line-clamp-2">
           {productTitle}
-        </h4>
+        </h3>
         <p className="text-neutral-500 text-sm leading-relaxed mb-4 line-clamp-3">
           {productDesc}
         </p>

@@ -1,14 +1,26 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
 import { AGENCY_COUNT } from "@/lib/company";
 import { fill } from "@/lib/format";
+import { localizedAlternates } from "@/lib/seo";
 import { Phone, MessageCircle, Mail, PackageCheck } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  return {
+    title: dict.supportPage.title,
+    description: dict.supportPage.subtitle,
+    alternates: localizedAlternates(lang, "/support"),
+  };
 }
 
 /** The maintenance services, in the order a well fails. */

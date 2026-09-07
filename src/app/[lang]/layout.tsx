@@ -1,4 +1,5 @@
 import React from "react";
+import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Archivo, IBM_Plex_Sans_Arabic, IBM_Plex_Mono } from "next/font/google";
 import { getDictionary, hasLocale, Locale } from "./dictionaries";
@@ -7,7 +8,9 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SplashScreen from "@/components/SplashScreen";
 import { CartProvider } from "@/components/cart/CartContext";
-import { AGENCY_COUNT, FOUNDED } from "@/lib/company";
+import { AGENCY_COUNT, FOUNDED, NAME_AR, NAME_EN } from "@/lib/company";
+import { SITE_URL, localizedAlternates } from "@/lib/seo";
+import { jsonLdScriptProps, organizationSchema, websiteSchema } from "@/lib/schema";
 import "../globals.css";
 
 /**
@@ -52,6 +55,10 @@ export async function generateStaticParams() {
  */
 export const revalidate = 60;
 
+export const viewport: Viewport = {
+  themeColor: "#0e3b2e",
+};
+
 interface LayoutProps {
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
@@ -62,24 +69,44 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   if (!hasLocale(lang)) return {};
 
   const isAr = lang === "ar";
+  // Title template uses the short brand form (lib/company.ts), not the
+  // full legal name — the Arabic legal name alone is 36 characters, which
+  // left almost no budget for the page's own title before the ~60-char
+  // point search results start truncating at.
+  const siteName = isAr ? NAME_AR : NAME_EN;
+  const description = isAr
+    ? `توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام ${FOUNDED}. توكيلات حصرية لـ${AGENCY_COUNT} شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد.`
+    : `Deep-well pumping equipment supplied, installed and maintained across Egypt since ${FOUNDED}. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.`;
+
   return {
+    metadataBase: new URL(SITE_URL),
     title: {
-      template: isAr 
-        ? "%s | شركة الواحة لخدمات الآبار والطلمبات" 
-        : "%s | El Waha Pumps & Wells Services",
+      template: `%s | ${siteName}`,
       default: isAr
-        ? "شركة الواحة لخدمات الآبار والطلمبات | توريد وصيانة طلمبات ومواتير"
-        : "El Waha Pumps & Wells Services | Supply & Maintenance",
+        ? `${siteName} | توريد وصيانة طلمبات ومواتير`
+        : `${siteName} | Supply & Maintenance`,
     },
     // §07 voice: specific over superlative, and the record stated correctly.
     // Founding year and agency count are interpolated from lib/company.ts
     // so this can never drift out of step with it again.
-    description: isAr
-      ? `توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام ${FOUNDED}. توكيلات حصرية لـ${AGENCY_COUNT} شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد.`
-      : `Deep-well pumping equipment supplied, installed and maintained across Egypt since ${FOUNDED}. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.`,
-    icons: {
-      icon: "/favicon.ico",
+    description,
+    alternates: localizedAlternates(lang, "/"),
+    openGraph: {
+      type: "website",
+      siteName,
+      locale: isAr ? "ar_EG" : "en_US",
+      alternateLocale: isAr ? "en_US" : "ar_EG",
+      title: siteName,
+      description,
     },
+    twitter: {
+      card: "summary_large_image",
+      title: siteName,
+      description,
+    },
+    // No explicit `icons` block — src/app/favicon.ico is already picked up
+    // by Next's file convention. Declaring it again here duplicated the
+    // <link rel="icon"> tag.
   };
 }
 
@@ -98,6 +125,14 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
   return (
     <html lang={lang} dir={dir} className={fontClass}>
       <body className="bg-white text-ink antialiased font-sans flex flex-col min-h-screen">
+        {/* One Organization/LocalBusiness + WebSite graph on every page —
+            the live WordPress site emits a Yoast schema graph today, so
+            skipping this would make the migration lose structured data
+            rather than gain it. Facts come from lib/company.ts, so they
+            can't drift from the visible copy the way "11 agencies" and
+            AGENCY_COUNT=12 once did. */}
+        <script {...jsonLdScriptProps(organizationSchema(lang))} />
+        <script {...jsonLdScriptProps(websiteSchema(lang))} />
         <CartProvider>
           <SplashScreen />
           <Header lang={lang} dict={dict} />

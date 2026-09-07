@@ -1,13 +1,28 @@
 import React from "react";
 import Link from "next/link";
 import { Phone } from "lucide-react";
-import { getDictionary, Locale } from "../dictionaries";
+import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import DistributorNetwork from "@/components/DistributorNetwork";
 import { coverageTotals } from "@/data/distributors";
 import { getPublishedDistributors } from "@/lib/distributors";
+import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const dict = await getDictionary(lang);
+  const isAr = lang === "ar";
+  return {
+    title: dict.nav.locations,
+    description: isAr
+      ? "موزّعونا المعتمدون من القاهرة والجيزة حتى الصعيد والواحات. اختر أقرب موزّع لك واتصل به مباشرة."
+      : "Our authorised distributors, from Cairo and Giza through Upper Egypt to the Western Desert oases.",
+    alternates: localizedAlternates(lang, "/locations"),
+  };
 }
 
 /**
