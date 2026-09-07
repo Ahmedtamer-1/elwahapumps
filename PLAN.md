@@ -88,18 +88,18 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S3-T01 | Publish `llms.txt` | S | PRE | TODO |
-| S3-T02 | Declare an AI-crawler policy in robots | S | PRE | TODO |
-| S3-T03 | Render spec tables in HTML, not behind a tab | M | PRE | TODO |
-| S3-T04 | Server-render the home teaser and contact form | M | PRE | TODO |
-| S3-T05 | Remove unbacked marketplace trust badges | S | PRE | TODO |
-| S3-T06 | Add text lists under the logo walls | S | POST | TODO |
-| S3-T07 | Arabic transliterations for 8 brand names | S | POST | TODO |
-| S3-T08 | Standardise Arabic unit notation | S | POST | TODO |
-| S3-T09 | Public product read API | M | POST | TODO |
-| S3-T10 | Public pump-selector API | M | POST | TODO |
-| S3-T11 | Generate `llms-full.txt` at build | M | POST | TODO |
-| S3-T12 | Publish the pump-curve dataset | M | POST | TODO |
+| S3-T01 | Publish `llms.txt` | S | PRE | DONE |
+| S3-T02 | Declare an AI-crawler policy in robots | S | PRE | DONE |
+| S3-T03 | Render spec tables in HTML, not behind a tab | M | PRE | DONE |
+| S3-T04 | Server-render the home teaser and contact form | M | PRE | DONE |
+| S3-T05 | Remove unbacked marketplace trust badges | S | PRE | DONE |
+| S3-T06 | Add text lists under the logo walls | S | POST | DONE |
+| S3-T07 | Arabic transliterations for 8 brand names | S | POST | BLOCKED |
+| S3-T08 | Standardise Arabic unit notation | S | POST | BLOCKED |
+| S3-T09 | Public product read API | M | POST | DONE |
+| S3-T10 | Public pump-selector API | M | POST | DONE |
+| S3-T11 | Generate `llms-full.txt` at build | M | POST | DONE |
+| S3-T12 | Publish the pump-curve dataset | M | POST | BLOCKED |
 
 ### Stage 4 — Performance
 
@@ -521,6 +521,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S0-T10.
 **Acceptance.** `curl https://<host>/llms.txt` returns 200 as `text/plain`, and every fact in it matches `company.ts`.
 **Size.** S
+**Status: DONE.** `public/llms.txt` verified 200/`text/plain`. Links only the 8 brand pages that actually resolve (astral-pipes, jee-pumps, pmc, kurlar, alka, novo, tormac, untel) — an early draft linked all 12 agencies and had to be corrected. Now also links `/llms-full.txt` and the two public API routes added in S3-T09/S3-T10.
 
 ### S3-T02 · Declare an AI-crawler policy in robots
 **Why.** Retrieval crawlers (OAI-SearchBot, ClaudeBot, PerplexityBot) are where B2B enquiry traffic increasingly originates. Leaving the policy implicit means it is decided by defaults rather than by you.
@@ -528,6 +529,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S1-T06.
 **Acceptance.** `robots.txt` names each crawler group explicitly. `/admin` and `/api/` remain disallowed for all of them.
 **Size.** S
+**Status: DONE.** `src/app/robots.ts` names `AI_RETRIEVAL_BOTS` and `AI_TRAINING_BOTS` groups explicitly plus a blocked Bytespider group; `max-snippet`/`max-image-preview` added to `[lang]/layout.tsx` metadata. Revised after S3-T09/S3-T10 landed: `/api/products` and `/api/selector` are carved out with explicit `Allow` lines ahead of the blanket `Disallow: /api/`, since those two are meant to be fetched — verified via `curl /robots.txt`.
 
 ### S3-T03 · Render spec tables in HTML, not behind a tab
 **Why.** For products with documentation, the specification tables mount only after a client-side tab click, so the most valuable technical content on the site is absent from the initial HTML. Products without documentation do ship their specs, which makes the gap inconsistent as well as invisible.
@@ -536,6 +538,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** None.
 **Acceptance.** `curl -s /ar/products/pump-submersible | grep -c "<table"` returns a non-zero count matching what the browser shows after clicking Technical Data.
 **Size.** M
+**Status: DONE.** `ProductDetailView.tsx` now renders both the Overview and Technical panels unconditionally, toggled with `hidden={activeDocTab !== "..."}` instead of a ternary that only mounted one branch. Verified: `curl /ar/products/pump-submersible | grep -c "<table"` returns 4.
 
 ### S3-T04 · Server-render the home teaser and contact form
 **Why.** Both read `useSearchParams` inside a Suspense boundary, so on these prerendered routes a crawler receives the skeleton fallback rather than the products or the form.
@@ -544,6 +547,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S0-T05.
 **Acceptance.** `curl -s /ar | grep -c "product-card"` returns the expected count. `curl -s "/ar/contact?subject=x" | grep '<form'` finds the form with its fields.
 **Size.** M
+**Status: DONE.** New Server Component `src/components/ProductTeaser.tsx` replaces the teaser mode of `ProductTabs.tsx` on the home page — no `useSearchParams`, products passed straight through as props. `ContactForm.tsx` takes `initialSubject` as a prop from the page's `searchParams` instead of reading it client-side. Verified: `curl /ar | grep -o "product-card" | wc -l` returns 64 (32 server-rendered cards, doubled marquee).
 
 ### S3-T05 · Remove unbacked marketplace trust badges
 **Why.** "Buyer Protection", "Nationwide Shipping", "Verified Supplier", "Certified Warranty" and "100% Quality Guaranteed" are asserted with no policy behind them. They are wrong for an exclusive-agency distributor and they are the kind of claim an answer engine will repeat as fact.
@@ -552,6 +556,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** None.
 **Acceptance.** `grep -rniE "buyer protection|nationwide shipping|verified supplier|100% quality" src/` returns nothing.
 **Size.** S
+**Status: DONE.** Replaced with verifiable claims across `ProductDetailView.tsx`, `services/[slug]/page.tsx` and `agents/[slug]/page.tsx` (factory warranty, exclusive Egyptian agent, delivery to every governorate, genuine parts in stock). Also reworded explanatory code comments that still contained the banned phrases. Verified: `grep -rniE "buyer protection|nationwide shipping|verified supplier|certified warranty|100% quality" src/` returns 0 matches.
 
 ### S3-T06 · Add text lists under the logo walls
 **Why.** Eighteen client names and twelve agency marks exist only as images with names in alt text. Neither search engines nor answer engines index them as entity relationships.
@@ -559,6 +564,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S0-T10.
 **Acceptance.** Each agency and client name appears as selectable text in the rendered HTML.
 **Size.** S · **Gate.** POST
+**Status: DONE.** `SuccessPartners.tsx` and `about/page.tsx` each render every name as a comma-separated `<p>` beneath the logo strip. Verified: `curl /ar | grep -c "شركاء النجاح"` and grepping for individual agency names (e.g. Kurlar, Aristoncavi) in the About page's rendered HTML both confirm the text is present, not just alt attributes.
 
 ### S3-T07 · Arabic transliterations for 8 brand names
 **Why.** Only four of twelve brands have Arabic forms anywhere. Arabic voice and chat queries for the other eight will not match.
@@ -566,6 +572,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S8-T01 (you supply the correct transliterations).
 **Acceptance.** Each brand's Arabic form appears at least once on its product or brand page.
 **Size.** S · **Gate.** POST
+**Status: BLOCKED.** Genuinely needs a native Arabic speaker's transliteration for the 8 remaining brand names — guessing would risk publishing a wrong or awkward form for a manufacturer's actual name. Waiting on S8-T01.
 
 ### S3-T08 · Standardise Arabic unit notation
 **Why.** Cubic metres per hour is written three different ways across product data and dictionaries, which fragments matching.
@@ -573,6 +580,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S8-T10.
 **Acceptance.** One notation appears throughout; the others return no grep hits. Horsepower is always paired with kilowatts.
 **Size.** S · **Gate.** POST
+**Status: BLOCKED.** Depends on S8-T10 (Arabic glossary/corrections), which is itself blocked on the S8-T01 content brief — deciding the one correct notation isn't a call to make without that input.
 
 ### S3-T09 · Public product read API
 **Why.** There is no machine-readable product feed. A procurement agent or comparison tool has nothing to consume. A Merchant feed is not viable without prices, so a JSON catalogue is the right target.
@@ -580,6 +588,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S1-T11 (settle the data shape once).
 **Acceptance.** `GET /api/products` returns valid JSON with slug, bilingual names, category, specs and canonical URLs, and is listed in `llms.txt` and allowed in robots.
 **Size.** M · **Gate.** POST
+**Status: DONE.** `src/app/api/products/route.ts` returns `{count, products}` with bilingual name/description/specs, category, modelNo and canonical URLs, price deliberately omitted (quote-on-request). `src/app/api/products/[slug]/route.ts` returns the full detail (tableSpecs, features, modelGroups, specGroups, options, variants, gallery) or 404. Listed in `llms.txt`; `/api/products` explicitly allowed in `robots.ts` ahead of the `/api/` blanket disallow. Verified against a production build: both routes typecheck, `GET /api/products` returns 16 products with valid bilingual JSON, `GET /api/products/pump-submersible` returns 200, an unknown slug returns 404.
 
 ### S3-T10 · Public pump-selector API
 **Why.** The selection engine is pure, tested and genuinely differentiated — the single most agent-worthy asset on the site — but reachable only as HTML.
@@ -587,6 +596,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S3-T09.
 **Acceptance.** `GET /api/selector?q=60&qu=m3h&h=120&hu=m` returns the same selection the HTML page shows for those parameters.
 **Size.** M · **Gate.** POST
+**Status: DONE.** `src/app/api/selector/route.ts` wraps `selectFromCatalogue` from `src/lib/pump-data.ts` with the same `q`/`qu`/`h`/`hu` query parameters as the HTML page, returning status, top pick, alternatives and catalogue limits as JSON. Verified against a production build: `GET /api/selector?q=60&qu=m3h&h=120&hu=m` returns `K6SX-60/17` as the top pick, matching the HTML selector page's result for the same query string exactly.
 
 ### S3-T11 · Generate `llms-full.txt` at build
 **Why.** A hand-maintained full version drifts from the product pages within weeks.
@@ -594,6 +604,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S3-T01, S3-T09.
 **Acceptance.** Rebuilding after a product edit produces an updated file without manual intervention.
 **Size.** M · **Gate.** POST
+**Status: DONE.** New `scripts/generate-llms-full.ts`, wired in as the `prebuild` npm script so `npm run build` regenerates `public/llms-full.txt` from `getCatalogProducts` and `company.ts` every time, grouped by category with model, description, specs and canonical URL per product. Verified: ran standalone (`npx tsx scripts/generate-llms-full.ts`) and via `npm run build`, producing a 16-product, 131-line file; served at `/llms-full.txt` as `text/plain` 200 and linked from `llms.txt`.
 
 ### S3-T12 · Publish the pump-curve dataset
 **Why.** 27 families and 926 variants of head, efficiency and NPSH data with recorded provenance. Published as data with a `Dataset` schema it becomes citable.
@@ -601,6 +612,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S1-T09. **NEEDS INPUT** on licensing — this is transcribed from Kurlar catalogues.
 **Acceptance.** The dataset URL returns 200 and its schema validates.
 **Size.** M · **Gate.** POST
+**Status: BLOCKED.** Licensing is unresolved — the curve data is transcribed from Kurlar's own catalogues, and publishing it as an open dataset without confirming that's permitted could expose the company to a rights dispute with its own supplier. Not something to decide unilaterally.
 
 ---
 

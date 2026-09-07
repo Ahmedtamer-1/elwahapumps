@@ -150,7 +150,7 @@ export default async function AboutPage({ params }: PageProps) {
           })}
         </div>
 
-        {/* Exclusive agencies — the proof behind the "11 agencies" claim */}
+        {/* Exclusive agencies — the proof behind the AGENCY_COUNT claim */}
         <div className="mb-20">
           <div className="border-t-2 border-pine pt-3 mb-4">
             <h2 className="text-h3 sm:text-h2 font-extrabold text-pine">
@@ -180,6 +180,18 @@ export default async function AboutPage({ params }: PageProps) {
               </div>
             ))}
           </div>
+
+          {/* The grid above is logos only, no text an answer engine or a
+              screen reader can use; this is the actual indexable content —
+              every agency name as selectable text. */}
+          <p className="mt-4 text-small text-stone">
+            {AGENCIES.map((agency, idx) => (
+              <React.Fragment key={agency.name}>
+                {idx > 0 && (lang === "ar" ? "، " : ", ")}
+                {agency.name}
+              </React.Fragment>
+            ))}
+          </p>
         </div>
 
         {/* Vision & Mission */}

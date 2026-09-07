@@ -107,6 +107,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     // No explicit `icons` block — src/app/favicon.ico is already picked up
     // by Next's file convention. Declaring it again here duplicated the
     // <link rel="icon"> tag.
+    robots: {
+      // Lets Google and Bing quote full passages and full-size images
+      // in an AI Overview or chat answer, rather than truncating at
+      // their (much shorter) defaults — content worth citing should be
+      // citable in full, not just as a fragment.
+      "max-snippet": -1,
+      "max-image-preview": "large",
+    },
   };
 }
 

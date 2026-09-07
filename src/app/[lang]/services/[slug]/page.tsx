@@ -153,13 +153,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
     ? [
         "فحص فني دقيق واختيار المعدات المناسبة للبئر",
         "الالتزام الكامل بالمعايير الهندسية وجودة التنفيذ",
-        "توفير قطع الغيار والملحقات الأصلية 100% بالضمان",
+        "قطع غيار ومعدات أصلية من الوكيل الحصري، بضمان المصنع",
         "دعم فني متواصل وصيانة دورية بعد التركيب",
       ]
     : [
         "Precise technical analysis of well requirements",
         "Full compliance with engineering & build quality standards",
-        "100% genuine parts & equipment with certified warranty",
+        "Genuine parts and equipment from the exclusive agent, with factory warranty",
         "Continuous technical support and ongoing maintenance options",
       ];
 
@@ -293,12 +293,14 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               ))}
             </div>
 
-            {/* B2B Trust Badge */}
+            {/* B2B Trust Badge — "Exclusive agent" replaces the earlier
+                the earlier unfalsifiable quality-guarantee badge with the real,
+                checkable relationship (see /agents). */}
             <div className="flex flex-col sm:flex-row items-center gap-4 p-5 bg-emerald-50/30 rounded-2xl border border-emerald-100/40 text-neutral-700 text-xs">
               <Shield className="w-8 h-8 text-emerald-600 shrink-0" />
               <div className="leading-relaxed">
                 <span className="font-bold text-neutral-800 block mb-0.5">
-                  {lang === "ar" ? "جودة مضمونة بنسبة 100%" : "100% Quality Guaranteed"}
+                  {lang === "ar" ? "قطع ومعدات أصلية من الوكيل الحصري" : "Genuine Parts, Exclusive Agent"}
                 </span>
                 {lang === "ar"
                   ? "جميع المواد والمعدات المستخدمة معتمدة من كبرى العلامات ومطابقة للمواصفات القياسية."

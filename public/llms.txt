@@ -1,0 +1,72 @@
+# El Waha Pumps & Wells Services (شركة الواحة لخدمات الآبار والطلمبات)
+
+> Egyptian supplier, installer and maintainer of deep-well pumping equipment since 2013.
+> Exclusive Egyptian agent for 12 manufacturers: Kurlar, Panelli, Astral Pipes, PMC, NOVO,
+> Tormac, Üntel, Alka, Voltson, Rovatti, Franklin Electric, Aristoncavi.
+> Head office: CPC Industrial Complex, 6th Industrial Zone, 6th of October City, Giza, Egypt.
+> Sales: +20 106 668 5532 (WhatsApp: https://wa.me/201066685532) · info@elwahapumps.com.
+> Prices are quoted on request; there is no online payment. Arabic site: /ar, English: /en.
+
+## What we sell
+
+- [Submersible pumps](https://elwahapumps.com/en/products/category/pumps)
+- [Surface pumps](https://elwahapumps.com/en/products/category/surface-pumps)
+- [Submersible motors](https://elwahapumps.com/en/products/category/motors)
+- [Electrical: inverters, control panels](https://elwahapumps.com/en/products/category/electrical)
+- [Column pipes](https://elwahapumps.com/en/products/category/pipes)
+- [Cables](https://elwahapumps.com/en/products/category/cables)
+- [Spare parts: thrust bearings, winding wire](https://elwahapumps.com/en/products/category/spare-parts)
+- [Full product catalogue](https://elwahapumps.com/en/products)
+
+## Services
+
+- [Supply and installation](https://elwahapumps.com/en/services/pump-supply)
+- [Panel design](https://elwahapumps.com/en/services/panel-design)
+- [Marine/submersible cable supply](https://elwahapumps.com/en/services/marine-cable-supply)
+- [Well pipe supply](https://elwahapumps.com/en/services/well-pipe-supply)
+- [Spare parts supply](https://elwahapumps.com/en/services/spare-parts-supply)
+- [Pump maintenance](https://elwahapumps.com/en/services/pump-maintenance)
+- [Motor maintenance](https://elwahapumps.com/en/services/motor-maintenance)
+- [Panel maintenance](https://elwahapumps.com/en/services/panel-maintenance)
+- [All services](https://elwahapumps.com/en/services) · [24/7 support](https://elwahapumps.com/en/support)
+
+## Tools
+
+- [Pump selector](https://elwahapumps.com/en/selector): ranks pumps by efficiency at a
+  requested duty point. GET with query parameters `q` (flow), `qu` (flow unit: m3h, ls,
+  or lmin), `h` (head), `hu` (head unit: m or bar) — e.g.
+  `/en/selector?q=60&qu=m3h&h=120&hu=m`.
+
+## Machine-readable data
+
+- [Full catalogue text dump](https://elwahapumps.com/llms-full.txt): every product,
+  category and spec, regenerated on every deploy.
+- [Product feed](https://elwahapumps.com/api/products): JSON, bilingual names and specs,
+  no prices — quoted on request. Single product: `/api/products/{slug}`.
+- [Pump selector API](https://elwahapumps.com/api/selector?q=60&qu=m3h&h=120&hu=m): JSON
+  equivalent of the selector page above, same query parameters.
+
+## Brands
+
+Exclusive Egyptian agent for 12 manufacturers (see the summary above for the full
+list). Brand pages exist for: [Kurlar](https://elwahapumps.com/en/agents/kurlar),
+[Astral Pipes](https://elwahapumps.com/en/agents/astral-pipes),
+[PMC](https://elwahapumps.com/en/agents/pmc), [Alka](https://elwahapumps.com/en/agents/alka),
+[NOVO](https://elwahapumps.com/en/agents/novo), [Tormac](https://elwahapumps.com/en/agents/tormac),
+[Üntel](https://elwahapumps.com/en/agents/untel). See
+[all agencies](https://elwahapumps.com/en/agents) for the current list.
+
+## Company
+
+- [About](https://elwahapumps.com/en/about): founded 2013 in Giza; ISO 9001 certified
+- [Distributors](https://elwahapumps.com/en/locations)
+- [Events](https://elwahapumps.com/en/events)
+- [Careers](https://elwahapumps.com/en/careers)
+- [Catalogues (PDF datasheets)](https://elwahapumps.com/en/catalogues)
+- [Contact](https://elwahapumps.com/en/contact)
+
+## How to order
+
+Prices are quoted on request — this business does not sell online. Send an itemised
+request by WhatsApp (https://wa.me/201066685532), call +20 106 668 5532, or submit the
+contact form at https://elwahapumps.com/en/contact.

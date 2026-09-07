@@ -220,8 +220,8 @@ export default async function AgentDetailPage({ params }: PageProps) {
               </h3>
               <p className="text-neutral-400 text-xs leading-relaxed mb-6 relative z-10">
                 {lang === "ar"
-                  ? "نوفر منتجات العلامة التجارية الأصلية بالكامل مع الضمان المعتمد. أرسل استفسارك وسيقوم فريق المبيعات بالرد عليك."
-                  : "We supply original branded items with full certified warranty. Send your inquiry and our sales team will respond promptly."}
+                  ? "نوفر منتجات العلامة التجارية الأصلية بضمان المصنع. أرسل استفسارك وسيقوم فريق المبيعات بالرد عليك."
+                  : "We supply original branded items with the manufacturer's factory warranty. Send your inquiry and our sales team will respond promptly."}
               </p>
               <div className="space-y-3 relative z-10">
                 <Link

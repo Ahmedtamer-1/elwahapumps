@@ -1,0 +1,131 @@
+# El Waha Pumps — Full Catalogue
+
+El Waha Pumps & Wells Services. Exclusive Egyptian agent for 12 pump, motor, pipe, cable and electrical brands.
+13+ years in the water-well and industrial pump business.
+Address: CPC Industrial Complex, 6th Industrial Zone, 6th of October City, Giza, Egypt.
+Email: info@elwahapumps.com | Sales: +201066685532 | Support: +201068155336
+
+## Agencies
+- Kurlar
+- Panelli
+- Astral Pipes
+- PMC
+- NOVO
+- Tormac
+- Untel
+- Alka
+- Voltson
+- Rovatti
+- Franklin Electric
+- Aristoncavi
+
+## Pumps
+https://elwahapumps.com/en/products/category/pumps
+
+### Kurlar Stainless Steel Submersible Pumps
+Model: KP
+Genuine Kurlar KP stainless steel submersible pumps. Their corrosion-resistant AISI 304 and AISI 316 construction delivers long service life and reliable performance for demanding agricultural irrigation, industrial water supply, and groundwater dewatering applications.
+Specs: High Efficiency,Stainless Steel,Deep Well
+URL: https://elwahapumps.com/en/products/pump-submersible
+
+### Cast Stainless Submersible Pumps
+Model: KSX
+Genuine Kurlar KSX cast stainless steel submersible pumps (6"-8"-10"). All wetted parts — diffusers, impellers, and suction/discharge chambers — are cast in AISI 304 stainless steel for outstanding corrosion resistance, high efficiency, and long service life. Suitable for both horizontal and vertical installation; full AISI 316L construction available on request.
+Specs: Cast Stainless Steel,Corrosion Resistant,6"-10"
+URL: https://elwahapumps.com/en/products/pump-cast-stainless
+
+### Rovatti Borehole Pumps
+Model: 8E - 8ER - 10E - 10ER
+Italian-built borehole pumps from Rovatti Pompe, in cast iron and cast steel with AISI 316 stainless available, in the 8" and 10" sizes most Egyptian wells are cased for. Each size comes in two hydraulics: radial for high head — the 8" reaches 675 m — and mixed-flow for high volume, where the 10" carries up to 420 m³/h. The check valve is built into the delivery bowl.
+Specs: Cast Iron & Cast Steel,8" to 10",Made in Italy
+URL: https://elwahapumps.com/en/products/pump-rovatti
+
+### Panelli Submersible Pumps
+Model: 140-270 SX
+Italian-built submersible pumps from Panelli, in cast iron and cast steel as well as micro-cast AISI 304 stainless, with 8" and 10" the sizes most Egyptian wells are cased for. The 8" 180 SX covers 78 to 140 m³/h at 10 to 150 HP, and the 10" 230 SX covers 200 to 280 m³/h at 25 to 340 HP. Semiaxial impellers suit mid-to-high flows at moderate head, which is the shape of most irrigation and water-network duty. Tell us the well's yield and depth and our engineers will size the pump for it.
+Specs: Cast Iron & Cast Steel,8" & 10",Made in Italy
+URL: https://elwahapumps.com/en/products/pump-panelli-sx
+
+## Surface Pumps
+https://elwahapumps.com/en/products/category/surface-pumps
+
+### Rovatti Surface Pumps
+Italian-built surface pumps from Rovatti Pompe, carried as a complete range: single-stage and multistage centrifugal electric pumps in horizontal and vertical execution, bare-shaft surface pumps for coupling to a motor or engine, and waste water electric submersible pumps with single-channel, double-channel and vortex impellers. Suited to irrigation, water supply and pressure boosting, industrial service water and drainage.
+Specs: Surface & Waste Water,Single & Multistage,Made in Italy
+URL: https://elwahapumps.com/en/products/pump-rovatti-surface
+
+### Tormac Surface Pumps
+Tormac surface pumps, carried across the range: TCCH close coupled units, TEH and TEC horizontal end-suction centrifugals, THSC horizontal split case pumps for high flows, and TV vertical multistage pumps for high head from a small footprint — with matched induction motors supplied alongside. Used for irrigation, water supply and pressure boosting, and industrial and building services, in 50 Hz.
+Specs: Close Coupled to Split Case,50 Hz,Motors Included
+URL: https://elwahapumps.com/en/products/pump-tormac-surface
+
+## Motors
+https://elwahapumps.com/en/products/category/motors
+
+### Franklin Electric Submersible Motors
+Franklin Electric submersible motors in 8" and 10". The 8" runs 40 to 200 HP at 50 Hz, with a Hi-Temp 75 build rated to 75°C ambient for hot or slow-flowing wells, tripping before an overheat burns the winding. The 10" is rewindable at 175 to 250 HP on 380-415 V. Both use the Sand Fighter seal system, and both are available in full 316 stainless or 904 L.
+Specs: 8" & 10",40-250 HP,Class F
+URL: https://elwahapumps.com/en/products/motor-franklin
+
+### Panelli Submersible Motors
+Water-filled rewindable submersible motors from Panelli of Italy, in 8" and 10" to match the SX pump ends, with the wider range running from 0.37 kW up to 300 kW. Cast iron and stainless steel bodies are both available to suit the water the motor will sit in.
+Specs: Rewindable,8" & 10",Made in Italy
+URL: https://elwahapumps.com/en/products/motor-panelli
+
+### Kurlar Submersible Motors
+Model: KM
+Genuine Kurlar submersible motors (6"-8"-10"), rewindable and rated for continuous operation up to 60°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors, manufactured in ISO 9001 certified facilities.
+Specs: HI-TEMP 60°C,IP68,Water-Cooled
+URL: https://elwahapumps.com/en/products/motor-hitemp
+
+## Electrical Component
+https://elwahapumps.com/en/products/category/electrical
+
+### NOVO Inverter
+An advanced, high-efficiency solar-driven pump controller with Dynamic MPPT technology, delivering stable performance, intelligent power management, and long-life reliability for agricultural, industrial, and off-grid water pumping applications. Supports solar-only or hybrid solar + grid operation with automatic switching.
+Specs: Dynamic MPPT,Solar + Grid Hybrid,0.37-400 kW
+URL: https://elwahapumps.com/en/products/elec-inverter
+
+### Electrical Control Panels
+Pump and motor control panels built up in El Waha's own workshop, in three starting types: inverter (VFD) for variable-speed control, soft starter for a gradual ramp up to full speed, and star-delta for stepped starting on larger motors. Each panel is specified against the motor it will run, and brings the starting current down so the well starts without the shock that shortens motor and pump life. Housed in a floor-standing steel enclosure with MCCB incoming protection, copper busbars, DIN-rail control gear, and door-mounted indication.
+Specs: Built In-House,Inverter · Soft Start · Star-Delta,Motor Protection
+URL: https://elwahapumps.com/en/products/elec-control-panel
+
+## Pipes
+https://elwahapumps.com/en/products/category/pipes
+
+### Astral Pipes
+Model: Bore-Well
+Genuine Astral Bore-Well lead-free column pipes for submersible pumps. Manufactured with square-thread couplers, EPDM 'O' Ring seals, and a double stainless steel stud pin locking system, they are 100% free of lead and heavy metals, UV-stabilised, and rigorously tested for leak-proof, long-lasting performance in deep well and borehole installations.
+Specs: Lead-Free uPVC,EPDM Sealed,1"-6"
+URL: https://elwahapumps.com/en/products/pipe-upvc-column
+
+## Spare Parts
+https://elwahapumps.com/en/products/category/spare-parts
+
+### ALKA Thrust Bearings
+Model: AP+ Series
+Genuine Alka AP+ Series silicon carbide (SiC) ceramic thrust bearings, engineered for challenging deep-well applications where sand, ferrous debris, or high thrust loads exceed the capacity of conventional bearings. Retaining full strength at temperatures up to 1100°C and validated through in-house and field testing, they deliver outstanding wear resistance and reliability where standard stainless steel or carbon bearings fail.
+Specs: Silicon Carbide,1100°C Rated,Sand Resistant
+URL: https://elwahapumps.com/en/products/thrust-bearing-heavy
+
+### Voltson Wires
+Model: EXCELGRIP
+Genuine Voltson EXCELGRIP poly-wrapped winding wire for rewinding submersible pump motors. Built on EC grade ETP copper of 99.95% minimum purity and wrapped in bi-axially oriented polypropylene, it holds its insulation up to 120°C and is heavily annealed so it lays into stator slots without cracking. Every coil is high-voltage tested at 3.5 kV rms and the range is tested to IS 8783, in sizes from 0.40 to 2.40 mm² on 500 m and 1000 m coils.
+Specs: ETP Copper 99.95%,120°C Rated,IS 8783
+URL: https://elwahapumps.com/en/products/winding-wire-voltson
+
+## Cables
+https://elwahapumps.com/en/products/category/cables
+
+### Submersible Motor Cables
+Water-resistant, copper-conductor cables designed to safely power submersible motors in deep well installations.
+Specs: PVC Insulated,Water Resistant,Copper Conductor
+URL: https://elwahapumps.com/en/products/cable-submersible
+
+### Untel Cable
+Model: H07VVH6-F
+Genuine Üntel H07VVH6-F PVC flat power and control cable, rated 450/750V, used for power and control wiring inside pump control panels, starter cabinets, and deep well pump stations. IPX8 tested by TÜV for permanent submersion up to 10 bar (100 m), UV resistant, and flame retardant.
+Specs: IPX8 Submersible,450/750V,3x10-3x120 mm²
+URL: https://elwahapumps.com/en/products/cable-flat-untel
+

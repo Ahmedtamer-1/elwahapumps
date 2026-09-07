@@ -1,6 +1,6 @@
 import { getDictionary, Locale } from "./dictionaries";
 import Hero from "@/components/Hero";
-import ProductTabs from "@/components/ProductTabs";
+import ProductTeaser from "@/components/ProductTeaser";
 import SuccessPartners from "@/components/SuccessPartners";
 import { getCatalogProducts } from "@/lib/products";
 import { CheckCircle2, Phone, Mail } from "lucide-react";
@@ -96,7 +96,7 @@ export default async function HomePage({ params }: PageProps) {
             </p>
           </div>
 
-          <ProductTabs lang={lang} dict={dict} products={products} isTeaser={true} />
+          <ProductTeaser lang={lang} dict={dict} products={products} />
         </div>
       </section>
 

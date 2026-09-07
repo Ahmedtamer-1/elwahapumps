@@ -54,7 +54,19 @@ export default function SuccessPartners({ lang }: SuccessPartnersProps) {
           </div>
         </div>
 
-
+        {/* The marquee above is decorative (logos, no text an answer engine
+            or a screen reader can use); this is the actual content — every
+            name as selectable text, so the client relationships are real,
+            indexable facts and not just pixels inside a scrolling image
+            strip. */}
+        <p className="mt-6 text-sm leading-relaxed text-stone">
+          {SUCCESS_PARTNERS.map((partner, idx) => (
+            <React.Fragment key={partner.id}>
+              {idx > 0 && (isAr ? "، " : ", ")}
+              {isAr ? partner.name.ar : partner.name.en}
+            </React.Fragment>
+          ))}
+        </p>
       </div>
     </div>
   );

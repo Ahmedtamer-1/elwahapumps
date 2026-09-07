@@ -130,7 +130,11 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             )}
             <h1 className="text-display-lg-mobile md:text-display-lg text-primary mb-2 font-display-lg">{title}</h1>
             <div className="flex items-center gap-4 text-label-sm text-outline mb-4">
-              <span className="flex items-center gap-1 text-primary"><ShieldCheck className="w-4 h-4" /> {isAr ? "ضمان معتمد" : "Certified Warranty"}</span>
+              {/* "Factory Warranty" rather than the earlier certification-style badge — this
+                  is the manufacturer's own warranty, passed through as the
+                  exclusive Egyptian agent, not a certification process El
+                  Waha itself runs. */}
+              <span className="flex items-center gap-1 text-primary"><ShieldCheck className="w-4 h-4" /> {isAr ? "ضمان المصنع" : "Factory Warranty"}</span>
             </div>
 
             <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{shownPrice}</p>
@@ -158,11 +162,15 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
               </div>
               <div>
                 {/* Not a heading — a label inside the supplier card, same
-                    level as the "Verified Supplier" line below it. */}
+                    level as the line below it. "Exclusive Egyptian Agent"
+                    replaces the earlier self-issued supplier-trust badge —
+                    same claim the site already makes elsewhere
+                    (common.exclusiveAgent), and one an answer engine can
+                    actually check against the agency list on /agents. */}
                 <p className="font-headline-md text-[18px] text-primary">{isAr ? "شركة الواحة لخدمات الآبار والطلمبات" : "El Waha Pumps"}</p>
                 <p className="text-label-sm text-outline flex items-center gap-1 mt-1">
-                  <ShieldCheck className="w-4 h-4 text-secondary" /> 
-                  {isAr ? "مورد موثوق" : "Verified Supplier"}
+                  <ShieldCheck className="w-4 h-4 text-secondary" />
+                  {isAr ? "الوكيل الحصري في مصر" : "Exclusive Egyptian Agent"}
                 </p>
               </div>
             </div>
@@ -204,9 +212,14 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 catalogue sits beside the price, not buried further down. */}
             <CatalogueButton productId={product.id} lang={lang} className="mt-6" />
 
+            {/* The earlier marketplace-checkout-style badge was a concept this
+                quote-then-WhatsApp business doesn't offer (no online
+                payment exists to protect). Replaced with the real,
+                already-published claim from the support page: spare
+                parts are stocked in-house, not ordered on demand. */}
             <div className="mt-4 flex items-center justify-center gap-6 text-label-sm text-outline">
-              <span className="flex items-center gap-1"><Truck className="w-4 h-4" /> {isAr ? "شحن لجميع المحافظات" : "Nationwide Shipping"}</span>
-              <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4" /> {isAr ? "حماية المشتري" : "Buyer Protection"}</span>
+              <span className="flex items-center gap-1"><Truck className="w-4 h-4" /> {isAr ? "توصيل لكل المحافظات" : "Delivery to Every Governorate"}</span>
+              <span className="flex items-center gap-1"><ShieldCheck className="w-4 h-4" /> {isAr ? "قطع غيار أصلية بالمخزن" : "Genuine Parts In Stock"}</span>
             </div>
           </div>
         </div>
@@ -238,22 +251,25 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             </button>
           </div>
 
-          {activeDocTab === "overview" ? (
-            features && features.length > 0 && (
-              <div>
-                <h2 className="font-headline-md text-xl text-primary mb-5">{t.features}</h2>
-                <ul className="grid sm:grid-cols-2 gap-3">
-                  {features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-body-md text-on-surface-variant">
-                      <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          ) : (
-            <div className="space-y-12">
+          {/* Both panels render in every response — a tab click only
+              toggles which is visible (via `hidden`, not conditional
+              mounting), so the technical data an answer engine or a
+              crawler needs is present in the initial HTML regardless of
+              which tab happened to be "active" server-side. */}
+          {features && features.length > 0 && (
+            <div hidden={activeDocTab !== "overview"}>
+              <h2 className="font-headline-md text-xl text-primary mb-5">{t.features}</h2>
+              <ul className="grid sm:grid-cols-2 gap-3">
+                {features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5 text-body-md text-on-surface-variant">
+                    <CheckCircle2 className="w-5 h-5 text-secondary flex-shrink-0 mt-0.5" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          <div className="space-y-12" hidden={activeDocTab !== "technical"}>
               <div>
                 <h2 className="font-headline-md text-xl text-primary mb-5">{t.specs}</h2>
                 <SpecsTable specs={tableSpecs} />
@@ -345,7 +361,6 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 </div>
               )}
             </div>
-          )}
         </div>
       ) : (
         <div className="mt-16">
