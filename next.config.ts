@@ -1,4 +1,51 @@
 import type { NextConfig } from "next";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+/**
+ * Redirect rules for every URL indexed on the old WordPress site
+ * (PLAN.md Stage 2), parsed from scripts/legacy-urls.txt rather than
+ * duplicated here — the two would otherwise drift, and the txt file is
+ * also what scripts/verify-redirects.mjs reads to check these actually
+ * work post-deploy.
+ *
+ * Source patterns must be percent-encoded (encodeURI), not the literal
+ * decoded string — confirmed by testing against a running server with a
+ * diagnostic rule in both forms: the encoded form matched, the literal
+ * Arabic text did not. This is the opposite of what seemed like the more
+ * likely behaviour going in, which is exactly the trap PLAN.md's S2-T03
+ * warned this would be. Hex case (uppercase vs the sitemap's lowercase)
+ * did not matter in that same test.
+ */
+function legacyRedirects() {
+  const raw = readFileSync(join(process.cwd(), "scripts", "legacy-urls.txt"), "utf-8");
+  const rules: { source: string; destination: string; permanent: true }[] = [];
+
+  for (const line of raw.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith("#")) continue;
+    const [oldPath, newPath] = trimmed.split("\t");
+    if (!oldPath || newPath === undefined) continue;
+    // "/" itself is handled by src/proxy.ts (S2-T05), not a redirects()
+    // rule — a rule here would compete with it.
+    if (oldPath === "/") continue;
+
+    const destination = newPath.startsWith("/sitemap")
+      ? newPath
+      : `/ar${newPath === "/" ? "" : newPath}`;
+
+    // A source ending in "/" never matches here — confirmed against a
+    // running server, not assumed — so every legacy URL, which the old
+    // site always served (and Google always indexed) WITH a trailing
+    // slash, needs the slash-less form to redirect straight to its real
+    // destination.
+    const slashless = oldPath.endsWith("/") ? oldPath.slice(0, -1) : oldPath;
+    const source = encodeURI(slashless);
+    rules.push({ source, destination, permanent: true });
+  }
+
+  return rules;
+}
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -35,6 +82,7 @@ const nextConfig: NextConfig = {
         destination: '/:lang/products/category/spare-parts',
         permanent: true,
       },
+      ...legacyRedirects(),
     ];
   },
 };

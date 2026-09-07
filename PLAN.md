@@ -74,15 +74,15 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S2-T01 | Freeze a verified inventory of live URLs | S | PRE | TODO |
-| S2-T02 | Redirect map — Latin-slug pages | M | PRE | TODO |
-| S2-T03 | Redirect map — Arabic percent-encoded slugs | M | PRE | TODO |
-| S2-T04 | Redirect map — 12 `/portfolio/nsp-*` pages | S | PRE | TODO |
-| S2-T05 | Change the root redirect to 308 | S | PRE | TODO |
-| S2-T06 | Redirect the legacy Yoast sitemap URLs | S | PRE | TODO |
-| S2-T07 | Write the post-cutover redirect verification script | M | PRE | TODO |
-| S2-T08 | Off-site listing update checklist | S | GATE | TODO |
-| S2-T09 | **CUTOVER** — switch DNS and verify | M | GATE | TODO |
+| S2-T01 | Freeze a verified inventory of live URLs | S | PRE | DONE |
+| S2-T02 | Redirect map — Latin-slug pages | M | PRE | DONE |
+| S2-T03 | Redirect map — Arabic percent-encoded slugs | M | PRE | DONE |
+| S2-T04 | Redirect map — 12 `/portfolio/nsp-*` pages | S | PRE | DONE — routed to the pumps category (conservative fallback); confirm with the user whether any should point at a specific product |
+| S2-T05 | Change the root redirect to 308 | S | PRE | DONE |
+| S2-T06 | Redirect the legacy Yoast sitemap URLs | S | PRE | DONE |
+| S2-T07 | Write the post-cutover redirect verification script | M | PRE | DONE — 68/68 legacy URLs pass locally |
+| S2-T08 | Off-site listing update checklist | S | GATE | PARTIAL — checklist written (docs/off-site-listings-checklist.md); the actual off-site updates need your access to each property |
+| S2-T09 | **CUTOVER** — switch DNS and verify | M | GATE | BLOCKED — requires your action (DNS/hosting access); all PRE work it depends on is done |
 
 ### Stage 3 — AI-search readiness
 

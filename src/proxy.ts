@@ -18,9 +18,11 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Root: send visitors to the default Arabic locale.
+  // Root: send visitors to the default Arabic locale. 308 (permanent), not
+  // the 307 default — this is a stable, permanent locale default, and a
+  // temporary redirect tells search engines not to transfer signals to /ar.
   if (pathname === "/") {
-    return NextResponse.redirect(new URL("/ar", request.url));
+    return NextResponse.redirect(new URL("/ar", request.url), 308);
   }
 
   return NextResponse.next();

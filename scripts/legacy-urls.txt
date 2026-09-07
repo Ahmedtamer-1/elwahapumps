@@ -1,0 +1,116 @@
+# Legacy WordPress URLs to redirect at cutover (PLAN.md Stage 2).
+#
+# Captured from https://elwahapumps.com/sitemap_index.xml and its 8 child
+# sitemaps on the date below. Elementor template URLs (/header/, /footer/,
+# /ct-mega-menu/) are excluded — they are page-builder scaffolding, not
+# content. Each row is: <old path>\t<new path> (both locale-less; the new
+# path always resolves under /ar, since Arabic is the primary locale and
+# the old site's default language was Arabic too).
+#
+# Verified 2026-09-07: all 62 URLs returned 200 on the live site EXCEPT
+# one, noted below, which returned 500 on the live site itself (a bug in
+# the WordPress site, not this list) — still included below because it
+# is listed in the sitemap and may still be indexed by Google from when
+# it did work.
+#
+# scripts/verify-redirects.mjs (S2-T07) reads this file.
+
+# --- Root / misc pages -------------------------------------------------
+# "/" itself is not a next.config.ts redirect rule — src/proxy.ts already
+# 308s it to /ar (S2-T05). Listed here only so the verify script confirms
+# it, not because next.config.ts needs a rule for it.
+/	/
+/blog/	/
+/our-team/	/about
+/contact-forms-7/	/contact
+
+# --- Latin-slug agent pages ---------------------------------------------
+/pmc/	/agents/pmc
+/alka-thurst-bearing/	/agents/alka
+/astral-pipes/	/agents/astral-pipes
+/jee-pumps/	/agents/jee-pumps
+
+# --- Latin-slug core pages ------------------------------------------
+/contact-us/	/contact
+/about-us/	/about
+/services/	/services
+
+# --- Arabic-slug top-level pages -----------------------------------
+/التوريدات/	/services
+/كورلار/	/agents/kurlar
+/الصيانات/	/support
+/الوكلاء/	/agents
+/الاعمال-الكهربية/	/products/category/electrical
+/المواتير/	/products/category/motors
+/الطلمبات/	/products/category/pumps
+/المنتجات/	/products
+
+# --- Portfolio index and model-code pages ---------------------------
+# The 12 nsp-NNNN pages are Kurlar-era model codes with no verifiable
+# correspondence to the current catalogue (checked: no "NSP" reference
+# anywhere in src/data/pump-curves.json, km-motors.json or products.ts).
+# Routed to the pumps category rather than guessed at a specific product
+# — a generic-but-correct target beats a specific-but-possibly-wrong one.
+# CONFIRM WITH THE USER before cutover whether any of these 12 codes
+# should point at a specific current product instead (PLAN.md open
+# question #7).
+/portfolio/	/products
+/portfolio/nsp-6010/	/products/category/pumps
+/portfolio/nsp-6017/	/products/category/pumps
+/portfolio/nsp-6030/	/products/category/pumps
+/portfolio/nsp-6046/	/products/category/pumps
+/portfolio/nsp-6060/	/products/category/pumps
+/portfolio/nsp-7077/	/products/category/pumps
+/portfolio/nsp-7095/	/products/category/pumps
+/portfolio/nsp-7096/	/products/category/pumps
+/portfolio/nsp-8112-series/	/products/category/pumps
+/portfolio/nsp-8125/	/products/category/pumps
+/portfolio/nsp-8160/	/products/category/pumps
+/portfolio/nsp-10210/	/products/category/pumps
+
+# --- Portfolio, named (Arabic) ---------------------------------------
+/portfolio/طلمبات-أفقي/	/products/category/surface-pumps
+/portfolio/طلمبات-رأسية/	/products/category/surface-pumps
+/portfolio/لوحات-التشغيل-الكهربي/	/products/elec-control-panel
+/portfolio/الانفرتر/	/products/elec-inverter
+/portfolio/طلمبات-غاطسة-الزهر/	/products/category/pumps
+/portfolio/طلمبات-غاطس-wps/	/products/category/pumps
+/portfolio/منظمات-الجهد/	/products/category/electrical
+/portfolio/طلمبات-طرد-مركزي/	/products/category/surface-pumps
+/portfolio/مواتير-زهر/	/products/category/motors
+/portfolio/استانلس/	/products/pump-cast-stainless
+/portfolio/ستار-دلتا/	/products/elec-control-panel
+/portfolio/لوحة-تحكم-سوفت-ستارت/	/products/elec-control-panel
+
+# --- Services, Arabic-slug --------------------------------------------
+/service/	/services
+/service/توريد-الكابلات-البحرية/	/services/marine-cable-supply
+/service/توريد-تركيب-الطلمبات/	/services/pump-supply
+/service/صيانة-الطلمبات/	/services/pump-maintenance
+/service/تصميم-توريد-تركيب-منظمات-الجهد/	/services/panel-design
+/service/صيانة-منظمات-الجهد/	/services/panel-maintenance
+/service/صيانة-لوحات-التشغيل-الكهربي/	/services/panel-maintenance
+/service/صيانة-المواتير/	/services/motor-maintenance
+/service/توريد-الانفرتر/	/services
+/service/توريد-مواسير-الأعماق/	/services/well-pipe-supply
+/service/توريد-لوحات-التشغيل-الكهربي/	/services/panel-design
+
+# --- Portfolio categories, Arabic-slug --------------------------------
+/portfolio-category/الاعمال-الكهربية/	/products/category/electrical
+/portfolio-category/الطلمبات/	/products/category/pumps
+/portfolio-category/المواتير/	/products/category/motors
+# Live 500 at capture time (WordPress bug) — sitemap-listed, still mapped.
+/portfolio-category/طلمبات-غاطسة-مقاومة-للصدأ/	/products/pump-cast-stainless
+/portfolio-category/لوحات-التشغيل-الكهربي/	/products/elec-control-panel
+
+# --- Service categories, Arabic-slug -----------------------------------
+/service-category/التوريدات/	/services
+/service-category/الصيانات/	/support
+
+# --- Legacy sitemap URLs (S2-T06) --------------------------------------
+/sitemap_index.xml	/sitemap.xml
+/page-sitemap.xml	/sitemap.xml
+/portfolio-sitemap.xml	/sitemap.xml
+/service-sitemap.xml	/sitemap.xml
+/portfolio-category-sitemap.xml	/sitemap.xml
+/service-category-sitemap.xml	/sitemap.xml
