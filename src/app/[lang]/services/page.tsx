@@ -27,7 +27,7 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
     "panel-maintenance",
   ];
 
-  let displayServices: { id: string; category: "supply" | "maintenance" }[] = [];
+  const displayServices: { id: string; category: "supply" | "maintenance" }[] = [];
 
   if (tab === "all" || tab === "supply") {
     displayServices.push(

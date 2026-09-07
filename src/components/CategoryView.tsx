@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
 import type { CatalogProduct } from "@/lib/products";
 import { priceOnRequestLabel } from "@/lib/price";
+import type { Dictionary } from "../app/[lang]/dictionaries";
 
 export default function CategoryView({
   products,
@@ -17,7 +18,7 @@ export default function CategoryView({
   products: CatalogProduct[];
   category: string;
   lang: string;
-  dict: any;
+  dict: Dictionary;
 }) {
   const isAr = lang === "ar";
   const title = categoryLabel(dict, category);
@@ -28,10 +29,17 @@ export default function CategoryView({
   const availableBrands = useMemo(() => {
     const brands = new Set<string>();
     products.forEach(p => {
-      if (p.modelNo) brands.add(p.modelNo.split(" ")[0]); 
+      if (p.modelNo) brands.add(p.modelNo.split(" ")[0]);
     });
     return Array.from(brands);
   }, [products]);
+
+  const visibleProducts = useMemo(() => {
+    if (selectedBrands.length === 0) return products;
+    return products.filter(
+      (p) => p.modelNo && selectedBrands.includes(p.modelNo.split(" ")[0]),
+    );
+  }, [products, selectedBrands]);
 
   return (
     <div className={`flex flex-col md:flex-row min-h-screen bg-white ${isAr ? "md:flex-row-reverse" : ""}`}>
@@ -58,27 +66,34 @@ export default function CategoryView({
         </div>
 
         <div className={`flex flex-col overflow-hidden transition-all duration-500 ${isFiltersOpen ? "max-h-[2000px] opacity-100 mt-4" : "max-h-0 opacity-0 md:max-h-none md:opacity-100 md:mt-0"}`}>
-          <div className="mb-10">
-             <div className="inline-block border border-white px-4 py-1.5 text-sm font-medium tracking-wide">
-               {isAr ? "تسوق الآن" : "Shop Now"}
-             </div>
-          </div>
-
-          <div className="text-sm mb-6">
-            {isAr ? "تصفية حسب :" : "Filter by :"}
-          </div>
+          {availableBrands.length > 0 && (
+            <div className="text-sm mb-6">
+              {isAr ? "تصفية حسب :" : "Filter by :"}
+            </div>
+          )}
 
           {/* Filters */}
           <div className="flex flex-col gap-8 pb-6 md:pb-0">
-          {/* Brand Filter */}
+          {/* Brand Filter — wired to actually filter `products` below. Note
+              "brand" here is derived from the model number prefix
+              (e.g. "KP", "8E"), not a real brand field, so labels can look
+              like model codes until products carry a proper brand. */}
           {availableBrands.length > 0 && (
             <div className="flex flex-col gap-3">
               <h3 className="font-bold text-lg mb-1">{isAr ? "الماركة" : "Brand"}</h3>
               <div className="h-px w-full bg-neutral-500/50 mb-2"></div>
               {availableBrands.map(brand => (
                 <label key={brand} className="flex items-center gap-3 text-sm cursor-pointer group">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
+                    checked={selectedBrands.includes(brand)}
+                    onChange={() =>
+                      setSelectedBrands((prev) =>
+                        prev.includes(brand)
+                          ? prev.filter((b) => b !== brand)
+                          : [...prev, brand],
+                      )
+                    }
                     className="w-3.5 h-3.5 bg-transparent border border-white/70 appearance-none checked:bg-white checked:border-white transition-colors cursor-pointer"
                   />
                   <span className="group-hover:text-neutral-300">{brand}</span>
@@ -86,29 +101,6 @@ export default function CategoryView({
               ))}
             </div>
           )}
-
-          {/* Dummy Filters to match screenshot aesthetic */}
-          <div className="flex flex-col gap-3">
-            <h3 className="font-bold text-lg mb-1">{isAr ? "التسوق عبر الإنترنت" : "Online Shopping"}</h3>
-            <div className="h-px w-full bg-neutral-500/50 mb-2"></div>
-            {["Cairo Sales", "Sharaf DG", "Ehab Center"].map(opt => (
-              <label key={opt} className="flex items-center gap-3 text-sm cursor-pointer group">
-                <input type="checkbox" className="w-3.5 h-3.5 bg-transparent border border-white/70 appearance-none checked:bg-white cursor-pointer" />
-                <span className="group-hover:text-neutral-300">{opt}</span>
-              </label>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <h3 className="font-bold text-lg mb-1">{isAr ? "اللون" : "Color"}</h3>
-            <div className="h-px w-full bg-neutral-500/50 mb-2"></div>
-            {["Black", "Stainless steel", "White"].map(opt => (
-              <label key={opt} className="flex items-center gap-3 text-sm cursor-pointer group">
-                <input type="checkbox" className="w-3.5 h-3.5 bg-transparent border border-white/70 appearance-none checked:bg-white cursor-pointer" />
-                <span className="group-hover:text-neutral-300">{opt}</span>
-              </label>
-            ))}
-          </div>
         </div>
         </div>
       </aside>
@@ -116,7 +108,7 @@ export default function CategoryView({
       {/* Main Content Area */}
       <main className="flex-1 bg-white p-6 pt-24 md:p-12 md:pt-32 lg:p-20 lg:pt-32">
         <div className="max-w-5xl mx-auto flex flex-col gap-12">
-          {products.map((product) => {
+          {visibleProducts.map((product) => {
              const titleStr = product.title;
 
              return (
@@ -165,9 +157,11 @@ export default function CategoryView({
              )
           })}
           
-          {products.length === 0 && (
+          {visibleProducts.length === 0 && (
              <div className="text-center text-neutral-400 py-20">
-                {isAr ? "لا توجد منتجات في هذا القسم." : "No products found in this category."}
+                {products.length === 0
+                  ? (isAr ? "لا توجد منتجات في هذا القسم." : "No products found in this category.")
+                  : (isAr ? "لا توجد منتجات مطابقة لهذا التصفية." : "No products match the selected filter.")}
              </div>
           )}
         </div>

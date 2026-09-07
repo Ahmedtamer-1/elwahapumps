@@ -9,10 +9,11 @@ import { Zap, Droplets, Settings, ChevronRight, Layers, Wrench, Cable } from "lu
 import type { ProductData } from "@/data/products";
 import type { CatalogProduct } from "@/lib/products";
 import { priceOnRequestLabel } from "@/lib/price";
+import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface ProductTabsProps {
   lang: string;
-  dict: any;
+  dict: Dictionary;
   products: CatalogProduct[];
   isTeaser?: boolean;
 }

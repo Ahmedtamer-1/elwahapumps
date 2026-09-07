@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Phone, Globe, ChevronDown } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
 import Logo from "@/components/Logo";
+import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface HeaderProps {
   lang: string;
-  dict: any;
+  dict: Dictionary;
 }
 
 export default function Header({ lang, dict }: HeaderProps) {

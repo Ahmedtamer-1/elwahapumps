@@ -1,3 +1,15 @@
+/**
+ * Substitutes {name} placeholders in a dictionary string, e.g.
+ * `fill(t.matchCountMany, { count: 5 })`. Numbers that can drift (agency
+ * count, years in business) belong in a placeholder fed from lib/company.ts
+ * rather than hardcoded into the copy, so the two can never disagree again.
+ */
+export function fill(template: string, values: Record<string, string | number>): string {
+  return template.replace(/\{(\w+)\}/g, (match, key) =>
+    key in values ? String(values[key]) : match,
+  );
+}
+
 /** Auto-compact figures for stat tiles: 1,284 / 12.9K / 4.2M */
 export function compactNumber(value: number): string {
   if (Math.abs(value) >= 1_000_000) {

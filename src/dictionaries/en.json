@@ -36,7 +36,7 @@
   },
   "hero": {
     "title": "Deep-well pumps, supplied and serviced since 2013.",
-    "subtitle": "Supplied, installed and maintained across Egypt. Eleven exclusive agencies, one point of contact, and a service team on call.",
+    "subtitle": "Supplied, installed and maintained across Egypt. {count} exclusive agencies, one point of contact, and a service team on call.",
     "ctaCall": "Call Us Now",
     "ctaContact": "Contact Us"
   },
@@ -246,6 +246,21 @@
       "name": "ALKA Thrust Bearing",
       "title": "Submersible Motor Thrust Bearings",
       "desc": "The leading manufacturer and supplier of high-quality thrust bearings for submersible motors, ensuring reduced friction and absorption of vertical mechanical loads in deep wells."
+    },
+    "novo": {
+      "name": "NOVO",
+      "title": "Solar Pump Inverters",
+      "desc": "A solar-pumping specialist supplying dynamic-MPPT inverters that run submersible pumps on solar power alone or in an automatic solar-plus-grid hybrid, for agricultural, industrial and off-grid water pumping."
+    },
+    "tormac": {
+      "name": "Tormac",
+      "title": "Submersible Pumps & Motors, 50 Hz",
+      "desc": "A submersible pump and motor manufacturer whose 50 Hz product range we carry as exclusive Egyptian agent, documented across a 124-page pump catalogue and a 42-page motor catalogue."
+    },
+    "untel": {
+      "name": "Üntel",
+      "title": "Submersible Power & Control Cable",
+      "desc": "A cable manufacturer whose H07VVH6-F flat power and control cable is TÜV-certified for permanent submersion to 10 bar, used for wiring inside pump control panels and deep-well pump stations."
     }
   },
   "supportPage": {
@@ -273,7 +288,7 @@
     "step4Title": "Back in service",
     "step4Desc": "The unit is tested against its duty point before it goes back down the borehole.",
     "warrantyTitle": "Genuine parts, held in stock",
-    "warrantyDesc": "We are the exclusive Egyptian agent for eleven international manufacturers, and we carry their spare parts in our own warehouse. That is the difference between a repair that takes a day and one that waits on an import.",
+    "warrantyDesc": "We are the exclusive Egyptian agent for {count} international manufacturers, and we carry their spare parts in our own warehouse. That is the difference between a repair that takes a day and one that waits on an import.",
     "ctaTitle": "Need a well back in service?",
     "ctaDesc": "Call us directly, or send the details and an engineer will come back to you.",
     "ctaCall": "Call Now",
@@ -307,11 +322,11 @@
     }
   },
   "aboutPage": {
-    "title": "Two Decades of Deep-Well Engineering",
+    "title": "Deep-Well Engineering Since 2013",
     "subtitle": "Supplying, installing and maintaining deep-well pumping equipment in Egypt since 2013",
     "p1": "El Waha for Wells and Pump Services began in 2013 as a small 200 m² maintenance centre in Giza, run by a team of five. Today the company operates a 3,000 m² warehouse and workshop with a team of more than 80 specialist engineers and technicians, covers every governorate in Egypt, and has delivered more than 230 agricultural projects.",
     "p2": "We equip deep water wells end to end: column pipes, insulated submersible cable, submersible pumps and motors, and control panels and voltage stabilizers designed for each individual well. Because no two wells are alike, our engineers size every installation against the well's own yield and head before anything is supplied — so the pump that goes down the borehole is the one that will draw the least energy and last the longest in service. That difference shows up in the electricity bill every month, and in how often the irrigation stops.",
-    "p3": "We hold exclusive Egyptian agencies for eleven international manufacturers and work to ISO 9001. Our workshops carry current testing, calibration and rewinding equipment, which means repair and calibration happen under our own supervision rather than at a third party. Our mobile maintenance fleet stays ready to respond around the clock in every Egyptian governorate — because a well that has stopped is not merely a technical fault, it is a growing season at risk.",
+    "p3": "We hold exclusive Egyptian agencies for {count} international manufacturers and work to ISO 9001. Our workshops carry current testing, calibration and rewinding equipment, which means repair and calibration happen under our own supervision rather than at a third party. Our mobile maintenance fleet stays ready to respond around the clock in every Egyptian governorate — because a well that has stopped is not merely a technical fault, it is a growing season at risk.",
     "vision": "Our Vision",
     "visionText": "To be the first choice in Egypt and Africa for sustainable, intelligent water pumping — advancing the water infrastructure that agriculture, industry and communities depend on.",
     "mission": "Our Mission",

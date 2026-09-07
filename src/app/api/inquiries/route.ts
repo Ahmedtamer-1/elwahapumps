@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { notifyNewCartInquiry } from "@/lib/notify";
 
 const inquirySchema = z.object({
   name: z.string().trim().max(120).optional(),
@@ -63,6 +64,16 @@ export async function POST(request: Request) {
       status: "NEW",
       whatsappSentAt: new Date(),
     },
+  });
+
+  // See the comment in api/leads/route.ts — notifyNewCartInquiry never
+  // throws, so this can't turn a successful save into a failed response.
+  await notifyNewCartInquiry({
+    id: inquiry.id,
+    name: name || null,
+    phone: phone || null,
+    itemCount: pricedItems.length,
+    totalEstimate: inquiry.totalEstimate,
   });
 
   return NextResponse.json({ ok: true, id: inquiry.id }, { status: 201 });

@@ -31,7 +31,7 @@ import {
   type KmMotor,
   type PumpFamily,
   type PumpVariant,
-} from "./pump-selector.ts";
+} from "./pump-selector";
 
 // ---------------------------------------------------------------------------
 // fixtures
@@ -393,8 +393,34 @@ test("when the ladder skips the recommended HP, the default rounds up", () => {
   const options = compatibleMotors(
     variant("X/1", 1, [10], { motorBores: [10], motorHp: 180, motorKw: 132 }),
     [
-      { code: "KM10-175", boreInch: 10, hp: 175, kw: 129 },
-      { code: "KM10-200", boreInch: 10, hp: 200, kw: 147 },
+      {
+        code: "KM10-175",
+        boreInch: 10,
+        hp: 175,
+        kw: 129,
+        voltage: 380,
+        rpm: 2900,
+        currentA: 235,
+        startingCurrentA: 900,
+        efficiencyPct: 88,
+        cosPhi: 0.88,
+        lengthMm: 1650,
+        weightKg: 360,
+      },
+      {
+        code: "KM10-200",
+        boreInch: 10,
+        hp: 200,
+        kw: 147,
+        voltage: 380,
+        rpm: 2910,
+        currentA: 268,
+        startingCurrentA: 1020,
+        efficiencyPct: 88.5,
+        cosPhi: 0.89,
+        lengthMm: 1720,
+        weightKg: 395,
+      },
     ],
   );
   assert.equal(options.hasExactMatch, false);

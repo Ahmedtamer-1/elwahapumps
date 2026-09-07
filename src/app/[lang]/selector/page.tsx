@@ -6,6 +6,7 @@ import { getDictionary, Locale } from "../dictionaries";
 import PerformanceChart from "@/components/selector/PerformanceChart";
 import SelectorForm from "@/components/selector/SelectorForm";
 import { catalogueLimits, motorOptionsFor, selectFromCatalogue } from "@/lib/pump-data";
+import { fill } from "@/lib/format";
 import {
   assembly,
   curveOf,
@@ -32,13 +33,6 @@ interface PageProps {
 const one = (value: string | string[] | undefined): string =>
   Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
 
-/** Substitutes {name} placeholders in a dictionary string. */
-function fill(template: string, values: Record<string, string | number>): string {
-  return template.replace(/\{(\w+)\}/g, (match, key) =>
-    key in values ? String(values[key]) : match,
-  );
-}
-
 const round = (value: number, places = 1): string =>
   value.toFixed(places).replace(/\.0+$/, "");
 
@@ -46,7 +40,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
   const { lang } = await params;
   const query = await searchParams;
   const dict = await getDictionary(lang as Locale);
-  const t = dict.pumpSelector as unknown as Record<string, string>;
+  const t = dict.pumpSelector;
   const base = `/${lang}/selector`;
 
   const rawFlow = one(query.q).trim();
@@ -164,7 +158,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
   );
 }
 
-function flowUnitKey(unit: FlowUnit): string {
+function flowUnitKey(unit: FlowUnit): "unitM3h" | "unitLs" | "unitLmin" {
   return unit === "m3h" ? "unitM3h" : unit === "ls" ? "unitLs" : "unitLmin";
 }
 

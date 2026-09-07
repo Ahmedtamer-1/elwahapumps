@@ -5,11 +5,14 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
+  searchParams: Promise<{ subject?: string | string[] }>;
 }
 
-export default async function ContactPage({ params }: PageProps) {
+export default async function ContactPage({ params, searchParams }: PageProps) {
   const { lang } = await params;
+  const { subject } = await searchParams;
   const dict = await getDictionary(lang as Locale);
+  const initialSubject = Array.isArray(subject) ? subject[0] : subject;
 
   return (
     <div className="bg-white min-h-screen pb-20">
@@ -140,7 +143,7 @@ export default async function ContactPage({ params }: PageProps) {
 
           {/* Column 2: Form */}
           <div className="lg:col-span-7">
-            <ContactForm lang={lang} dict={dict} />
+            <ContactForm lang={lang} dict={dict} initialSubject={initialSubject} />
           </div>
         </div>
 

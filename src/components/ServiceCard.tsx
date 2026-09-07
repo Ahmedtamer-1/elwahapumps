@@ -23,7 +23,7 @@ const iconMap = {
 };
 
 // Simple wrapper since Hammer might not be in all lucide versions or named differently
-function HammerIcon(props: any) {
+function HammerIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

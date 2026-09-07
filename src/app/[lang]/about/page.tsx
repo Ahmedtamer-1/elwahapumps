@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { getDictionary, Locale } from "../dictionaries";
 import { AGENCIES, AGENCY_COUNT, yearsOfService } from "@/lib/company";
+import { fill } from "@/lib/format";
 import {
   ShieldCheck,
   Target,
@@ -63,7 +64,7 @@ export default async function AboutPage({ params }: PageProps) {
             <div className="space-y-4 text-stone text-body">
               <p>{dict.aboutPage.p1}</p>
               <p>{dict.aboutPage.p2}</p>
-              <p>{dict.aboutPage.p3}</p>
+              <p>{fill(dict.aboutPage.p3, { count: AGENCY_COUNT })}</p>
             </div>
           </div>
 
@@ -73,7 +74,7 @@ export default async function AboutPage({ params }: PageProps) {
             <div className="relative aspect-[3/2] border border-rule bg-bone">
               <Image
                 src="/images/about/team.jpg"
-                alt={lang === "ar" ? "فريق شركة الواحة للمضخات" : "The El Waha Pumps team"}
+                alt={lang === "ar" ? "فريق شركة الواحة لخدمات الآبار والطلمبات" : "The El Waha Pumps team"}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"

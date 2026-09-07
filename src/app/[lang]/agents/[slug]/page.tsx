@@ -8,7 +8,11 @@ interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
 }
 
-const agentSlugs = ["astral-pipes", "jee-pumps", "pmc", "kurlar", "alka"];
+// novo, tormac and untel were linked from the Products page brand tiles
+// (products/page.tsx) without a matching entry here, so those three tiles
+// 404'd. Added with real agentsData entries above rather than dropping the
+// tiles, since the brands are genuinely represented (see catalogues.ts).
+const agentSlugs = ["astral-pipes", "jee-pumps", "pmc", "kurlar", "alka", "novo", "tormac", "untel"];
 
 export async function generateStaticParams() {
   const locales = ["ar", "en"];
@@ -93,6 +97,33 @@ export default async function AgentDetailPage({ params }: PageProps) {
           "Carbon-graphite and bronze thrust bearings for 6\", 8\", and 10\" submersible motors",
           "Complete thrust bearing rebuild and repair kits",
           "Thrust pads and friction-reducing segments for absorbing vertical loads",
+        ],
+    "novo": lang === "ar"
+      ? [
+          "عاكسات طلمبات شمسية بتقنية MPPT الديناميكية، من 0.37 إلى 400 كيلوواط",
+          "تشغيل هجين تلقائي بين الطاقة الشمسية والشبكة الكهربائية",
+        ]
+      : [
+          "Dynamic-MPPT solar pump inverters, 0.37 to 400 kW",
+          "Automatic solar-plus-grid hybrid switching",
+        ],
+    "tormac": lang === "ar"
+      ? [
+          "طلمبات غاطسة، 50 هرتز — موثقة في كتالوج من 124 صفحة",
+          "مواتير غاطسة، 50 هرتز — موثقة في كتالوج من 42 صفحة",
+        ]
+      : [
+          "Submersible pumps, 50 Hz — documented in a 124-page catalogue",
+          "Submersible motors, 50 Hz — documented in a 42-page catalogue",
+        ],
+    "untel": lang === "ar"
+      ? [
+          "كابل مسطح H07VVH6-F للقوى والتحكم، بجهد مقنن 450/750 فولت",
+          "معتمد IPX8 من TÜV للغمر الدائم حتى 10 بار (100 متر)",
+        ]
+      : [
+          "H07VVH6-F flat power & control cable, rated 450/750V",
+          "IPX8 tested by TÜV for permanent submersion to 10 bar (100 m)",
         ],
   };
 

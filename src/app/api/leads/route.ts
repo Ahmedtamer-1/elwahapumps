@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { notifyNewLead } from "@/lib/notify";
 
 const leadSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(120),
@@ -39,6 +40,11 @@ export async function POST(request: Request) {
       status: "NEW",
     },
   });
+
+  // Never lets a slow or misconfigured mail server fail the submission —
+  // notifyNewLead catches its own errors and only logs them. The lead is
+  // already durably saved by the time this runs.
+  await notifyNewLead({ name, phone, email: email || null, subject: subject || null, message: message || null });
 
   return NextResponse.json({ ok: true }, { status: 201 });
 }

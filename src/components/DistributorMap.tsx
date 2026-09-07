@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useSyncExternalStore } from "react";
 // maplibre-gl v6 is ESM with named exports only — there is no default export
 // to namespace-import, unlike the `maplibregl.Map` form in older examples.
 import {
@@ -90,6 +90,17 @@ function hasWebGL2(): boolean {
   }
 }
 
+// WebGL2 support never changes after mount, so there is nothing to
+// subscribe to — this only exists to satisfy useSyncExternalStore's
+// signature. Using it instead of a `useEffect` + `setState(true)` on an
+// early-exit check avoids the "setState synchronously within an effect"
+// class of bug: the server snapshot assumes support (matching first paint),
+// and the client snapshot corrects it in the same commit as hydration,
+// with no extra render pass and no ref/state mutation during render.
+function subscribeToNothing() {
+  return () => {};
+}
+
 /** A teardrop pin, so it reads as a map marker rather than a dot. */
 function createPinElement(): HTMLButtonElement {
   const el = document.createElement("button");
@@ -171,20 +182,24 @@ export default function DistributorMap({
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef<Record<string, Marker>>({});
   // The click handler changes on every render; hold it in a ref so the effect
-  // that builds the map can stay dependency-free and run once.
+  // that builds the map can stay dependency-free and run once. Assigning
+  // inside an effect (not during render) is what the React Compiler
+  // requires for ref writes.
   const onSelectRef = useRef(onSelect);
-  onSelectRef.current = onSelect;
-  const [unsupported, setUnsupported] = useState(false);
+  useEffect(() => {
+    onSelectRef.current = onSelect;
+  });
+
+  const unsupported = useSyncExternalStore(
+    subscribeToNothing,
+    () => !hasWebGL2(),
+    () => false,
+  );
 
   const isAr = lang === "ar";
 
   useEffect(() => {
-    if (!containerRef.current || mapRef.current) return;
-
-    if (!hasWebGL2()) {
-      setUnsupported(true);
-      return;
-    }
+    if (!containerRef.current || mapRef.current || unsupported) return;
 
     const map = new MapLibreMap({
       container: containerRef.current,
@@ -222,10 +237,12 @@ export default function DistributorMap({
       mapRef.current = null;
       markersRef.current = {};
     };
-    // The map instance is created once and torn down on unmount. The pins on
-    // it are a separate concern, handled below.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // The map instance is created once (guarded by mapRef.current above)
+    // and torn down on unmount; `unsupported` is a dependency only so the
+    // effect re-runs the one time useSyncExternalStore corrects it after
+    // hydration on an unsupported browser. The pins are a separate concern,
+    // handled below.
+  }, [unsupported]);
 
   // Pins and their popups, rebuilt whenever the distributor list changes.
   useEffect(() => {

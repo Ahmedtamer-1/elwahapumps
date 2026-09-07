@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { AGENCY_COUNT } from "@/lib/company";
+import { fill } from "@/lib/format";
 
 interface HeroProps {
   lang: string;
@@ -76,11 +78,11 @@ export default function Hero({ lang, dict }: HeroProps) {
             {dict.hero.title}
           </h1>
 
-          {/* The specifics the headline can't hold: six agencies, one point
-              of contact, a service team. §07 — a number or a name, not
-              "highest level". */}
+          {/* The specifics the headline can't hold: {AGENCY_COUNT} agencies,
+              one point of contact, a service team. §07 — a number or a
+              name, not "highest level". */}
           <p className="mt-5 text-body text-bone/80 max-w-[52ch]">
-            {dict.hero.subtitle}
+            {fill(dict.hero.subtitle, { count: AGENCY_COUNT })}
           </p>
 
           <div className={`flex flex-wrap gap-3 mt-9 ${isAr ? "justify-end" : ""}`}>

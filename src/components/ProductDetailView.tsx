@@ -10,11 +10,12 @@ import { priceOnRequestLabel } from "@/lib/price";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductVariantSelector, { useVariantSelection } from "@/components/ProductVariantSelector";
 import CatalogueButton from "@/components/CatalogueButton";
+import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface ProductDetailViewProps {
   product: CatalogProduct;
   lang: string;
-  dict: any;
+  dict: Dictionary;
   title: string;
   desc: string;
 }
@@ -156,7 +157,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 EW
               </div>
               <div>
-                <h4 className="font-headline-md text-[18px] text-primary">{isAr ? "شركة الواحة للمضخات" : "El Waha Pumps"}</h4>
+                <h4 className="font-headline-md text-[18px] text-primary">{isAr ? "شركة الواحة لخدمات الآبار والطلمبات" : "El Waha Pumps"}</h4>
                 <p className="text-label-sm text-outline flex items-center gap-1 mt-1">
                   <ShieldCheck className="w-4 h-4 text-secondary" /> 
                   {isAr ? "مورد موثوق" : "Verified Supplier"}

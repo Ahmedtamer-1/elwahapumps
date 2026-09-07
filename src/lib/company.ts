@@ -11,6 +11,14 @@
  */
 export const FOUNDED = 2013;
 
+/**
+ * The live WordPress site (as of the last audit) publishes
+ * info@lwahapumps.com — a domain typo — while every page in this codebase
+ * already uses this address. Kept here as the one place notify.ts and any
+ * future code reads it from, rather than re-typing the literal.
+ */
+export const EMAIL = "info@elwahapumps.com";
+
 /** Whole years in the market, as of now. */
 export function yearsOfService(now: Date = new Date()): number {
   return now.getFullYear() - FOUNDED;

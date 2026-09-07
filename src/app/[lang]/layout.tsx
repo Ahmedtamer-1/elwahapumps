@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SplashScreen from "@/components/SplashScreen";
 import { CartProvider } from "@/components/cart/CartContext";
+import { AGENCY_COUNT, FOUNDED } from "@/lib/company";
 import "../globals.css";
 
 /**
@@ -71,11 +72,11 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         : "El Waha Pumps & Wells Services | Supply & Maintenance",
     },
     // §07 voice: specific over superlative, and the record stated correctly.
-    // Founding year and agency count are the ones in lib/company.ts — keep
-    // them in step if that file changes.
+    // Founding year and agency count are interpolated from lib/company.ts
+    // so this can never drift out of step with it again.
     description: isAr
-      ? "توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام 2013. توكيلات حصرية لإحدى عشرة شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد."
-      : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for 11 manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.",
+      ? `توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام ${FOUNDED}. توكيلات حصرية لـ${AGENCY_COUNT} شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد.`
+      : `Deep-well pumping equipment supplied, installed and maintained across Egypt since ${FOUNDED}. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.`,
     icons: {
       icon: "/favicon.ico",
     },

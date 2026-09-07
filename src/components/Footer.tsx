@@ -2,10 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import Logo from "@/components/Logo";
+import { AGENCY_COUNT, FOUNDED } from "@/lib/company";
+import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface FooterProps {
   lang: string;
-  dict: any;
+  dict: Dictionary;
 }
 
 /**
@@ -26,12 +28,14 @@ export default function Footer({ lang, dict }: FooterProps) {
     { href: `/${lang}/contact`, label: dict.nav.contact },
   ];
 
-  const serviceLinks = [
-    "pump-supply",
-    "panel-design",
-    "pump-maintenance",
-    "motor-maintenance",
-  ].map((slug) => ({
+  const serviceLinks = (
+    [
+      "pump-supply",
+      "panel-design",
+      "pump-maintenance",
+      "motor-maintenance",
+    ] as const
+  ).map((slug) => ({
     href: `/${lang}/services/${slug}`,
     label: dict.servicesData[slug].title,
   }));
@@ -50,8 +54,8 @@ export default function Footer({ lang, dict }: FooterProps) {
                 the certification and the agencies instead. */}
             <p className="text-[13px] leading-6 text-bone/70 mb-6 max-w-[42ch]">
               {isAr
-                ? "توريد وتركيب وصيانة طلمبات الأعماق في مصر منذ عام 2013. توكيلات حصرية لإحدى عشرة شركة عالمية، وشهادة ISO 9001، ونفس الفريق يقوم بالصيانة بعد التوريد."
-                : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for 11 manufacturers, ISO 9001 certified — and the same team services it afterwards."}
+                ? `توريد وتركيب وصيانة طلمبات الأعماق في مصر منذ عام ${FOUNDED}. توكيلات حصرية لـ${AGENCY_COUNT} شركة عالمية، وشهادة ISO 9001، ونفس الفريق يقوم بالصيانة بعد التوريد.`
+                : `Deep-well pumping equipment supplied, installed and maintained across Egypt since ${FOUNDED}. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, ISO 9001 certified — and the same team services it afterwards.`}
             </p>
 
             <div className="flex gap-3">

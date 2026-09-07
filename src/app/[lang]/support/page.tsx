@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getDictionary, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
 import { AGENCY_COUNT } from "@/lib/company";
+import { fill } from "@/lib/format";
 import { Phone, MessageCircle, Mail, PackageCheck } from "lucide-react";
 
 interface PageProps {
@@ -174,7 +175,7 @@ export default async function SupportPage({ params }: PageProps) {
           <div>
             <h2 className="text-xl md:text-2xl font-black mb-3">{t.warrantyTitle}</h2>
             <p className="text-neutral-400 text-sm leading-relaxed max-w-3xl">
-              {t.warrantyDesc}
+              {fill(t.warrantyDesc, { count: AGENCY_COUNT })}
             </p>
             <p className="text-emerald-500 text-xs font-bold mt-4">
               {isAr

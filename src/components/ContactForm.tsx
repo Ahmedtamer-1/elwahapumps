@@ -1,31 +1,32 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState } from "react";
+import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface ContactFormProps {
   lang: string;
-  dict: any;
+  dict: Dictionary;
+  /**
+   * Pre-fills the subject field, e.g. from a product page's "Request a
+   * quote" link (?subject=...). Read server-side from the page's own
+   * `searchParams` prop and passed down here, rather than read client-side
+   * via useSearchParams — that avoided both an effect that set state on
+   * mount (a React Compiler violation: setState synchronously inside an
+   * effect body) and the Suspense boundary useSearchParams requires.
+   */
+  initialSubject?: string;
 }
 
-function ContactFormContent({ lang, dict }: ContactFormProps) {
-  const searchParams = useSearchParams();
+export default function ContactForm({ lang, dict, initialSubject }: ContactFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    subject: "",
+    subject: initialSubject ?? "",
     message: "",
   });
 
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-
-  useEffect(() => {
-    const subjectParam = searchParams.get("subject");
-    if (subjectParam) {
-      setFormData((prev) => ({ ...prev, subject: subjectParam }));
-    }
-  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -165,27 +166,5 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
         </button>
       </form>
     </div>
-  );
-}
-
-export default function ContactForm(props: ContactFormProps) {
-  return (
-    <Suspense fallback={
-      <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm animate-pulse">
-        <div className="h-6 bg-neutral-200 rounded w-1/3 mb-6"></div>
-        <div className="space-y-4">
-          <div className="h-10 bg-neutral-100 rounded w-full"></div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="h-10 bg-neutral-100 rounded"></div>
-            <div className="h-10 bg-neutral-100 rounded"></div>
-          </div>
-          <div className="h-10 bg-neutral-100 rounded w-full"></div>
-          <div className="h-28 bg-neutral-100 rounded w-full"></div>
-          <div className="h-12 bg-neutral-200 rounded w-full"></div>
-        </div>
-      </div>
-    }>
-      <ContactFormContent {...props} />
-    </Suspense>
   );
 }
