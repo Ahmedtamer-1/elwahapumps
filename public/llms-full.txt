@@ -34,11 +34,11 @@ Genuine Kurlar KSX cast stainless steel submersible pumps (6"-8"-10"). All wette
 Specs: Cast Stainless Steel,Corrosion Resistant,6"-10"
 URL: https://elwahapumps.com/en/products/pump-cast-stainless
 
-### Rovatti Borehole Pumps
-Model: 8E - 8ER - 10E - 10ER
-Italian-built borehole pumps from Rovatti Pompe, in cast iron and cast steel with AISI 316 stainless available, in the 8" and 10" sizes most Egyptian wells are cased for. Each size comes in two hydraulics: radial for high head — the 8" reaches 675 m — and mixed-flow for high volume, where the 10" carries up to 420 m³/h. The check valve is built into the delivery bowl.
-Specs: Cast Iron & Cast Steel,8" to 10",Made in Italy
-URL: https://elwahapumps.com/en/products/pump-rovatti
+### Tormac Stainless Steel Submersible Pumps
+Model: TS - TN
+Tormac TS series borehole submersible pumps in fully stainless steel construction — AISI 304 as version TS, AISI 316 as version TN — for 4", 6", 8" and 10" wells. Discharge from 0.4 to 280 m³/h and total head to 870 m at 2900 rpm, with NEMA-standard spline coupling and performance certified to ISO 9906:2012 Grade 3B. Manufactured in ISO 9001 facilities.
+Specs: AISI 304 / 316,4" – 10",0.4–280 m³/h
+URL: https://elwahapumps.com/en/products/pump-tormac-ts
 
 ### Panelli Submersible Pumps
 Model: 140-270 SX
@@ -46,11 +46,11 @@ Italian-built submersible pumps from Panelli, in cast iron and cast steel as wel
 Specs: Cast Iron & Cast Steel,8" & 10",Made in Italy
 URL: https://elwahapumps.com/en/products/pump-panelli-sx
 
-### Tormac Stainless Steel Submersible Pumps
-Model: TS - TN
-Tormac TS series borehole submersible pumps in fully stainless steel construction — AISI 304 as version TS, AISI 316 as version TN — for 4", 6", 8" and 10" wells. Discharge from 0.4 to 280 m³/h and total head to 870 m at 2900 rpm, with NEMA-standard spline coupling and performance certified to ISO 9906:2012 Grade 3B. Manufactured in ISO 9001 facilities.
-Specs: AISI 304 / 316,4" – 10",0.4–280 m³/h
-URL: https://elwahapumps.com/en/products/pump-tormac-ts
+### Rovatti Borehole Pumps
+Model: 8E - 8ER - 10E - 10ER
+Italian-built borehole pumps from Rovatti Pompe, in cast iron and cast steel with AISI 316 stainless available, in the 8" and 10" sizes most Egyptian wells are cased for. Each size comes in two hydraulics: radial for high head — the 8" reaches 675 m — and mixed-flow for high volume, where the 10" carries up to 420 m³/h. The check valve is built into the delivery bowl.
+Specs: Cast Iron & Cast Steel,8" to 10",Made in Italy
+URL: https://elwahapumps.com/en/products/pump-rovatti
 
 ## Surface Pumps
 https://elwahapumps.com/en/products/category/surface-pumps
@@ -68,16 +68,6 @@ URL: https://elwahapumps.com/en/products/pump-tormac-surface
 ## Motors
 https://elwahapumps.com/en/products/category/motors
 
-### Franklin Electric Submersible Motors
-Franklin Electric submersible motors in 8" and 10". The 8" runs 40 to 200 HP at 50 Hz, with a Hi-Temp 75 build rated to 75°C ambient for hot or slow-flowing wells, tripping before an overheat burns the winding. The 10" is rewindable at 175 to 250 HP on 380-415 V. Both use the Sand Fighter seal system, and both are available in full 316 stainless or 904 L.
-Specs: 8" & 10",40-250 HP,Class F
-URL: https://elwahapumps.com/en/products/motor-franklin
-
-### Panelli Submersible Motors
-Water-filled rewindable submersible motors from Panelli of Italy, in 8" and 10" to match the SX pump ends, with the wider range running from 0.37 kW up to 300 kW. Cast iron and stainless steel bodies are both available to suit the water the motor will sit in.
-Specs: Rewindable,8" & 10",Made in Italy
-URL: https://elwahapumps.com/en/products/motor-panelli
-
 ### Kurlar Submersible Motors
 Model: KM
 Genuine Kurlar submersible motors (6"-8"-10"), rewindable and rated for continuous operation up to 60°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors, manufactured in ISO 9001 certified facilities.
@@ -89,6 +79,16 @@ Model: D4 - D10
 Tormac ECO series borehole submersible motors — water-cooled and rewindable in the field. Stainless steel stator shell, housings and motor base resist corrosion; the pressure-equalising diaphragm and shaft seal keep sand and well water out of the winding. Available 4", 6", 8" and 10", 380/415 V three phase, to NEMA mounting standards and ISO 9001.
 Specs: Rewindable,IP68,NEMA Standard
 URL: https://elwahapumps.com/en/products/motor-tormac-eco
+
+### Panelli Submersible Motors
+Water-filled rewindable submersible motors from Panelli of Italy, in 8" and 10" to match the SX pump ends, with the wider range running from 0.37 kW up to 300 kW. Cast iron and stainless steel bodies are both available to suit the water the motor will sit in.
+Specs: Rewindable,8" & 10",Made in Italy
+URL: https://elwahapumps.com/en/products/motor-panelli
+
+### Franklin Electric Submersible Motors
+Franklin Electric submersible motors in 8" and 10". The 8" runs 40 to 200 HP at 50 Hz, with a Hi-Temp 75 build rated to 75°C ambient for hot or slow-flowing wells, tripping before an overheat burns the winding. The 10" is rewindable at 175 to 250 HP on 380-415 V. Both use the Sand Fighter seal system, and both are available in full 316 stainless or 904 L.
+Specs: 8" & 10",40-250 HP,Class F
+URL: https://elwahapumps.com/en/products/motor-franklin
 
 ## Electrical Component
 https://elwahapumps.com/en/products/category/electrical
@@ -120,6 +120,11 @@ Model: AP+ Series
 Genuine Alka AP+ Series silicon carbide (SiC) ceramic thrust bearings, engineered for challenging deep-well applications where sand, ferrous debris, or high thrust loads exceed the capacity of conventional bearings. Retaining full strength at temperatures up to 1100°C and validated through in-house and field testing, they deliver outstanding wear resistance and reliability where standard stainless steel or carbon bearings fail.
 Specs: Silicon Carbide,1100°C Rated,Sand Resistant
 URL: https://elwahapumps.com/en/products/thrust-bearing-heavy
+
+### PMC Wires
+Enamelled copper winding wire for rewinding submersible and surface motors, stocked from 13 mm up to 31 mm.
+Specs: Enamelled Copper,Submersible Grade,13–31 mm
+URL: https://elwahapumps.com/en/products/elec-winding-wire
 
 ### Voltson Wires
 Model: EXCELGRIP
