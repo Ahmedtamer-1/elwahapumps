@@ -50,7 +50,7 @@ export default async function JobsAdminPage() {
           <div className="overflow-x-auto -m-5">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-xs font-bold text-neutral-500 uppercase border-b border-neutral-200">
+                <tr className="text-left text-xs font-bold text-stone uppercase border-b border-rule">
                   <th className="px-5 py-3">Job</th>
                   <th className="px-5 py-3 hidden md:table-cell">Department</th>
                   <th className="px-5 py-3 hidden lg:table-cell">Location</th>
@@ -58,30 +58,30 @@ export default async function JobsAdminPage() {
                   <th className="px-5 py-3">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100">
+              <tbody className="divide-y divide-rule-light">
                 {jobs.map((job) => (
-                  <tr key={job.id} className="hover:bg-neutral-50 transition-colors">
+                  <tr key={job.id} className="hover:bg-bone transition-colors">
                     <td className="px-5 py-3">
                       <Link
                         href={`/admin/jobs/${job.id}`}
-                        className="font-semibold text-neutral-900 hover:text-emerald-700 block"
+                        className="font-semibold text-ink hover:text-emerald-700 block"
                       >
                         {job.titleEn}
                       </Link>
-                      <p className="text-xs text-neutral-400 truncate" dir="rtl">
+                      <p className="text-xs text-stone-light truncate" dir="rtl">
                         {job.titleAr}
                       </p>
-                      <p className="text-[11px] text-neutral-400 mt-0.5">
+                      <p className="text-[11px] text-stone-light mt-0.5">
                         {job.typeEn} · {requirementCount(job.requirements)} requirements
                       </p>
                     </td>
-                    <td className="px-5 py-3 hidden md:table-cell text-neutral-600">
+                    <td className="px-5 py-3 hidden md:table-cell text-stone">
                       {job.departmentEn}
                     </td>
-                    <td className="px-5 py-3 hidden lg:table-cell text-neutral-600">
+                    <td className="px-5 py-3 hidden lg:table-cell text-stone">
                       {job.locationEn}
                     </td>
-                    <td className="px-5 py-3 hidden sm:table-cell text-neutral-600 tabular-nums whitespace-nowrap">
+                    <td className="px-5 py-3 hidden sm:table-cell text-stone tabular-nums whitespace-nowrap">
                       {job.postedOn.toISOString().slice(0, 10)}
                     </td>
                     <td className="px-5 py-3">
@@ -93,7 +93,7 @@ export default async function JobsAdminPage() {
                             className={
                               job.isActive
                                 ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                                : "bg-neutral-100 text-neutral-500 border-neutral-300"
+                                : "bg-bone text-stone border-rule"
                             }
                           />
                         </button>

@@ -14,13 +14,13 @@ export default function LoginForm() {
       <input type="hidden" name="next" value={next} />
 
       {state.error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700 text-sm font-semibold">
+        <div className="p-3 bg-error-container border border-error/40 text-on-error-container text-small font-semibold">
           {state.error}
         </div>
       )}
 
       <div>
-        <label htmlFor="email" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
+        <label htmlFor="email" className="spec-label block mb-1.5">
           Email
         </label>
         <input
@@ -29,12 +29,15 @@ export default function LoginForm() {
           type="email"
           required
           autoComplete="username"
-          className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-colors"
+          /* Mono, because credentials are strings to be read character by
+             character — the one job §05 keeps the face for. No outline-none:
+             the brass :focus-visible ring in globals.css stays. */
+          className="w-full px-4 py-3 border border-rule focus:border-pine font-mono text-small text-ink bg-white transition-colors"
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
+        <label htmlFor="password" className="spec-label block mb-1.5">
           Password
         </label>
         <input
@@ -43,15 +46,18 @@ export default function LoginForm() {
           type="password"
           required
           autoComplete="current-password"
-          className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-colors"
+          /* Mono, because credentials are strings to be read character by
+             character — the one job §05 keeps the face for. No outline-none:
+             the brass :focus-visible ring in globals.css stays. */
+          className="w-full px-4 py-3 border border-rule focus:border-pine font-mono text-small text-ink bg-white transition-colors"
         />
       </div>
 
       <button
         type="submit"
         disabled={pending}
-        className={`w-full py-3 px-6 rounded-lg text-white font-bold text-sm shadow-md transition-all ${
-          pending ? "bg-neutral-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-700"
+        className={`w-full py-4 px-6 text-bone font-semibold text-small transition-colors ${
+ pending ?"bg-stone cursor-not-allowed" : "bg-pine hover:bg-field"
         }`}
       >
         {pending ? "Signing in…" : "Sign in"}

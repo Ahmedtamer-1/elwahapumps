@@ -127,7 +127,7 @@ export default function PartnerLogos({ lang }: PartnerLogosProps) {
           </div>
         </div>
 
-        <p className="mt-5 font-mono text-[11px] leading-4 text-stone-light">
+        <p className="mt-5 font-mono text-[11px] leading-4 text-stone">
           {isAr
             ? "الشعارات معروضة بارتفاع بصري واحد وبألوانها الأصلية."
             : "Marks are shown at one optical height, in their own brand colour."}

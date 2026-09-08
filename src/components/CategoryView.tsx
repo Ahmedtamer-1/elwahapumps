@@ -36,21 +36,21 @@ export default function CategoryView({
   return (
     <div className={`flex flex-col md:flex-row min-h-screen bg-white ${isAr ? "md:flex-row-reverse" : ""}`}>
       {/* Sidebar */}
-      <aside className="w-full md:w-72 lg:w-80 bg-[#3f3f3f] text-white shrink-0 p-6 pt-24 md:p-10 md:pt-32 flex flex-col md:min-h-screen">
-        <Link href={`/${lang}/products`} className={`text-sm text-neutral-400 hover:text-white flex items-center gap-2 mb-8 group w-fit ${isAr ? "flex-row-reverse" : ""}`}>
+      <aside className="w-full md:w-72 lg:w-80 bg-[#3f3f3f] text-bone shrink-0 p-6 pt-24 md:p-10 md:pt-32 flex flex-col md:min-h-screen">
+        <Link href={`/${lang}/products`} className={`text-sm text-bone/75 hover:text-bone flex items-center gap-2 mb-8 group w-fit ${isAr ? "flex-row-reverse" : ""}`}>
           <ArrowLeft className={`w-4 h-4 group-hover:-translate-x-1 transition-transform ${isAr ? "rotate-180 group-hover:translate-x-1" : ""}`} />
           {isAr ? "العودة للمنتجات" : "Back to Products"}
         </Link>
 
         <div className="flex justify-between items-center mb-6 md:mb-8">
           <h1 className="text-2xl font-light flex items-center gap-4">
-            <div className="w-10 h-10 border border-neutral-500 flex items-center justify-center opacity-70">
-              <div className="w-4 h-4 border border-current rounded-sm"></div>
+            <div className="w-10 h-10 border border-rule flex items-center justify-center opacity-70">
+              <div className="w-4 h-4 border border-current "></div>
             </div>
             {title}
           </h1>
           <button 
-            className="md:hidden border border-neutral-500 px-3 py-1.5 text-xs font-medium uppercase tracking-wider"
+            className="md:hidden border border-rule px-3 py-1.5 text-xs font-medium uppercase tracking-wider"
             onClick={() => setIsFiltersOpen(!isFiltersOpen)}
           >
             {isFiltersOpen ? (isAr ? "إخفاء الفلاتر" : "Hide Filters") : (isAr ? "إظهار الفلاتر" : "Show Filters")}
@@ -74,14 +74,14 @@ export default function CategoryView({
           {availableBrands.length > 0 && (
             <div className="flex flex-col gap-3">
               <h3 className="font-bold text-lg mb-1">{isAr ? "الماركة" : "Brand"}</h3>
-              <div className="h-px w-full bg-neutral-500/50 mb-2"></div>
+              <div className="h-px w-full bg-rule mb-2"></div>
               {availableBrands.map(brand => (
                 <label key={brand} className="flex items-center gap-3 text-sm cursor-pointer group">
                   <input 
                     type="checkbox" 
                     className="w-3.5 h-3.5 bg-transparent border border-white/70 appearance-none checked:bg-white checked:border-white transition-colors cursor-pointer"
                   />
-                  <span className="group-hover:text-neutral-300">{brand}</span>
+                  <span className="group-hover:text-stone-light">{brand}</span>
                 </label>
               ))}
             </div>
@@ -90,22 +90,22 @@ export default function CategoryView({
           {/* Dummy Filters to match screenshot aesthetic */}
           <div className="flex flex-col gap-3">
             <h3 className="font-bold text-lg mb-1">{isAr ? "التسوق عبر الإنترنت" : "Online Shopping"}</h3>
-            <div className="h-px w-full bg-neutral-500/50 mb-2"></div>
+            <div className="h-px w-full bg-rule mb-2"></div>
             {["Cairo Sales", "Sharaf DG", "Ehab Center"].map(opt => (
               <label key={opt} className="flex items-center gap-3 text-sm cursor-pointer group">
                 <input type="checkbox" className="w-3.5 h-3.5 bg-transparent border border-white/70 appearance-none checked:bg-white cursor-pointer" />
-                <span className="group-hover:text-neutral-300">{opt}</span>
+                <span className="group-hover:text-stone-light">{opt}</span>
               </label>
             ))}
           </div>
 
           <div className="flex flex-col gap-3">
             <h3 className="font-bold text-lg mb-1">{isAr ? "اللون" : "Color"}</h3>
-            <div className="h-px w-full bg-neutral-500/50 mb-2"></div>
+            <div className="h-px w-full bg-rule mb-2"></div>
             {["Black", "Stainless steel", "White"].map(opt => (
               <label key={opt} className="flex items-center gap-3 text-sm cursor-pointer group">
                 <input type="checkbox" className="w-3.5 h-3.5 bg-transparent border border-white/70 appearance-none checked:bg-white cursor-pointer" />
-                <span className="group-hover:text-neutral-300">{opt}</span>
+                <span className="group-hover:text-stone-light">{opt}</span>
               </label>
             ))}
           </div>
@@ -120,9 +120,9 @@ export default function CategoryView({
              const titleStr = product.title;
 
              return (
-               <div key={product.id} className="flex flex-col md:flex-row gap-8 items-center md:items-start group border-b border-neutral-200 pb-12 relative w-full">
+               <div key={product.id} className="flex flex-col md:flex-row gap-8 items-center md:items-start group border-b border-rule pb-12 relative w-full">
                  {/* Product Image */}
-                 <Link href={`/${lang}/products/${product.id}`} className="w-full md:w-72 aspect-[4/3] bg-neutral-100 relative shrink-0 cursor-pointer overflow-hidden">
+                 <Link href={`/${lang}/products/${product.id}`} className="w-full md:w-72 aspect-[4/3] bg-bone relative shrink-0 cursor-pointer overflow-hidden">
                    <Image 
                      src={product.gallery[0] || "/images/placeholder.jpg"} 
                      alt={titleStr}
@@ -133,10 +133,10 @@ export default function CategoryView({
                  
                  {/* Product Info */}
                  <div className={`flex-1 flex flex-col pt-2 w-full ${isAr ? 'md:pr-4' : 'md:pl-4'}`}>
-                   <h2 className="text-xl font-bold text-neutral-800 mb-1">{titleStr}</h2>
+                   <h2 className="text-xl font-bold text-ink mb-1">{titleStr}</h2>
                    {/* Some modelNo values already end in "Series" (e.g. "AP+
                        Series"), which used to render as "AP+ Series Series". */}
-                   <p className="text-sm text-neutral-400 mb-4">
+                   <p className="text-sm text-stone mb-4">
                      {product.modelNo
                        ? /series\s*$/i.test(product.modelNo)
                          ? product.modelNo
@@ -144,20 +144,20 @@ export default function CategoryView({
                        : categoryLabel(dict, category)}
                    </p>
                    
-                   <div className="flex flex-col gap-1.5 text-xs text-neutral-500 font-medium">
+                   <div className="flex flex-col gap-1.5 text-xs text-stone font-medium">
                      {product.specs.slice(0, 3).map((spec, i) => (
                        <div key={i} className="flex gap-2">
-                         <span className="text-neutral-400">{isAr ? "ميزة:" : "Feature:"}</span>
-                         <span className="text-neutral-700">{spec}</span>
+                         <span className="text-stone">{isAr ? "ميزة:" : "Feature:"}</span>
+                         <span className="text-ink">{spec}</span>
                        </div>
                      ))}
                    </div>
 
-                   <p className="mt-4 text-lg font-bold text-neutral-900">
+                   <p className="mt-4 text-lg font-bold text-ink">
                      {priceOnRequestLabel(lang)}
                    </p>
                    
-                   <Link href={`/${lang}/products/${product.id}`} className={`absolute bottom-0 ${isAr ? 'left-0' : 'right-0'} translate-y-1/2 w-12 h-12 bg-neutral-900 text-white rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-xl z-10`}>
+                   <Link href={`/${lang}/products/${product.id}`} className={`absolute bottom-0 ${isAr ? 'left-0' : 'right-0'} translate-y-1/2 w-12 h-12 bg-pine text-bone flex items-center justify-center hover:bg-emerald-600 transition-colors z-10`}>
                      {isAr ? <ArrowUpRight className="w-5 h-5 scale-x-[-1]" /> : <ArrowUpRight className="w-5 h-5" />}
                    </Link>
                  </div>
@@ -166,7 +166,7 @@ export default function CategoryView({
           })}
           
           {products.length === 0 && (
-             <div className="text-center text-neutral-400 py-20">
+             <div className="text-center text-stone py-20">
                 {isAr ? "لا توجد منتجات في هذا القسم." : "No products found in this category."}
              </div>
           )}

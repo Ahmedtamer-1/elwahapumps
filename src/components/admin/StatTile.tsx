@@ -53,22 +53,22 @@ function Sparkline({ points }: { points: number[] }) {
 export default function StatTile({ label, value, delta, upIsGood = true, trend, href }: StatTileProps) {
   const deltaIsGood = delta ? (delta.value >= 0) === upIsGood : true;
   const deltaColor = !delta || delta.value === 0
-    ? "text-neutral-500"
+    ? "text-stone"
     : deltaIsGood
       ? "text-emerald-700"
-      : "text-red-600";
+      : "text-error";
 
   const body = (
     <>
-      <p className="text-xs font-bold text-neutral-500 uppercase tracking-wide">{label}</p>
+      <p className="text-xs font-bold text-stone uppercase tracking-wide">{label}</p>
       {/* Proportional figures — tabular-nums is reserved for aligned columns. */}
-      <p className="text-3xl font-semibold text-neutral-900 mt-2 leading-none">
+      <p className="text-3xl font-semibold text-ink mt-2 leading-none">
         {compactNumber(value)}
       </p>
       {delta && (
         <p className={`text-xs font-semibold mt-2 ${deltaColor}`}>
           {delta.value > 0 ? "+" : ""}
-          {delta.value} <span className="text-neutral-500 font-medium">vs {delta.period}</span>
+          {delta.value} <span className="text-stone font-medium">vs {delta.period}</span>
         </p>
       )}
       {trend && trend.length > 0 && <Sparkline points={trend} />}
@@ -76,7 +76,7 @@ export default function StatTile({ label, value, delta, upIsGood = true, trend, 
   );
 
   const className =
-    "block bg-white rounded-2xl border border-neutral-200 p-5 shadow-sm transition-colors";
+    "block bg-white  border border-rule p-5  transition-colors";
 
   return href ? (
     <Link href={href} className={`${className} hover:border-emerald-300`}>

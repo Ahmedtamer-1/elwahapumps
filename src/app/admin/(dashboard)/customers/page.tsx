@@ -36,7 +36,7 @@ export default async function CustomersPage() {
           <div className="overflow-x-auto -m-5">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-xs font-bold text-neutral-500 uppercase border-b border-neutral-200">
+                <tr className="text-left text-xs font-bold text-stone uppercase border-b border-rule">
                   <th className="px-5 py-3">Name</th>
                   <th className="px-5 py-3 hidden md:table-cell">Company</th>
                   <th className="px-5 py-3 hidden lg:table-cell">Contact</th>
@@ -45,30 +45,30 @@ export default async function CustomersPage() {
                   <th className="px-5 py-3 text-right">Added</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100">
+              <tbody className="divide-y divide-rule-light">
                 {customers.map((c) => (
-                  <tr key={c.id} className="hover:bg-neutral-50 transition-colors">
+                  <tr key={c.id} className="hover:bg-bone transition-colors">
                     <td className="px-5 py-3">
                       <Link
                         href={`/admin/customers/${c.id}`}
-                        className="font-semibold text-neutral-900 hover:text-emerald-700"
+                        className="font-semibold text-ink hover:text-emerald-700"
                       >
                         {c.name}
                       </Link>
                     </td>
-                    <td className="px-5 py-3 hidden md:table-cell text-neutral-600">
+                    <td className="px-5 py-3 hidden md:table-cell text-stone">
                       {c.company || "—"}
                     </td>
-                    <td className="px-5 py-3 hidden lg:table-cell text-neutral-500 text-xs">
+                    <td className="px-5 py-3 hidden lg:table-cell text-stone text-xs">
                       {c.phone || c.email || "—"}
                     </td>
-                    <td className="px-5 py-3 text-right text-neutral-700 tabular-nums">
+                    <td className="px-5 py-3 text-right text-ink tabular-nums">
                       {c._count.leads}
                     </td>
-                    <td className="px-5 py-3 text-right text-neutral-700 tabular-nums">
+                    <td className="px-5 py-3 text-right text-ink tabular-nums">
                       {c._count.inquiries}
                     </td>
-                    <td className="px-5 py-3 text-right text-neutral-500 text-xs tabular-nums whitespace-nowrap">
+                    <td className="px-5 py-3 text-right text-stone text-xs tabular-nums whitespace-nowrap">
                       {formatDate(c.createdAt)}
                     </td>
                   </tr>

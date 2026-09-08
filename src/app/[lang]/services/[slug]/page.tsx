@@ -247,31 +247,31 @@ export default async function ServiceDetailPage({ params }: PageProps) {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left Column: Description & Features */}
-          <div className="lg:col-span-8 bg-white p-6 md:p-10 rounded-3xl border border-neutral-200 shadow-xs">
-            <h2 className="text-xl font-bold text-neutral-900 mb-6 border-b border-neutral-100 pb-4">
+          <div className="lg:col-span-8 bg-white p-6 md:p-10 border border-rule ">
+            <h2 className="text-xl font-bold text-ink mb-6 border-b border-rule-light pb-4">
               {lang === "ar" ? "تفاصيل الخدمة الهندسية" : "Engineering Service Details"}
             </h2>
-            <p className="text-neutral-600 text-sm leading-relaxed mb-8 whitespace-pre-line">
+            <p className="text-stone text-sm leading-relaxed mb-8 whitespace-pre-line">
               {service.desc}
             </p>
 
-            <h3 className="text-lg font-bold text-neutral-900 mb-4">
+            <h3 className="text-lg font-bold text-ink mb-4">
               {lang === "ar" ? "مميزات ومخرجات الخدمة" : "Key Benefits & Deliverables"}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
               {features.map((feat, idx) => (
-                <div key={idx} className="flex gap-3 items-start p-4 bg-neutral-50 rounded-2xl border border-neutral-100">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                  <span className="text-neutral-700 text-xs font-medium leading-normal">{feat}</span>
+                <div key={idx} className="flex gap-3 items-start p-4 bg-bone border border-rule-light">
+                  <CheckCircle2 className="w-5 h-5 text-pine shrink-0 mt-0.5" />
+                  <span className="text-ink text-xs font-medium leading-normal">{feat}</span>
                 </div>
               ))}
             </div>
 
             {/* B2B Trust Badge */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 p-5 bg-emerald-50/30 rounded-2xl border border-emerald-100/40 text-neutral-700 text-xs">
-              <Shield className="w-8 h-8 text-emerald-600 shrink-0" />
+            <div className="flex flex-col sm:flex-row items-center gap-4 p-5 bg-bone border border-rule text-ink text-xs">
+              <Shield className="w-8 h-8 text-pine shrink-0" />
               <div className="leading-relaxed">
-                <span className="font-bold text-neutral-800 block mb-0.5">
+                <span className="font-bold text-ink block mb-0.5">
                   {lang === "ar" ? "جودة مضمونة بنسبة 100%" : "100% Quality Guaranteed"}
                 </span>
                 {lang === "ar"
@@ -284,16 +284,15 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           {/* Right Column: CTA Panel & Related Services */}
           <div className="lg:col-span-4 space-y-8">
             {/* Lead capture card */}
-            <div className="bg-neutral-950 text-white p-6 md:p-8 rounded-3xl relative overflow-hidden border border-neutral-800 animate-pulse-subtle">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.04),transparent_50%)]" />
+            <div className="bg-pine text-bone p-6 md:p-8 relative overflow-hidden border border-bone/15 animate-pulse-subtle">
               <h3 className="text-xl font-bold mb-4 relative z-10">
                 {lang === "ar" ? "هل لديك استفسار؟" : "Have Questions?"}
               </h3>
-              <p className="text-neutral-400 text-xs leading-relaxed mb-6 relative z-10">
+              <p className="text-bone/75 text-xs leading-relaxed mb-6 relative z-10">
                 {lang === "ar"
                   ? "فريقنا الهندسي مستعد لتوفير تفاصيل إضافية وعروض أسعار لخدمة:"
                   : "Our engineering team is ready to provide additional specs and price quotes for:"}
-                <strong className="block text-white mt-1 text-sm font-semibold">{service.title}</strong>
+                <strong className="block text-bone mt-1 text-sm font-semibold">{service.title}</strong>
               </p>
               <div className="space-y-3 relative z-10">
                 <Link
@@ -302,13 +301,13 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                       ? `طلب تسعير لخدمة ${service.title}` 
                       : `Quote request for ${service.title}`
                   )}`}
-                  className="block text-center py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs transition-colors shadow-md shadow-emerald-500/10"
+                  className="block text-center py-3 bg-pine hover:bg-field text-bone font-bold text-xs transition-colors "
                 >
                   {dict.common.requestQuote}
                 </Link>
                 <a
                   href="mailto:info@elwahapumps.com"
-                  className="flex items-center justify-center gap-2 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold border border-neutral-800 rounded-xl text-xs transition-all"
+                  className="flex items-center justify-center gap-2 py-3 bg-pine hover:bg-field text-bone font-bold border border-bone/15 text-xs transition-all"
                 >
                   <Mail className="w-4 h-4" />
                   <span>info@elwahapumps.com</span>
@@ -317,8 +316,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             </div>
 
             {/* Related Services */}
-            <div className="bg-white p-6 rounded-3xl border border-neutral-200 shadow-xs">
-              <h3 className="text-base font-bold text-neutral-900 mb-4 border-b border-neutral-100 pb-2">
+            <div className="bg-white p-6 border border-rule ">
+              <h3 className="text-base font-bold text-ink mb-4 border-b border-rule-light pb-2">
                 {lang === "ar" ? "خدمات ذات صلة" : "Related Services"}
               </h3>
               <ul className="space-y-3">
@@ -328,12 +327,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                     <li key={relSlug}>
                       <Link
                         href={`/${lang}/services/${relSlug}`}
-                        className="group block p-3 bg-neutral-50 hover:bg-emerald-50/50 rounded-xl border border-neutral-100 hover:border-emerald-200 transition-all duration-200"
+                        className="group block p-3 bg-bone hover:bg-white border border-rule-light hover:border-pine transition-all duration-200"
                       >
-                        <span className="block text-neutral-800 text-xs font-bold group-hover:text-emerald-600 transition-colors leading-relaxed">
+                        <span className="block text-ink text-xs font-bold group-hover:text-pine transition-colors leading-relaxed">
                           {relService?.title}
                         </span>
-                        <span className="inline-flex items-center text-[10px] font-semibold text-neutral-400 group-hover:text-emerald-500 mt-1 transition-colors">
+                        <span className="inline-flex items-center text-[10px] font-semibold text-bone/75 group-hover:text-brass mt-1 transition-colors">
                           {lang === "ar" ? "تفاصيل الخدمة" : "Service details"}
                           {lang === "ar" ? <ArrowLeft className="w-3 h-3 ms-1" /> : <ArrowRight className="w-3 h-3 ms-1" />}
                         </span>

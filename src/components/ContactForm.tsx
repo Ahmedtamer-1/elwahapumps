@@ -8,6 +8,15 @@ interface ContactFormProps {
   dict: any;
 }
 
+/**
+ * The enquiry form — the page's whole job, so it is set as a plate.
+ *
+ * Field labels use the mono spec label the rest of the site opens sections
+ * with: a form asking for a duty point and a site is a specification being
+ * filled in, and the label column reads that way. The `[dir=rtl]` rules in
+ * globals.css drop the uppercase and the tracking for Arabic automatically,
+ * so one class serves both scripts.
+ */
 function ContactFormContent({ lang, dict }: ContactFormProps) {
   const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
@@ -52,28 +61,35 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
     }
   };
 
+  /* One input treatment, declared once. Square, hairline, pine on focus —
+     brass would fail on white (§04 Table 3), so the focus state borrows the
+     primary instead of the accent. */
+  const inputClass =
+    "w-full px-4 py-3 border border-rule bg-white text-ink text-sm placeholder:text-stone " +
+    "focus:border-pine focus:ring-1 focus:ring-pine outline-none transition-colors";
+
   return (
-    <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm">
-      <h3 className="text-xl font-bold text-neutral-900 mb-6 border-b border-neutral-100 pb-4">
+    <div className="w-full bg-white border-t-2 border-pine border-x border-b border-rule p-6 md:p-8">
+      <h3 className="text-h3 font-extrabold text-pine mb-6 border-b border-rule pb-4">
         {dict.contactPage.formTitle}
       </h3>
 
       {status === "success" && (
-        <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 text-sm font-semibold rounded-xl border border-emerald-100">
+        <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 text-sm font-semibold border border-emerald-200">
           {dict.contactPage.success}
         </div>
       )}
 
       {status === "error" && (
-        <div className="mb-6 p-4 bg-red-50 text-red-700 text-sm font-semibold rounded-xl border border-red-100">
+        <div className="mb-6 p-4 bg-error-container text-on-error-container text-sm font-semibold border border-error/30">
           {dict.contactPage.error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="name" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.name} <span className="text-red-500">*</span>
+          <label htmlFor="name" className="spec-label block mb-2">
+            {dict.contactPage.name} <span className="text-error">*</span>
           </label>
           <input
             type="text"
@@ -83,14 +99,14 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
             value={formData.name}
             onChange={handleChange}
             placeholder={lang === "ar" ? "مثال: أحمد محمد" : "e.g., John Doe"}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+            className={inputClass}
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="phone" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-              {dict.contactPage.phone} <span className="text-red-500">*</span>
+            <label htmlFor="phone" className="spec-label block mb-2">
+              {dict.contactPage.phone} <span className="text-error">*</span>
             </label>
             <input
               type="tel"
@@ -100,12 +116,12 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
               value={formData.phone}
               onChange={handleChange}
               placeholder={lang === "ar" ? "مثال: 01066685532" : "e.g., +20 106 668 5532"}
-              className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
+            <label htmlFor="email" className="spec-label block mb-2">
               {dict.contactPage.email}
             </label>
             <input
@@ -115,14 +131,14 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
               value={formData.email}
               onChange={handleChange}
               placeholder={lang === "ar" ? "مثال: client@example.com" : "e.g., client@example.com"}
-              className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+              className={inputClass}
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="subject" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.subject} <span className="text-red-500">*</span>
+          <label htmlFor="subject" className="spec-label block mb-2">
+            {dict.contactPage.subject} <span className="text-error">*</span>
           </label>
           <input
             type="text"
@@ -132,13 +148,13 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
             value={formData.subject}
             onChange={handleChange}
             placeholder={lang === "ar" ? "الموضوع أو الخدمة المطلوبة" : "Subject or required service"}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+            className={inputClass}
           />
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.message} <span className="text-red-500">*</span>
+          <label htmlFor="message" className="spec-label block mb-2">
+            {dict.contactPage.message} <span className="text-error">*</span>
           </label>
           <textarea
             id="message"
@@ -148,17 +164,17 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
             value={formData.message}
             onChange={handleChange}
             placeholder={lang === "ar" ? "تفاصيل الطلب أو الاستفسار..." : "Inquiry details..."}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors resize-none"
+            className={`${inputClass} resize-none`}
           />
         </div>
 
         <button
           type="submit"
           disabled={status === "sending"}
-          className={`w-full py-3 px-6 rounded-lg text-white font-bold text-sm shadow-md transition-all duration-300 ${
-            status === "sending"
-              ? "bg-neutral-400 cursor-not-allowed shadow-none"
-              : "bg-emerald-600 hover:bg-emerald-700 hover:shadow-emerald-500/20 active:scale-98"
+          className={`w-full py-4 px-6 text-bone font-semibold text-sm transition-colors duration-200 ${
+              status === "sending"
+              ? "bg-stone-light cursor-not-allowed"
+              : "bg-pine hover:bg-emerald-700 active-scale-98"
           }`}
         >
           {status === "sending" ? dict.contactPage.sending : dict.contactPage.submit}
@@ -171,17 +187,17 @@ function ContactFormContent({ lang, dict }: ContactFormProps) {
 export default function ContactForm(props: ContactFormProps) {
   return (
     <Suspense fallback={
-      <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm animate-pulse">
-        <div className="h-6 bg-neutral-200 rounded w-1/3 mb-6"></div>
+      <div className="w-full bg-white border-t-2 border-pine border-x border-b border-rule p-6 md:p-8 animate-pulse">
+        <div className="h-6 bg-surface-container-high w-1/3 mb-6"></div>
         <div className="space-y-4">
-          <div className="h-10 bg-neutral-100 rounded w-full"></div>
+          <div className="h-11 bg-bone w-full"></div>
           <div className="grid grid-cols-2 gap-4">
-            <div className="h-10 bg-neutral-100 rounded"></div>
-            <div className="h-10 bg-neutral-100 rounded"></div>
+            <div className="h-11 bg-bone"></div>
+            <div className="h-11 bg-bone"></div>
           </div>
-          <div className="h-10 bg-neutral-100 rounded w-full"></div>
-          <div className="h-28 bg-neutral-100 rounded w-full"></div>
-          <div className="h-12 bg-neutral-200 rounded w-full"></div>
+          <div className="h-11 bg-bone w-full"></div>
+          <div className="h-28 bg-bone w-full"></div>
+          <div className="h-13 bg-surface-container-high w-full"></div>
         </div>
       </div>
     }>

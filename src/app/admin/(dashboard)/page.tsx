@@ -86,7 +86,7 @@ export default async function OverviewPage() {
           {recentLeads.length === 0 ? (
             <EmptyState message="No leads yet. Submissions from the website contact form land here." />
           ) : (
-            <ul className="divide-y divide-neutral-100 -my-2">
+            <ul className="divide-y divide-rule-light -my-2">
               {recentLeads.map((lead) => (
                 <li key={lead.id}>
                   <Link
@@ -94,10 +94,10 @@ export default async function OverviewPage() {
                     className="flex items-center justify-between gap-3 py-3 group"
                   >
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-neutral-900 truncate group-hover:text-emerald-700">
+                      <p className="text-sm font-semibold text-ink truncate group-hover:text-emerald-700">
                         {lead.name}
                       </p>
-                      <p className="text-xs text-neutral-500 truncate">
+                      <p className="text-xs text-stone truncate">
                         {lead.subject || "No subject"} · {relativeTime(lead.createdAt)}
                       </p>
                     </div>

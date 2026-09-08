@@ -87,7 +87,7 @@ export default function VariantPriceTable({
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-light" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -95,18 +95,18 @@ export default function VariantPriceTable({
             className={`${inputClass} pl-9`}
           />
         </div>
-        <span className="text-xs font-semibold text-neutral-500 tabular-nums">
+        <span className="text-xs font-semibold text-stone tabular-nums">
           {visible.length} shown · {selected.size} selected
         </span>
       </div>
 
       {status && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700 text-sm font-semibold">
+        <div className="p-3 bg-error-container border border-error/30 text-on-error-container text-sm font-semibold">
           {status}
         </div>
       )}
       {savedCount !== undefined && !status && (
-        <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-semibold">
+        <div className="p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-semibold">
           {savedCount === 0
             ? "No changes to save."
             : `Updated ${savedCount} price${savedCount === 1 ? "" : "s"} — live on the site now.`}
@@ -116,14 +116,14 @@ export default function VariantPriceTable({
       {/* Percentage move across the ticked rows — the usual shape of a supplier increase. */}
       <form
         action={adjustAction}
-        className="flex flex-wrap items-end gap-3 p-3 rounded-lg bg-neutral-50 border border-neutral-200"
+        className="flex flex-wrap items-end gap-3 p-3 bg-bone border border-rule"
       >
         <input type="hidden" name="productId" value={productId} />
         {[...selected].map((id) => (
           <input key={id} type="hidden" name="selected" value={id} />
         ))}
         <label className="block">
-          <span className="block text-xs font-bold text-neutral-500 uppercase mb-1">
+          <span className="block text-xs font-bold text-stone uppercase mb-1">
             Adjust selected by %
           </span>
           <input
@@ -137,18 +137,18 @@ export default function VariantPriceTable({
         <SubmitButton type="submit" variant="ghost" disabled={adjusting || selected.size === 0}>
           {adjusting ? "Applying…" : `Apply to ${selected.size}`}
         </SubmitButton>
-        <p className="text-[11px] text-neutral-400 basis-full">
-          Use a negative number to reduce. Results are rounded to whole {currency}.
+        <p className="text-[11px] text-stone-light basis-full">
+          Use a negative number to reduce. Results are  to whole {currency}.
         </p>
       </form>
 
       <form action={saveAction} className="space-y-3">
         <input type="hidden" name="productId" value={productId} />
 
-        <div className="overflow-x-auto border border-neutral-200 rounded-lg">
+        <div className="overflow-x-auto border border-rule">
           <table className="w-full text-sm">
-            <thead className="bg-neutral-50 text-left">
-              <tr className="text-xs font-bold text-neutral-500 uppercase">
+            <thead className="bg-bone text-left">
+              <tr className="text-xs font-bold text-stone uppercase">
                 <th className="p-2 w-8">
                   <input
                     type="checkbox"
@@ -163,10 +163,10 @@ export default function VariantPriceTable({
                 <th className="p-2 w-24">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-neutral-100">
+            <tbody className="divide-y divide-rule-light">
               {visible.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="p-6 text-center text-neutral-400">
+                  <td colSpan={5} className="p-6 text-center text-stone-light">
                     Nothing matches “{query}”.
                   </td>
                 </tr>
@@ -183,8 +183,8 @@ export default function VariantPriceTable({
                         onChange={() => toggleOne(v.id)}
                       />
                     </td>
-                    <td className="p-2 font-semibold text-neutral-800">{v.label}</td>
-                    <td className="p-2 text-xs text-neutral-500">{v.specs}</td>
+                    <td className="p-2 font-semibold text-ink">{v.label}</td>
+                    <td className="p-2 text-xs text-stone">{v.specs}</td>
                     <td className="p-2">
                       <input
                         name={`price:${v.id}`}
@@ -204,9 +204,9 @@ export default function VariantPriceTable({
                         value={v.id}
                         formNoValidate
                         className={`text-xs font-bold ${
-                          v.isActive
-                            ? "text-emerald-600 hover:underline"
-                            : "text-neutral-400 hover:underline"
+ v.isActive
+ ?"text-emerald-600 hover:underline"
+                            : "text-stone-light hover:underline"
                         }`}
                       >
                         {v.isActive ? "Visible" : "Hidden"}

@@ -23,19 +23,19 @@ export default async function UsersPage() {
           <div className="overflow-x-auto -m-5">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-xs font-bold text-neutral-500 uppercase border-b border-neutral-200">
+                <tr className="text-left text-xs font-bold text-stone uppercase border-b border-rule">
                   <th className="px-5 py-3">Name</th>
                   <th className="px-5 py-3">Role</th>
                   <th className="px-5 py-3 hidden sm:table-cell text-right">Added</th>
                   <th className="px-5 py-3" />
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100">
+              <tbody className="divide-y divide-rule-light">
                 {users.map((u) => (
                   <tr key={u.id}>
                     <td className="px-5 py-3">
-                      <p className="font-semibold text-neutral-900">{u.name}</p>
-                      <p className="text-xs text-neutral-500 break-all">{u.email}</p>
+                      <p className="font-semibold text-ink">{u.name}</p>
+                      <p className="text-xs text-stone break-all">{u.email}</p>
                     </td>
                     <td className="px-5 py-3">
                       <Badge
@@ -43,16 +43,16 @@ export default async function UsersPage() {
                         className={
                           u.role === "ADMIN"
                             ? "bg-emerald-600 text-white border-emerald-600"
-                            : "bg-neutral-100 text-neutral-600 border-neutral-300"
+                            : "bg-bone text-stone border-rule"
                         }
                       />
                     </td>
-                    <td className="px-5 py-3 hidden sm:table-cell text-right text-xs text-neutral-500 tabular-nums whitespace-nowrap">
+                    <td className="px-5 py-3 hidden sm:table-cell text-right text-xs text-stone tabular-nums whitespace-nowrap">
                       {formatDate(u.createdAt)}
                     </td>
                     <td className="px-5 py-3 text-right">
                       {u.id === admin.userId ? (
-                        <span className="text-xs text-neutral-400">You</span>
+                        <span className="text-xs text-stone-light">You</span>
                       ) : (
                         <form action={deleteUser}>
                           <input type="hidden" name="userId" value={u.id} />

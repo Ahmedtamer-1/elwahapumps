@@ -19,7 +19,7 @@ export default async function ProductPage({ params }: PageProps) {
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <div className="bg-background min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-20">
       {/* Main Content */}
       <ProductDetailView
         product={product}

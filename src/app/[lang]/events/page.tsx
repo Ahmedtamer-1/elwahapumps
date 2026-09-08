@@ -4,6 +4,7 @@ import { events } from "@/data/events";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, ImageIcon, ArrowLeft, ArrowRight } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -16,19 +17,11 @@ export default async function EventsPage({ params }: PageProps) {
   return (
     <div className="bg-white min-h-screen pb-20">
       {/* Page Header */}
-      <section className="bg-black text-white py-16 md:py-20 border-b border-neutral-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-emerald-500 font-extrabold text-xs uppercase tracking-widest block mb-2">
-            {dict.nav.events}
-          </span>
-          <h1 className="text-3xl md:text-5xl font-black mb-4">
-            {dict.eventsPage.title}
-          </h1>
-          <p className="text-neutral-400 text-sm max-w-xl mx-auto leading-relaxed">
-            {dict.eventsPage.subtitle}
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow={dict.nav.events}
+        title={dict.eventsPage.title}
+        subtitle={dict.eventsPage.subtitle}
+      />
 
       {/* Events Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
@@ -41,9 +34,9 @@ export default async function EventsPage({ params }: PageProps) {
               <Link
                 href={`/${lang}/events/${event.id}`}
                 key={event.id}
-                className="bg-white rounded-3xl border border-neutral-200 hover:border-emerald-500/50 shadow-xs hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col"
+                className="bg-white border border-rule hover:border-emerald-500/50 hover: transition-all duration-300 overflow-hidden group flex flex-col"
               >
-                <div className="relative aspect-[4/3] bg-neutral-100 overflow-hidden">
+                <div className="relative aspect-[4/3] bg-bone overflow-hidden">
                   <Image
                     src={event.cover}
                     alt={data.title}
@@ -51,7 +44,7 @@ export default async function EventsPage({ params }: PageProps) {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
-                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 inline-flex items-center gap-1.5 px-3 py-1 bg-black/70 backdrop-blur-sm text-white rounded-full text-[10px] font-bold">
+                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 inline-flex items-center gap-1.5 px-3 py-1 bg-pine text-bone text-[10px] font-bold">
                     <Calendar className="w-3 h-3" />
                     <span>{event.year}</span>
                   </div>
@@ -59,21 +52,21 @@ export default async function EventsPage({ params }: PageProps) {
 
                 <div className="p-6 md:p-8 flex flex-col flex-1">
                   <div className="inline-flex items-center gap-1.5 mb-3">
-                    <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-bold border border-emerald-100/50">
+                    <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold border border-emerald-100/50">
                       {dict.eventsPage.eventTag}
                     </span>
                   </div>
-                  <h3 className="text-xl font-extrabold text-neutral-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200">
+                  <h3 className="text-xl font-extrabold text-ink mb-2 group-hover:text-emerald-600 transition-colors duration-200">
                     {data.title}
                   </h3>
-                  <p className="text-neutral-500 text-xs font-semibold mb-4">
+                  <p className="text-stone text-xs font-semibold mb-4">
                     {data.location}
                   </p>
-                  <p className="text-neutral-500 text-xs leading-relaxed mb-6 flex-1">
+                  <p className="text-stone text-xs leading-relaxed mb-6 flex-1">
                     {data.desc}
                   </p>
 
-                  <div className="inline-flex items-center justify-between w-full py-2.5 px-4 bg-neutral-50 group-hover:bg-emerald-600 text-neutral-700 group-hover:text-white font-bold text-xs rounded-xl border border-neutral-100 group-hover:border-emerald-600 transition-all duration-200">
+                  <div className="inline-flex items-center justify-between w-full py-2.5 px-4 bg-bone group-hover:bg-emerald-600 text-ink group-hover:text-bone font-bold text-xs border border-rule-light group-hover:border-emerald-600 transition-all duration-200">
                     <span className="inline-flex items-center gap-1.5">
                       <ImageIcon className="w-3.5 h-3.5" />
                       {event.gallery.length} {dict.eventsPage.photosCount}

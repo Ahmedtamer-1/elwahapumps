@@ -22,20 +22,32 @@ export type InquiryStatus = (typeof INQUIRY_STATUSES)[number];
 export const ACTIVITY_TYPES = ["NOTE", "CALL", "EMAIL", "STATUS_CHANGE"] as const;
 export type ActivityType = (typeof ACTIVITY_TYPES)[number];
 
-/** Badge styling. Every badge also renders its label, so color never carries meaning alone. */
+/**
+ * Badge styling. Every badge also renders its label, so colour never carries
+ * meaning alone.
+ *
+ * The pipeline used to be a rainbow — sky, indigo and amber alongside the
+ * greens — which is four hues the brand does not own, on the one screen staff
+ * look at all day. §04 allows a status red and a status green and nothing
+ * else, so the states are separated by *weight* instead of hue: a tint, then
+ * an outline, then a brass fill at the point money is on the table, then a
+ * solid pine when it lands. That reads as a progression, which a set of
+ * unrelated colours never did, and it survives the greyscale print-out
+ * someone inevitably takes into a meeting.
+ */
 export const LEAD_STATUS_STYLE: Record<LeadStatus, string> = {
-  NEW: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  CONTACTED: "bg-sky-50 text-sky-700 border-sky-200",
-  QUALIFIED: "bg-indigo-50 text-indigo-700 border-indigo-200",
-  QUOTED: "bg-amber-50 text-amber-800 border-amber-200",
-  WON: "bg-emerald-600 text-white border-emerald-600",
-  LOST: "bg-neutral-100 text-neutral-600 border-neutral-300",
+  NEW: "bg-primary-container text-pine border-emerald-200",
+  CONTACTED: "bg-bone text-ink border-ink/30",
+  QUALIFIED: "bg-white text-pine border-pine",
+  QUOTED: "bg-brass text-ink border-brass",
+  WON: "bg-pine text-bone border-pine",
+  LOST: "bg-bone text-stone border-rule",
 };
 
 export const INQUIRY_STATUS_STYLE: Record<InquiryStatus, string> = {
-  NEW: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  CONTACTED: "bg-sky-50 text-sky-700 border-sky-200",
-  CONVERTED: "bg-emerald-600 text-white border-emerald-600",
+  NEW: "bg-primary-container text-pine border-emerald-200",
+  CONTACTED: "bg-white text-pine border-pine",
+  CONVERTED: "bg-pine text-bone border-pine",
 };
 
 export const LEAD_SOURCE_LABEL: Record<LeadSource, string> = {

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import Logo from "@/components/Logo";
+import { AGENCY_COUNT } from "@/lib/company";
 
 interface FooterProps {
   lang: string;
@@ -48,10 +49,14 @@ export default function Footer({ lang, dict }: FooterProps) {
             {/* §07 voice: specific over superlative. The old copy claimed
                 "leading company" and "20+ years"; this names the record,
                 the certification and the agencies instead. */}
+            {/* The agency count is interpolated from AGENCY_COUNT rather than
+                spelled out. It was written as a word here and as a numeral in
+                three other places, and they had already drifted apart — the
+                footer said eleven while the support page said twelve. */}
             <p className="text-[13px] leading-6 text-bone/70 mb-6 max-w-[42ch]">
               {isAr
-                ? "توريد وتركيب وصيانة طلمبات الأعماق في مصر منذ عام 2013. توكيلات حصرية لإحدى عشرة شركة عالمية، وشهادة ISO 9001، ونفس الفريق يقوم بالصيانة بعد التوريد."
-                : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for 11 manufacturers, ISO 9001 certified — and the same team services it afterwards."}
+                ? `توريد وتركيب وصيانة طلمبات الأعماق في مصر منذ عام 2013. توكيلات حصرية لـ${AGENCY_COUNT} شركة عالمية، وشهادة ISO 9001، ونفس الفريق يقوم بالصيانة بعد التوريد.`
+                : `Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, ISO 9001 certified — and the same team services it afterwards.`}
             </p>
 
             <div className="flex gap-3">

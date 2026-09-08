@@ -125,19 +125,20 @@ export default function ProductVariantSelector({
         <label key={option.key} className="block">
           {/* The unit is not repeated here — every value label already carries it, in
               the right language ("5.5 HP" / "5.5 حصان"). */}
-          <span className="block font-headline-md text-[16px] text-primary mb-2">
-            {option.label}
-          </span>
+          <span className="spec-label block mb-1.5">{option.label}</span>
 
           <div className="relative">
             <select
               value={selected ?? ""}
               onChange={(e) => choose(option.key, e.target.value)}
               // Only reachable combinations are rendered, so there is nothing to disable.
-              className="w-full appearance-none ps-4 pe-10 py-3 rounded-lg border-2 border-outline-variant
-                         bg-surface-container-lowest text-on-surface font-label-sm cursor-pointer
-                         hover:border-primary/40 focus:border-secondary focus:outline-none
-                         focus:ring-2 focus:ring-secondary/20 transition-all"
+              /* Square, on a hairline, mono — a size is a specification, and
+                 this control was the last thing on the page still wearing the
+                 old surface tokens and a mint focus ring. No outline-none: the
+                 brass :focus-visible ring in globals.css stays. */
+              className="w-full appearance-none ps-3.5 pe-10 py-3 border border-rule
+            bg-white text-ink font-mono text-[13px] cursor-pointer
+            hover:border-pine focus:border-pine transition-colors"
             >
               {values.map((v) => (
                 <option key={v.value} value={v.value}>
@@ -147,7 +148,7 @@ export default function ProductVariantSelector({
             </select>
             <ChevronDown
               aria-hidden
-              className="w-5 h-5 absolute end-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none"
+              className="w-5 h-5 absolute end-3 top-1/2 -translate-y-1/2 text-stone pointer-events-none"
             />
           </div>
 

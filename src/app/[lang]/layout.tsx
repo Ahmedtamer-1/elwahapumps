@@ -74,8 +74,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     // Founding year and agency count are the ones in lib/company.ts — keep
     // them in step if that file changes.
     description: isAr
-      ? "توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام 2013. توكيلات حصرية لإحدى عشرة شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد."
-      : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for 11 manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.",
+      ? "توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام 2013. توكيلات حصرية لاثنتي عشرة شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد."
+      : "Deep-well pumping equipment supplied, installed and maintained across Egypt since 2013. Exclusive Egyptian agent for 12 manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.",
     icons: {
       icon: "/favicon.ico",
     },

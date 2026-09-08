@@ -43,10 +43,10 @@ export default async function LeadsPage({
       <div className="flex flex-wrap gap-2 mb-5">
         <Link
           href="/admin/leads"
-          className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
-            !activeStatus
-              ? "bg-neutral-900 text-white border-neutral-900"
-              : "bg-white text-neutral-600 border-neutral-200 hover:border-neutral-300"
+          className={`px-3 py-1.5 text-xs font-bold border transition-colors ${
+ !activeStatus
+ ?"bg-pine text-white border-ink"
+              : "bg-white text-stone border-rule hover:border-pine"
           }`}
         >
           All ({total})
@@ -55,10 +55,10 @@ export default async function LeadsPage({
           <Link
             key={s}
             href={`/admin/leads?status=${s}`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
-              activeStatus === s
-                ? "bg-neutral-900 text-white border-neutral-900"
-                : "bg-white text-neutral-600 border-neutral-200 hover:border-neutral-300"
+            className={`px-3 py-1.5 text-xs font-bold border transition-colors ${
+ activeStatus === s
+ ?"bg-pine text-white border-ink"
+                : "bg-white text-stone border-rule hover:border-pine"
             }`}
           >
             {s} ({countFor(s)})
@@ -73,7 +73,7 @@ export default async function LeadsPage({
           <div className="overflow-x-auto -m-5">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-xs font-bold text-neutral-500 uppercase border-b border-neutral-200">
+                <tr className="text-left text-xs font-bold text-stone uppercase border-b border-rule">
                   <th className="px-5 py-3">Name</th>
                   <th className="px-5 py-3 hidden md:table-cell">Subject</th>
                   <th className="px-5 py-3 hidden lg:table-cell">Source</th>
@@ -82,31 +82,31 @@ export default async function LeadsPage({
                   <th className="px-5 py-3 text-right">Received</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-neutral-100">
+              <tbody className="divide-y divide-rule-light">
                 {leads.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-neutral-50 transition-colors">
+                  <tr key={lead.id} className="hover:bg-bone transition-colors">
                     <td className="px-5 py-3">
                       <Link
                         href={`/admin/leads/${lead.id}`}
-                        className="font-semibold text-neutral-900 hover:text-emerald-700"
+                        className="font-semibold text-ink hover:text-emerald-700"
                       >
                         {lead.name}
                       </Link>
-                      <p className="text-xs text-neutral-500">{lead.phone || lead.email || "—"}</p>
+                      <p className="text-xs text-stone">{lead.phone || lead.email || "—"}</p>
                     </td>
-                    <td className="px-5 py-3 hidden md:table-cell text-neutral-600 max-w-xs truncate">
+                    <td className="px-5 py-3 hidden md:table-cell text-stone max-w-xs truncate">
                       {lead.subject || "—"}
                     </td>
-                    <td className="px-5 py-3 hidden lg:table-cell text-neutral-500 text-xs">
+                    <td className="px-5 py-3 hidden lg:table-cell text-stone text-xs">
                       {LEAD_SOURCE_LABEL[lead.source as LeadSource]}
                     </td>
-                    <td className="px-5 py-3 hidden lg:table-cell text-neutral-500 text-xs">
+                    <td className="px-5 py-3 hidden lg:table-cell text-stone text-xs">
                       {lead.assignedTo?.name ?? "Unassigned"}
                     </td>
                     <td className="px-5 py-3">
                       <Badge label={lead.status} className={LEAD_STATUS_STYLE[lead.status as LeadStatus]} />
                     </td>
-                    <td className="px-5 py-3 text-right text-neutral-500 text-xs tabular-nums whitespace-nowrap">
+                    <td className="px-5 py-3 text-right text-stone text-xs tabular-nums whitespace-nowrap">
                       {formatDate(lead.createdAt)}
                     </td>
                   </tr>

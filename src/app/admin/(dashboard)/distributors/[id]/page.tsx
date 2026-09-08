@@ -42,7 +42,7 @@ export default async function EditDistributorPage({
     <>
       <Link
         href="/admin/distributors"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-neutral-900 mb-4"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone hover:text-pine mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to distributors
@@ -72,7 +72,7 @@ export default async function EditDistributorPage({
         <Card title="Danger zone">
           <form action={deleteDistributor}>
             <input type="hidden" name="id" value={distributor.id} />
-            <p className="text-xs text-neutral-500 mb-3">
+            <p className="text-xs text-stone mb-3">
               Deleting removes the distributor permanently. To take them off the map while you
               confirm their details, untick &ldquo;Shown on the public locations page&rdquo;
               instead.

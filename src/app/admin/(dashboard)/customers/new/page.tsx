@@ -14,7 +14,7 @@ export default async function NewCustomerPage() {
     <>
       <Link
         href="/admin/customers"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-neutral-900 mb-4"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone hover:text-pine mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to customers

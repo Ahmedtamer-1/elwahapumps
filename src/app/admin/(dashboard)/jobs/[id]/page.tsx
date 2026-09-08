@@ -57,7 +57,7 @@ export default async function EditJobPage({ params }: { params: Promise<{ id: st
     <>
       <Link
         href="/admin/jobs"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-neutral-900 mb-4"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone hover:text-pine mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to jobs
@@ -86,7 +86,7 @@ export default async function EditJobPage({ params }: { params: Promise<{ id: st
         <Card title="Danger zone">
           <form action={deleteJob}>
             <input type="hidden" name="id" value={job.id} />
-            <p className="text-xs text-neutral-500 mb-3">
+            <p className="text-xs text-stone mb-3">
               Deleting removes the advert permanently. To close the vacancy but keep the text for
               next time, untick &ldquo;Published on the careers page&rdquo; instead.
             </p>

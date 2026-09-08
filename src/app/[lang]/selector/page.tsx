@@ -75,32 +75,44 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
   const chosen = shortlist.find((c) => c.variant.code === requested) ?? result?.top ?? null;
 
   return (
-    <div className="min-h-screen bg-black pb-24">
-      <section className="relative bg-neutral-950 px-4 pb-10 pt-32">
-        <div className="mx-auto max-w-6xl">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-sky-400">
-            {t.eyebrow}
-          </p>
-          <h1 className="mb-3 text-3xl font-bold text-white sm:text-4xl">{t.title}</h1>
-          <p className="max-w-3xl text-neutral-400">{t.subtitle}</p>
+    /* The page used to be pine end to end, which made a results plate of
+       specification tables read as marketing. It is now an ink header band
+       carrying the query, and a white plate carrying the answer. */
+    <div className="min-h-screen bg-white pb-20">
+      <section className="bg-ink px-4 sm:px-6 lg:px-8 pt-28 pb-10">
+        <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 lg:items-end">
+          <div className="lg:col-span-7">
+            <span className="spec-label text-brass block">{t.eyebrow}</span>
+            <h1 className="mt-3.5 text-h2 md:text-h1 font-extrabold text-bone text-balance">
+              {t.title}
+            </h1>
+            <p className="mt-4 text-small leading-6 text-bone/70 max-w-[56ch]">{t.subtitle}</p>
+          </div>
+
+          {/* The query sits beside the headline rather than under it: on a
+              results page the duty point is a control the reader keeps
+              adjusting, not an introduction they read once. */}
+          <div className="lg:col-span-5">
+            <SelectorForm
+              dict={t}
+              flow={rawFlow}
+              flowUnit={flowUnit}
+              head={rawHead}
+              headUnit={headUnit}
+              action={base}
+              tone="ink"
+            />
+          </div>
         </div>
       </section>
 
-      <div className="mx-auto mt-8 max-w-6xl space-y-8 px-4">
-        <SelectorForm
-          dict={t}
-          flow={rawFlow}
-          flowUnit={flowUnit}
-          head={rawHead}
-          headUnit={headUnit}
-          action={base}
-        />
+      <div className="mx-auto mt-12 max-w-6xl space-y-8 px-4 sm:px-6 lg:px-8">
 
         {!submitted && (
           <Panel>
-            <h2 className="mb-2 text-lg font-semibold text-white">{t.emptyTitle}</h2>
-            <p className="text-neutral-400">{t.emptyBody}</p>
-            <p className="mt-2 text-sm text-neutral-500">
+            <h2 className="text-h3 font-extrabold text-pine">{t.emptyTitle}</h2>
+            <p className="mt-2 text-small leading-6 text-stone">{t.emptyBody}</p>
+            <p className="mt-2 font-mono text-[11px] leading-5 text-stone-light">
               {fill(t.emptyRangeNote, {
                 maxFlow: Math.round(limits.maxFlowM3h),
                 maxHead: Math.round(limits.maxHeadM),
@@ -115,8 +127,8 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
 
         {result && result.status === "no-match" && (
           <Panel>
-            <h2 className="mb-2 text-lg font-semibold text-white">{t.noMatchTitle}</h2>
-            <p className="text-neutral-400">
+            <h2 className="text-h3 font-extrabold text-pine">{t.noMatchTitle}</h2>
+            <p className="mt-2 text-small leading-6 text-stone">
               {result.bestAvailableHeadM === null
                 ? fill(t.noMatchOutOfRange, {
                     flow: showFlow(qM3h),
@@ -130,7 +142,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
             </p>
             <Link
               href={`/${lang}/contact`}
-              className="mt-4 inline-block rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-black hover:bg-sky-400"
+              className="mt-5 inline-block bg-pine px-6 py-3.5 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
             >
               {t.noMatchContact}
             </Link>
@@ -156,7 +168,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
           />
         )}
 
-        <p className="border-t border-neutral-900 pt-6 text-xs leading-relaxed text-neutral-600">
+        <p className="border-t border-rule pt-6 font-mono text-[11px] leading-5 text-stone-light">
           {t.sourceNote} {t.notAdvice}
         </p>
       </div>
@@ -169,19 +181,21 @@ function flowUnitKey(unit: FlowUnit): string {
 }
 
 function Panel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-neutral-800 bg-neutral-950 p-6">{children}</div>
-  );
+  return <div className="border border-rule border-t-2 border-t-pine bg-bone p-6 sm:p-8">{children}</div>;
 }
 
 function Notice({ tone, text }: { tone: "warn" | "info"; text: string }) {
   const Icon = tone === "warn" ? AlertTriangle : Info;
+  /* Amber is not in the palette; brass is the amber this brand owns. So the
+     two notices separate on weight rather than hue — a warning gets the brass
+     edge and fill, an aside stays bone and quiet — and the icon already
+     distinguishes them a second time. */
   const colour =
     tone === "warn"
-      ? "border-amber-500/40 bg-amber-500/10 text-amber-200"
-      : "border-sky-500/40 bg-sky-500/10 text-sky-200";
+      ? "border-brass bg-brass/15 text-ink"
+      : "border-rule bg-bone text-stone";
   return (
-    <div className={`flex items-start gap-3 rounded-xl border p-4 text-sm ${colour}`}>
+    <div className={`flex items-start gap-3 border p-4 text-small leading-6 ${colour}`}>
       <Icon size={18} className="mt-0.5 shrink-0" aria-hidden />
       <p>{text}</p>
     </div>
@@ -247,33 +261,37 @@ function Results({
 
   const zoneLabel =
     chosen.zone === "optimal" ? t.zoneOptimal : chosen.zone === "good" ? t.zoneGood : t.zoneAcceptable;
+  /* Now read on white, so the chips are filled rather than tinted: a solid
+     pine for the best zone, brass-on-ink for good, the status red for
+     marginal. Each carries its own label, so colour never says it alone. */
   const zoneColour =
     chosen.zone === "optimal"
-      ? "bg-emerald-500/15 text-emerald-300 border-emerald-500/30"
+      ? "bg-pine text-bone border-pine"
       : chosen.zone === "good"
-        ? "bg-sky-500/15 text-sky-300 border-sky-500/30"
-        : "bg-amber-500/15 text-amber-300 border-amber-500/30";
+        ? "bg-brass text-ink border-brass"
+        : "bg-error text-on-error border-error";
 
   return (
     <div className="space-y-8">
       {result.status === "oversized" && <Notice tone="warn" text={t.oversizedNotice} />}
       {variant.correctedColumns?.length ? <Notice tone="warn" text={t.correctedNotice} /> : null}
 
-      <section className="rounded-2xl border border-neutral-800 bg-gradient-to-b from-neutral-900 to-neutral-950 p-6">
-        <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-sm text-neutral-500">{t.resultsTitle}</p>
-            <h2 className="text-3xl font-bold text-white">{variant.code}</h2>
-            <p className="mt-1 text-sm text-neutral-400">
-              {family.series === "KP" ? t.seriesKP : t.seriesKSX} · {family.boreInch}&quot;
-            </p>
-          </div>
-          <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${zoneColour}`}>
+      {/* The recommendation, on a brass edge — the one plate on the page that
+          answers the question that was asked. */}
+      <section className="border border-rule border-t-[3px] border-t-brass bg-white p-6 sm:p-8">
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <span className={`border px-2.5 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] ${zoneColour}`}>
             {zoneLabel}
+          </span>
+          <span className="spec-label text-stone-light">
+            {family.series === "KP" ? t.seriesKP : t.seriesKSX} · {family.boreInch}&quot;
           </span>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <span className="spec-label block">{t.resultsTitle}</span>
+        <h2 className="mt-2 mb-6 text-h2 font-extrabold text-ink">{variant.code}</h2>
+
+        <div className="grid gap-px bg-rule border border-rule sm:grid-cols-2 lg:grid-cols-4">
           <Stat label={t.dutyPoint} value={`${round(fromM3h(qM3h, flowUnit))} ${t[flowUnitKey(flowUnit)]}`} sub={`${round(hM)} ${t.unitM}`} />
           <Stat label={t.specDelivered} value={`${round(chosen.headM)} ${t.unitM}`} sub={`+${Math.round(chosen.headExcess * 100)}%`} />
           <Stat
@@ -302,8 +320,23 @@ function Results({
         )}
       </section>
 
-      {/* curves */}
-      <section className="grid gap-4 lg:grid-cols-3">
+      {/* curves.
+          Framed as one instrument panel with a mono header and a legend, so
+          the three charts read as three traces off one pump rather than three
+          unrelated figures. They stay as separate plots — a single combined
+          axis would need three scales on it. */}
+      <section className="border border-rule">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-rule-light px-5 py-4">
+          <span className="spec-label">
+            {t.chartHead} · {t.chartEfficiency} · {t.chartPower}
+          </span>
+          <div className="flex flex-wrap gap-4 font-mono text-[11px] text-stone-light">
+            <span className="text-pine">— {t.chartHead}</span>
+            <span className="text-brass">— {t.chartEfficiency}</span>
+            <span className="text-stone">— {t.chartPower}</span>
+          </div>
+        </div>
+        <div className="grid gap-4 p-4 lg:grid-cols-3">
         <PerformanceChart
           flowLabel={flowAxisLabel}
           flowMax={flowMax}
@@ -312,7 +345,12 @@ function Results({
           series={{
             label: t.chartHead,
             unit: t.unitM,
-            colour: "#38bdf8",
+            /* Read on white now, so the ramp changes with the ground: pine
+               leads because head is the quantity the customer came for, brass
+               takes efficiency, and stone carries power. Brass at 1.9:1 on
+               white is too weak to lead, but it holds as a 2px stroke against
+               the pine it sits beside. */
+            colour: "#0e3b2e",
             points: curve.map((p) => [p.qM3h, p.headM] as [number, number]),
             duty: [qM3h, chosen.headM],
           }}
@@ -325,7 +363,7 @@ function Results({
           series={{
             label: t.chartEfficiency,
             unit: "%",
-            colour: "#34d399",
+            colour: "#d2ab5c",
             points: curve
               .filter((p) => p.etaPct !== null)
               .map((p) => [p.qM3h, p.etaPct!] as [number, number]),
@@ -340,19 +378,20 @@ function Results({
           series={{
             label: t.chartPower,
             unit: "kW",
-            colour: "#fbbf24",
+            colour: "#5a5a54",
             points: curve
               .filter((p) => p.shaftKw !== null)
               .map((p) => [p.qM3h, p.shaftKw!] as [number, number]),
             duty: chosen.shaftKw === null ? null : [qM3h, chosen.shaftKw],
           }}
         />
+        </div>
       </section>
 
       {/* datasheet + motor */}
       <section className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-neutral-800 bg-neutral-950 p-5">
-          <h3 className="mb-4 text-lg font-semibold text-white">{t.datasheetTitle}</h3>
+        <div className="border border-rule bg-white p-6">
+          <h3 className="spec-label mb-4">{t.datasheetTitle}</h3>
           <Spec label={t.specSeries} value={family.series === "KP" ? t.seriesKP : t.seriesKSX} />
           <Spec label={t.specStages} value={String(variant.stages)} />
           {variant.trim && <Spec label={t.specTrim} value={variant.trim} />}
@@ -384,11 +423,13 @@ function Results({
           )}
         </div>
 
-        <div className="rounded-2xl border border-neutral-800 bg-neutral-950 p-5">
-          <h3 className="mb-4 text-lg font-semibold text-white">{t.motorTitle}</h3>
+        {/* The motor panel takes bone, so the pairing reads as pump-on-white
+            and motor-on-paper rather than two identical boxes. */}
+        <div className="border border-rule bg-bone p-6">
+          <h3 className="spec-label mb-4">{t.motorTitle}</h3>
           {fitted ? (
             <>
-              <p className="mb-3 text-2xl font-bold text-white">{fitted.code}</p>
+              <p className="mb-4 font-mono text-xl font-medium text-ink">{fitted.code}</p>
               <Spec label={t.motorRecommended} value={`${options.recommendedHp} HP (${options.recommendedKw} kW)`} />
               <Spec label={t.motorPower} value={`${fitted.hp} HP (${fitted.kw} kW)`} />
               <Spec
@@ -413,14 +454,14 @@ function Results({
                 </div>
               )}
               {!options.hasExactMatch && (
-                <p className="mt-3 text-xs text-neutral-500">
+                <p className="mt-3 font-mono text-[11px] leading-5 text-stone">
                   {fill(t.motorNoExact, { hp: options.recommendedHp })}
                 </p>
               )}
 
               {options.choices.length > 1 && (
                 <div className="mt-5">
-                  <p className="mb-2 text-sm font-medium text-neutral-300">{t.motorChangeLabel}</p>
+                  <p className="spec-label mb-2.5">{t.motorChangeLabel}</p>
                   <div className="flex flex-wrap gap-2">
                     {options.choices.map((choice) => {
                       const active = choice.motor.code === fitted.code;
@@ -428,10 +469,10 @@ function Results({
                         <Link
                           key={choice.motor.code}
                           href={keep({ pick: variant.code, motor: String(choice.motor.hp) })}
-                          className={`rounded-lg border px-3 py-1.5 text-sm transition ${
-                            active
-                              ? "border-sky-400 bg-sky-500/20 text-sky-200"
-                              : "border-neutral-700 text-neutral-300 hover:border-neutral-500"
+                          className={`border px-3 py-1.5 font-mono text-[12px] transition-colors ${
+                              active
+                              ? "border-pine bg-pine text-bone"
+                              : "border-rule bg-white text-ink hover:border-pine"
                           }`}
                         >
                           {choice.motor.hp} HP
@@ -443,7 +484,7 @@ function Results({
               )}
             </>
           ) : (
-            <p className="text-sm text-neutral-400">
+            <p className="text-small leading-6 text-stone">
               {fill(t.motorNoOptions, {
                 bores: variant.motorBores.join("/"),
                 kw: options.recommendedKw,
@@ -457,15 +498,24 @@ function Results({
       {/* alternatives */}
       {shortlist.length > 1 && (
         <section>
-          <h3 className="text-lg font-semibold text-white">{t.alternativesTitle}</h3>
-          <p className="mb-4 text-sm text-neutral-400">
-            {shortlist.length === 1
-              ? t.matchCountOne
-              : fill(t.matchCountMany, { count: result.matchCount })}
-          </p>
-          <div className="overflow-x-auto rounded-xl border border-neutral-800">
-            <table className="w-full min-w-[720px] text-sm">
-              <thead className="bg-neutral-900 text-neutral-400">
+          {/* Opens on a pine rule with the count as the heading, the way every
+              other section on the site opens. */}
+          <div className="border-t-2 border-pine pt-4 mb-5 flex flex-wrap items-end justify-between gap-x-10 gap-y-2">
+            <div>
+              <span className="spec-label block">{t.alternativesTitle}</span>
+              <h3 className="mt-2 text-h3 font-extrabold text-pine">
+                {shortlist.length === 1
+                  ? t.matchCountOne
+                  : fill(t.matchCountMany, { count: result.matchCount })}
+              </h3>
+            </div>
+            <p className="text-small leading-6 text-stone max-w-[48ch] pb-1">
+              {t.alternativesBody}
+            </p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[720px] border-collapse">
+              <thead>
                 <tr>
                   <Th>{t.colModel}</Th>
                   <Th>{t.colHead}</Th>
@@ -483,10 +533,10 @@ function Results({
                   return (
                     <tr
                       key={candidate.variant.code}
-                      className={`border-t border-neutral-800 ${active ? "bg-sky-500/10" : ""}`}
+                      className={active ? "bg-brass/15" : "bg-white"}
                     >
                       <Td>
-                        <span className="font-medium text-white">{candidate.variant.code}</span>
+                        <span className="font-medium text-ink">{candidate.variant.code}</span>
                       </Td>
                       <Td>{round(candidate.headM)} m</Td>
                       <Td>+{Math.round(candidate.headExcess * 100)} %</Td>
@@ -496,11 +546,11 @@ function Results({
                       <Td>{candidate.family.boreInch}&quot;</Td>
                       <Td>
                         {active ? (
-                          <span className="text-xs text-sky-300">●</span>
+                          <span className="spec-label text-pine">{t.motorTagRecommended}</span>
                         ) : (
                           <Link
                             href={keep({ pick: candidate.variant.code })}
-                            className="text-sky-400 hover:text-sky-300"
+                            className="spec-label text-pine hover:text-field transition-colors"
                           >
                             {t.viewDatasheet}
                           </Link>
@@ -518,13 +568,13 @@ function Results({
       <div className="flex flex-wrap gap-3">
         <Link
           href={`/${lang}/contact`}
-          className="inline-flex items-center gap-2 rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-black hover:bg-sky-400"
+          className="inline-flex items-center gap-2 bg-pine px-7 py-4 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
         >
           {t.noMatchContact}
         </Link>
         <Link
           href={`/${lang}/products/${family.productSlug}`}
-          className="inline-flex items-center gap-2 rounded-lg border border-neutral-700 px-5 py-2.5 font-semibold text-neutral-200 hover:border-neutral-500"
+          className="inline-flex items-center gap-2 border border-rule px-7 py-4 text-[13px] font-semibold text-pine transition-colors hover:border-pine"
         >
           <FileText size={16} aria-hidden />
           {t.viewProduct}
@@ -546,12 +596,20 @@ function Stat({
   tone?: "warn";
 }) {
   return (
-    <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
-      <p className="text-xs uppercase tracking-wide text-neutral-500">{label}</p>
-      <p className={`mt-1 text-xl font-bold ${tone === "warn" ? "text-amber-300" : "text-white"}`}>
+    <div className="bg-white p-4">
+      <p className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone-light">
+        {label}
+      </p>
+      {/* Mono, tabular: these are readings off a curve, and a row of them is
+          read down the digit. */}
+      <p
+        className={`mt-1.5 font-mono text-[15px] font-medium tabular-nums ${
+          tone === "warn" ? "text-error" : "text-ink"
+        }`}
+      >
         {value}
       </p>
-      {sub && <p className="mt-0.5 text-xs text-neutral-500">{sub}</p>}
+      {sub && <p className="mt-1 font-mono text-[11px] text-stone">{sub}</p>}
     </div>
   );
 }
@@ -566,10 +624,12 @@ function Spec({
   highlight?: boolean;
 }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-neutral-900 py-2 last:border-0">
-      <span className="text-sm text-neutral-500">{label}</span>
+    <div className="flex items-baseline justify-between gap-4 border-b border-rule-light py-2.5 last:border-0">
+      <span className="font-mono text-[11.5px] text-stone">{label}</span>
       <span
-        className={`text-sm font-medium ${highlight ? "text-sky-300" : "text-neutral-200"}`}
+        className={`font-mono text-[12.5px] tabular-nums ${
+          highlight ? "font-medium text-pine" : "text-ink"
+        }`}
       >
         {value}
       </span>
@@ -577,9 +637,15 @@ function Spec({
   );
 }
 
+/* One cell style for the alternatives table, matching the spec tables on the
+   product pages: bone mono headers, mono cells, figures on the digit. */
 const Th = ({ children }: { children?: React.ReactNode }) => (
-  <th className="px-3 py-2.5 text-start font-medium">{children}</th>
+  <th className="border border-rule-light bg-bone px-3.5 py-2.5 text-start font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap">
+    {children}
+  </th>
 );
 const Td = ({ children }: { children?: React.ReactNode }) => (
-  <td className="px-3 py-2.5 text-neutral-300">{children}</td>
+  <td className="border border-rule-light px-3.5 py-2.5 font-mono text-[12.5px] tabular-nums text-ink whitespace-nowrap">
+    {children}
+  </td>
 );

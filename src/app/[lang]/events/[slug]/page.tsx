@@ -40,7 +40,7 @@ export default async function EventDetailPage({ params }: PageProps) {
   return (
     <div className="bg-white min-h-screen pb-20">
       {/* Header Banner */}
-      <section className="bg-black text-white py-16 border-b border-neutral-900">
+      <section className="bg-pine text-bone py-16 border-b border-bone/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href={`/${lang}/events`}
@@ -49,18 +49,18 @@ export default async function EventDetailPage({ params }: PageProps) {
             {lang === "ar" ? <ArrowRight className="w-4 h-4 me-1" /> : <ArrowLeft className="w-4 h-4 me-1" />}
             {dict.eventsPage.backToEvents}
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px] font-bold border border-emerald-500/20 mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20 mb-3">
             <Calendar className="w-3.5 h-3.5" />
             <span>{event.year}</span>
           </div>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black mt-1">
             {data.title}
           </h1>
-          <p className="text-neutral-400 text-xs mt-2 font-bold flex items-center gap-1.5">
+          <p className="text-bone/75 text-xs mt-2 font-bold flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5" />
             {data.location}
           </p>
-          <p className="text-neutral-400 text-sm mt-5 max-w-3xl leading-relaxed">
+          <p className="text-bone/75 text-sm mt-5 max-w-3xl leading-relaxed">
             {data.desc}
           </p>
         </div>

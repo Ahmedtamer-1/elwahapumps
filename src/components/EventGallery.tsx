@@ -40,7 +40,7 @@ export default function EventGallery({ images, alt }: EventGalleryProps) {
           <button
             key={src}
             onClick={() => setActiveIndex(idx)}
-            className="relative aspect-square rounded-2xl overflow-hidden border border-neutral-200 bg-neutral-50 group"
+            className="relative aspect-square overflow-hidden border border-rule bg-bone group"
           >
             <Image
               src={src}
@@ -55,13 +55,13 @@ export default function EventGallery({ images, alt }: EventGalleryProps) {
 
       {activeIndex !== null && (
         <div
-          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] bg-pine/90 flex items-center justify-center p-4"
           onClick={close}
         >
           <button
             onClick={close}
             aria-label="Close"
-            className="absolute top-5 right-5 rtl:right-auto rtl:left-5 text-white/80 hover:text-white p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            className="absolute top-5 right-5 rtl:right-auto rtl:left-5 text-bone/80 hover:text-bone p-2 bg-white/10 hover:bg-white/20 transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
@@ -72,7 +72,7 @@ export default function EventGallery({ images, alt }: EventGalleryProps) {
               showPrev();
             }}
             aria-label="Previous"
-            className="absolute left-4 rtl:left-auto rtl:right-4 text-white/80 hover:text-white p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            className="absolute left-4 rtl:left-auto rtl:right-4 text-bone/80 hover:text-bone p-2 bg-white/10 hover:bg-white/20 transition-colors"
           >
             <ChevronLeft className="w-7 h-7 rtl:rotate-180" />
           </button>
@@ -96,14 +96,14 @@ export default function EventGallery({ images, alt }: EventGalleryProps) {
               showNext();
             }}
             aria-label="Next"
-            className="absolute right-4 rtl:right-auto rtl:left-4 text-white/80 hover:text-white p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            className="absolute right-4 rtl:right-auto rtl:left-4 text-bone/80 hover:text-bone p-2 bg-white/10 hover:bg-white/20 transition-colors"
           >
             <ChevronRight className="w-7 h-7 rtl:rotate-180" />
           </button>
 
           <div
             dir="ltr"
-            className="absolute bottom-5 left-1/2 -translate-x-1/2 text-white/70 text-xs font-semibold tracking-wide"
+            className="absolute bottom-5 left-1/2 -translate-x-1/2 text-bone/70 text-xs font-semibold tracking-wide"
           >
             {activeIndex + 1} / {images.length}
           </div>

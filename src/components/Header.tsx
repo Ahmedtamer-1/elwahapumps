@@ -73,8 +73,8 @@ export default function Header({ lang, dict }: HeaderProps) {
     <>
       <header
         className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 flex flex-col ${
-          isScrolled
-            ? "bg-white shadow-sm border-b-2 border-brass"
+            isScrolled
+            ? "bg-white  border-b-2 border-brass"
             : isHome
               ? "bg-transparent border-b border-bone/10"
               : "bg-white border-b border-rule"
@@ -93,7 +93,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                   // so on the Arabic site the global rule drops the uppercase
                   // and the tracking (§5.2 rules 3 and 4).
                   className={`font-mono text-[11px] leading-4 font-medium tracking-[0.16em] uppercase transition-colors duration-150 ${
-                    isTransparent ? "text-bone/70 hover:text-brass" : "text-stone hover:text-pine"
+                  isTransparent ? "text-bone/70 hover:text-brass" : "text-stone hover:text-pine"
                   }`}
                 >
                   {link.label}
@@ -185,7 +185,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                       <Link
                         href={link.href}
                         className={`flex items-center gap-1 font-semibold text-sm transition-colors duration-150 relative ${
-                          isActive 
+                            isActive 
                             ? `${activeColor} after:absolute after:-bottom-1.5 after:left-0 after:right-0 after:h-0.5` 
                             : textColor
                         }`}
@@ -197,7 +197,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                       {/* Mega Menu Dropdown */}
                       <div className="absolute top-[100%] left-0 w-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                         {/* Full width glass background */}
-                        <div className="w-full bg-white shadow-lg pb-6 border-t-2 border-brass">
+                        <div className="w-full bg-white pb-6 border-t-2 border-brass">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                               {productCategories.map(category => (
@@ -251,7 +251,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                     key={idx}
                     href={link.href || "#"}
                     className={`font-semibold text-sm transition-colors duration-150 relative ${
-                      isActive 
+                        isActive 
                         ? `${activeColor} after:absolute after:-bottom-1.5 after:left-0 after:right-0 after:h-0.5` 
                         : textColor
                     }`}
@@ -271,7 +271,7 @@ export default function Header({ lang, dict }: HeaderProps) {
               <Link
                 href={toggleLanguage()}
                 className={`flex items-center gap-1.5 px-3 py-2 border text-[13px] font-semibold transition-colors ${
-                  isTransparent
+                    isTransparent
                     ? "border-bone/25 text-bone hover:border-brass hover:text-brass"
                     : "border-rule bg-bone text-ink hover:border-pine hover:text-pine"
                 }`}
@@ -299,7 +299,7 @@ export default function Header({ lang, dict }: HeaderProps) {
               <Link
                 href={toggleLanguage()}
                 className={`p-2 transition-colors ${
-                  isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:text-brass"
+                isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:text-brass"
                 }`}
                 aria-label="Change Language"
               >
@@ -309,7 +309,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className={`p-2 transition-colors ${
-                  isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:text-brass"
+                isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:text-brass"
                 }`}
                 aria-label="Toggle Menu"
                 aria-expanded={isOpen}
@@ -325,8 +325,8 @@ export default function Header({ lang, dict }: HeaderProps) {
 
       {/* Mobile Menu Drawer Overlay */}
       <div
-        className={`fixed inset-0 z-30 bg-black/40 transition-opacity duration-300 lg:hidden ${
-          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-30 bg-pine/40 transition-opacity duration-300 lg:hidden ${
+        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsOpen(false)}
       />
@@ -335,8 +335,8 @@ export default function Header({ lang, dict }: HeaderProps) {
       <div
         id="mobile-nav"
         aria-hidden={!isOpen}
-        className={`fixed inset-y-0 start-0 z-40 w-72 max-w-full bg-white border-e-2 border-brass shadow-xl p-6 flex flex-col justify-between transition-transform duration-300 transform lg:hidden ${
-          isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
+        className={`fixed inset-y-0 start-0 z-40 w-72 max-w-full bg-white border-e-2 border-brass p-6 flex flex-col justify-between transition-transform duration-300 transform lg:hidden ${
+        isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
         }`}
       >
         <div>

@@ -297,7 +297,7 @@ export default async function CareersPage({ params }: PageProps) {
                 ? "أرسل سيرتك الذاتية وسنحتفظ بها؛ نتواصل معك عند توفر وظيفة تناسب خبرتك."
                 : "Send us your CV and we will keep it on file, and contact you when a role that fits your experience opens."}
             </p>
-            <p className="mt-3 font-mono text-[11px] leading-4 text-stone-light" dir="ltr">
+            <p className="mt-3 font-mono text-[11px] leading-4 text-stone" dir="ltr">
               {HR_EMAIL}
             </p>
           </div>

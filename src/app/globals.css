@@ -312,6 +312,29 @@ body {
     border-top: 2px solid var(--color-pine);
   }
 
+  /* A spec plate's rating, read at display scale — the one place mono is
+     allowed to carry size. §05 reserves mono for specifications, and a
+     rating stamped on a plate is exactly that; setting the figure in the
+     body face instead would turn a nameplate back into a marketing stat.
+     Weight holds at 500 because Plex Mono ships 400 and 500 only, and
+     §05 rule 4 rules out a synthesised bold. Tabular figures so a column
+     of ratings aligns on the digit. */
+  .plate-value {
+    font-family: var(--font-mono);
+    font-size: 26px;
+    line-height: 32px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  @media (min-width: 768px) {
+    .plate-value {
+      font-size: 30px;
+      line-height: 36px;
+    }
+  }
+
   .spec-plate dl,
   .spec-plate .spec-row {
     display: grid;

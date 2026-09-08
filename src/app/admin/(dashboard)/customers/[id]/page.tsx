@@ -36,7 +36,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
     <>
       <Link
         href="/admin/customers"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-neutral-900 mb-4"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone hover:text-pine mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to customers
@@ -76,13 +76,13 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
         <div className="space-y-6">
           <Card title={`Leads (${customer.leads.length})`}>
             {customer.leads.length === 0 ? (
-              <p className="text-sm text-neutral-500">No linked leads.</p>
+              <p className="text-sm text-stone">No linked leads.</p>
             ) : (
               <ul className="space-y-3">
                 {customer.leads.map((lead) => (
                   <li key={lead.id}>
                     <Link href={`/admin/leads/${lead.id}`} className="flex items-start justify-between gap-2 group">
-                      <span className="text-sm text-neutral-700 group-hover:text-emerald-700 min-w-0 truncate">
+                      <span className="text-sm text-ink group-hover:text-emerald-700 min-w-0 truncate">
                         {lead.subject || lead.name}
                       </span>
                       <Badge label={lead.status} className={LEAD_STATUS_STYLE[lead.status as LeadStatus]} />
@@ -95,12 +95,12 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
 
           <Card title={`Cart inquiries (${customer.inquiries.length})`}>
             {customer.inquiries.length === 0 ? (
-              <p className="text-sm text-neutral-500">No linked inquiries.</p>
+              <p className="text-sm text-stone">No linked inquiries.</p>
             ) : (
               <ul className="space-y-3">
                 {customer.inquiries.map((inq) => (
                   <li key={inq.id} className="flex items-center justify-between gap-2">
-                    <span className="text-sm text-neutral-700 tabular-nums">
+                    <span className="text-sm text-ink tabular-nums">
                       {formatCurrency(inq.totalEstimate)}
                     </span>
                     <Badge
@@ -116,7 +116,7 @@ export default async function CustomerDetailPage({ params }: { params: Promise<{
           <Card title="Danger zone">
             <form action={deleteCustomer}>
               <input type="hidden" name="id" value={customer.id} />
-              <p className="text-xs text-neutral-500 mb-3">
+              <p className="text-xs text-stone mb-3">
                 Linked leads and inquiries are kept, but unlinked from this customer.
               </p>
               <SubmitButton type="submit" variant="danger" className="w-full">

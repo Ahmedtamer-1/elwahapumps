@@ -24,35 +24,42 @@ function ProductCard({ product, lang, label }: { product: CatalogProduct; lang: 
   return (
     <Link
       href={`/${lang}/products/${product.id}`}
-      className="flex flex-col justify-between h-full overflow-hidden bg-white rounded-2xl border border-neutral-200 hover:border-neutral-300 shadow-xs hover:shadow-lg transition-all duration-300 group"
+      className="flex flex-col justify-between h-full overflow-hidden bg-white border border-rule hover:border-pine transition-colors duration-300 group"
     >
-      {/* Product Image */}
-      <div className="relative w-full h-48 bg-neutral-50 flex items-center justify-center p-4">
+      {/* Product image. Bone well, so the cut-out shot sits on paper rather
+          than on an off-palette grey. */}
+      <div className="relative w-full h-48 bg-bone flex items-center justify-center p-4 border-b border-rule">
         <Image
           src={product.gallery[0]}
           alt={productTitle}
           fill
           className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
         />
-        <div className="absolute top-4 left-4">
-          <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 bg-white/90 backdrop-blur-sm shadow-sm text-emerald-600 rounded-md border border-neutral-100">
-            {label}
-          </span>
-        </div>
       </div>
 
       <div className="p-6 flex flex-col flex-grow">
-        <h4 className="text-lg font-bold text-neutral-800 mb-2 group-hover:text-emerald-600 transition-colors duration-200 line-clamp-2">
+        {/* The category was a floating pill with a backdrop blur over the
+            photograph; §03.5 allows flat pine, bone or white only. It reads
+            better as the card's eyebrow anyway — the same spec label that
+            opens every section. */}
+        <span className="spec-label block mb-3">{label}</span>
+
+        <h4 className="text-h3 font-extrabold text-pine mb-2 line-clamp-2">
           {productTitle}
         </h4>
-        <p className="text-neutral-500 text-sm leading-relaxed mb-4 line-clamp-3">
+        <p className="text-stone text-small leading-relaxed mb-5 line-clamp-3">
           {productDesc}
         </p>
 
-        {/* Specs Chips */}
+        {/* Spec chips. These are specifications, so they are set in the
+            family §05 reserves for specifications, on a hairline rather
+            than a grey fill. */}
         <div className="flex flex-wrap gap-2 mb-6">
           {product.specs.map((spec, idx) => (
-            <span key={idx} className="inline-flex items-center text-[10px] font-semibold text-neutral-600 bg-neutral-100 px-2 py-1 rounded-sm">
+            <span
+              key={idx}
+              className="inline-flex items-center font-mono text-[10px] leading-4 tracking-[0.1em] uppercase text-stone border border-rule px-2 py-1"
+            >
               {spec}
             </span>
           ))}
@@ -60,11 +67,12 @@ function ProductCard({ product, lang, label }: { product: CatalogProduct; lang: 
 
         <div className="flex items-center gap-3 mt-auto">
           <div className="flex-1 min-w-0">
-            <p className="text-base font-bold text-neutral-900 truncate">
+            <p className="text-body font-semibold text-ink truncate">
               {priceOnRequestLabel(lang)}
             </p>
           </div>
-          <span className="shrink-0 text-center py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition-colors duration-200">
+          {/* Pine, not brass: §04 rules brass out on white and bone. */}
+          <span className="shrink-0 text-center py-3 px-5 bg-pine group-hover:bg-emerald-700 text-bone font-semibold text-xs transition-colors duration-200">
             {lang === "ar" ? "عرض التفاصيل" : "View Details"}
           </span>
         </div>
@@ -120,7 +128,7 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
     <div className="w-full">
       {/* Tab Buttons - Hide if teaser */}
       {!isTeaser && (
-        <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+        <div className="flex flex-wrap gap-3 mb-8">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -128,10 +136,11 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-                  isActive
-                    ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                    : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 border border-neutral-200"
+                aria-pressed={isActive}
+                className={`flex items-center gap-2 px-5 py-2.5 text-sm font-semibold border transition-colors duration-200 ${
+                    isActive
+                    ? "bg-pine border-pine text-bone"
+                    : "bg-white border-rule text-stone hover:border-pine hover:text-pine"
                 }`}
               >
                 {Icon && <Icon className="w-4 h-4" />}
@@ -171,11 +180,13 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
         </div>
       )}
 
+      {/* Start-aligned, because the section this closes now opens on a rule
+          at the same edge rather than on a centred stack. */}
       {isTeaser && (
-        <div className="mt-12 text-center">
+        <div className="mt-12">
           <Link
             href={`/${lang}/products`}
-            className="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white px-8 py-3.5 rounded-xl font-bold transition-colors"
+            className="inline-flex items-center gap-2 bg-pine hover:bg-emerald-700 text-bone px-8 py-4 font-semibold text-sm transition-colors active-scale-98"
           >
             <span>{lang === "ar" ? "استعرض كل المنتجات" : "View All Products"}</span>
             <ChevronRight className="w-5 h-5 rtl:rotate-180" />
@@ -188,7 +199,7 @@ function ProductTabsContent({ lang, dict, products, isTeaser = false }: ProductT
 
 export default function ProductTabs(props: ProductTabsProps) {
   return (
-    <Suspense fallback={<div className="h-96 w-full animate-pulse bg-neutral-100 rounded-3xl"></div>}>
+    <Suspense fallback={<div className="h-96 w-full animate-pulse bg-bone border border-rule"></div>}>
       <ProductTabsContent {...props} />
     </Suspense>
   );
