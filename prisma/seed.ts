@@ -88,6 +88,9 @@ async function main() {
   const enProducts = en.productsData as ProductDict;
   const arProducts = ar.productsData as ProductDict;
 
+  /** Slugs whose database row no longer matches the fixture. */
+  const diverged: string[] = [];
+
   for (const p of products) {
     const categoryId = categoryIdBySlug.get(p.category);
     if (!categoryId) {
@@ -104,6 +107,24 @@ async function main() {
     delete specsBlob.id;
     delete specsBlob.category;
     delete specsBlob.gallery;
+
+    // Create-only leaves an edited row alone, which also means a genuine
+    // fixture change does not apply. Note which rows differ so the seed can
+    // say so rather than reporting success and changing nothing.
+    if (!OVERWRITE_PRODUCTS) {
+      const existing = await prisma.product.findUnique({
+        where: { slug: p.id },
+        select: { nameEn: true, nameAr: true, images: true },
+      });
+      if (
+        existing &&
+        (existing.nameEn !== (enEntry?.title ?? p.id) ||
+          existing.nameAr !== (arEntry?.title ?? p.id) ||
+          existing.images !== JSON.stringify(gallery))
+      ) {
+        diverged.push(p.id);
+      }
+    }
 
     await prisma.product.upsert({
       where: { slug: p.id },
@@ -136,6 +157,17 @@ async function main() {
     `✔ ${products.length} products ready` +
       (OVERWRITE_PRODUCTS ? " (existing rows overwritten from the fixture)" : " (existing rows left untouched)"),
   );
+
+  if (diverged.length > 0) {
+    console.warn(
+      `\n⚠ ${diverged.length} product(s) differ from the fixture and were NOT updated:\n` +
+        diverged.map((slug) => `    ${slug}`).join("\n") +
+        "\n\n  This is deliberate — the seed does not overwrite rows that may have been\n" +
+        "  edited in /admin. If the fixture is the newer version (a rename, a new\n" +
+        "  image), apply it with:\n\n" +
+        "    SEED_OVERWRITE_PRODUCTS=1 npx prisma db seed\n",
+    );
+  }
 
   // 4. Tormac. It lives in its own file because it carries full variant
   //    matrices rather than the flat fixture shape, but it is not optional:

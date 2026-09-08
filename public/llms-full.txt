@@ -130,9 +130,10 @@ URL: https://elwahapumps.com/en/products/winding-wire-voltson
 ## Cables
 https://elwahapumps.com/en/products/category/cables
 
-### Submersible Motor Cables
-Water-resistant, copper-conductor cables designed to safely power submersible motors in deep well installations.
-Specs: PVC Insulated,Water Resistant,Copper Conductor
+### Aristoncavi Cable
+Model: H07RN8-F
+Genuine Aristoncavi SUBMERSIBLE 07 (H07RN8-F) rubber cable to EN 50525-2-21, IEMMEQU <HAR> approved. A class 5 bare copper conductor with EPR insulation and a water-resistant EM2 rubber sheath, rated 450/750 V and permanently submersible to 100 m in fresh or salt water — the power feed between the panel and a submersible motor down the borehole.
+Specs: H07RN8-F,EPR / Rubber,100 m Immersion
 URL: https://elwahapumps.com/en/products/cable-submersible
 
 ### Untel Cable
