@@ -85,8 +85,8 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
   }, [status]);
 
   return (
-    <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm">
-      <h2 className="text-xl font-bold text-neutral-900 mb-6 border-b border-neutral-100 pb-4">
+    <div className="w-full bg-white p-6 md:p-8 border border-rule">
+      <h2 className="text-xl font-bold text-ink mb-6 border-b border-rule-light pb-4">
         {dict.contactPage.formTitle}
       </h2>
 
@@ -102,13 +102,13 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
         className="outline-none"
       >
         {status === "success" && (
-          <div className="mb-6 p-4 bg-emerald-50 text-emerald-800 text-sm font-semibold rounded-xl border border-emerald-100">
+          <div className="mb-6 p-4 bg-emerald-50 text-emerald-800 text-sm font-semibold border border-emerald-100">
             {dict.contactPage.success}
           </div>
         )}
 
         {status === "error" && (
-          <div className="mb-6 p-4 bg-red-50 text-red-800 text-sm font-semibold rounded-xl border border-red-100">
+          <div className="mb-6 p-4 bg-red-50 text-red-800 text-sm font-semibold border border-red-100">
             {dict.contactPage.error}
             {errorDetail && <span className="block mt-1 font-normal">{errorDetail}</span>}
           </div>
@@ -144,7 +144,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
             value={formData.name}
             onChange={handleChange}
             placeholder={lang === "ar" ? "مثال: أحمد محمد" : "e.g., John Doe"}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+            className="w-full px-4 py-2.5 border border-rule focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-stone transition-colors"
           />
         </div>
 
@@ -161,7 +161,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
               value={formData.phone}
               onChange={handleChange}
               placeholder={lang === "ar" ? "مثال: 01066685532" : "e.g., +20 106 668 5532"}
-              className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+              className="w-full px-4 py-2.5 border border-rule focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-stone transition-colors"
             />
           </div>
 
@@ -176,7 +176,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
               value={formData.email}
               onChange={handleChange}
               placeholder={lang === "ar" ? "مثال: client@example.com" : "e.g., client@example.com"}
-              className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+              className="w-full px-4 py-2.5 border border-rule focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-stone transition-colors"
             />
           </div>
         </div>
@@ -193,7 +193,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
             value={formData.subject}
             onChange={handleChange}
             placeholder={lang === "ar" ? "الموضوع أو الخدمة المطلوبة" : "Subject or required service"}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors"
+            className="w-full px-4 py-2.5 border border-rule focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-stone transition-colors"
           />
         </div>
 
@@ -209,18 +209,18 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
             value={formData.message}
             onChange={handleChange}
             placeholder={lang === "ar" ? "تفاصيل الطلب أو الاستفسار..." : "Inquiry details..."}
-            className="w-full px-4 py-2.5 rounded-lg border border-neutral-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-neutral-700 transition-colors resize-none"
+            className="w-full px-4 py-2.5 border border-rule focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm text-stone transition-colors resize-none"
           />
         </div>
 
         <button
           type="submit"
           disabled={status === "sending"}
-          className={`w-full py-3 px-6 rounded-lg text-white font-bold text-sm shadow-md transition-all duration-300 ${
-            status === "sending"
-              ? "bg-stone cursor-not-allowed shadow-none"
-              : "bg-emerald-600 hover:bg-emerald-700 hover:shadow-emerald-500/20 active:scale-98"
-          }`}
+          className={`w-full py-3 px-6 text-white font-bold text-sm transition-all duration-300 ${
+ status === "sending"
+ ? "bg-stone cursor-not-allowed "
+ : "bg-emerald-600 hover:bg-emerald-700 hover: active:scale-98"
+ }`}
         >
           {status === "sending" ? dict.contactPage.sending : dict.contactPage.submit}
         </button>

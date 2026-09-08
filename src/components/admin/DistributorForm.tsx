@@ -37,7 +37,7 @@ export default function DistributorForm({
       {distributor?.id && <input type="hidden" name="id" value={distributor.id} />}
 
       {state.error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700 text-sm font-semibold">
+        <div className="p-3 bg-error-container border border-error/30 text-on-error-container text-sm font-semibold">
           {state.error}
         </div>
       )}
@@ -111,11 +111,11 @@ export default function DistributorForm({
 
       {/* Getting a real pin is the fiddly part of adding a distributor, so
           the instructions live next to the fields rather than in a manual. */}
-      <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4">
-        <p className="text-xs font-bold text-neutral-500 uppercase mb-1">
+      <div className="border border-rule bg-bone p-4">
+        <p className="text-xs font-bold text-stone uppercase mb-1">
           Map pin
         </p>
-        <p className="text-[11px] text-neutral-500 mb-4 leading-relaxed">
+        <p className="text-[11px] text-stone mb-4 leading-relaxed">
           On Google Maps, right-click the exact spot and click the numbers at
           the top of the menu — that copies{" "}
           <span className="font-mono">latitude, longitude</span> in that order.
@@ -169,7 +169,7 @@ export default function DistributorForm({
           defaultChecked={distributor?.isActive ?? true}
           className="w-4 h-4 accent-emerald-600"
         />
-        <span className="text-sm font-semibold text-neutral-700">
+        <span className="text-sm font-semibold text-ink">
           Shown on the public locations page
         </span>
       </label>

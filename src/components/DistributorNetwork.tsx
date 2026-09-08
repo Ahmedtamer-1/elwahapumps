@@ -42,7 +42,7 @@ function DistributorCard({
   return (
     <div
       className={`border p-4 transition-colors duration-200 ${
-        isSelected ? "border-pine bg-bone" : "border-rule bg-white hover:border-pine"
+      isSelected ? "border-pine bg-bone" : "border-rule bg-white hover:border-pine"
       }`}
     >
       {/* Selecting is what moves the map; the phone links below stay separate

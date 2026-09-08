@@ -84,7 +84,7 @@ export default function CatalogueButton({
 
       {/* §2.4 value 01: the customer should be able to see the model number
           before they call. */}
-      <p className="mt-3 font-mono text-[11px] leading-4 text-stone-light">
+      <p className="mt-3 font-mono text-[11px] leading-4 text-stone">
         {isAr
           ? "مواصفات كاملة: معدل التصريف، الرفع، القطر، القدرة والمواد."
           : "Full specifications: flow rate, head, bore diameter, power and materials."}

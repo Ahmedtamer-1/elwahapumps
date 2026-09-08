@@ -2,6 +2,7 @@ import React from "react";
 import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
 import Link from "next/link";
+import PageHeader from "@/components/PageHeader";
 import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
@@ -55,76 +56,75 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
     );
   }
 
+  const tabs = [
+    {
+      key: "all",
+      label: lang === "ar" ? "كل الخدمات" : "All Services",
+      count: supplyServiceIds.length + maintenanceServiceIds.length,
+    },
+    {
+      key: "supply",
+      label: dict.servicesPage.categories.supply,
+      count: supplyServiceIds.length,
+    },
+    {
+      key: "maintenance",
+      label: dict.servicesPage.categories.maintenance,
+      count: maintenanceServiceIds.length,
+    },
+  ];
+
   return (
     <div className="bg-white min-h-screen pb-20">
       {/* Header */}
-      <section className="bg-pine text-bone py-16 md:py-20 border-b border-field">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-          <span className="spec-label text-brass block mb-2 mt-4">
-            {dict.nav.services}
-          </span>
-          <h1 className="text-3xl md:text-5xl font-black mb-4">
-            {dict.servicesPage.title}
-          </h1>
-          <p className="text-bone/75 text-sm max-w-xl mx-auto leading-relaxed">
-            {dict.servicesPage.subtitle}
-          </p>
-        </div>
-      </section>
+      <PageHeader
+        eyebrow={dict.nav.services}
+        title={dict.servicesPage.title}
+        subtitle={dict.servicesPage.subtitle}
+      />
 
-      {/* Tabs */}
-      <div
-        className="sticky z-40 bg-white/90 backdrop-blur-md pt-6 pb-4 border-b border-neutral-200 mb-10"
-        // Flush under the header once the page is scrolled — which it
-        // always is by the time this bar can stick. The old hardcoded
-        // 72/80px sat well above the real header height, so the bar slid
-        // underneath it instead of resting against it (S5-T01).
-        style={{ top: "var(--header-h-scrolled)" }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center gap-4">
-          <Link
-            href={`/${lang}/services?tab=all`}
-            className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all ${
-              tab === "all"
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/10"
-                : "bg-white text-neutral-600 hover:bg-neutral-50 border border-neutral-200"
-            }`}
-          >
-            {lang === "ar" ? "كل الخدمات" : "All Services"}
-          </Link>
-          <Link
-            href={`/${lang}/services?tab=supply`}
-            className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all ${
-              tab === "supply"
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/10"
-                : "bg-white text-neutral-600 hover:bg-neutral-50 border border-neutral-200"
-            }`}
-          >
-            {dict.servicesPage.categories.supply}
-          </Link>
-          <Link
-            href={`/${lang}/services?tab=maintenance`}
-            className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all ${
-              tab === "maintenance"
-                ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/10"
-                : "bg-white text-neutral-600 hover:bg-neutral-50 border border-neutral-200"
-            }`}
-          >
-            {dict.servicesPage.categories.maintenance}
-          </Link>
+      {/* Tabs.
+          A filter bar is navigation, not a set of buttons, so it is set the
+          way the site sets navigation: a bone strip under the masthead, the
+          active tab carrying a pine underline. The old pills put a filled
+          emerald block on white for the selected state, which is the same
+          treatment as the primary call to action further down the page — two
+          different meanings wearing one badge. Each tab shows its count in
+          mono, so the choice is made before the tap rather than after. */}
+      <div className="sticky z-40 bg-bone border-b border-rule mb-12"
+        // Flush under the header once scrolled. The old hardcoded
+        // 72/80px sat above the real header height (S5-T01).
+        style={{ top: "var(--header-h-scrolled)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto">
+          {tabs.map((t) => {
+            const active = tab === t.key;
+            return (
+              <Link
+                key={t.key}
+                href={`/${lang}/services?tab=${t.key}`}
+                aria-current={active ? "page" : undefined}
+                className={`shrink-0 whitespace-nowrap px-5 sm:px-6 py-4 text-[12.5px] font-semibold border-b-[3px] transition-colors ${
+                  active
+                    ? "text-pine border-pine"
+                    : "text-stone border-transparent hover:text-pine"
+                }`}
+              >
+                {t.label}{" "}
+                <span className="font-mono text-[11px] font-medium text-stone-light tabular-nums">
+                  {t.count}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
-      {/* Services Grid */}
+      {/* Services grid.
+          A single hairline lattice rather than eight floating cards: the grid
+          gap is 1px of rule showing through from the container behind it, so
+          the run reads as one plate divided up — the way a specification
+          table does — instead of a scatter of tiles. */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/*
-          Each card titles itself with an h3, and this page's only other
-          heading is the h1 in the band above — so the outline jumped h1
-          to h3 with nothing at h2 (S6, found by an axe heading-order
-          check; S1-T15 fixed the other pages but not this one). The tab
-          bar is the visual label for this grid, so the heading it needs
-          is already on screen and this one is for the outline only.
-        */}
         <h2 className="sr-only">
           {tab === "supply"
             ? dict.servicesPage.categories.supply
@@ -134,23 +134,26 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
                 ? "كل الخدمات"
                 : "All Services"}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayServices.map(({ id, category }) => (
-            <div key={id} className="relative">
-              <span className={`absolute top-4 end-4 z-10 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md ${
-                category === "supply" 
-                  ? "bg-emerald-50 text-emerald-600 border border-emerald-100" 
-                  : "bg-emerald-50 text-emerald-600 border border-emerald-100"
-              }`}>
-                {category === "supply" ? dict.servicesPage.categories.supply : dict.servicesPage.categories.maintenance}
-              </span>
-              <ServiceCard
-                id={id}
-                title={dict.servicesData[id as keyof typeof dict.servicesData].title}
-                short={dict.servicesData[id as keyof typeof dict.servicesData].short}
-                lang={lang}
-              />
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-rule border border-rule">
+          {displayServices.map(({ id, category }, i) => (
+            <ServiceCard
+              key={id}
+              id={id}
+              index={i + 1}
+              /* The category only earns a marker when both kinds are on screen
+                 at once; inside a filtered run every card carries it, which
+                 tells the reader nothing. */
+              meta={
+                tab === "all"
+                  ? category === "supply"
+                    ? dict.servicesPage.categories.supply
+                    : dict.servicesPage.categories.maintenance
+                  : undefined
+              }
+              title={dict.servicesData[id as keyof typeof dict.servicesData].title}
+              short={dict.servicesData[id as keyof typeof dict.servicesData].short}
+              lang={lang}
+            />
           ))}
         </div>
       </section>

@@ -342,7 +342,7 @@ export default function DistributorMap({
         aria-label={isAr ? "خريطة موزّعي شركة الواحة" : "Map of El Waha distributors"}
       />
 
-      <p className="mt-2 font-mono text-[11px] leading-4 text-stone-light">
+      <p className="mt-2 font-mono text-[11px] leading-4 text-stone">
         {isAr
           ? "اسحب للتحريك، و Ctrl + عجلة الفأرة للتكبير (أو إصبعين على الجوال). اضغط على أي علامة لعرض بيانات الموزّع."
           : "Drag to pan, Ctrl + scroll to zoom (two fingers on mobile). Tap a pin for the distributor's details."}

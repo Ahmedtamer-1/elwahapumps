@@ -20,7 +20,7 @@ export const metadata = {
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr" className={ibmPlex.variable}>
-      <body className="bg-neutral-100 text-neutral-900 antialiased font-sans">{children}</body>
+      <body className="bg-bone text-ink antialiased font-sans">{children}</body>
     </html>
   );
 }

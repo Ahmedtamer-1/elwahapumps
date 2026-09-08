@@ -20,7 +20,7 @@ const icons: Record<ActivityType, React.ElementType> = {
 
 export default function ActivityTimeline({ items }: { items: TimelineItem[] }) {
   if (items.length === 0) {
-    return <p className="text-sm text-neutral-500 py-4">No activity recorded yet.</p>;
+    return <p className="text-sm text-stone py-4">No activity recorded yet.</p>;
   }
 
   return (
@@ -31,17 +31,17 @@ export default function ActivityTimeline({ items }: { items: TimelineItem[] }) {
         return (
           <li key={item.id} className="flex gap-3">
             <div
-              className={`shrink-0 w-8 h-8 rounded-full grid place-items-center ${
-                isSystem ? "bg-neutral-100 text-neutral-500" : "bg-emerald-50 text-emerald-600"
+              className={`shrink-0 w-8 h-8 grid place-items-center ${
+ isSystem ?"bg-bone text-stone" : "bg-emerald-50 text-emerald-600"
               }`}
             >
               <Icon className="w-4 h-4" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className={`text-sm ${isSystem ? "text-neutral-600 italic" : "text-neutral-800"} whitespace-pre-wrap break-words`}>
+              <p className={`text-sm ${isSystem ?"text-stone italic" : "text-ink"} whitespace-pre-wrap break-words`}>
                 {item.body}
               </p>
-              <p className="text-[11px] text-neutral-400 mt-0.5">
+              <p className="text-[11px] text-stone-light mt-0.5">
                 {item.author?.name ?? "System"} · {relativeTime(item.createdAt)}
               </p>
             </div>

@@ -59,7 +59,7 @@ export default async function InquiriesPage() {
                 <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-neutral-900">
+                      <h3 className="font-bold text-ink">
                         {inq.name || "Anonymous visitor"}
                       </h3>
                       <Badge
@@ -67,7 +67,7 @@ export default async function InquiriesPage() {
                         className={INQUIRY_STATUS_STYLE[inq.status as InquiryStatus]}
                       />
                     </div>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs text-stone">
                       {inq.phone ? (
                         <a href={`tel:${inq.phone}`} className="text-emerald-700 font-semibold hover:underline">
                           {inq.phone}
@@ -81,30 +81,30 @@ export default async function InquiriesPage() {
                   </div>
 
                   <div className="text-end">
-                    <p className="text-xs font-bold text-neutral-500 uppercase">Estimate</p>
-                    <p className="text-lg font-semibold text-neutral-900 tabular-nums">
+                    <p className="text-xs font-bold text-stone uppercase">Estimate</p>
+                    <p className="text-lg font-semibold text-ink tabular-nums">
                       {inq.totalEstimate === null ? "On request" : formatCurrency(inq.totalEstimate)}
                     </p>
                   </div>
                 </div>
 
-                <div className="overflow-x-auto border border-neutral-100 rounded-xl">
+                <div className="overflow-x-auto border border-rule-light">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="text-left text-xs font-bold text-neutral-500 uppercase bg-neutral-50">
+                      <tr className="text-left text-xs font-bold text-stone uppercase bg-bone">
                         <th className="px-4 py-2">Item</th>
                         <th className="px-4 py-2 text-right">Qty</th>
                         <th className="px-4 py-2 text-right">Unit price</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-100">
+                    <tbody className="divide-y divide-rule-light">
                       {items.map((item, idx) => (
                         <tr key={`${item.productId}-${idx}`}>
-                          <td className="px-4 py-2 text-neutral-800">{item.name}</td>
-                          <td className="px-4 py-2 text-right tabular-nums text-neutral-700">
+                          <td className="px-4 py-2 text-ink">{item.name}</td>
+                          <td className="px-4 py-2 text-right tabular-nums text-ink">
                             {item.qty}
                           </td>
-                          <td className="px-4 py-2 text-right tabular-nums text-neutral-700">
+                          <td className="px-4 py-2 text-right tabular-nums text-ink">
                             {item.unitPrice === null ? "—" : formatCurrency(item.unitPrice)}
                           </td>
                         </tr>
@@ -113,7 +113,7 @@ export default async function InquiriesPage() {
                   </table>
                 </div>
 
-                <div className="flex flex-wrap items-end gap-3 mt-4 pt-4 border-t border-neutral-100">
+                <div className="flex flex-wrap items-end gap-3 mt-4 pt-4 border-t border-rule-light">
                   <form action={updateInquiryStatus} className="flex items-end gap-2">
                     <input type="hidden" name="inquiryId" value={inq.id} />
                     <select

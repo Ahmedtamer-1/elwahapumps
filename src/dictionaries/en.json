@@ -204,9 +204,9 @@
       "desc": "Genuine Voltson EXCELGRIP poly-wrapped winding wire for rewinding submersible pump motors. Built on EC grade ETP copper of 99.95% minimum purity and wrapped in bi-axially oriented polypropylene, it holds its insulation up to 120°C and is heavily annealed so it lays into stator slots without cracking. Every coil is high-voltage tested at 3.5 kV rms and the range is tested to IS 8783, in sizes from 0.40 to 2.40 mm² on 500 m and 1000 m coils."
     },
     "cable-submersible": {
-      "title": "Submersible Motor Cables",
+      "title": "Aristoncavi Cable",
       "category": "cables",
-      "desc": "Water-resistant, copper-conductor cables designed to safely power submersible motors in deep well installations."
+      "desc": "Genuine Aristoncavi SUBMERSIBLE 07 (H07RN8-F) rubber cable to EN 50525-2-21, IEMMEQU <HAR> approved. A class 5 bare copper conductor with EPR insulation and a water-resistant EM2 rubber sheath, rated 450/750 V and permanently submersible to 100 m in fresh or salt water — the power feed between the panel and a submersible motor down the borehole."
     },
     "cable-flat-untel": {
       "title": "Untel Cable",
@@ -466,5 +466,19 @@
     "motorWeight": "Motor weight",
     "motorOverloadWarning": "At your duty point this pump absorbs {shaft} kW, more than the fitted {motor} kW motor can deliver. Choose a larger motor below, or reduce the flow or head.",
     "viewProduct": "View product page"
+  },
+  "home": {
+    "heroStats": {
+      "since": "In the market since",
+      "agencies": "Exclusive agencies",
+      "governorates": "Governorates covered",
+      "quality": "Quality"
+    },
+    "productsHeading": "Everything that goes down the borehole",
+    "whyEyebrow": "Why El Waha",
+    "whyTitle": "No two wells are alike, so nothing is sized from a table.",
+    "whyBody": "Our engineers size every installation against the well's own yield and head before anything is supplied. That difference shows up in the electricity bill every month, and in how often the irrigation stops.",
+    "aboutCta": "About the company",
+    "responseLabel": "Response, every day of the year"
   }
 }

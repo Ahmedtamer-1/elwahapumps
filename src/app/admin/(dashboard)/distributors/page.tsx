@@ -67,34 +67,34 @@ export default async function DistributorsAdminPage() {
                 <div className="overflow-x-auto -mx-5 -mb-5">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="text-left text-xs font-bold text-neutral-500 uppercase border-b border-neutral-200">
+                      <tr className="text-left text-xs font-bold text-stone uppercase border-b border-rule">
                         <th className="px-5 py-3">Distributor</th>
                         <th className="px-5 py-3 hidden md:table-cell">City</th>
                         <th className="px-5 py-3 hidden lg:table-cell">Pin</th>
                         <th className="px-5 py-3">Status</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-neutral-100">
+                    <tbody className="divide-y divide-rule-light">
                       {group.items.map((d) => (
-                        <tr key={d.id} className="hover:bg-neutral-50 transition-colors">
+                        <tr key={d.id} className="hover:bg-bone transition-colors">
                           <td className="px-5 py-3">
                             <Link
                               href={`/admin/distributors/${d.id}`}
-                              className="font-semibold text-neutral-900 hover:text-emerald-700 block"
+                              className="font-semibold text-ink hover:text-emerald-700 block"
                             >
                               {d.name}
                             </Link>
-                            <p className="text-xs text-neutral-400 font-mono" dir="ltr">
+                            <p className="text-xs text-stone-light font-mono" dir="ltr">
                               {d.phone}
                             </p>
                           </td>
-                          <td className="px-5 py-3 hidden md:table-cell text-neutral-600">
+                          <td className="px-5 py-3 hidden md:table-cell text-stone">
                             <span dir="rtl" className="block">
                               {d.cityAr}
                             </span>
-                            <span className="text-xs text-neutral-400">{d.cityEn}</span>
+                            <span className="text-xs text-stone-light">{d.cityEn}</span>
                           </td>
-                          <td className="px-5 py-3 hidden lg:table-cell text-neutral-500 font-mono text-xs tabular-nums whitespace-nowrap" dir="ltr">
+                          <td className="px-5 py-3 hidden lg:table-cell text-stone font-mono text-xs tabular-nums whitespace-nowrap" dir="ltr">
                             {d.lat.toFixed(4)}, {d.lng.toFixed(4)}
                           </td>
                           <td className="px-5 py-3">
@@ -106,7 +106,7 @@ export default async function DistributorsAdminPage() {
                                   className={
                                     d.isActive
                                       ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                                      : "bg-neutral-100 text-neutral-500 border-neutral-300"
+                                      : "bg-bone text-stone border-rule"
                                   }
                                 />
                               </button>

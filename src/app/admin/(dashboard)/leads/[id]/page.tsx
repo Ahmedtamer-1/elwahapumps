@@ -50,7 +50,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     <>
       <Link
         href="/admin/leads"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-neutral-900 mb-4"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone hover:text-pine mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to leads
@@ -67,7 +67,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           <Card title="Inquiry">
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
-                <dt className="text-xs font-bold text-neutral-500 uppercase mb-1">Phone</dt>
+                <dt className="text-xs font-bold text-stone uppercase mb-1">Phone</dt>
                 <dd>
                   {lead.phone ? (
                     <a
@@ -78,12 +78,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                       {lead.phone}
                     </a>
                   ) : (
-                    <span className="text-neutral-400">—</span>
+                    <span className="text-stone-light">—</span>
                   )}
                 </dd>
               </div>
               <div>
-                <dt className="text-xs font-bold text-neutral-500 uppercase mb-1">Email</dt>
+                <dt className="text-xs font-bold text-stone uppercase mb-1">Email</dt>
                 <dd>
                   {lead.email ? (
                     <a
@@ -94,17 +94,17 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                       {lead.email}
                     </a>
                   ) : (
-                    <span className="text-neutral-400">—</span>
+                    <span className="text-stone-light">—</span>
                   )}
                 </dd>
               </div>
               <div className="sm:col-span-2">
-                <dt className="text-xs font-bold text-neutral-500 uppercase mb-1">Subject</dt>
-                <dd className="text-neutral-800">{lead.subject || "—"}</dd>
+                <dt className="text-xs font-bold text-stone uppercase mb-1">Subject</dt>
+                <dd className="text-ink">{lead.subject || "—"}</dd>
               </div>
               <div className="sm:col-span-2">
-                <dt className="text-xs font-bold text-neutral-500 uppercase mb-1">Message</dt>
-                <dd className="text-neutral-800 whitespace-pre-wrap break-words">
+                <dt className="text-xs font-bold text-stone uppercase mb-1">Message</dt>
+                <dd className="text-ink whitespace-pre-wrap break-words">
                   {lead.message || "—"}
                 </dd>
               </div>
@@ -176,7 +176,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             ) : (
               <form action={convertLeadToCustomer}>
                 <input type="hidden" name="leadId" value={lead.id} />
-                <p className="text-sm text-neutral-500 mb-3">
+                <p className="text-sm text-stone mb-3">
                   Not linked to a customer record yet.
                 </p>
                 <SubmitButton type="submit" className="w-full">

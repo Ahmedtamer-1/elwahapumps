@@ -35,6 +35,24 @@ export function yearsOfService(now: Date = new Date()): number {
  */
 export const AGENCY_COUNT = 12;
 
+/**
+ * The scale figures, in one place for the same reason as the founding date.
+ *
+ * These were typed literally into the About page's stat row and were about to
+ * be typed a second time into the homepage — which is exactly how a site ends
+ * up claiming 230 projects on one page and 250 on another. Anything quoted in
+ * more than one place belongs here.
+ *
+ * GOVERNORATES is all 27 of Egypt's: the About copy already claims coverage of
+ * every one, so the homepage states the number rather than the adjective.
+ */
+export const GOVERNORATES = 27;
+export const PROJECTS_DELIVERED = "230+";
+export const TEAM_SIZE = "80+";
+export const FACILITY_AREA = "3,000 m²";
+export const RESPONSE_COVER = "24 / 7";
+export const QUALITY_STANDARD = "ISO 9001";
+
 export const AGENCIES = [
   { name: "Kurlar", logo: "/images/brand/kurlar-mark.png" },
   { name: "Panelli", logo: "/images/brand/panelli-mark.png" },

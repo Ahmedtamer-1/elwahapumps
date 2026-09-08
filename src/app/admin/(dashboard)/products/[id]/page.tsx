@@ -90,7 +90,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     <>
       <Link
         href="/admin/products"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-neutral-500 hover:text-neutral-900 mb-4"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-stone hover:text-pine mb-4"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to products
@@ -132,7 +132,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         <Card title="Danger zone">
           <form action={deleteProduct}>
             <input type="hidden" name="id" value={product.id} />
-            <p className="text-xs text-neutral-500 mb-3">
+            <p className="text-xs text-stone mb-3">
               Deleting removes the product and its public page permanently. To take it offline
               temporarily, uncheck &ldquo;Visible on the public website&rdquo; instead.
             </p>

@@ -51,7 +51,7 @@ export default function ProductTeaser({
       <div className="mt-12 text-center">
         <Link
           href={`/${lang}/products`}
-          className="inline-flex items-center gap-2 bg-neutral-900 hover:bg-neutral-800 text-white px-8 py-3.5 rounded-xl font-bold transition-colors"
+          className="inline-flex items-center gap-2 bg-pine hover:bg-field text-white px-8 py-3.5 font-bold transition-colors"
         >
           <span>{lang === "ar" ? "استعرض كل المنتجات" : "View All Products"}</span>
           <ChevronRight className="w-5 h-5 rtl:rotate-180" />

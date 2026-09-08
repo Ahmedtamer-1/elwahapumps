@@ -85,11 +85,11 @@ export default function PerformanceChart({
 
   if (points.length < 2) {
     return (
-      <figure className="rounded-xl border border-neutral-800 bg-neutral-950 p-4">
-        <figcaption className="mb-2 text-sm font-medium text-neutral-300">
-          {label} <span className="text-neutral-500">({unit})</span>
+      <figure className="border border-rule bg-white p-4">
+        <figcaption className="spec-label mb-2">
+          {label} <span className="text-stone-light">({unit})</span>
         </figcaption>
-        <p className="py-10 text-center text-xs text-neutral-500">{emptyLabel}</p>
+        <p className="py-10 text-center font-mono text-xs text-stone-light">{emptyLabel}</p>
       </figure>
     );
   }
@@ -107,9 +107,9 @@ export default function PerformanceChart({
     .join(" ");
 
   return (
-    <figure className="rounded-xl border border-neutral-800 bg-neutral-950 p-4">
-      <figcaption className="mb-1 text-sm font-medium text-neutral-300">
-        {label} <span className="text-neutral-500">({unit})</span>
+    <figure className="border border-rule bg-white p-4">
+      <figcaption className="spec-label mb-1">
+        {label} <span className="text-stone-light">({unit})</span>
       </figcaption>
       <svg
         viewBox={`0 0 ${W} ${H}`}
@@ -125,8 +125,8 @@ export default function PerformanceChart({
             y={PAD.top}
             width={Math.max(0, x(Math.min(band[1], maxQ)) - x(Math.max(0, band[0])))}
             height={plotH}
-            fill="#38bdf8"
-            opacity="0.14"
+            fill="#d2ab5c"
+            opacity="0.20"
           />
         )}
 
@@ -137,7 +137,7 @@ export default function PerformanceChart({
               x2={W - PAD.right}
               y1={y(value)}
               y2={y(value)}
-              stroke="#27272a"
+              stroke="rgba(20,20,20,0.10)"
               strokeWidth="1"
             />
             <text
@@ -145,7 +145,7 @@ export default function PerformanceChart({
               y={y(value) + 3.5}
               textAnchor="end"
               fontSize={LABEL_SIZE}
-              fill="#71717a"
+              fill="#8a8a82"
             >
               {format(value)}
             </text>
@@ -159,7 +159,7 @@ export default function PerformanceChart({
             y={H - PAD.bottom + 14}
             textAnchor="middle"
             fontSize={LABEL_SIZE}
-            fill="#71717a"
+            fill="#8a8a82"
           >
             {format(value)}
           </text>
@@ -174,11 +174,11 @@ export default function PerformanceChart({
               x2={x(duty[0])}
               y1={PAD.top}
               y2={PAD.top + plotH}
-              stroke="#f87171"
+              stroke="#141414"
               strokeWidth="1"
               strokeDasharray="3 3"
             />
-            <circle cx={x(duty[0])} cy={y(duty[1])} r="4" fill="#f87171" />
+            <circle cx={x(duty[0])} cy={y(duty[1])} r="4.5" fill="#141414" />
           </g>
         )}
 
@@ -187,7 +187,7 @@ export default function PerformanceChart({
           y={H - 4}
           textAnchor="middle"
           fontSize={LABEL_SIZE}
-          fill="#a1a1aa"
+          fill="#5a5a54"
         >
           {flowLabel}
         </text>

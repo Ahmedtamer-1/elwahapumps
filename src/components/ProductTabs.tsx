@@ -71,11 +71,11 @@ function ProductTabsContent({ lang, dict, products }: ProductTabsProps) {
             <button
               key={tab.id}
               onClick={() => handleTabChange(tab.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
-                isActive
-                  ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20"
-                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200 border border-neutral-200"
-              }`}
+              className={`flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all duration-300 ${
+ isActive
+ ? "bg-emerald-600 text-white "
+ : "bg-bone text-stone hover:bg-rule-light border border-rule"
+ }`}
             >
               {Icon && <Icon className="w-4 h-4" />}
               {tab.label}
@@ -95,7 +95,7 @@ function ProductTabsContent({ lang, dict, products }: ProductTabsProps) {
 
 export default function ProductTabs(props: ProductTabsProps) {
   return (
-    <Suspense fallback={<div className="h-96 w-full animate-pulse bg-neutral-100 rounded-3xl"></div>}>
+    <Suspense fallback={<div className="h-96 w-full animate-pulse bg-bone"></div>}>
       <ProductTabsContent {...props} />
     </Suspense>
   );

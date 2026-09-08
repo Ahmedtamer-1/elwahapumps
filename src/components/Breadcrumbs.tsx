@@ -33,9 +33,9 @@ export default function Breadcrumbs({
   // Crumb links were neutral-400 in both variants: 2.52:1 on white and
   // 4.08:1 on the sidebar's grey. The separators are aria-hidden, so they
   // only owe the 3:1 non-text ratio, but the links owe 4.5:1 (S6-T02).
-  const chevronClass = dark ? "text-neutral-400" : "text-stone-light";
-  const linkClass = dark ? "text-neutral-300 hover:text-white" : "text-stone hover:text-pine";
-  const currentClass = dark ? "text-neutral-300" : "text-stone";
+  const chevronClass = dark ? "text-bone/60" : "text-stone-light";
+  const linkClass = dark ? "text-bone/75 hover:text-white" : "text-stone hover:text-pine";
+  const currentClass = dark ? "text-bone/75" : "text-stone";
 
   return (
     <>

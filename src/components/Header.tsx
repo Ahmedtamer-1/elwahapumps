@@ -145,7 +145,7 @@ export default function Header({ lang, dict }: HeaderProps) {
       <header
         className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 flex flex-col ${
           isScrolled
-            ? "bg-white shadow-sm border-b-2 border-brass"
+            ? "bg-white border-b-2 border-brass"
             : isHome
               ? "bg-transparent border-b border-bone/10"
               : "bg-white border-b border-rule"
@@ -329,7 +329,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                         }`}
                       >
                         {/* Full width glass background */}
-                        <div className="w-full bg-white shadow-lg pb-6 border-t-2 border-brass">
+                        <div className="w-full bg-white pb-6 border-t-2 border-brass">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
                               {productCategories.map(category => (
@@ -465,7 +465,7 @@ export default function Header({ lang, dict }: HeaderProps) {
 
       {/* Mobile Menu Drawer Overlay */}
       <div
-        className={`fixed inset-0 z-30 bg-black/40 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-30 bg-pine/40 transition-opacity duration-300 lg:hidden ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsOpen(false)}
@@ -481,7 +481,7 @@ export default function Header({ lang, dict }: HeaderProps) {
         // `inert`, not `aria-hidden`: aria-hidden left every link inside
         // still focusable, so Tab walked into an off-screen menu.
         inert={!isOpen}
-        className={`fixed inset-y-0 start-0 z-40 w-72 max-w-full bg-white border-e-2 border-brass shadow-xl p-6 flex flex-col justify-between transition-transform duration-300 transform lg:hidden ${
+        className={`fixed inset-y-0 start-0 z-40 w-72 max-w-full bg-white border-e-2 border-brass p-6 flex flex-col justify-between transition-transform duration-300 transform lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
         }`}
       >

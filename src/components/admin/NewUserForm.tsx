@@ -10,12 +10,12 @@ export default function NewUserForm() {
   return (
     <form action={formAction} className="space-y-4">
       {state.error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700 text-sm font-semibold">
+        <div className="p-3 bg-error-container border border-error/30 text-on-error-container text-sm font-semibold">
           {state.error}
         </div>
       )}
       {state.success && (
-        <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-semibold">
+        <div className="p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm font-semibold">
           {state.success}
         </div>
       )}

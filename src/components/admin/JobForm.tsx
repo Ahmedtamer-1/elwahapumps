@@ -38,7 +38,7 @@ export default function JobForm({ job }: { job?: JobFormValues }) {
       {job?.id && <input type="hidden" name="id" value={job.id} />}
 
       {state.error && (
-        <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-red-700 text-sm font-semibold">
+        <div className="p-3 bg-error-container border border-error/30 text-on-error-container text-sm font-semibold">
           {state.error}
         </div>
       )}
@@ -188,7 +188,7 @@ export default function JobForm({ job }: { job?: JobFormValues }) {
           defaultChecked={job?.isActive ?? true}
           className="w-4 h-4 accent-emerald-600"
         />
-        <span className="text-sm font-semibold text-neutral-700">
+        <span className="text-sm font-semibold text-ink">
           Published on the careers page
         </span>
       </label>

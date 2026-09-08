@@ -995,31 +995,73 @@ export const products: ProductData[] = [
     id: "cable-submersible",
     category: "cables",
     gallery: [
-      "/images/products/cable-untel.png",
-      "/images/products/pmc-winding-wire.png"
+      "/images/products/aristoncavi-cable.png"
     ],
-    specs: ["PVC Insulated", "Water Resistant", "Copper Conductor"],
+    specs: ["H07RN8-F", "EPR / Rubber", "100 m Immersion"],
+    modelNo: "H07RN8-F",
     variants: [
       {
         labelEn: "Cross Section",
         labelAr: "المقطع",
         options: [
-          { id: "4mm", name: "4 mm²" },
-          { id: "6mm", name: "6 mm²" },
-          { id: "10mm", name: "10 mm²" },
+          { id: "1x10", name: "1x10 mm²" },
+          { id: "1x16", name: "1x16 mm²" },
+          { id: "1x25", name: "1x25 mm²" },
+          { id: "1x35", name: "1x35 mm²" },
+          { id: "1x50", name: "1x50 mm²" },
+          { id: "1x70", name: "1x70 mm²" },
+          { id: "1x90", name: "1x90 mm²" },
+          { id: "1x120", name: "1x120 mm²" },
         ]
       }
     ],
+    /* Transcribed from the manufacturer's own page for SUBMERSIBLE 07:
+       https://www.aristoncavi.com/cable/submersible-07-h07rn8-f
+       Only what Aristoncavi actually publish there is quoted. The page does
+       not state an operating-temperature range or a minimum bending radius,
+       so neither is listed — a figure invented here would end up on a
+       quotation. The rated voltage is not a guess: 450/750 V is what the
+       "07" in the harmonised designation H07RN8-F means. */
     tableSpecsEn: {
-      "Conductor": "Stranded Copper",
-      "Insulation": "Water-resistant PVC",
-      "Application": "Submersible motor power feed",
+      "Designation": "H07RN8-F",
+      "Standards": "EN 50525-2-21 · IEMMEQU <HAR> approved",
+      "Conductor": "Bare copper, class 5 to IEC 60228",
+      "Insulation": "EPR compound, EI4 quality to EN 50363-1",
+      "Core Identification": "HD 308",
+      "Sheath": "Water-resistant rubber compound, EM2 quality to EN 50363-2-1, black",
+      "Rated Voltage": "450/750 V (U0/U)",
+      "Immersion Depth": "Up to 100 m in fresh and salt water",
+      "Weather Resistance": "Ozone, UV, sunlight and weather resistant",
+      "Application": "Submersible motors and pumps — dry, damp, wet and hazardous environments",
     },
     tableSpecsAr: {
-      "الموصل": "نحاس مجدول",
-      "العزل": "بي في سي مقاوم للماء",
-      "التطبيقات": "تغذية كهربائية للمواتير الغاطسة",
-    }
+      "التصنيف": "H07RN8-F",
+      "المعايير": "EN 50525-2-21 · معتمد IEMMEQU <HAR>",
+      "الموصل": "نحاس عارٍ، فئة 5 حسب IEC 60228",
+      "العزل": "خليط EPR بجودة EI4 حسب EN 50363-1",
+      "تمييز الأوردة": "HD 308",
+      "الغلاف الخارجي": "خليط مطاطي مقاوم للماء بجودة EM2 حسب EN 50363-2-1، أسود",
+      "الجهد المقنن": "450/750 فولت (U0/U)",
+      "عمق الغمر": "حتى 100 متر في المياه العذبة والمالحة",
+      "مقاومة العوامل الجوية": "مقاوم للأوزون والأشعة فوق البنفسجية وأشعة الشمس والعوامل الجوية",
+      "التطبيقات": "المواتير والطلمبات الغاطسة — البيئات الجافة والرطبة والمبتلة والخطرة",
+    },
+    featuresEn: [
+      "H07RN8-F to EN 50525-2-21, IEMMEQU <HAR> approved",
+      "Bare copper conductor, class 5 to IEC 60228 for flexibility down the borehole",
+      "EPR insulation (EI4) with a water-resistant EM2 rubber sheath",
+      "Permanently submersible to 100 m in both fresh and salt water",
+      "Ozone, UV, sunlight and weather resistant for the above-ground run",
+      "Suitable for dry, damp, wet and hazardous environments, subject to local regulations",
+    ],
+    featuresAr: [
+      "مطابق لمواصفة H07RN8-F حسب EN 50525-2-21 ومعتمد IEMMEQU <HAR>",
+      "موصل نحاسي عارٍ من الفئة 5 حسب IEC 60228 لمرونة أعلى داخل البئر",
+      "عزل EPR بجودة EI4 مع غلاف مطاطي EM2 مقاوم للماء",
+      "قابل للغمر الدائم حتى 100 متر في المياه العذبة والمالحة",
+      "مقاوم للأوزون والأشعة فوق البنفسجية وأشعة الشمس والعوامل الجوية للجزء الظاهر فوق سطح الأرض",
+      "مناسب للبيئات الجافة والرطبة والمبتلة والخطرة، وفقاً للوائح المحلية",
+    ]
   },
   {
     id: "cable-flat-untel",
