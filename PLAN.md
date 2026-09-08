@@ -48,6 +48,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S0-T12 | Delete the unreferenced 162 MB image folder | S | PRE | DONE |
 | S0-T13 | Delete Vite scaffold and dead components | S | PRE | DONE |
 | S0-T14 | Add npm scripts and CI | S | PRE | DONE |
+| S0-T15 | Give products a real brand, and fix the Brand filter | M | PRE | DONE |
 
 ### Stage 1 — Discovery layer
 
@@ -308,6 +309,16 @@ Things that are broken, ship broken, or make the deploy unsafe. Nothing else sta
 **Dependencies.** S0-T03, S0-T04, S0-T05 — CI must be green the day it is added or it will be ignored.
 **Acceptance.** `npm run lint && npm run typecheck && npm test && npm run build` all pass locally. The workflow passes on a pushed branch.
 **Size.** S
+
+### S0-T15 · Give products a real brand, and fix the Brand filter
+**Why it matters.** Not in the original audit — found on 8 September 2026 while testing the consolidated build. Every category page carries a sidebar filter headed **Brand**. It filtered correctly, but its options were not brands: it took the first word of the model number, so it offered `KP`, `KSX`, `8E`, `140-270`, `TS`, `H07RN8-F`, `H07VVH6-F`, `AP+`, `EXCELGRIP` and `Bore-Well` — model codes and cable standards. A customer looking for Kurlar, Rovatti, Panelli or Tormac found none of them, so the one control on the site that promises to filter by manufacturer concealed the twelve exclusive agencies that are the company's main commercial argument. The old code carried a comment acknowledging this, which is how it survived: it was known, and treated as cosmetic.
+**Files.** `prisma/schema.prisma` (new `Product.brand`), new migration `20260908182124_add_product_brand`, new `src/data/brands.ts`, `prisma/seed.ts`, `src/lib/products.ts`, `src/components/CategoryView.tsx`, `src/lib/actions/products.ts`, `src/components/admin/ProductForm.tsx`, `src/app/admin/(dashboard)/products/[id]/page.tsx`.
+**Approach.** A real nullable `brand` column rather than more parsing. `src/data/brands.ts` holds the slug → manufacturer map, typed against `AGENCIES` so a brand can only be one of the twelve and a typo fails the type check. Every value was read from the product's own English copy, not inferred from the model code. `elec-control-panel` is mapped to `null` on purpose — its description says El Waha build it themselves — so it is a recorded decision, not a gap.
+Three of the nineteen rows never pass through the fixture loop (two Tormac products come from `add-tormac.ts`; `elec-winding-wire`, "PMC Wires", exists only in the database from an ad-hoc script), so setting brand on create alone would have left every row of an established database null — the create-only rule of S7-T07 means an existing row is never revisited. The seed therefore backfills, but only where brand is null, so a brand corrected in `/admin` survives re-seeding. It also names any product it cannot brand.
+The filter now shows only when a category has more than one brand: with a single manufacturer, ticking its one box merely hides the unbranded items, which is not what a brand filter implies. The admin form gained a Brand dropdown constrained to `AGENCIES`, so a product added later cannot silently rejoin the problem.
+**Dependencies.** None.
+**Acceptance.** Seed reports `18/19 products carry one` with no unknown-product warning. Sidebar reads Kurlar / Panelli / Tormac / Rovatti on pumps, PMC / Alka / Voltson on spare parts, Untel / Aristoncavi on cables, and no filter on pipes or electrical. Verified in the browser in both locales: ticking Kurlar narrows pumps from 5 to the 2 Kurlar products, adding Rovatti gives 3, clearing restores 5.
+**Size.** M
 
 ---
 

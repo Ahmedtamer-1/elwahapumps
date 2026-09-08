@@ -19,6 +19,12 @@ export interface CatalogProduct extends ProductData {
   /** Localised for the requested language, falling back to the other language. */
   title: string;
   desc: string;
+  /**
+   * Manufacturer, or null where El Waha builds the item themselves. Drives the
+   * category brand filter, which previously guessed at a brand by splitting the
+   * model code and so offered "KP" and "H07RN8-F" as manufacturers.
+   */
+  brand: string | null;
   price: number | null;
   currency: string;
   stock: number | null;
@@ -79,6 +85,7 @@ interface ProductRow {
   currency: string;
   stock: number | null;
   sku: string | null;
+  brand: string | null;
   images: string;
   specs: string;
   priceMin: number | null;
@@ -139,6 +146,7 @@ function toCatalogProduct(row: ProductRow, lang: string): CatalogProduct {
     currency: row.currency,
     stock: row.stock,
     sku: row.sku,
+    brand: row.brand,
     options: row.options.map((o) => ({
       key: o.key,
       label: isAr ? o.labelAr : o.labelEn,
@@ -173,6 +181,7 @@ const select = {
   currency: true,
   stock: true,
   sku: true,
+  brand: true,
   images: true,
   specs: true,
   priceMin: true,

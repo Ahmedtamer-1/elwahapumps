@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
+import { AGENCIES } from "@/lib/company";
+
+const BRAND_NAMES = AGENCIES.map((a) => a.name) as string[];
 
 /** Empty string -> undefined, so blank form fields don't become "" in the DB. */
 const optionalText = z
@@ -27,6 +30,18 @@ const productSchema = z.object({
   descEn: optionalText,
   descAr: optionalText,
   sku: z.string().trim().max(80).optional().transform((v) => (v ? v : undefined)),
+  // Blank is legitimate — El Waha build some items themselves — but anything
+  // else must be one of the twelve agencies. Free text here is how the brand
+  // filter fills up with model codes again.
+  brand: z
+    .string()
+    .trim()
+    .optional()
+    .transform((v) => (v ? v : undefined))
+    .refine(
+      (v) => v === undefined || BRAND_NAMES.includes(v),
+      "Brand must be one of the agencies listed in lib/company.ts, or left blank",
+    ),
   currency: z.string().trim().min(1).max(8),
   price: z
     .string()
@@ -87,6 +102,7 @@ export async function saveProduct(
     descEn: formData.get("descEn"),
     descAr: formData.get("descAr"),
     sku: formData.get("sku"),
+    brand: formData.get("brand"),
     currency: formData.get("currency"),
     price: formData.get("price"),
     stock: formData.get("stock"),
@@ -134,6 +150,7 @@ export async function saveProduct(
     descEn: d.descEn ?? null,
     descAr: d.descAr ?? null,
     sku: d.sku ?? null,
+    brand: d.brand ?? null,
     currency: d.currency,
     price: d.price,
     stock: d.stock,

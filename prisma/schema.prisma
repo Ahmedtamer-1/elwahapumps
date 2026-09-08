@@ -79,6 +79,9 @@ model Product {
   currency   String   @default("EGP")
   sku        String?
   stock      Int?
+  /// Manufacturer, one of the twelve agencies in lib/company.ts. Null where
+  /// El Waha builds the item themselves. Drives the catalogue brand filter.
+  brand      String?
   /// JSON array of image URLs
   images     String   @default("[]")
   /// JSON blob preserving the original ProductData shape (gallery, specs, variants, tableSpecs, modelGroups, specGroups)

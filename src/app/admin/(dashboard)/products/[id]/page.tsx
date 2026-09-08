@@ -78,6 +78,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
     descEn: product.descEn ?? "",
     descAr: product.descAr ?? "",
     sku: product.sku ?? "",
+    brand: product.brand ?? "",
     currency: product.currency,
     price: product.price === null ? "" : String(product.price),
     stock: product.stock === null ? "" : String(product.stock),

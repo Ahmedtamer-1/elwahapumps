@@ -3,6 +3,7 @@
 import React, { useActionState } from "react";
 import { Field, SubmitButton, inputClass } from "@/components/admin/ui";
 import { saveProduct, type ProductFormState } from "@/lib/actions/products";
+import { AGENCIES } from "@/lib/company";
 
 export interface ProductFormValues {
   id: string;
@@ -13,6 +14,8 @@ export interface ProductFormValues {
   descEn: string;
   descAr: string;
   sku: string;
+  /** Manufacturer name, or "" for an item with no brand. */
+  brand: string;
   currency: string;
   price: string;
   stock: string;
@@ -73,6 +76,22 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
             {categories.map((c) => (
               <option key={c.slug} value={c.slug}>
                 {c.nameEn}
+              </option>
+            ))}
+          </select>
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field
+          label="Brand"
+          hint="The manufacturer. Drives the brand filter on category pages. Leave blank only for items El Waha build themselves."
+        >
+          <select name="brand" defaultValue={product?.brand ?? ""} className={inputClass}>
+            <option value="">— none (built in-house) —</option>
+            {AGENCIES.map((a) => (
+              <option key={a.name} value={a.name}>
+                {a.name}
               </option>
             ))}
           </select>

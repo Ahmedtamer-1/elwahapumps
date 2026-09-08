@@ -9,6 +9,7 @@ import type { CatalogProduct } from "@/lib/products";
 import { priceOnRequestLabel } from "@/lib/price";
 import type { Dictionary, Locale } from "../app/[lang]/dictionaries";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { brandOrder } from "@/data/brands";
 
 export default function CategoryView({
   products,
@@ -27,19 +28,27 @@ export default function CategoryView({
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   
+  // Real manufacturers, read from the product's own brand field.
+  //
+  // This used to split the model number and take the first word, which is why
+  // the control headed "Brand" offered KP, KSX, 8E, 140-270, H07RN8-F and
+  // Bore-Well — model codes and cable standards, not brands. A customer
+  // looking for Kurlar, Rovatti, Panelli or Tormac found none of them, and the
+  // twelve agencies the company actually holds appeared nowhere.
+  //
+  // Ordered to match the agency list in company.ts, so the sidebar, the logo
+  // wall and the agents page all name the manufacturers in the same order.
   const availableBrands = useMemo(() => {
     const brands = new Set<string>();
-    products.forEach(p => {
-      if (p.modelNo) brands.add(p.modelNo.split(" ")[0]);
+    products.forEach((p) => {
+      if (p.brand) brands.add(p.brand);
     });
-    return Array.from(brands);
+    return Array.from(brands).sort((a, b) => brandOrder(a) - brandOrder(b));
   }, [products]);
 
   const visibleProducts = useMemo(() => {
     if (selectedBrands.length === 0) return products;
-    return products.filter(
-      (p) => p.modelNo && selectedBrands.includes(p.modelNo.split(" ")[0]),
-    );
+    return products.filter((p) => p.brand && selectedBrands.includes(p.brand));
   }, [products, selectedBrands]);
 
   // No `md:flex-row-reverse` for Arabic on the row below: `dir="rtl"`
@@ -100,11 +109,16 @@ export default function CategoryView({
 
           {/* Filters */}
           <div className="flex flex-col gap-8 pb-6 md:pb-0">
-          {/* Brand Filter — wired to actually filter `products` below. Note
-              "brand" here is derived from the model number prefix
-              (e.g. "KP", "8E"), not a real brand field, so labels can look
-              like model codes until products carry a proper brand. */}
-          {availableBrands.length > 0 && (
+          {/* Brand Filter — wired to actually filter `products` below, on the
+              product's real manufacturer.
+
+              Shown only when a category carries more than one brand. With a
+              single manufacturer the control cannot narrow anything: ticking
+              its one box only hides the items that have no brand at all, which
+              is not what a reader expects a brand filter to do. Pipes (Astral
+              only) and Electrical (NOVO, plus El Waha's own control panels)
+              fall into that case. */}
+          {availableBrands.length > 1 && (
             <div className="flex flex-col gap-3">
               {/* A filter-group label, not a heading — matches Footer's and
                   the mega-menu's column labels, and keeps this from

@@ -4,6 +4,7 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import bcrypt from "bcryptjs";
 
 import { products } from "../src/data/products";
+import { PRODUCT_BRANDS } from "../src/data/brands";
 import { addTormac } from "./add-tormac";
 import en from "../src/dictionaries/en.json";
 import ar from "../src/dictionaries/ar.json";
@@ -138,6 +139,7 @@ async function main() {
             descAr: arEntry?.desc ?? null,
             images: JSON.stringify(gallery),
             specs: JSON.stringify(specsBlob),
+            brand: PRODUCT_BRANDS[p.id] ?? null,
           }
         : {},
       create: {
@@ -150,6 +152,7 @@ async function main() {
         price: null,
         images: JSON.stringify(gallery),
         specs: JSON.stringify(specsBlob),
+        brand: PRODUCT_BRANDS[p.id] ?? null,
       },
     });
   }
@@ -174,6 +177,54 @@ async function main() {
   //    src/data/catalogues.ts maps the two largest catalogues on the site to
   //    its slugs, so a seed without it leaves those pointing at nothing.
   await addTormac();
+
+  // 5. Brand backfill.
+  //
+  //    Three catalogue rows never pass through the fixture loop above: the two
+  //    Tormac products come from add-tormac.ts, and elec-winding-wire ("PMC
+  //    Wires") exists only in the database, created by an ad-hoc script. Set
+  //    on create alone, brand would be null on every row of an existing
+  //    database — the create-only rule (S7-T07) means an established install
+  //    never revisits a row — and the catalogue's brand filter would come up
+  //    empty on the very databases that matter.
+  //
+  //    This fills a brand in only where there is none. It never overwrites a
+  //    value, so a brand corrected in /admin survives re-seeding, which is the
+  //    protection S7-T07 exists to give.
+  const brandable = Object.entries(PRODUCT_BRANDS).filter(
+    ([, brand]) => brand !== null,
+  ) as [string, string][];
+
+  let filled = 0;
+  const unknown: string[] = [];
+
+  for (const [slug, brand] of brandable) {
+    const { count } = await prisma.product.updateMany({
+      where: { slug, brand: null },
+      data: { brand },
+    });
+    filled += count;
+  }
+
+  // Anything in the catalogue the map does not name. Not an error — a new
+  // product simply has no brand yet — but worth saying out loud, because an
+  // unbranded product is invisible to the brand filter.
+  const rows = await prisma.product.findMany({ select: { slug: true, brand: true } });
+  for (const row of rows) {
+    if (!row.brand && !(row.slug in PRODUCT_BRANDS)) unknown.push(row.slug);
+  }
+
+  console.log(
+    `✔ brands: ${filled} filled in, ${rows.filter((r) => r.brand).length}/${rows.length} products carry one`,
+  );
+  if (unknown.length > 0) {
+    console.warn(
+      `\n⚠ ${unknown.length} product(s) have no brand and are not in src/data/brands.ts:\n` +
+        unknown.map((slug) => `    ${slug}`).join("\n") +
+        "\n\n  These will not appear under any manufacturer in the catalogue's brand\n" +
+        "  filter. Add them to PRODUCT_BRANDS, or set the brand from /admin.\n",
+    );
+  }
 }
 
 main()
