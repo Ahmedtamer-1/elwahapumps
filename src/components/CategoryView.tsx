@@ -135,8 +135,10 @@ export default function CategoryView({
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 bg-white p-6 md:p-12 lg:p-20">
+      {/* Product column. A <div>, not a <main>: the locale layout already
+          renders the page's single <main id="main"> landmark, and nesting a
+          second one inside it broke three axe landmark rules (S6-T12). */}
+      <div className="flex-1 bg-white p-6 md:p-12 lg:p-20">
         <div className="max-w-5xl mx-auto flex flex-col gap-12">
           {visibleProducts.map((product) => {
              const titleStr = product.title;
@@ -204,7 +206,7 @@ export default function CategoryView({
              </div>
           )}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

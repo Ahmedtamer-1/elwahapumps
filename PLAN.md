@@ -153,7 +153,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S6-T09 | Fix hero carousel targets, pause and motion | M | POST | TODO |
 | S6-T10 | Give marquees a reduced-motion fallback | S | POST | TODO |
 | S6-T11 | Localise the aria-labels | S | POST | TODO |
-| S6-T12 | Remove the nested main landmark | S | POST | TODO |
+| S6-T12 | Remove the nested main landmark | S | POST | DONE |
 
 ### Stage 7 — Code and security hardening
 
@@ -855,7 +855,7 @@ The colour-only required marker is now an `aria-hidden` asterisk plus an `sr-onl
 - **S6-T09** Hero carousel: dots are 3 px tall against a 24 px minimum target, it auto-advances every 6 seconds with no pause control, and neither it nor the framer transitions respect `prefers-reduced-motion` (`Hero.tsx:31-36,104-116`). Depends on S4-T01. **M**
 - **S6-T10** Marquees become unreachable under reduced motion — the animation stops but nothing scrolls, and the home teaser is the only product surface on the home page (`ProductTabs.tsx:147-165`, `SuccessPartners.tsx:33`, `globals.css:404-415`). **S**
 - **S6-T11** Move English-only aria-labels into the dictionaries; include the item count in the cart label; remove the double announcement on the logo link. **S**
-- **S6-T12** Remove the nested `<main>` on category pages (`CategoryView.tsx:117` inside `layout.tsx:105`). **S** — **This is now the only axe violation left anywhere on the site.** A full-rule axe pass over home, a product page, a category page, contact, cart, services, support, agents and events is otherwise clean; the category page still reports `landmark-main-is-top-level`, `landmark-no-duplicate-main` and `landmark-unique`, all three from this one nested element. It is a one-word change and it was left alone only because this task is scheduled post-cutover — worth pulling forward if you would rather cut over with a clean scan.
+- **S6-T12** Remove the nested `<main>` on category pages (`CategoryView.tsx:117` inside `layout.tsx:105`). **S** — **This is now the only axe violation left anywhere on the site.** A full-rule axe pass over home, a product page, a category page, contact, cart, services, support, agents and events is otherwise clean; the category page still reports `landmark-main-is-top-level`, `landmark-no-duplicate-main` and `landmark-unique`, all three from this one nested element. It is a one-word change and it was left alone only because this task is scheduled post-cutover — worth pulling forward if you would rather cut over with a clean scan. **DONE 8 September 2026** — pulled forward. The element is now a `<div>`; verified at runtime against a production build that all 14 category pages (7 categories x 2 locales) render exactly one `<main>`, with sidebar, breadcrumb JSON-LD and product list unchanged.
 
 ### Found during Stage 6, outside the listed tasks
 
