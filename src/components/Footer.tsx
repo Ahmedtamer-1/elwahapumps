@@ -184,19 +184,19 @@ export default function Footer({ lang, dict }: FooterProps) {
         {/* Bottom bar. ISO 9001 stated plainly rather than buried in small
             type above the navigation, which is where it used to sit (§1.1). */}
         <div className="pt-6 border-t border-bone/15 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-mono text-[11px] tracking-[0.14em] text-bone/50 text-center md:text-start">
+          <p className="font-mono text-[11px] tracking-[0.14em] text-bone/75 text-center md:text-start">
             &copy; {currentYear} {dict.common.allRightsReserved} · ISO 9001
           </p>
           <div className="flex gap-5">
             <Link
               href="/ar"
-              className="font-mono text-[11px] tracking-[0.14em] text-bone/50 hover:text-brass transition-colors"
+              className="font-mono text-[11px] tracking-[0.14em] text-bone/75 hover:text-brass transition-colors"
             >
               {isAr ? "العربية" : "Arabic"}
             </Link>
             <Link
               href="/en"
-              className="font-mono text-[11px] tracking-[0.14em] text-bone/50 hover:text-brass transition-colors"
+              className="font-mono text-[11px] tracking-[0.14em] text-bone/75 hover:text-brass transition-colors"
             >
               English
             </Link>

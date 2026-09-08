@@ -140,11 +140,22 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
             AGENCY_COUNT=12 once did. */}
         <script {...jsonLdScriptProps(organizationSchema(lang))} />
         <script {...jsonLdScriptProps(websiteSchema(lang))} />
+        {/* Every page opens with a fixed header carrying ten-plus links and
+            a mega-menu. Without this, reaching the content by keyboard
+            means tabbing through all of it on every navigation (S6-T05).
+            Visually hidden until focused, then it lands over the header. */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-50 focus:bg-pine focus:text-bone focus:px-5 focus:py-3 focus:text-sm focus:font-bold focus:outline-2 focus:outline-offset-2 focus:outline-brass"
+        >
+          {lang === "ar" ? "تخطَّ إلى المحتوى" : "Skip to content"}
+        </a>
         <CartProvider>
           <Header lang={lang} dict={dict} />
 
-          {/* Main Content Area */}
-          <main className="flex-grow">
+          {/* Main Content Area. tabIndex={-1} so the skip link can actually
+              move focus here, not just scroll to it. */}
+          <main id="main" tabIndex={-1} className="flex-grow outline-none">
             {children}
           </main>
 

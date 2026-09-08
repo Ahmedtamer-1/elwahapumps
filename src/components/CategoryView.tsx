@@ -64,7 +64,7 @@ export default function CategoryView({
             and reversing it as well put the arrow on the far side of the
             label it points away from. Only the glyph itself flips, which
             is what `rtl:` variants are for. */}
-        <Link href={`/${lang}/products`} className="text-sm text-neutral-400 hover:text-white flex items-center gap-2 mb-8 group w-fit">
+        <Link href={`/${lang}/products`} className="text-sm text-neutral-300 hover:text-white flex items-center gap-2 mb-8 group w-fit">
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
           {isAr ? "العودة للمنتجات" : "Back to Products"}
         </Link>
@@ -158,7 +158,7 @@ export default function CategoryView({
                    <h2 className="text-xl font-bold text-neutral-800 mb-1">{titleStr}</h2>
                    {/* Some modelNo values already end in "Series" (e.g. "AP+
                        Series"), which used to render as "AP+ Series Series". */}
-                   <p className="text-sm text-neutral-400 mb-4">
+                   <p className="text-sm text-stone mb-4">
                      {product.modelNo
                        ? /series\s*$/i.test(product.modelNo)
                          ? product.modelNo
@@ -169,7 +169,7 @@ export default function CategoryView({
                    <div className="flex flex-col gap-1.5 text-xs text-neutral-500 font-medium">
                      {product.specs.slice(0, 3).map((spec, i) => (
                        <div key={i} className="flex gap-2">
-                         <span className="text-neutral-400">{isAr ? "ميزة:" : "Feature:"}</span>
+                         <span className="text-stone">{isAr ? "ميزة:" : "Feature:"}</span>
                          <span className="text-neutral-700">{spec}</span>
                        </div>
                      ))}
@@ -179,8 +179,17 @@ export default function CategoryView({
                      {priceOnRequestLabel(lang)}
                    </p>
                    
-                   <Link href={`/${lang}/products/${product.id}`} className={`absolute bottom-0 ${isAr ? 'left-0' : 'right-0'} translate-y-1/2 w-12 h-12 bg-neutral-900 text-white rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-xl z-10`}>
-                     {isAr ? <ArrowUpRight className="w-5 h-5 scale-x-[-1]" /> : <ArrowUpRight className="w-5 h-5" />}
+                   {/* Icon-only, so it needs a name of its own — and one
+                       that says *which* product, since a page of these
+                       otherwise reads as a list of identical "link"s. */}
+                   <Link
+                     href={`/${lang}/products/${product.id}`}
+                     aria-label={isAr ? `عرض ${titleStr}` : `View ${titleStr}`}
+                     className={`absolute bottom-0 ${isAr ? 'left-0' : 'right-0'} translate-y-1/2 w-12 h-12 bg-neutral-900 text-white rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors shadow-xl z-10`}
+                   >
+                     {isAr
+                       ? <ArrowUpRight className="w-5 h-5 scale-x-[-1]" aria-hidden="true" />
+                       : <ArrowUpRight className="w-5 h-5" aria-hidden="true" />}
                    </Link>
                  </div>
                </div>
@@ -188,7 +197,7 @@ export default function CategoryView({
           })}
           
           {visibleProducts.length === 0 && (
-             <div className="text-center text-neutral-400 py-20">
+             <div className="text-center text-stone py-20">
                 {products.length === 0
                   ? (isAr ? "لا توجد منتجات في هذا القسم." : "No products found in this category.")
                   : (isAr ? "لا توجد منتجات مطابقة لهذا التصفية." : "No products match the selected filter.")}

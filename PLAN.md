@@ -142,12 +142,12 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S6-T01 | Fix 6 pine-on-black contrast failures | S | PRE | TODO |
-| S6-T02 | Fix interactive and body-text contrast failures | M | PRE | TODO |
-| S6-T03 | Make the mega-menu keyboard reachable | M | PRE | TODO |
-| S6-T04 | Give the mobile drawer a focus trap and Escape | M | PRE | TODO |
-| S6-T05 | Add a skip link | S | PRE | TODO |
-| S6-T06 | Label cart inputs and announce form results | M | PRE | TODO |
+| S6-T01 | Fix 6 pine-on-black contrast failures | S | PRE | DONE |
+| S6-T02 | Fix interactive and body-text contrast failures | M | PRE | DONE |
+| S6-T03 | Make the mega-menu keyboard reachable | M | PRE | DONE |
+| S6-T04 | Give the mobile drawer a focus trap and Escape | M | PRE | DONE |
+| S6-T05 | Add a skip link | S | PRE | DONE |
+| S6-T06 | Label cart inputs and announce form results | M | PRE | DONE |
 | S6-T07 | Implement the ARIA tabs pattern | M | POST | TODO |
 | S6-T08 | Rebuild the lightbox on native `dialog` | M | POST | TODO |
 | S6-T09 | Fix hero carousel targets, pause and motion | M | POST | TODO |
@@ -645,6 +645,8 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Size.** S
 **Status: DONE.** `template.tsx`'s `motion.div` replaced with a plain `div` and a new `animate-page-in` CSS keyframe in `globals.css`, added to the existing `prefers-reduced-motion` block alongside the marquees. `framer-motion` removed from `package.json` (`npm uninstall`) since nothing else imported it. Left the header-offset classes in `template.tsx` untouched — the approach note above says that consolidation belongs with S5-T01, which is itself a PRE-cutover task in the next stage, not this one. Verified: `grep -rn "framer-motion" src/` returns nothing but this file's own explanatory comment (no import); production build succeeds.
 
+**Amended during Stage 6.** The keyframes originally faded opacity `0.7 -> 1` alongside the rise, which was a latent bug. `animation-fill-mode` is `none`, so the from-state applies for as long as the animation sits in its active phase — and this element wraps *every page's entire content*. Any browser that does not advance the animation leaves the whole page parked at 70% opacity, washing out every colour on it. That is not hypothetical: a tab backgrounded across a navigation throttles animation frames to zero, and it is exactly how the bug was found — an axe scan run in a hidden pane reported a page-wide contrast failure that turned out to be the site genuinely rendering at 70%. The keyframes now animate `transform` only. A stalled translate is a 12px offset; a stalled fade is an unreadable page.
+
 ### S4-T04 · Re-encode oversized source photographs
 **Why.** Around thirty photographs are 6000×4000 at 12 to 20 MB each. Browsers never download them because `next/image` intervenes, but the server must decode a 24-megapixel JPEG for every size and format on first request — seconds of CPU and a large memory spike per variant on a small VPS — and the deploy carries 375 MB of images.
 **Files.** `public/images/services/` (about 165 MB), `public/images/events/` (about 156 MB), `public/images/about/`, `public/images/support/`.
@@ -760,6 +762,11 @@ Verified programmatically rather than by reading pixels — a bidi reordering is
 **Dependencies.** None.
 **Acceptance.** Each of the six eyebrows measures at least 4.5 to 1 against its background in browser devtools.
 **Size.** S
+**Status: DONE.** All six eyebrows converted from `text-emerald-500` on a black band to the `spec-label text-brass` on pine treatment that About and Careers already used. Five were page header bands (agents, contact, events, services, support); the sixth was the genuine-parts panel on the support page, where the agency count — the whole point of the panel — was pine on near-black.
+
+The support page's band is a photograph, and its scrim was a black gradient. That was switched to pine too: leaving a black wash over a now-pine band would have put the brass eyebrow straight back on the near-black ground this task exists to remove.
+
+Verified with axe rather than by eye: the eyebrow computes to brass `rgb(210, 171, 92)` on pine `rgb(14, 59, 46)` — the documented 5.9:1 pairing — and agents, events, services and support all report zero contrast violations.
 
 ### S6-T02 · Fix interactive and body-text contrast failures
 **Why.** Nine more pairs fail: brass on white at 2.16 and on bone at 1.98 for header hover states, white on the WhatsApp green at 1.98 on the cart's send button, `neutral-400` on white at 2.52 used for labels and metadata across many pages, `neutral-600` on black at 2.69, `stone-light` at 3.48 for captions, the red required-field asterisk at 3.76, and bone at 50% opacity on pine at 4.06 for footer links.
@@ -768,6 +775,20 @@ Verified programmatically rather than by reading pixels — a bidi reordering is
 **Dependencies.** S6-T01.
 **Acceptance.** An axe scan of home, a product page, a category page, contact and cart reports zero contrast violations.
 **Size.** M
+**Status: DONE.** Fixed across the board, then verified with a real axe scan.
+
+- **Brass on light grounds.** The mega-menu's "all products" link and the two mobile chips hovered to brass on white/bone (2.16:1 and 1.98:1). The link now darkens to ink and underlines; the chips invert to pine-on-bone. Brass is kept for dark grounds only, as the brand doc specifies.
+- **Cart send button.** Was white on WhatsApp green at 1.98:1. Now bone on pine at 13.1:1. This reads the plan's "pine on bone" as the *pairing* rather than the exact fore/background order — a solid pine button is the site's own primary-action treatment, and the WhatsApp glyph still identifies the channel.
+- **`neutral-400` body text** replaced with `stone` (6.9:1) wherever it sat on white — contact's five info labels, three spots in CategoryView, and two in the cart. Where it sat on a dark ground instead (the CategoryView sidebar at 4.08:1) it went to `neutral-300`.
+- **`--color-outline`** was `#8a8a82` at 3.47:1 and, despite the Material-3 name, is used only as a text colour (11 call sites, no border or background uses). Retoned to stone, which fixed the product page's spec labels and every table header at once.
+- **Breadcrumbs, footer, form labels, required asterisk and disabled button** all retoned; `text-bone/50` on pine (4.06:1) went to `/75` (7.1:1).
+
+**Acceptance met.** axe reports zero `color-contrast` violations on home, a product page, a category page, contact and cart. The cart was scanned with a seeded line item so the send button and both inputs were actually on screen.
+
+Two verification traps worth recording, because both produced convincing false results before they were caught:
+
+1. **A zero-width viewport.** The pane's viewport had collapsed to `innerWidth: 0`, which puts every element off-screen. axe resolves an element's background with `elementsFromPoint`, gets nothing for an off-screen point, and falls back to assuming white — so it reported six confident footer violations citing "background color: #ffffff" for elements whose computed background was demonstrably `rgb(14, 59, 46)`. Assert `window.innerWidth` before trusting a scan.
+2. **Scanning mid-animation.** The page-in animation started at 70% opacity, so a scan run before it settled washed out every colour on the page and invented failures. That one turned out to be a real defect in disguise — see the note on S4-T03.
 
 ### S6-T03 · Make the mega-menu keyboard reachable
 **Why.** The Products submenu is revealed by `group-hover` alone. Keyboard users can never open it; on touch, tapping the trigger navigates away instead. It is the primary route into the catalogue.
@@ -776,6 +797,14 @@ Verified programmatically rather than by reading pixels — a bidi reordering is
 **Dependencies.** None.
 **Acceptance.** Tabbing to Products reveals the menu; every item inside is reachable by keyboard; Escape closes it and returns focus to the trigger.
 **Size.** M
+**Status: DONE.** Open state is now React state rather than `group-hover` alone, with `aria-haspopup` and a live `aria-expanded`. Focus entering the group opens it, focus leaving closes it, Escape closes it and returns focus to the trigger.
+
+Two real bugs surfaced while verifying, both of which would otherwise have shipped:
+
+1. **The panel used `transition-all`.** `visibility` is a discrete property, so it only flipped once the 300ms transition completed — meaning the panel's links were unfocusable for the whole transition, and unfocusable *indefinitely* anywhere transitions are throttled or disabled, all while `aria-expanded` already claimed "true". Now `transition-opacity`, so visibility switches immediately and only the fade animates.
+2. **Escape closed and instantly reopened the menu.** Handing focus back to the trigger fires the same `onFocus` handler that opens it. A dismissal ref now suppresses that one re-entry and re-arms when focus leaves the group.
+
+**Acceptance met**, driven with real key events: focusing the trigger sets `aria-expanded="true"` and the panel to `visibility: visible`; Tab lands on "Submersible Pumps" inside the panel; Escape returns `aria-expanded="false"`, `visibility: hidden`, and focus to the Products trigger.
 
 ### S6-T04 · Give the mobile drawer a focus trap and Escape
 **Why.** The drawer has no focus trap, no Escape handler and no scroll lock, and it uses `aria-hidden` on a container whose links remain focusable — the focusable-but-hidden pattern, which strands keyboard and screen-reader users in an invisible menu.
@@ -784,12 +813,24 @@ Verified programmatically rather than by reading pixels — a bidi reordering is
 **Dependencies.** S6-T03.
 **Acceptance.** With the drawer closed, tabbing never reaches a drawer link. With it open, focus cycles within the drawer, Escape closes it, and focus returns to the toggle. The page behind does not scroll.
 **Size.** M
+**Status: DONE.** The drawer now uses `inert` instead of `aria-hidden`, plus an Escape handler, a body scroll lock, focus moved to the close button on open and restored on close, and a Tab/Shift-Tab focus trap. It also carries `role="dialog"`, `aria-modal` and a localised label.
+
+`inert` is the substantive fix: `aria-hidden` hid the drawer from assistive tech while leaving all twelve of its links focusable, so Tab walked into an off-screen menu. Verified directly — calling `.focus()` on a drawer link while closed leaves `document.activeElement` on `body`.
+
+**Acceptance met.** Closed: links unreachable. Open: `aria-expanded="true"`, `inert` gone, `body.style.overflow` locked to `hidden`, focus on the close button. Tab from the last item wraps to the first and Shift-Tab from the first wraps to the last. Escape restores `inert`, clears the scroll lock, and returns focus to the toggle.
+
+Focus restoration falls back to the toggle ref when `document.activeElement` was `body` at open time, because some browsers do not focus a button on mouse-down — without the fallback, closing would drop focus to the top of the page.
 
 ### S6-T05 · Add a skip link
 **Why.** A fixed header with ten-plus links and a mega-menu precedes the content on every page, with no way to bypass it.
 **Files.** `src/app/[lang]/layout.tsx:98-113`.
 **Acceptance.** The first Tab press on any page reveals a visible skip link that moves focus to the main content.
 **Size.** S
+**Status: DONE.** Added to `[lang]/layout.tsx` ahead of the header, visually hidden until focused. `<main>` gained `id="main"` and `tabIndex={-1}` so activation moves focus rather than only scrolling.
+
+**Acceptance met**, end to end with real key and click events: the first Tab press focuses it, at which point it computes to `position: fixed`, 145x44px, pine background, bone text, `z-index: 50` — confirmed visually in a screenshot. Activating it sets `document.activeElement` to the `main` element itself.
+
+One environment note for anyone re-testing: `:focus` styles cannot be exercised while the browser pane is hidden. `document.activeElement` updates but `document.hasFocus()` stays false and `:focus` never matches, so the link measures as still 1px and clipped. Clicking into the page first fixes it.
 
 ### S6-T06 · Label cart inputs and announce form results
 **Why.** The cart's name and phone inputs have placeholders only — no label, no `aria-label`, no `autocomplete`, no `type="tel"`. The contact form discards the server's validation message entirely (`throw new Error(status)`), its status banners have no `aria-live` and are never focused, and the required marker is a colour-only asterisk at 3.76 to 1.
@@ -798,6 +839,15 @@ Verified programmatically rather than by reading pixels — a bidi reordering is
 **Dependencies.** S0-T05, S3-T04 (both touch ContactForm — sequence them).
 **Acceptance.** Screen reader announces each cart field. Submitting the contact form with an invalid phone shows the server's specific message and announces it.
 **Size.** M
+**Status: DONE.**
+
+**Cart inputs** now have real `<label>` elements, ids, `autoComplete` (`name` / `tel`), `type="tel"`, `inputMode` and `dir="ltr"` on the phone. Placeholders were never accessible names, and they vanish as soon as someone types. Verified: both inputs resolve an accessible name via `label[for]`.
+
+**Contact form** — the server already returned a specific message per failed field ("Phone is required") and the client threw it away in favour of a generic banner. It is now parsed and shown beneath the generic line. The two status banners were also replaced by a single live region that is always in the DOM, rather than two that mount at the moment their text appears — a region inserted simultaneously with its content is announced inconsistently. It carries `role="status"`, `aria-live="polite"` and `tabIndex={-1}`, and takes focus once a submission resolves.
+
+The colour-only required marker is now an `aria-hidden` asterisk plus an `sr-only` "(required)", and the glyph was darkened from red-500 to red-700.
+
+**Acceptance met.** Submitting with a whitespace-only phone — which passes the client's `required` but fails the server's `.trim().min(1)` — produced a banner reading the generic message followed by "Phone is required", with `document.activeElement` on the banner.
 
 ### S6-T07 to S6-T12 · Post-cutover accessibility work
 - **S6-T07** Implement the ARIA tabs pattern for the product category tabs and the Overview/Technical tabs — currently plain buttons with no roles, `aria-selected` or arrow-key navigation (`ProductTabs.tsx:128-140`, `ProductDetailView.tsx:216-236`). Depends on S3-T03. **M**
@@ -805,7 +855,15 @@ Verified programmatically rather than by reading pixels — a bidi reordering is
 - **S6-T09** Hero carousel: dots are 3 px tall against a 24 px minimum target, it auto-advances every 6 seconds with no pause control, and neither it nor the framer transitions respect `prefers-reduced-motion` (`Hero.tsx:31-36,104-116`). Depends on S4-T01. **M**
 - **S6-T10** Marquees become unreachable under reduced motion — the animation stops but nothing scrolls, and the home teaser is the only product surface on the home page (`ProductTabs.tsx:147-165`, `SuccessPartners.tsx:33`, `globals.css:404-415`). **S**
 - **S6-T11** Move English-only aria-labels into the dictionaries; include the item count in the cart label; remove the double announcement on the logo link. **S**
-- **S6-T12** Remove the nested `<main>` on category pages (`CategoryView.tsx:117` inside `layout.tsx:105`). **S**
+- **S6-T12** Remove the nested `<main>` on category pages (`CategoryView.tsx:117` inside `layout.tsx:105`). **S** — **This is now the only axe violation left anywhere on the site.** A full-rule axe pass over home, a product page, a category page, contact, cart, services, support, agents and events is otherwise clean; the category page still reports `landmark-main-is-top-level`, `landmark-no-duplicate-main` and `landmark-unique`, all three from this one nested element. It is a one-word change and it was left alone only because this task is scheduled post-cutover — worth pulling forward if you would rather cut over with a clean scan.
+
+### Found during Stage 6, outside the listed tasks
+
+Three genuine defects that no S6 task covered, surfaced by running axe over full rule sets rather than only the contrast rule. All three are fixed.
+
+- **The floating WhatsApp button belonged to no landmark.** It sits outside header, main and footer, so it was the one piece of content on every page contained by nothing — a moderate-impact `region` violation site-wide. Wrapped in a labelled `<aside>`, and its glyph marked decorative now that the link is named.
+- **The services page skipped a heading level.** Its outline ran `h1` straight to the service cards' `h3` with nothing at `h2`. S1-T15 repaired heading order on the other pages but not this one. The tab bar is the visual label for that grid, so the fix is an `sr-only` `h2` carrying the active tab's name — the outline is corrected without changing the design, which is Stage 5's post-cutover job. `ServiceCard`'s own `h3` was left alone deliberately: on the support page it sits under a real `h2`, where `h3` is correct.
+- **Six icon-only links had no accessible name.** The contact page's Facebook and YouTube links, and the four circular "view product" links on a category page. The product ones now name the product they lead to, so a screen reader hears "View Kurlar Stainless Steel Submersible Pumps" rather than a list of identical, unlabelled links.
 
 ---
 

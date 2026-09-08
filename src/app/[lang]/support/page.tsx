@@ -59,7 +59,7 @@ export default async function SupportPage({ params }: PageProps) {
           carrying the callout fleet behind it. The photograph is the promise
           the copy makes, so it sits under the headline rather than further
           down; the overlay keeps the type at full contrast. */}
-      <section className="relative bg-black text-white py-16 md:py-20 border-b border-neutral-900 overflow-hidden">
+      <section className="relative bg-pine text-bone py-16 md:py-20 border-b border-field overflow-hidden">
         <Image
           src="/images/support/fleet.jpg"
           alt={isAr ? "أسطول الصيانة المتنقل لشركة الواحة" : "The El Waha mobile maintenance fleet"}
@@ -68,14 +68,17 @@ export default async function SupportPage({ params }: PageProps) {
           preload
           className="object-cover opacity-35"
         />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
+        {/* Pine scrim, not black — the band itself is pine now, and a black
+            wash over it would put the brass eyebrow back on a near-black
+            ground, which is the pairing S6-T01 exists to remove. */}
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-pine/85 via-pine/75 to-pine/95" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-emerald-500 font-extrabold text-xs uppercase tracking-widest block mb-2">
+          <span className="spec-label text-brass block mb-2">
             {dict.nav.afterSales}
           </span>
           <h1 className="text-3xl md:text-5xl font-black mb-4">{t.title}</h1>
-          <p className="text-neutral-400 text-sm max-w-2xl mx-auto leading-relaxed">
+          <p className="text-bone/80 text-sm max-w-2xl mx-auto leading-relaxed">
             {t.subtitle}
           </p>
 
@@ -180,16 +183,18 @@ export default async function SupportPage({ params }: PageProps) {
 
       {/* Genuine parts — the agency count comes from company.ts so it cannot drift. */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
-        <div className="bg-neutral-900 text-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-start gap-6">
-          <div className="inline-flex items-center justify-center p-3 bg-emerald-600/20 text-emerald-400 rounded-xl shrink-0">
+        <div className="bg-pine text-bone rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-start gap-6">
+          <div className="inline-flex items-center justify-center p-3 bg-bone/10 text-brass rounded-xl shrink-0">
             <PackageCheck className="w-7 h-7" />
           </div>
           <div>
             <h2 className="text-xl md:text-2xl font-black mb-3">{t.warrantyTitle}</h2>
-            <p className="text-neutral-400 text-sm leading-relaxed max-w-3xl">
+            <p className="text-bone/80 text-sm leading-relaxed max-w-3xl">
               {fill(t.warrantyDesc, { count: AGENCY_COUNT })}
             </p>
-            <p className="text-emerald-500 text-xs font-bold mt-4">
+            {/* Was pine-on-near-black at ~1.6:1 — the agency count is the
+                whole point of the panel and it was effectively invisible. */}
+            <p className="text-brass text-xs font-bold mt-4">
               {isAr
                 ? `${AGENCY_COUNT} وكالة حصرية في مصر`
                 : `${AGENCY_COUNT} exclusive Egyptian agencies`}

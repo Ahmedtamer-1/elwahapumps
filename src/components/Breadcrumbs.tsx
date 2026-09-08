@@ -30,9 +30,12 @@ export default function Breadcrumbs({
   const isAr = lang === "ar";
   const Chevron = isAr ? ChevronLeft : ChevronRight;
   const segments: BreadcrumbSegment[] = items.map((c) => ({ name: c.name, path: c.path }));
-  const chevronClass = dark ? "text-neutral-500" : "text-neutral-400";
-  const linkClass = dark ? "text-neutral-400 hover:text-white" : "text-neutral-400 hover:text-pine";
-  const currentClass = dark ? "text-neutral-300" : "text-neutral-500";
+  // Crumb links were neutral-400 in both variants: 2.52:1 on white and
+  // 4.08:1 on the sidebar's grey. The separators are aria-hidden, so they
+  // only owe the 3:1 non-text ratio, but the links owe 4.5:1 (S6-T02).
+  const chevronClass = dark ? "text-neutral-400" : "text-stone-light";
+  const linkClass = dark ? "text-neutral-300 hover:text-white" : "text-stone hover:text-pine";
+  const currentClass = dark ? "text-neutral-300" : "text-stone";
 
   return (
     <>

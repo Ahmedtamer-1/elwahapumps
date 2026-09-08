@@ -58,15 +58,15 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
   return (
     <div className="bg-white min-h-screen pb-20">
       {/* Header */}
-      <section className="bg-black text-white py-16 md:py-20 border-b border-neutral-900">
+      <section className="bg-pine text-bone py-16 md:py-20 border-b border-field">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-          <span className="text-emerald-500 font-extrabold text-xs uppercase tracking-widest block mb-2 mt-4">
+          <span className="spec-label text-brass block mb-2 mt-4">
             {dict.nav.services}
           </span>
           <h1 className="text-3xl md:text-5xl font-black mb-4">
             {dict.servicesPage.title}
           </h1>
-          <p className="text-neutral-400 text-sm max-w-xl mx-auto leading-relaxed">
+          <p className="text-bone/75 text-sm max-w-xl mx-auto leading-relaxed">
             {dict.servicesPage.subtitle}
           </p>
         </div>
@@ -117,6 +117,23 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
 
       {/* Services Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/*
+          Each card titles itself with an h3, and this page's only other
+          heading is the h1 in the band above — so the outline jumped h1
+          to h3 with nothing at h2 (S6, found by an axe heading-order
+          check; S1-T15 fixed the other pages but not this one). The tab
+          bar is the visual label for this grid, so the heading it needs
+          is already on screen and this one is for the outline only.
+        */}
+        <h2 className="sr-only">
+          {tab === "supply"
+            ? dict.servicesPage.categories.supply
+            : tab === "maintenance"
+              ? dict.servicesPage.categories.maintenance
+              : lang === "ar"
+                ? "كل الخدمات"
+                : "All Services"}
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayServices.map(({ id, category }) => (
             <div key={id} className="relative">

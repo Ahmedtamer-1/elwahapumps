@@ -17,6 +17,13 @@ export default function Header({ lang, dict }: HeaderProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [megaOpen, setMegaOpen] = useState(false);
+  const megaTriggerRef = React.useRef<HTMLAnchorElement>(null);
+  /** Set by Escape so returning focus to the trigger doesn't reopen the menu. */
+  const megaDismissedRef = React.useRef(false);
+  const drawerRef = React.useRef<HTMLDivElement>(null);
+  const drawerCloseRef = React.useRef<HTMLButtonElement>(null);
+  const menuToggleRef = React.useRef<HTMLButtonElement>(null);
 
   // Monitor scroll for header styling
   useEffect(() => {
@@ -30,6 +37,68 @@ export default function Header({ lang, dict }: HeaderProps) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  /*
+    Mobile drawer behaviour (S6-T04). It previously had none of this: no
+    Escape, no scroll lock, no focus management, and `aria-hidden` on a
+    container whose links stayed focusable — the focusable-but-hidden
+    trap, where a keyboard user tabs into a menu they cannot see. The
+    container now uses `inert` when closed, which removes it from both
+    the tab order and the accessibility tree, and this effect handles the
+    rest while it is open.
+  */
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    // Captured now, not read in cleanup — by then the ref may point
+    // somewhere else.
+    const toggle = menuToggleRef.current;
+    drawerCloseRef.current?.focus();
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+
+      const root = drawerRef.current;
+      if (!root) return;
+      const focusable = root.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      // Back to whatever opened it. Falling back to the toggle matters
+      // because some browsers do not focus a button on mouse-down, which
+      // would otherwise leave document.body as the restore target and
+      // drop focus to the top of the page.
+      const restoreTo =
+        previouslyFocused && previouslyFocused !== document.body
+          ? previouslyFocused
+          : toggle;
+      restoreTo?.focus();
+    };
+  }, [isOpen]);
 
   // Compute language toggle link
   const toggleLanguage = () => {
@@ -182,21 +251,82 @@ export default function Header({ lang, dict }: HeaderProps) {
                   ];
 
                   return (
-                    <div key={idx} className="group py-6 -my-6 flex items-center">
+                    /*
+                      Open state is React state rather than `group-hover`
+                      alone. The panel is `invisible` when closed, which
+                      takes its links out of the tab order, so with a
+                      hover-only trigger a keyboard user could never reach
+                      the catalogue at all — and `aria-expanded` had
+                      nothing to report (S6-T03). Focus entering the group
+                      opens it, focus leaving closes it, and Escape closes
+                      it and hands focus back to the trigger.
+                    */
+                    <div
+                      key={idx}
+                      className="group py-6 -my-6 flex items-center"
+                      onMouseEnter={() => {
+                        megaDismissedRef.current = false;
+                        setMegaOpen(true);
+                      }}
+                      onMouseLeave={() => setMegaOpen(false)}
+                      onFocus={() => {
+                        // Escape hands focus back to the trigger, which
+                        // fires this very handler — without the guard the
+                        // menu closed and reopened in the same tick and
+                        // Escape appeared to do nothing.
+                        if (megaDismissedRef.current) return;
+                        setMegaOpen(true);
+                      }}
+                      onBlur={(e) => {
+                        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                          // Focus has left the trigger and the panel, so
+                          // re-arm: tabbing back in should open it again.
+                          megaDismissedRef.current = false;
+                          setMegaOpen(false);
+                        }
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Escape" && megaOpen) {
+                          e.stopPropagation();
+                          megaDismissedRef.current = true;
+                          setMegaOpen(false);
+                          megaTriggerRef.current?.focus();
+                        }
+                      }}
+                    >
                       <Link
                         href={link.href}
+                        ref={megaTriggerRef}
+                        aria-haspopup="true"
+                        aria-expanded={megaOpen}
                         className={`flex items-center gap-1 font-semibold text-sm transition-colors duration-150 relative ${
-                          isActive 
-                            ? `${activeColor} after:absolute after:-bottom-1.5 after:left-0 after:right-0 after:h-0.5` 
+                          isActive
+                            ? `${activeColor} after:absolute after:-bottom-1.5 after:left-0 after:right-0 after:h-0.5`
                             : textColor
                         }`}
                       >
                         {link.label}
-                        <ChevronDown className="w-4 h-4 opacity-70 transition-transform duration-300 group-hover:rotate-180" />
+                        <ChevronDown
+                          className={`w-4 h-4 opacity-70 transition-transform duration-300 ${megaOpen ? "rotate-180" : ""}`}
+                          aria-hidden="true"
+                        />
                       </Link>
 
                       {/* Mega Menu Dropdown */}
-                      <div className="absolute top-[100%] left-0 w-full opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                      <div
+                        // transition-opacity, not transition-all: `all`
+                        // animates `visibility` too, and because that is a
+                        // discrete property it only flips once the 300ms
+                        // transition ends. That made the panel's links
+                        // unfocusable for the whole transition, and left
+                        // them unfocusable indefinitely anywhere
+                        // transitions are throttled or disabled — while
+                        // aria-expanded already said "true". Visibility
+                        // now switches immediately; only the fade animates.
+                        className={`absolute top-[100%] left-0 w-full transition-opacity duration-300 z-50 ${
+                          megaOpen ? "opacity-100 visible" : "opacity-0 invisible"
+                        }`}
+                      >
                         {/* Full width glass background */}
                         <div className="w-full bg-white shadow-lg pb-6 border-t-2 border-brass">
                           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
@@ -238,7 +368,10 @@ export default function Header({ lang, dict }: HeaderProps) {
                               </div>
                               <Link
                                 href={`/${lang}/products`}
-                                className="font-mono text-[11px] font-medium tracking-[0.16em] uppercase flex items-center gap-2 transition-colors text-pine hover:text-brass"
+                                // Brass on white is 2.16:1 and the brand doc
+                                // rules it out outright, so the hover darkens
+                                // and underlines instead of going gold.
+                                className="font-mono text-[11px] font-medium tracking-[0.16em] uppercase flex items-center gap-2 transition-colors text-pine hover:text-ink hover:underline underline-offset-4"
                               >
                                 {dict.productsPage.all}
                                 <span aria-hidden="true" className="rtl:rotate-180 inline-block">&rarr;</span>
@@ -304,7 +437,7 @@ export default function Header({ lang, dict }: HeaderProps) {
               <Link
                 href={toggleLanguage()}
                 className={`p-2 transition-colors ${
-                  isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:text-brass"
+                  isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:bg-pine hover:text-bone"
                 }`}
                 aria-label="Change Language"
               >
@@ -312,9 +445,10 @@ export default function Header({ lang, dict }: HeaderProps) {
               </Link>
               <button
                 type="button"
+                ref={menuToggleRef}
                 onClick={() => setIsOpen(!isOpen)}
                 className={`p-2 transition-colors ${
-                  isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:text-brass"
+                  isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:bg-pine hover:text-bone"
                 }`}
                 aria-label="Toggle Menu"
                 aria-expanded={isOpen}
@@ -339,7 +473,13 @@ export default function Header({ lang, dict }: HeaderProps) {
       {/* Mobile Menu Drawer Container */}
       <div
         id="mobile-nav"
-        aria-hidden={!isOpen}
+        ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={lang === "ar" ? "قائمة التنقل" : "Navigation menu"}
+        // `inert`, not `aria-hidden`: aria-hidden left every link inside
+        // still focusable, so Tab walked into an off-screen menu.
+        inert={!isOpen}
         className={`fixed inset-y-0 start-0 z-40 w-72 max-w-full bg-white border-e-2 border-brass shadow-xl p-6 flex flex-col justify-between transition-transform duration-300 transform lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
         }`}
@@ -351,9 +491,10 @@ export default function Header({ lang, dict }: HeaderProps) {
             <Logo variant="mark" x={16} />
             <button
               type="button"
+              ref={drawerCloseRef}
               onClick={() => setIsOpen(false)}
               className="p-1 text-stone hover:text-pine transition-colors"
-              aria-label="Close menu"
+              aria-label={lang === "ar" ? "إغلاق القائمة" : "Close menu"}
             >
               <X className="w-6 h-6" />
             </button>

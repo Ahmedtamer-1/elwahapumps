@@ -41,15 +41,15 @@ export default async function AgentsPage({ params }: PageProps) {
   return (
     <div className="bg-white min-h-screen pb-20">
       {/* Page Header */}
-      <section className="bg-black text-white py-16 md:py-20 border-b border-neutral-900">
+      <section className="bg-pine text-bone py-16 md:py-20 border-b border-field">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-emerald-500 font-extrabold text-xs uppercase tracking-widest block mb-2">
+          <span className="spec-label text-brass block mb-2">
             {dict.nav.agents}
           </span>
           <h1 className="text-3xl md:text-5xl font-black mb-4">
             {dict.agentsPage.title}
           </h1>
-          <p className="text-neutral-400 text-sm max-w-xl mx-auto leading-relaxed">
+          <p className="text-bone/75 text-sm max-w-xl mx-auto leading-relaxed">
             {dict.agentsPage.subtitle}
           </p>
         </div>

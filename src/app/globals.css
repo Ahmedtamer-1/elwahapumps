@@ -114,7 +114,12 @@
   --color-on-tertiary-fixed: #141414;
   --color-on-tertiary-fixed-variant: #5a5a54;
 
-  --color-outline: #8a8a82;
+  /* Was #8a8a82 (stone-light), which is 3.47:1 on white. Despite the
+     Material-3 name this token is only ever used as a text colour — 11
+     call sites, all `text-outline`, no border or background uses — and
+     it carries the product page's spec labels and table headers, so it
+     owes 4.5:1. Now stone, at 6.9:1 (S6-T02). */
+  --color-outline: #5a5a54;
   --color-outline-variant: #e3e1d6;
   --color-surface-tint: #0e3b2e;
 
@@ -406,15 +411,22 @@ body {
 }
 
 /* Per-route entrance, replacing a framer-motion `motion.div` in
-   [lang]/template.tsx — same fade-and-rise, done with CSS so
-   framer-motion no longer has to ship on every route. */
+   [lang]/template.tsx — done with CSS so framer-motion no longer has to
+   ship on every route.
+
+   Transform only, deliberately. This wraps every page's entire content,
+   and the keyframes previously also faded 0.7 -> 1 opacity. With
+   `animation-fill-mode: none` the from-state applies for as long as the
+   animation is in its active phase — and a browser that never advances
+   it (a tab backgrounded across the navigation throttles animation
+   frames to zero) leaves the whole page parked at 70% opacity, washing
+   out every colour on it. A stalled translate is a 12px offset; a
+   stalled fade is an unreadable page. */
 @keyframes page-in {
   from {
-    opacity: 0.7;
     transform: translateY(12px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }

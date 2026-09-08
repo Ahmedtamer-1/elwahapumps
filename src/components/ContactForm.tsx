@@ -27,6 +27,14 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
   });
 
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  /**
+   * The specific complaint from the server, e.g. "Phone is required".
+   * The route already returns one per failed field; this used to be
+   * discarded in favour of a generic banner, leaving someone with an
+   * invalid phone number no way to find out which field was wrong.
+   */
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
+  const bannerRef = React.useRef<HTMLDivElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -36,6 +44,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
+    setErrorDetail(null);
 
     try {
       const res = await fetch("/api/leads", {
@@ -43,15 +52,30 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      if (!res.ok) throw new Error(`Request failed with status ${res.status}`);
+
+      if (!res.ok) {
+        const detail = await res
+          .json()
+          .then((b: { error?: string }) => b?.error ?? null)
+          .catch(() => null);
+        setErrorDetail(detail);
+        setStatus("error");
+        return;
+      }
 
       setStatus("success");
       setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
-    } catch (error) {
-      console.error(error);
+    } catch {
       setStatus("error");
     }
   };
+
+  // Move focus to the banner once a submission resolves, so a screen
+  // reader user is taken to the outcome instead of being left on a
+  // button whose label did not change.
+  React.useEffect(() => {
+    if (status === "success" || status === "error") bannerRef.current?.focus();
+  }, [status]);
 
   return (
     <div className="w-full bg-white p-6 md:p-8 rounded-2xl border border-neutral-200 shadow-sm">
@@ -59,22 +83,35 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
         {dict.contactPage.formTitle}
       </h2>
 
-      {status === "success" && (
-        <div className="mb-6 p-4 bg-emerald-50 text-emerald-700 text-sm font-semibold rounded-xl border border-emerald-100">
-          {dict.contactPage.success}
-        </div>
-      )}
+      {/* One live region that is always in the DOM, rather than two that
+          mount on demand — a region inserted at the same moment its text
+          appears is inconsistently announced. tabIndex={-1} makes it a
+          focus target without putting it in the tab order. */}
+      <div
+        ref={bannerRef}
+        tabIndex={-1}
+        role="status"
+        aria-live="polite"
+        className="outline-none"
+      >
+        {status === "success" && (
+          <div className="mb-6 p-4 bg-emerald-50 text-emerald-800 text-sm font-semibold rounded-xl border border-emerald-100">
+            {dict.contactPage.success}
+          </div>
+        )}
 
-      {status === "error" && (
-        <div className="mb-6 p-4 bg-red-50 text-red-700 text-sm font-semibold rounded-xl border border-red-100">
-          {dict.contactPage.error}
-        </div>
-      )}
+        {status === "error" && (
+          <div className="mb-6 p-4 bg-red-50 text-red-800 text-sm font-semibold rounded-xl border border-red-100">
+            {dict.contactPage.error}
+            {errorDetail && <span className="block mt-1 font-normal">{errorDetail}</span>}
+          </div>
+        )}
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.name} <span className="text-red-500">*</span>
+          <label htmlFor="name" className="block text-xs font-bold text-stone uppercase mb-1">
+            {dict.contactPage.name} <span className="text-red-700" aria-hidden="true">*</span><span className="sr-only">{lang === "ar" ? "(مطلوب)" : "(required)"}</span>
           </label>
           <input
             type="text"
@@ -90,8 +127,8 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="phone" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-              {dict.contactPage.phone} <span className="text-red-500">*</span>
+            <label htmlFor="phone" className="block text-xs font-bold text-stone uppercase mb-1">
+              {dict.contactPage.phone} <span className="text-red-700" aria-hidden="true">*</span><span className="sr-only">{lang === "ar" ? "(مطلوب)" : "(required)"}</span>
             </label>
             <input
               type="tel"
@@ -106,7 +143,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
+            <label htmlFor="email" className="block text-xs font-bold text-stone uppercase mb-1">
               {dict.contactPage.email}
             </label>
             <input
@@ -122,8 +159,8 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
         </div>
 
         <div>
-          <label htmlFor="subject" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.subject} <span className="text-red-500">*</span>
+          <label htmlFor="subject" className="block text-xs font-bold text-stone uppercase mb-1">
+            {dict.contactPage.subject} <span className="text-red-700" aria-hidden="true">*</span><span className="sr-only">{lang === "ar" ? "(مطلوب)" : "(required)"}</span>
           </label>
           <input
             type="text"
@@ -138,8 +175,8 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
         </div>
 
         <div>
-          <label htmlFor="message" className="block text-xs font-bold text-neutral-500 uppercase mb-1">
-            {dict.contactPage.message} <span className="text-red-500">*</span>
+          <label htmlFor="message" className="block text-xs font-bold text-stone uppercase mb-1">
+            {dict.contactPage.message} <span className="text-red-700" aria-hidden="true">*</span><span className="sr-only">{lang === "ar" ? "(مطلوب)" : "(required)"}</span>
           </label>
           <textarea
             id="message"
@@ -158,7 +195,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
           disabled={status === "sending"}
           className={`w-full py-3 px-6 rounded-lg text-white font-bold text-sm shadow-md transition-all duration-300 ${
             status === "sending"
-              ? "bg-neutral-400 cursor-not-allowed shadow-none"
+              ? "bg-stone cursor-not-allowed shadow-none"
               : "bg-emerald-600 hover:bg-emerald-700 hover:shadow-emerald-500/20 active:scale-98"
           }`}
         >

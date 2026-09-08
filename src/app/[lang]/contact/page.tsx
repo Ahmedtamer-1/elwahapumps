@@ -32,15 +32,15 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
   return (
     <div className="bg-white min-h-screen pb-20">
       {/* Page Header */}
-      <section className="bg-black text-white py-16 md:py-20 border-b border-neutral-900">
+      <section className="bg-pine text-bone py-16 md:py-20 border-b border-field">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-emerald-500 font-extrabold text-xs uppercase tracking-widest block mb-2">
+          <span className="spec-label text-brass block mb-2">
             {dict.nav.contact}
           </span>
           <h1 className="text-3xl md:text-5xl font-black mb-4">
             {dict.contactPage.title}
           </h1>
-          <p className="text-neutral-400 text-sm max-w-xl mx-auto leading-relaxed">
+          <p className="text-bone/75 text-sm max-w-xl mx-auto leading-relaxed">
             {dict.contactPage.subtitle}
           </p>
         </div>
@@ -64,7 +64,7 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="block text-xs font-bold text-neutral-400 uppercase mb-1">
+                    <span className="block text-xs font-bold text-stone uppercase mb-1">
                       {dict.contactPage.office}
                     </span>
                     <span className="text-neutral-700 text-xs font-semibold leading-relaxed">
@@ -79,7 +79,7 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="block text-xs font-bold text-neutral-400 uppercase mb-1">
+                    <span className="block text-xs font-bold text-stone uppercase mb-1">
                       {dict.common.phoneLabel}
                     </span>
                     <div className="flex flex-col gap-1 text-neutral-700 text-xs font-semibold">
@@ -99,7 +99,7 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="block text-xs font-bold text-neutral-400 uppercase mb-1">
+                    <span className="block text-xs font-bold text-stone uppercase mb-1">
                       {dict.common.emailLabel}
                     </span>
                     <a href="mailto:info@elwahapumps.com" className="text-neutral-700 text-xs font-semibold hover:text-emerald-600 transition-colors">
@@ -114,7 +114,7 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="block text-xs font-bold text-neutral-400 uppercase mb-1">
+                    <span className="block text-xs font-bold text-stone uppercase mb-1">
                       {dict.common.workHoursLabel}
                     </span>
                     <span className="text-neutral-700 text-xs font-semibold">
@@ -126,7 +126,7 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
 
               {/* Social links */}
               <div className="border-t border-neutral-100 pt-6">
-                <span className="block text-xs font-bold text-neutral-400 uppercase mb-3">
+                <span className="block text-xs font-bold text-stone uppercase mb-3">
                   {dict.common.socialMedia}
                 </span>
                 <div className="flex gap-3">
@@ -134,9 +134,10 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
                     href="https://facebook.com/elwahapumps"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={lang === "ar" ? "الواحة على فيسبوك" : "El Waha on Facebook"}
                     className="w-10 h-10 flex items-center justify-center rounded-xl bg-neutral-50 text-neutral-500 hover:bg-emerald-600 hover:text-white border border-neutral-100 transition-all duration-200"
                   >
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                     </svg>
                   </a>
@@ -144,9 +145,10 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
                     href="https://youtube.com/@elwahapumps"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={lang === "ar" ? "الواحة على يوتيوب" : "El Waha on YouTube"}
                     className="w-10 h-10 flex items-center justify-center rounded-xl bg-neutral-50 text-neutral-500 hover:bg-red-600 hover:text-white border border-neutral-100 transition-all duration-200"
                   >
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 11.54a29 29 0 0 0 .46 5.12 2.78 2.78 0 0 0 1.95 1.96C5.12 19 12 19 12 19s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96 29 29 0 0 0 .46-5.12 29 29 0 0 0-.46-5.12z" />
                       <polygon points="9.75 15.02 15.5 11.54 9.75 8.07 9.75 15.02" />
                     </svg>
