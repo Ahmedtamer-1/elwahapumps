@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { fill } from "@/lib/format";
 import {
   FOUNDED,
   AGENCY_COUNT,
@@ -178,7 +179,7 @@ export default function Hero({ lang, dict }: HeroProps) {
               of contact, a service team. §07 — a number or a name, not
               "highest level". */}
           <p className="mt-5 text-body text-bone/80 max-w-[52ch]">
-            {dict.hero.subtitle}
+            {fill(dict.hero.subtitle, { count: AGENCY_COUNT })}
           </p>
 
           <div className="flex flex-wrap gap-3 mt-9">

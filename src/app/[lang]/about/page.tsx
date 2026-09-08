@@ -1,10 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import { getDictionary, hasLocale, Locale } from "../dictionaries";
+import { fill } from "@/lib/format";
 import PageHeader from "@/components/PageHeader";
 import { localizedAlternates } from "@/lib/seo";
 import {
   AGENCIES,
+  AGENCY_COUNT,
   FOUNDED,
   PROJECTS_DELIVERED,
   TEAM_SIZE,
@@ -76,7 +78,7 @@ export default async function AboutPage({ params }: PageProps) {
           <div className="lg:col-span-7 space-y-5 text-ink text-body">
             <p className="text-pretty">{dict.aboutPage.p1}</p>
             <p className="text-pretty">{dict.aboutPage.p2}</p>
-            <p className="text-pretty">{dict.aboutPage.p3}</p>
+            <p className="text-pretty">{fill(dict.aboutPage.p3, { count: AGENCY_COUNT })}</p>
           </div>
 
           {/* The people behind the paragraphs, so the headcount in the text

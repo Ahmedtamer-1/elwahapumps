@@ -5,6 +5,7 @@ import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
 import { AGENCY_COUNT, PHONE_SALES, WHATSAPP_SALES } from "@/lib/company";
 import { Phone, MessageCircle, Mail, PackageCheck } from "lucide-react";
+import { fill } from "@/lib/format";
 import PageHeader from "@/components/PageHeader";
 import { localizedAlternates } from "@/lib/seo";
 
@@ -192,7 +193,7 @@ export default async function SupportPage({ params }: PageProps) {
           <div>
             <h2 className="text-h3 md:text-h2 font-extrabold text-bone mb-3">{t.warrantyTitle}</h2>
             <p className="text-bone/75 text-small leading-relaxed max-w-3xl">
-              {t.warrantyDesc}
+              {fill(t.warrantyDesc, { count: AGENCY_COUNT })}
             </p>
             {/* Brass, not emerald-500: the ramp in globals.css maps
                 emerald-500 to Pine, so this line was pine-on-pine — a 1.0
