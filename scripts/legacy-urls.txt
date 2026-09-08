@@ -28,7 +28,7 @@
 /pmc/	/agents/pmc
 /alka-thurst-bearing/	/agents/alka
 /astral-pipes/	/agents/astral-pipes
-/jee-pumps/	/agents/jee-pumps
+/jee-pumps/	/agents
 
 # --- Latin-slug core pages ------------------------------------------
 /contact-us/	/contact

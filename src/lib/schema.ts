@@ -23,9 +23,13 @@ import type { Locale } from "@/app/[lang]/dictionaries";
  * live site.
  *
  * Fields left out rather than guessed (see PLAN.md open questions):
- * ISO 9001 certificate number/body/scope, and any social profile other
- * than the two already linked from the footer. sameAs pointing at an
- * unverified or dead page is worse than omitting it.
+ * ISO 9001 certificate number/body/scope, which is still the one company
+ * fact nobody has supplied, and `openingHours` — the company has confirmed
+ * the 24/7 line is a genuine emergency line but has not yet given the
+ * office hours, and publishing "always open" as opening times is what
+ * sends someone to a closed gate. The four social profiles below are all
+ * confirmed live (content brief, 1.4); an unverified sameAs is worse than
+ * an absent one.
  */
 
 /** One Organization + LocalBusiness node, referenced by @id from other schema. */
@@ -75,7 +79,7 @@ export function organizationSchema(lang: Locale) {
       },
     ],
     areaServed: { "@type": "Country", name: "EG" },
-    sameAs: [SOCIAL.facebook, SOCIAL.youtube],
+    sameAs: [SOCIAL.facebook, SOCIAL.youtube, SOCIAL.linkedin, SOCIAL.instagram],
     brand: AGENCIES.map((a) => ({ "@type": "Brand", name: a.name })),
   };
 }

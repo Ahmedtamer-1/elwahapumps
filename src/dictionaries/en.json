@@ -29,7 +29,7 @@
     "addressValue": "CPC Industrial Complex - 6th Industrial Zone - 6th of October City - Giza - Egypt",
     "phoneLabel": "Phone",
     "emailLabel": "Email",
-    "workHoursLabel": "Working Hours",
+    "workHoursLabel": "Emergency Support",
     "workHoursValue": "24 hours / 7 days a week",
     "socialMedia": "Follow Us"
   },
@@ -225,11 +225,6 @@
       "name": "Astral Pipes",
       "title": "uPVC Column & Well Casing Pipes",
       "desc": "A global Indian leader in the production of high-tensile uPVC column pipes and casing pipes for water wells. Known for high load capacity, easy installation, and leak-proof joints."
-    },
-    "jee-pumps": {
-      "name": "JEE Pumps",
-      "title": "Industrial & Submersible Pumps",
-      "desc": "One of the largest manufacturers of submersible and centrifugal pumps of various capacities for industrial, agricultural, and municipal applications, characterized by superior hydraulic efficiency."
     },
     "pmc": {
       "name": "PMC",

@@ -15,7 +15,7 @@ interface PageProps {
 // (products/page.tsx) without a matching entry here, so those three tiles
 // 404'd. Added with real agentsData entries above rather than dropping the
 // tiles, since the brands are genuinely represented (see catalogues.ts).
-export const agentSlugs = ["astral-pipes", "jee-pumps", "pmc", "kurlar", "alka", "novo", "tormac", "untel"];
+export const agentSlugs = ["astral-pipes", "pmc", "kurlar", "alka", "novo", "tormac", "untel"];
 
 export async function generateMetadata({ params }: PageProps) {
   const { lang, slug } = await params;
@@ -69,17 +69,6 @@ export default async function AgentDetailPage({ params }: PageProps) {
           "Threaded uPVC column pipes for deep water well pumps",
           "Well casing pipes to safeguard wells against collapse",
           "High-pressure plastic solvents, fittings, and connectors",
-        ],
-    "jee-pumps": lang === "ar"
-      ? [
-          "طلمبات آبار غاطسة متعددة المراحل بقدرات تصل إلى 150 حصان",
-          "طلمبات طرد مركزي أفقية لنقل المياه والري بمعدلات تدفق ضخمة",
-          "طلمبات طرد مركزي رأسية لمحطات التحلية والتغذية الصناعية",
-        ]
-      : [
-          "Multistage submersible well pumps with capacities up to 150 HP",
-          "Horizontal centrifugal pumps for massive water transfer and irrigation",
-          "Vertical centrifugal pumps for desalination and industrial booster systems",
         ],
     "pmc": lang === "ar"
       ? [

@@ -1108,19 +1108,43 @@ Verified against the working tree on 7 September 2026. Everything material in th
 
 ## Open questions
 
-Answer these before the stages that depend on them; several block Stage 1.
+**Answered 8 September 2026** — see `docs/content-brief.md` for the full replies.
+Nine of the eleven are settled and applied. Each is marked below; the two that
+remain are 5 (ISO 9001) and part of 6 (office hours).
 
 1. **Which mailbox receives enquiries?** The repository uses `info@elwahapumps.com`; the live site publishes `info@lwahapumps.com`. A code comment calls the live one a typo, but if that is the mailbox actually being monitored, notifications sent to the other address vanish. Blocks S0-T11.
+
+   **ANSWERED: `info@elwahapumps.com`** — the address already in the code. The live site's `info@lwahapumps.com` is the typo. No change needed.
 2. **Does JEE Pumps stay?** It has a brand page but is not in the agency list, has no product and no catalogue. Keep or remove. Blocks S0-T02.
+
+   **ANSWERED: remove.** Done — route, slug, tile and both dictionary entries deleted, and `/jee-pumps/` now redirects to the agents index rather than to a page that no longer exists.
 3. **Geo coordinates for the head office.** The pair in the plan came from the Maps embed and should be confirmed against the actual plot. Blocks S1-T09.
+
+   **ANSWERED: correct as-is.** 29.977260, 30.730303 confirmed.
 4. **Do the Facebook and YouTube pages exist and are they current?** A `sameAs` pointing at a dead page is worse than omitting it. Blocks S1-T09.
+
+   **ANSWERED: both live, plus two more.** LinkedIn and Instagram were not listed anywhere before. All four are now in `SOCIAL` and in the Organization `sameAs`, and the footer row is generated from the same constant so the two cannot diverge.
 5. **ISO 9001 certificate number, issuing body and scope.** Asserted five times on the site with no supporting detail. Blocks S1-T09 and S8-T07.
+
+   **STILL OPEN.** The one Part 1 item with no answer. It is asserted in five places on the site and still has nothing behind it, so it stays out of the structured data.
 6. **Real office hours.** "24 hours / 7 days" is currently shown as opening hours; presumably that is the emergency callout line and the office keeps normal hours. Blocks S1-T09.
+
+   **PARTLY ANSWERED: the 24/7 line is genuine, office hours not given.** The value was true; the *label* was wrong. It now reads Emergency Support / الدعم الطارئ rather than Working Hours, so nothing false is published — but `openingHours` still cannot go into the structured data until the actual office hours arrive.
 7. **Do the twelve `/portfolio/nsp-*` models map to current products?** Needed to redirect them somewhere relevant rather than to a category index. Blocks S2-T04.
+
+   **ANSWERED, though the answer addressed a different question.** The reply was that the old site is being replaced entirely. True, and precisely why this matters: taking it down does not remove those twelve URLs from Google or from links elsewhere, so they keep bringing visitors. They already redirect to the matching category, so nobody hits an error. Whether any maps to a *specific* product is still open, and is an improvement rather than a fix.
 8. **Should Tormac submersibles be seeded?** They exist only in an ad-hoc script, not the seed, so they are absent from the site — yet the Tormac catalogues are the largest on the site. Affects S0-T09 and S1-T07.
+
+   **ANSWERED: yes, current stock. Done.** `prisma/add-tormac.ts` already held complete bilingual copy, spec tables and the full diameter x power matrices — 105 variants across the two products. Nothing was missing but the wiring: nothing ever called it. `seed.ts` now does, so `prisma db seed` produces a complete catalogue. Prices are blank and show as "Price on request" pending the Tormac price sheet.
 9. **Licensing for the pump-curve dataset.** It is transcribed from Kurlar catalogues. Blocks S3-T12.
+
+   **ANSWERED: yes, Kurlar are content for it to be published.** Unblocks S3-T12.
 10. **Analytics preference.** Needed for S7-T13.
+
+   **ANSWERED: a privacy-preserving option**, so no cookie banner. Which one is still open — Umami self-hosts free on the same VPS; Plausible and Fathom are hosted at roughly $9-14/month. Feeds S7-T13.
 11. **Notification transport.** SMTP alone, or SMTP plus WhatsApp Cloud API or Telegram. Blocks S0-T11.
+
+   **ANSWERED: email and WhatsApp**, to `+201066685532`. Email already works. WhatsApp needs a WhatsApp Business account plus a phone number ID and access token from Meta before it can be switched on.
 
 ---
 

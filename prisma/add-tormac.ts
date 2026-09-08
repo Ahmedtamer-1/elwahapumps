@@ -635,7 +635,16 @@ async function upsertProduct(spec: ProductSpec) {
   );
 }
 
-async function main() {
+/**
+ * Exported so prisma/seed.ts can run it as part of `prisma db seed`.
+ *
+ * src/data/catalogues.ts maps the site's two largest catalogues to these
+ * two slugs, so without them those catalogues point at products that do
+ * not exist. Both are current stock (content brief, 1.9), which means a
+ * fresh install has to end up with them rather than depending on someone
+ * remembering to run this file by hand.
+ */
+export async function addTormac() {
   console.log("Adding the Tormac catalogue entries\n");
   await upsertProduct(buildPump());
   await upsertProduct(buildMotor());
@@ -648,10 +657,15 @@ async function main() {
   );
 }
 
-main()
-  .then(() => prisma.$disconnect())
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+// Still runnable on its own: `npx tsx prisma/add-tormac.ts`. Guarded so
+// importing it from the seed does not fire it a second time.
+const runDirectly = process.argv[1]?.replace(/\\/g, "/").endsWith("prisma/add-tormac.ts");
+if (runDirectly) {
+  addTormac()
+    .then(() => prisma.$disconnect())
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+      process.exit(1);
+    });
+}

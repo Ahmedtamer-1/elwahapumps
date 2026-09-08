@@ -1,5 +1,10 @@
 # Content brief — what the site needs from you
 
+> **Answered 8 September 2026 — Part 1 complete except office hours, Part 2 partially.**
+> Answers are recorded inline below, marked **ANSWERED**. What is still
+> outstanding is listed in [Still needed](#still-needed) at the foot of Part 2.
+> The unanswered parts (3 to 8) are unchanged and still open.
+
 This is the one document that unblocks the rest of the work. Everything asked
 for here is something only El Waha can answer: a fact about the business, a
 decision about how it trades, or a piece of copy in your own voice. Nothing on
@@ -28,20 +33,21 @@ The old WordPress site publishes **`info@lwahapumps.com`** — no `e` after the
 the live one is the mailbox somebody actually watches, every notification the
 new site sends will vanish silently.
 
-- [ ] The correct address is: ________________
-- [ ] Is the other address a real mailbox that also receives mail? Yes / No
+**ANSWERED — `info@elwahapumps.com`.** The address already in the code is the
+right one; the one on the old WordPress site is the typo. Nothing to change.
+*(Not asked again: whether `info@lwahapumps.com` also receives mail. If it is a
+live mailbox it is worth keeping an eye on until the old site is gone.)*
 
 ### 1.2 How should a new enquiry reach you?
 
 Right now a lead is emailed. Email is easy to miss on a site visit.
 
-- [ ] Email only
-- [ ] Email **and** WhatsApp
-- [ ] Email **and** Telegram
-- [ ] Something else: ________________
+**ANSWERED — email and WhatsApp, to `01066685532`** (`+201066685532`, the sales
+line already on the site).
 
-If WhatsApp: which number should receive the alert, and is it a WhatsApp
-**Business** account? The API needs one.
+Still needed to switch WhatsApp on: it requires a **WhatsApp Business** account
+and API credentials — a phone number ID and an access token from Meta. Email
+notification already works; WhatsApp is built but inert until those are set.
 
 ### 1.3 Does JEE Pumps stay?
 
@@ -49,17 +55,25 @@ It has a brand page on the site, but it is not in your list of twelve agencies,
 has no products and no catalogue. Either it is a real agency that is missing
 everywhere else, or the page is left over and should go.
 
-- [ ] Keep it — it is a real agency
-- [ ] Remove the page
+**ANSWERED — remove it.** Done: the brand page, its route and its dictionary
+entries are gone, and `/agents/jee-pumps` now redirects to the agents index so
+any existing link still lands somewhere sensible.
 
 ### 1.4 Are the Facebook and YouTube pages live and current?
 
 The site tells search engines these are your official profiles. Pointing at a
 dead or abandoned page is worse than not listing one at all.
 
-- [ ] Facebook `facebook.com/elwahapumps` — live and current? Yes / No / different URL: ______
-- [ ] YouTube `youtube.com/@elwahapumps` — live and current? Yes / No / different URL: ______
-- [ ] Any others we should list (LinkedIn, Instagram, TikTok)? ________________
+**ANSWERED — all four confirmed.** Facebook and YouTube as listed, plus two we
+did not have:
+
+- Facebook — `https://facebook.com/elwahapumps`
+- YouTube — `https://youtube.com/@elwahapumps`
+- LinkedIn — `https://www.linkedin.com/company/el-waha-for-wells-services-and-pumps/`
+- Instagram — `https://www.instagram.com/elwahapumps1/`
+
+All four are now published in the structured data, so search engines and AI
+assistants can tie the profiles to the company.
 
 ### 1.5 What are the real office hours?
 
@@ -68,8 +82,15 @@ That is almost certainly the emergency callout line rather than the office.
 Search engines publish this as your opening times, so a customer may turn up
 on a Friday expecting a counter to be open.
 
+**PARTLY ANSWERED — yes, the 24/7 line is genuine.**
+
+**Still needed: the office / showroom hours.** These are two different facts and
+the site currently publishes the 24/7 one as its *opening hours*, which is what
+sends someone to a closed gate on a Friday. The 24/7 line is now labelled as
+emergency support rather than opening times, but the opening times themselves
+cannot be published until you say what they are.
+
 - [ ] Office / showroom hours: ________________
-- [ ] Is there a genuine 24/7 emergency line? Yes / No — if yes, which number? ______
 
 ### 1.6 ISO 9001 — certificate number, issuer and scope
 
@@ -91,7 +112,7 @@ phone will navigate to.
 Current pin: **29.977260, 30.730303** (CPC Industrial Complex, 6th Industrial
 Zone, 6th of October City).
 
-- [ ] Correct / should be: ________________
+**ANSWERED — correct as-is.** Pin confirmed at 29.977260, 30.730303. No change.
 
 ### 1.8 Do the twelve old `NSP` model pages map to current products?
 
@@ -102,8 +123,23 @@ better than an error but loses the visitor's intent.
 The models: `NSP-6010`, `6017`, `6030`, `6046`, `6060`, `7077`, `7095`, `7096`,
 `8112-series`, `8125`, `8160`, `10210`.
 
-- [ ] These correspond to today's ________________ range
-- [ ] Or: they are discontinued, send them to the category page (current behaviour)
+**ANSWERED, though the question may have landed differently than intended.**
+
+Your answer: the old site is going away entirely — this build replaces it.
+
+That is right, and it is exactly why this question matters rather than the
+reverse. Taking the old site down does not remove its pages from Google, and it
+does not stop people clicking links to them that already exist elsewhere. Those
+twelve addresses will keep receiving visitors for months. What we control is
+where each one lands.
+
+They already redirect to the matching category page, so nobody hits an error.
+The only thing still open is whether any of the twelve maps to a *specific*
+product today — a visitor searching for "NSP-8125" would rather land on that
+pump than on a category list.
+
+- [ ] Leave as-is (safe, and what happens today), **or**
+- [ ] `NSP-…` corresponds to today's ________________ range
 
 ### 1.9 Should Tormac submersibles be on the site?
 
@@ -111,8 +147,18 @@ Tormac has the largest catalogues on the site, but its submersible pumps exist
 only in a side script and never made it into the catalogue, so they do not
 appear anywhere a customer can find them.
 
-- [ ] Add them — they are current stock
-- [ ] Leave them off — ________________ (why, so we do not re-add them later)
+**ANSWERED — add them, current stock. Done, and no copy needed after all.**
+`prisma/add-tormac.ts` turned out to carry complete bilingual descriptions,
+specification tables and the full diameter x power matrices — 65 pump variants
+and 40 motor variants. Nothing was missing but the wiring: nothing ever ran it.
+
+It is now called from the seed, so `prisma db seed` produces a complete
+catalogue rather than leaving the site's two largest PDFs pointing at products
+that did not exist.
+
+Prices are blank on all 105 variants and show as "Price on request" until
+someone enters them in `/admin/products`. That is the only outstanding piece,
+and it is a job for whoever holds the Tormac price sheet.
 
 ### 1.10 Can the pump-curve data be published?
 
@@ -121,18 +167,18 @@ NPSH — transcribed from Kurlar's printed catalogues. Published openly it would
 be genuinely useful and would attract exactly the engineers you want. But it is
 Kurlar's data, and publishing it is a question for them, not for us.
 
-- [ ] Yes — Kurlar are content for it to be published
-- [ ] No / not yet
-- [ ] Ask Kurlar — who should we draft the request to?
+**ANSWERED — yes, Kurlar are content for it to be published.** This unblocks
+publishing the 27-family / 926-variant curve dataset as citable data (S3-T12).
 
 ### 1.11 Website analytics
 
-- [ ] None
-- [ ] Google Analytics
-- [ ] A privacy-preserving option (Plausible, Fathom, Umami) — these avoid a
-      cookie banner entirely, which is one less thing between a visitor and a
-      quote request
-- [ ] Something you already use: ________________
+**ANSWERED — a privacy-preserving option**, so no cookie banner.
+
+One choice left, and it is only about cost: **Umami** can be self-hosted on the
+same VPS for nothing; **Plausible** and **Fathom** are hosted, around $9–14 a
+month, and nothing to maintain.
+
+- [ ] Umami (self-hosted, free) / Plausible / Fathom
 
 ---
 
@@ -143,13 +189,26 @@ record that search engines and AI assistants read.
 
 | Item | Needed for | Your answer |
 |---|---|---|
-| Full registered legal name (Arabic) | Legal pages, structured data | |
-| Full registered legal name (English) | Same | |
-| Entity form (LLC, SAE, sole trader…) | Footer legal line | |
-| Commercial register number | Footer legal line, terms | |
-| Tax card number | Same | |
-| VAT registration number, if separate | Same | |
-| Registered address, if different from the office | Legal pages | |
+| Full registered legal name (Arabic) | Legal pages, structured data | **الواحة لخدمات الآبار والطلمبات** — see the note below |
+| Full registered legal name (English) | Same | **El Waha for Wells and Pumps** |
+| Entity form (LLC, SAE, sole trader…) | Footer legal line | **SAE** (joint-stock) |
+| Commercial register number | Footer legal line, terms | *still needed* |
+| Tax card number | Same | *still needed* |
+| VAT registration number, if separate | Same | *still needed* |
+| Registered address, if different from the office | Legal pages | Same as the office — CPC Industrial Complex, 6th Industrial Zone, 6th of October City |
+
+> **One thing to confirm on the Arabic name.** You wrote it as
+> *الواحه لخدمات الابار والطلمبات*. It has been recorded as
+> **الواحة لخدمات الآبار والطلمبات** — that is, with *ة* rather than *ه* at the
+> end of الواحة, and *الآبار* rather than *الابار*. Those are the standard
+> spellings and almost certainly just quick typing, but this is the registered
+> legal name going onto legal pages and into structured data, so it is worth one
+> look against the commercial register before it is set.
+>
+> The English name also changed: the site previously said *El Waha Pumps & Wells
+> Services*, and now uses **El Waha for Wells and Pumps** as you gave it. The
+> short trading name *El Waha Pumps* is unchanged and still used for page titles
+> and link previews, where the full legal name is too long.
 
 **Warranty terms.** The site says "factory warranty" throughout. To publish a
 warranty page we need the actual terms:
@@ -164,6 +223,36 @@ warranty page we need the actual terms:
 - [ ] Delivery coverage and typical lead time: ________________
 - [ ] Are returns accepted? On what terms? ________________
 - [ ] Payment terms offered to trade customers: ________________
+
+---
+
+## Still needed
+
+Everything from Part 1 and Part 2 that is not yet settled, smallest first.
+
+1. **Office / showroom hours** (1.5). One line. Until this arrives the site
+   cannot publish opening hours at all — the 24/7 line is now correctly labelled
+   as emergency support, so nothing false is being shown, but nothing useful is
+   either.
+2. **Which analytics tool** (1.11). Umami self-hosted and free, or Plausible /
+   Fathom hosted at roughly $9–14 a month.
+3. **Whether any `NSP-…` model maps to a current product** (1.8). Safe as-is;
+   this only improves where those visitors land.
+4. **Commercial register, tax card and VAT numbers** (Part 2). These are what the
+   legal and terms pages are waiting on.
+5. **Confirm the Arabic legal name spelling** (Part 2, note above).
+6. **WhatsApp Business API credentials** (1.2) — phone number ID and access
+   token. The notification path is built and will start working the moment they
+   are set.
+7. **Tormac prices** (1.9). The products are live with all 105 variants, but
+   every price is blank and shows as "Price on request" until the Tormac price
+   sheet is entered in `/admin/products`.
+8. **ISO 9001 certificate details** (1.6) — still the one Part 1 item with no
+   answer at all, and it is asserted in five places on the site.
+
+Then Parts 3 to 8, which are the larger content pieces: the twelve
+manufacturers, project proof, the questions your sales team gets asked, event
+dates, Arabic terminology, and how you want the quote flow to work.
 
 ---
 

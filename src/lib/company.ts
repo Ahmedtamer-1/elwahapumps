@@ -58,8 +58,21 @@ export const AGENCIES = [
  */
 export const NAME_EN = "El Waha Pumps";
 export const NAME_AR = "الواحة للطلمبات";
-export const LEGAL_NAME_EN = "El Waha Pumps & Wells Services";
-export const LEGAL_NAME_AR = "شركة الواحة لخدمات الآبار والطلمبات";
+
+/**
+ * The registered names, as given by the company (content brief, Part 2).
+ *
+ * The Arabic was supplied without full orthography — "الواحه ... الابار" — and
+ * is recorded here in the standard spelling. Flagged back for confirmation
+ * against the commercial register, since this is the legal name and it feeds
+ * the legal pages and the structured data.
+ */
+export const LEGAL_NAME_EN = "El Waha for Wells and Pumps";
+export const LEGAL_NAME_AR = "الواحة لخدمات الآبار والطلمبات";
+
+/** Joint-stock company (شركة مساهمة مصرية). For the footer legal line. */
+export const ENTITY_FORM_EN = "SAE";
+export const ENTITY_FORM_AR = "ش.م.م";
 
 /**
  * Sales/WhatsApp line, then the second support line.
@@ -97,7 +110,18 @@ export const ADDRESS = {
 export const GEO = { latitude: 29.977259695663737, longitude: 30.730303102377227 };
 
 /** Already linked from the footer; reused here for JSON-LD sameAs. */
+/**
+ * All four confirmed live by the company (content brief, 1.4). LinkedIn and
+ * Instagram were not previously listed anywhere on the site.
+ *
+ * These become `sameAs` in the Organization schema, which is how a search
+ * engine or an assistant ties the profiles to this company rather than
+ * guessing. A dead URL here is worse than an absent one, so nothing goes in
+ * that has not been confirmed.
+ */
 export const SOCIAL = {
   facebook: "https://facebook.com/elwahapumps",
   youtube: "https://youtube.com/@elwahapumps",
+  linkedin: "https://www.linkedin.com/company/el-waha-for-wells-services-and-pumps/",
+  instagram: "https://www.instagram.com/elwahapumps1/",
 };

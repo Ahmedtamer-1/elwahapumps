@@ -8,6 +8,9 @@ export default defineConfig({
   },
   migrations: {
     path: "prisma/migrations",
+    // seed.ts now calls add-tormac.ts itself. Chaining with `&&` here does
+    // not work — Prisma does not run this through a shell, so the second
+    // command was silently skipped.
     seed: "tsx prisma/seed.ts",
   },
 });

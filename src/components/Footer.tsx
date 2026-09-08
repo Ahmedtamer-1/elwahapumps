@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import Logo from "@/components/Logo";
-import { AGENCY_COUNT, FOUNDED, PHONE_SALES, PHONE_SUPPORT } from "@/lib/company";
+import { AGENCY_COUNT, FOUNDED, PHONE_SALES, PHONE_SUPPORT, SOCIAL } from "@/lib/company";
 import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface FooterProps {
@@ -16,6 +16,41 @@ interface FooterProps {
  * 13.1:1 AAA. Brass appears only as the column rules and the phone
  * numbers, keeping it well under the 10% ceiling.
  */
+/** The four confirmed profiles (content brief, 1.4), with their glyphs. */
+const SOCIAL_LINKS = [
+  {
+    label: "Facebook",
+    href: SOCIAL.facebook,
+    paths: ["M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"],
+  },
+  {
+    label: "YouTube",
+    href: SOCIAL.youtube,
+    paths: [
+      "M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 11.54a29 29 0 0 0 .46 5.12 2.78 2.78 0 0 0 1.95 1.96C5.12 19 12 19 12 19s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96 29 29 0 0 0 .46-5.12 29 29 0 0 0-.46-5.12z",
+      "M9.75 15.02 15.5 11.54 9.75 8.07z",
+    ],
+  },
+  {
+    label: "LinkedIn",
+    href: SOCIAL.linkedin,
+    paths: [
+      "M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z",
+      "M6 9H2v12h4z",
+      "M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+    ],
+  },
+  {
+    label: "Instagram",
+    href: SOCIAL.instagram,
+    paths: [
+      "M16 2H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h8a6 6 0 0 0 6-6V8a6 6 0 0 0-6-6z",
+      "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",
+      "M17.5 6.5h.01",
+    ],
+  },
+];
+
 export default function Footer({ lang, dict }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const isAr = lang === "ar";
@@ -58,48 +93,34 @@ export default function Footer({ lang, dict }: FooterProps) {
                 : `Deep-well pumping equipment supplied, installed and maintained across Egypt since ${FOUNDED}. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, ISO 9001 certified — and the same team services it afterwards.`}
             </p>
 
+            {/* Driven from company.ts so the footer and the structured
+                data's sameAs cannot list different profiles. */}
             <div className="flex gap-3">
-              <a
-                href="https://facebook.com/elwahapumps"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-bone/20 text-bone/70 hover:border-brass hover:text-brass transition-colors"
-                aria-label="Facebook"
-              >
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 flex items-center justify-center border border-bone/20 text-bone/70 hover:border-brass hover:text-brass transition-colors"
+                  aria-label={social.label}
                 >
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                </svg>
-              </a>
-              <a
-                href="https://youtube.com/@elwahapumps"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 flex items-center justify-center border border-bone/20 text-bone/70 hover:border-brass hover:text-brass transition-colors"
-                aria-label="YouTube"
-              >
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 11.54a29 29 0 0 0 .46 5.12 2.78 2.78 0 0 0 1.95 1.96C5.12 19 12 19 12 19s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96 29 29 0 0 0 .46-5.12 29 29 0 0 0-.46-5.12z" />
-                  <polygon points="9.75 15.02 15.5 11.54 9.75 8.07 9.75 15.02" />
-                </svg>
-              </a>
+                  <svg
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    {social.paths.map((d) => (
+                      <path key={d} d={d} />
+                    ))}
+                  </svg>
+                </a>
+              ))}
             </div>
           </div>
 

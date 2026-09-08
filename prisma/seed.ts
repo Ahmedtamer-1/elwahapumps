@@ -4,6 +4,7 @@ import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import bcrypt from "bcryptjs";
 
 import { products } from "../src/data/products";
+import { addTormac } from "./add-tormac";
 import en from "../src/dictionaries/en.json";
 import ar from "../src/dictionaries/ar.json";
 
@@ -135,6 +136,12 @@ async function main() {
     `✔ ${products.length} products ready` +
       (OVERWRITE_PRODUCTS ? " (existing rows overwritten from the fixture)" : " (existing rows left untouched)"),
   );
+
+  // 4. Tormac. It lives in its own file because it carries full variant
+  //    matrices rather than the flat fixture shape, but it is not optional:
+  //    src/data/catalogues.ts maps the two largest catalogues on the site to
+  //    its slugs, so a seed without it leaves those pointing at nothing.
+  await addTormac();
 }
 
 main()

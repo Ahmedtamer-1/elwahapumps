@@ -29,7 +29,6 @@ export default async function AgentsPage({ params }: PageProps) {
   // so this index page still showed only 5 of the 8 working agent pages.
   const agents = [
     { id: "astral-pipes", name: "Astral Pipes" },
-    { id: "jee-pumps", name: "JEE Pumps" },
     { id: "pmc", name: "PMC" },
     { id: "kurlar", name: "Kurlar" },
     { id: "alka", name: "ALKA Thrust Bearing" },
