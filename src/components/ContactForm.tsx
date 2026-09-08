@@ -24,6 +24,13 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
     phone: "",
     subject: initialSubject ?? "",
     message: "",
+    /**
+     * Honeypot. Hidden from sight and from assistive tech, and skipped by
+     * the tab order, so no real person can fill it — anything here means a
+     * bot walked the DOM. The server drops those submissions silently
+     * (S7-T04).
+     */
+    company: "",
   });
 
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -64,7 +71,7 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
       }
 
       setStatus("success");
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "", company: "" });
     } catch {
       setStatus("error");
     }
@@ -109,6 +116,22 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Honeypot. aria-hidden + tabIndex={-1} keep it away from screen
+            readers and the keyboard; autoComplete="off" stops a password
+            manager filling it on a real visitor's behalf. */}
+        <div className="hidden" aria-hidden="true">
+          <label htmlFor="company">Company (leave blank)</label>
+          <input
+            id="company"
+            name="company"
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            value={formData.company}
+            onChange={handleChange}
+          />
+        </div>
+
         <div>
           <label htmlFor="name" className="block text-xs font-bold text-stone uppercase mb-1">
             {dict.contactPage.name} <span className="text-red-700" aria-hidden="true">*</span><span className="sr-only">{lang === "ar" ? "(مطلوب)" : "(required)"}</span>

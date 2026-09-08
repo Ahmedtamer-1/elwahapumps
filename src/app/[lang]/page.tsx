@@ -5,7 +5,7 @@ import SuccessPartners from "@/components/SuccessPartners";
 import { getCatalogProducts } from "@/lib/products";
 import { CheckCircle2, Phone, Mail } from "lucide-react";
 import Link from "next/link";
-import { yearsOfService } from "@/lib/company";
+import { PHONE_SALES, yearsOfService } from "@/lib/company";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -203,7 +203,7 @@ export default async function HomePage({ params }: PageProps) {
 
           <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 shrink-0">
             <a
-              href="tel:+201066685532"
+              href={`tel:${PHONE_SALES}`}
               className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3.5 rounded-xl transition-all shadow-md shadow-emerald-500/10"
             >
               <Phone className="w-5 h-5" />

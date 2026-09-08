@@ -11,6 +11,7 @@ import {
   PHONE_SALES,
   PHONE_SUPPORT,
   SOCIAL,
+  WHATSAPP_SALES,
 } from "@/lib/company";
 import { SITE_URL } from "@/lib/seo";
 import type { Locale } from "@/app/[lang]/dictionaries";
@@ -63,7 +64,7 @@ export function organizationSchema(lang: Locale) {
         "@type": "ContactPoint",
         contactType: "sales",
         telephone: PHONE_SALES,
-        url: `https://wa.me/${PHONE_SALES.replace("+", "")}`,
+        url: `https://wa.me/${WHATSAPP_SALES}`,
         availableLanguage: ["ar", "en"],
       },
       {

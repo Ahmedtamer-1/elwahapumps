@@ -23,7 +23,6 @@ Create a `.env` file in the project root:
 ```bash
 DATABASE_URL="file:./dev.db"
 JWT_SECRET="a-long-random-string"       # REQUIRED — see security note below
-WHATSAPP_PHONE="201066685532"
 ```
 Generate a strong secret with:
 ```bash
@@ -154,16 +153,48 @@ shareable URL (`?q=100&qu=m3h&h=150&hu=m&pick=…&motor=…`).
 This is no longer a static export — it needs a **Node.js server** (`npm run start`),
 not shared PHP hosting. Use Hostinger's Node.js hosting or a VPS.
 
-1. Set `DATABASE_URL`, `JWT_SECRET`, and `WHATSAPP_PHONE` in the host's environment.
-   **Do not reuse the development `JWT_SECRET`** — anyone with it can forge an admin session.
+1. Set `DATABASE_URL` and `JWT_SECRET` in the host's environment.
+   **Do not reuse the development `JWT_SECRET`.** Anyone with it can forge an admin
+   session. In production the app refuses to start if it is shorter than 32 characters
+   or left at a placeholder such as `change-me`. Generate one with:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+   ```
 2. Run `npx prisma migrate deploy` (not `migrate dev`) on the server.
 3. Run `npm run build`, then start with `npm run start`.
 4. The SQLite file must live on **persistent disk** and be included in your backups —
    it holds all leads and customer data. Never commit it; `*.db` is gitignored.
+5. **Sign in once and set a real admin password.** The seeded account is created with
+   the password below and flagged `mustChangePassword`, so it is redirected to a
+   change-password screen and can reach nothing else until you replace it. Seeding
+   with the default password is refused outright when `NODE_ENV=production`.
+
+### Database durability
+
+The app enables SQLite **WAL** on startup, so readers are not blocked while a write is
+in flight. WAL keeps recent commits in a `-wal` sidecar next to the `.db` file, which
+means **a plain `cp` of the `.db` alone can restore short**. Use the backup script,
+which asks SQLite for a consistent snapshot via `VACUUM INTO`:
+
+```bash
+npm run backup -- --out=/srv/backups/elwaha --keep=14
+```
+
+Cron it nightly:
+
+```bash
+15 3 * * * cd /srv/elwaha && npm run backup -- --out=/srv/backups/elwaha >> /var/log/elwaha-backup.log 2>&1
+```
+
+To restore: stop the app, put the chosen backup file in place of the live `.db`,
+delete any stale `-wal` and `-shm` sidecars beside it, and start the app.
+**Do this once on staging before you need it** — an untested backup is a guess.
 
 **Scaling note**: SQLite is a good fit for one server. If you ever run multiple
 instances, switch `prisma/schema.prisma` to `provider = "postgresql"` and swap the
-adapter in `src/lib/prisma.ts` — no application code changes.
+adapter in `src/lib/prisma.ts` — no application code changes. Note that the login
+throttle and public-form rate limiter (`src/lib/rate-limit.ts`) are per-process and
+in-memory, so they would need moving to shared storage at the same time.
 
 ---
 

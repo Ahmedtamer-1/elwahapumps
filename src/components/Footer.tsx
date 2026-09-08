@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import Logo from "@/components/Logo";
-import { AGENCY_COUNT, FOUNDED } from "@/lib/company";
+import { AGENCY_COUNT, FOUNDED, PHONE_SALES, PHONE_SUPPORT } from "@/lib/company";
 import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface FooterProps {
@@ -146,14 +146,14 @@ export default function Footer({ lang, dict }: FooterProps) {
                     (§5.2 rule 5) — numbers get copied across languages. */}
                 <div className="flex flex-col gap-1">
                   <a
-                    href="tel:+201066685532"
+                    href={`tel:${PHONE_SALES}`}
                     dir="ltr"
                     className="font-mono text-[12px] tracking-[0.08em] text-brass hover:text-bone transition-colors"
                   >
                     +20 106 668 5532
                   </a>
                   <a
-                    href="tel:+201068155336"
+                    href={`tel:${PHONE_SUPPORT}`}
                     dir="ltr"
                     className="font-mono text-[12px] tracking-[0.08em] text-brass hover:text-bone transition-colors"
                   >

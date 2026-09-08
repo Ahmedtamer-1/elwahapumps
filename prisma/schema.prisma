@@ -45,6 +45,12 @@ model User {
   email        String   @unique
   passwordHash String
   role         UserRole @default(STAFF)
+
+  /// Set on the seeded admin, whose password is documented in the README.
+  /// While true, every admin route redirects to the change-password screen
+  /// (S7-T05) — the account cannot be used until it has its own password.
+  mustChangePassword Boolean @default(false)
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -89,6 +95,8 @@ model Product {
 
   options  ProductOption[]
   variants ProductVariant[]
+
+  @@index([isActive, categoryId])
 }
 
 /// One "size selector" axis on a product's detail page — e.g. Diameter or HP.
@@ -161,6 +169,8 @@ model Customer {
   leads      Lead[]
   inquiries  CartInquiry[]
   activities Activity[]
+
+  @@index([createdAt])
 }
 
 model Lead {
@@ -179,6 +189,10 @@ model Lead {
   activities   Activity[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+
+  @@index([status, createdAt])
+  @@index([assignedToId])
+  @@index([customerId])
 }
 
 model CartInquiry {
@@ -194,6 +208,9 @@ model CartInquiry {
   whatsappSentAt DateTime?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([customerId])
 }
 
 /// An authorised distributor shown on the public locations map and list.
@@ -264,4 +281,8 @@ model Activity {
   authorId   String?
   author     User?        @relation(fields: [authorId], references: [id])
   createdAt  DateTime     @default(now())
+
+  @@index([leadId])
+  @@index([customerId])
+  @@index([authorId])
 }

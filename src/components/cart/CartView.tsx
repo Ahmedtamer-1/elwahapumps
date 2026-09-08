@@ -7,8 +7,9 @@ import { Minus, Plus, Trash2, ShoppingCart } from "lucide-react";
 import { useCart } from "./CartContext";
 import { lineKey } from "./cartStore";
 import { priceOnRequestLabel } from "@/lib/price";
+import { WHATSAPP_SALES } from "@/lib/company";
 
-const WHATSAPP_PHONE = "201066685532";
+const WHATSAPP_PHONE = WHATSAPP_SALES;
 
 export default function CartView({ lang }: { lang: string }) {
   const { items, count, ready, setQty, remove, clear } = useCart();

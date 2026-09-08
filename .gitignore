@@ -58,4 +58,5 @@ __pycache__/
 
 # local database backups (never commit real customer/lead data)
 *.db.bak-*
+/backups/
 *.bak

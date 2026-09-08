@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ShieldCheck, Mail, Phone, ChevronRight } from "lucide-react";
 import { localizedAlternates } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { PHONE_SALES } from "@/lib/company";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -235,7 +236,7 @@ export default async function AgentDetailPage({ params }: PageProps) {
                   {dict.common.requestQuote}
                 </Link>
                 <a
-                  href="tel:+201066685532"
+                  href={`tel:${PHONE_SALES}`}
                   className="flex items-center justify-center gap-2 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold border border-neutral-800 rounded-xl text-xs transition-all"
                 >
                   <Phone className="w-4 h-4" />

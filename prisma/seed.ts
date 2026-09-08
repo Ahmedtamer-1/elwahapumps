@@ -26,11 +26,36 @@ const categories = [
 
 type ProductDict = Record<string, { title: string; category: string; desc: string }>;
 
+const DEFAULT_ADMIN_PASSWORD = "ChangeMe123!";
+
+/**
+ * Re-running the seed must never overwrite content edited through the admin.
+ *
+ * The database is the runtime source of truth; `src/data/products.ts` is a
+ * one-time fixture for bootstrapping an empty install. The product upsert
+ * used to carry a full `update` block, so every re-run silently reverted
+ * every name, description, image list and specification an operator had
+ * changed (S7-T07). Set SEED_OVERWRITE_PRODUCTS=1 to deliberately re-import
+ * the fixture over live rows.
+ */
+const OVERWRITE_PRODUCTS = process.env.SEED_OVERWRITE_PRODUCTS === "1";
+
 async function main() {
   const adminEmail = process.env.SEED_ADMIN_EMAIL ?? "admin@elwahapumps.com";
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe123!";
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? DEFAULT_ADMIN_PASSWORD;
 
-  // 1. Admin user
+  // The default password is published in the README, so it is a development
+  // convenience only. Refuse it in production rather than quietly creating a
+  // known-credential administrator on a live box.
+  if (process.env.NODE_ENV === "production" && adminPassword === DEFAULT_ADMIN_PASSWORD) {
+    throw new Error(
+      "Refusing to seed the default admin password in production. " +
+        "Set SEED_ADMIN_PASSWORD to a strong value before seeding.",
+    );
+  }
+
+  // 1. Admin user. Flagged to force a password change on first sign-in —
+  //    without that, the documented default stays valid indefinitely.
   await prisma.user.upsert({
     where: { email: adminEmail },
     update: {},
@@ -39,6 +64,7 @@ async function main() {
       email: adminEmail,
       passwordHash: await bcrypt.hash(adminPassword, 10),
       role: "ADMIN",
+      mustChangePassword: true,
     },
   });
   console.log(`✔ Admin user ready: ${adminEmail}`);
@@ -80,15 +106,18 @@ async function main() {
 
     await prisma.product.upsert({
       where: { slug: p.id },
-      update: {
-        categoryId,
-        nameEn: enEntry?.title ?? p.id,
-        nameAr: arEntry?.title ?? p.id,
-        descEn: enEntry?.desc ?? null,
-        descAr: arEntry?.desc ?? null,
-        images: JSON.stringify(gallery),
-        specs: JSON.stringify(specsBlob),
-      },
+      // Create-only by default — see OVERWRITE_PRODUCTS above.
+      update: OVERWRITE_PRODUCTS
+        ? {
+            categoryId,
+            nameEn: enEntry?.title ?? p.id,
+            nameAr: arEntry?.title ?? p.id,
+            descEn: enEntry?.desc ?? null,
+            descAr: arEntry?.desc ?? null,
+            images: JSON.stringify(gallery),
+            specs: JSON.stringify(specsBlob),
+          }
+        : {},
       create: {
         slug: p.id,
         categoryId,
@@ -102,7 +131,10 @@ async function main() {
       },
     });
   }
-  console.log(`✔ ${products.length} products ready`);
+  console.log(
+    `✔ ${products.length} products ready` +
+      (OVERWRITE_PRODUCTS ? " (existing rows overwritten from the fixture)" : " (existing rows left untouched)"),
+  );
 }
 
 main()

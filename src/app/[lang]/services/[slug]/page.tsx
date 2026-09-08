@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail, Wrench, Shield } from "lucide-react";
 import { localizedAlternates } from "@/lib/seo";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { PHONE_SALES, WHATSAPP_SALES } from "@/lib/company";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -254,14 +255,14 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             )}
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="tel:+201066685532"
+                href={`tel:${PHONE_SALES}`}
                 className="inline-flex items-center gap-2 bg-brass hover:bg-brass/90 text-pine px-6 py-3 text-[13px] font-semibold transition-colors"
               >
                 <Phone className="w-4 h-4" aria-hidden="true" />
                 <span>{lang === "ar" ? "اتصل الآن" : "Call Now"}</span>
               </a>
               <a
-                href={`https://wa.me/201066685532`}
+                href={`https://wa.me/${WHATSAPP_SALES}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 border border-bone/30 hover:border-brass hover:text-brass text-bone px-6 py-3 text-[13px] font-semibold transition-colors"

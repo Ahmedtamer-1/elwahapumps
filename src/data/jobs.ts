@@ -10,8 +10,10 @@
  * display, a number that gets answered).
  */
 
-export const HR_EMAIL = "info@elwahapumps.com";
-export const HR_WHATSAPP = "201066685532";
+import { EMAIL, WHATSAPP_SALES } from "@/lib/company";
+
+export const HR_EMAIL = EMAIL;
+export const HR_WHATSAPP = WHATSAPP_SALES;
 
 /** The only part of an advert these helpers need. */
 interface JobTitled {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { notifyNewCartInquiry } from "@/lib/notify";
+import { guardSubmission, normalisePhone } from "@/lib/form-guard";
 
 const inquirySchema = z.object({
   name: z.string().trim().max(120).optional(),
@@ -17,6 +18,8 @@ const inquirySchema = z.object({
     )
     .min(1, "Cart is empty")
     .max(100),
+  /** Honeypot — see form-guard. Never populated by a real submission. */
+  company: z.string().max(200).optional(),
 });
 
 export async function POST(request: Request) {
@@ -35,7 +38,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const { name, phone, items } = parsed.data;
+  const guard = guardSubmission({ route: "inquiries", request, honeypot: parsed.data.company });
+  if (guard.kind === "reject") return guard.response;
+  // Indistinguishable from success to the caller, but nothing is written.
+  if (guard.kind === "silent-drop") return NextResponse.json({ ok: true }, { status: 201 });
+
+  const { name, items } = parsed.data;
+  const phone = normalisePhone(parsed.data.phone);
 
   // Price the cart server-side from the catalogue — never trust the client's
   // totals, since the cart lives in the visitor's localStorage.
@@ -58,7 +67,7 @@ export async function POST(request: Request) {
   const inquiry = await prisma.cartInquiry.create({
     data: {
       name: name || null,
-      phone: phone || null,
+      phone,
       items: JSON.stringify(pricedItems),
       totalEstimate: totalEstimate > 0 ? totalEstimate : null,
       status: "NEW",
@@ -71,7 +80,7 @@ export async function POST(request: Request) {
   await notifyNewCartInquiry({
     id: inquiry.id,
     name: name || null,
-    phone: phone || null,
+    phone,
     itemCount: pricedItems.length,
     totalEstimate: inquiry.totalEstimate,
   });

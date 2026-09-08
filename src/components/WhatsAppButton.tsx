@@ -1,19 +1,19 @@
 "use client";
 
 import React from "react";
+import { WHATSAPP_SALES } from "@/lib/company";
 
 interface WhatsAppButtonProps {
   lang: string;
 }
 
 export default function WhatsAppButton({ lang }: WhatsAppButtonProps) {
-  const phoneNumber = "201066685532"; // Standard format without +
   const message =
     lang === "ar"
       ? "مرحباً شركة الواحة، أود الاستفسار عن خدماتكم."
       : "Hello El Waha, I would like to inquire about your services.";
 
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  const whatsappUrl = `https://wa.me/${WHATSAPP_SALES}?text=${encodeURIComponent(message)}`;
 
   return (
     /* The button floats outside the header, main and footer, so without a

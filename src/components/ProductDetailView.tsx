@@ -11,6 +11,7 @@ import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductVariantSelector, { useVariantSelection } from "@/components/ProductVariantSelector";
 import CatalogueButton from "@/components/CatalogueButton";
 import type { Dictionary } from "../app/[lang]/dictionaries";
+import { PHONE_SALES } from "@/lib/company";
 
 interface ProductDetailViewProps {
   product: CatalogProduct;
@@ -200,7 +201,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 {isAr ? "طلب عرض سعر" : "Get Latest Price"}
               </Link>
               <a
-                href="tel:+201066685532"
+                href={`tel:${PHONE_SALES}`}
                 className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-headline-md text-[16px] py-4 rounded-xl flex items-center justify-center gap-2 transition-all active-scale-98"
               >
                 <Phone className="w-5 h-5" />

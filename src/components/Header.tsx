@@ -7,6 +7,7 @@ import { Menu, X, Phone, Globe, ChevronDown } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
 import Logo from "@/components/Logo";
 import type { Dictionary } from "../app/[lang]/dictionaries";
+import { PHONE_SALES } from "@/lib/company";
 
 interface HeaderProps {
   lang: string;
@@ -423,7 +424,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                   is not a badge to display, it is a number that gets
                   answered, so it stays a real tel: link. */}
               <a
-                href="tel:+201066685532"
+                href={`tel:${PHONE_SALES}`}
                 className="flex items-center gap-2 bg-pine hover:bg-emerald-700 text-bone px-4 py-2 text-[13px] font-semibold transition-colors"
               >
                 <Phone className="w-4 h-4" aria-hidden="true" />
@@ -540,7 +541,7 @@ export default function Header({ lang, dict }: HeaderProps) {
         {/* Call to Action at Bottom of Drawer */}
         <div className="mt-8 pt-5 border-t border-rule">
           <a
-            href="tel:+201066685532"
+            href={`tel:${PHONE_SALES}`}
             className="flex items-center justify-center gap-2 w-full bg-pine hover:bg-emerald-700 text-bone py-3 font-semibold text-sm transition-colors"
           >
             <Phone className="w-5 h-5" aria-hidden="true" />

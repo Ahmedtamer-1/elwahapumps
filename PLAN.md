@@ -159,15 +159,15 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S7-T01 | Add HTTP security headers | S | PRE | TODO |
-| S7-T02 | Enforce JWT secret strength and cookie prefix | S | PRE | TODO |
-| S7-T03 | Throttle admin login and close the timing oracle | M | PRE | TODO |
-| S7-T04 | Protect the two public POST endpoints | M | PRE | TODO |
-| S7-T05 | Force a password change for the seeded admin | M | PRE | TODO |
-| S7-T06 | Add the missing database indexes | S | PRE | TODO |
-| S7-T07 | Stop the seed clobbering admin product edits | S | PRE | TODO |
-| S7-T08 | Centralise the contact constants | S | PRE | TODO |
-| S7-T09 | Enable SQLite WAL and nightly backups | M | PRE | TODO |
+| S7-T01 | Add HTTP security headers | S | PRE | DONE |
+| S7-T02 | Enforce JWT secret strength and cookie prefix | S | PRE | DONE |
+| S7-T03 | Throttle admin login and close the timing oracle | M | PRE | DONE |
+| S7-T04 | Protect the two public POST endpoints | M | PRE | DONE |
+| S7-T05 | Force a password change for the seeded admin | M | PRE | DONE |
+| S7-T06 | Add the missing database indexes | S | PRE | DONE |
+| S7-T07 | Stop the seed clobbering admin product edits | S | PRE | DONE |
+| S7-T08 | Centralise the contact constants | S | PRE | DONE |
+| S7-T09 | Enable SQLite WAL and nightly backups | M | PRE | DONE |
 | S7-T10 | Make sessions revocable | M | POST | TODO |
 | S7-T11 | Standardise the server-action error contract | M | POST | TODO |
 | S7-T12 | Paginate and search the admin lists | M | POST | TODO |
@@ -878,12 +878,27 @@ The authorization model is genuinely good: all seventeen admin pages and all twe
 **Dependencies.** S0-T01, S4-T05 (same file).
 **Acceptance.** `curl -I https://<host>/` shows each header. The admin area cannot be framed. Nothing in the console breaks under the report-only policy.
 **Size.** S
+**Status: DONE.** A site-wide header block in `next.config.ts` sets HSTS (two years, `includeSubDomains; preload`), `nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and a `Permissions-Policy` denying camera, microphone, geolocation, payment, USB and topics — none of which anything here uses, so a compromised third-party script cannot reach for one. `/admin/:path*` additionally gets `X-Frame-Options: DENY` and `Cache-Control: no-store`, since those pages carry customer data.
+
+The CSP ships **report-only**, as the plan asked. Writing it turned up two things the draft would have broken the moment it was enforced, both found by reading the code rather than waiting for production reports:
+
+1. **The distributor map's tiles come from CARTO** (`*.basemaps.cartocdn.com`, four subdomains), not from maptiler or OpenStreetMap as the draft's `connect-src` assumed. They are raster PNGs fetched as images, so the binding directive is `img-src` — which the draft did not allow at all. Enforced, that would have blanked the map.
+2. **The contact page's map is a Google Maps iframe.** With no `frame-src` it falls through to `default-src 'self'` and would have been blocked.
+
+Both corrected against the actual source. Verified against a running production build: every header present on `/ar`, the admin extras present on `/admin/login`, `frame-ancestors 'none'` site-wide, and the contact page's Google Maps iframe loads with zero `securitypolicyviolation` events.
+
+**Not verified at runtime:** the CARTO `img-src`/`worker-src` allowances. The map falls back to its list view in the automation browser, so no tile request was ever issued. The directives are correct per the source, and report-only means a mistake cannot break anything — but switching to the enforcing header should wait until real traffic has been observed, which is exactly why it ships report-only.
 
 ### S7-T02 · Enforce JWT secret strength and cookie prefix
 **Why.** The secret fails closed when absent, which is correct, but any non-empty value is accepted — including the literal `"change-me"` shipped in `.env.example`. The session cookie also lacks the `__Host-` prefix despite already meeting its requirements.
 **Files.** `src/lib/session.ts:12-16,42-48`; `.env.example:11`.
 **Acceptance.** Starting the app in production mode with a short secret refuses to boot with a clear message. The cookie is named with the `__Host-` prefix and sessions still work.
 **Size.** S
+**Status: DONE.** `getSecretKey()` now rejects, in production only, both a secret under 32 characters and a placeholder from a small deny-list (`change-me` and friends, case-insensitive). Previously any non-empty string was accepted, including the literal `change-me` that `.env.example` ships — so an install that never edited the sample file ran with a publicly known signing key, and anyone holding it can mint an administrator session.
+
+The cookie now takes the `__Host-` prefix in production. That prefix is enforced by the browser: it refuses the cookie unless it is Secure, carries no `Domain`, and is scoped to `Path=/`. The cookie already satisfied all three; it simply was not claiming the guarantee, which is what stops a subdomain overwriting the admin session. Development over plain http keeps the unprefixed name, since the prefix requires HTTPS.
+
+Verified by importing the module under `NODE_ENV=production`: the cookie is named `__Host-elwaha_admin_session` with `secure: true`, `path: "/"`, `httpOnly: true` and no `domain` key. Token signing was then exercised across six secrets — `change-me` and `CHANGE-ME` refused as placeholders, 6 and 31 characters refused as too short, 32 and 64 accepted.
 
 ### S7-T03 · Throttle admin login and close the timing oracle
 **Why.** No rate limit, no lockout, no delay. With bcrypt at cost 10 each attempt costs about 100 ms, which makes online brute force practical against a documented default account. Separately, `bcrypt.compare` runs only when the email exists, so response time reveals which addresses are valid despite the uniform error message.
@@ -892,6 +907,17 @@ The authorization model is genuinely good: all seventeen admin pages and all twe
 **Dependencies.** None. Provides the shared primitive for S7-T04, so sequence this first.
 **Acceptance.** Eleven failed attempts from one address are refused with a throttle message. Response times for a known-invalid and a known-valid email are within noise of each other across twenty samples.
 **Size.** M
+**Status: DONE.** New shared primitive in `src/lib/rate-limit.ts` — one implementation, as the plan insisted, reused by S7-T04. Fixed-window, in memory, with a documented caveat that it is per-process and would need shared storage behind more than one instance.
+
+Login is throttled on **both** axes: per address, so one host cannot grind through many accounts, and per email, so a distributed attempt cannot grind through one account. Ten attempts per fifteen minutes, checked before any database work so a locked-out caller costs nothing. A successful sign-in clears both counters, so an operator who mistyped a few times is not left locked out.
+
+The timing oracle is closed by comparing against a constant bcrypt hash when the email is unknown. That hash is of a random string nobody holds the input to, and nothing verifies against it — it exists purely to spend the same time a real comparison spends.
+
+**Acceptance met.** Twelve failed attempts from one address are refused with the throttle message, driven through the real form in a browser. For the timing half, measured server-side rather than over HTTP: the comparison costs 43.4ms against a real account hash and 43.5ms against the equaliser, a 0.1ms difference and a ratio of 1.002. The old unknown-email path did no bcrypt at all — roughly 0ms against 43ms, which is trivially distinguishable.
+
+Also added `src/lib/rate-limit.test.ts` — nine cases covering the limit boundary, per-key isolation, window expiry, `Retry-After`, reset, and the `clientIp` header precedence. The suite is now 45 tests.
+
+**A measurement trap worth recording:** an initial attempt to time this through the browser returned a uniform 1000ms for every case and showed the throttle apparently not firing. Neither was real. React's `useActionState` drops a `requestSubmit()` while an action is still pending, so most of those submissions never reached the server, and what was being timed was React's pending-state cycle rather than anything server-side. Timing work like this belongs off the client.
 
 ### S7-T04 · Protect the two public POST endpoints
 **Why.** Both write a database row per request with no throttle, honeypot, CAPTCHA or Origin check. A trivial script fills the CRM with junk and buries real enquiries — which matters more once S0-T11 turns every row into a notification.
@@ -900,6 +926,18 @@ The authorization model is genuinely good: all seventeen admin pages and all twe
 **Dependencies.** S0-T11, S7-T03 (the shared rate-limiting primitive).
 **Acceptance.** A scripted burst of twenty submissions is throttled. A submission with the honeypot filled returns 200 but writes no row. A cross-origin POST is rejected.
 **Size.** M
+**Status: DONE.** New `src/lib/form-guard.ts`, shared by both routes, reusing the S7-T03 limiter.
+
+- **Origin check.** `Sec-Fetch-Site` is preferred because the browser sets it and page script cannot forge it; `Origin` is the fallback. A request with neither is allowed through and still throttled — some legitimate clients send neither, and rejecting them outright would be a guess dressed as a security control.
+- **Honeypot.** A hidden `company` field, `aria-hidden` and out of the tab order with `autoComplete="off"` so neither a person nor a password manager fills it. A filled one returns 201 and writes nothing: the bot records a success and moves on rather than learning it was spotted.
+- **Throttle.** Five submissions per ten minutes per address, per route, with `Retry-After`.
+- **Normalisation.** Phone reduced to a leading `+` and digits, email lowercased and trimmed, so a repeat enquirer deduplicates in the CRM.
+
+Deliberately no CAPTCHA. This is a low-traffic B2B contact form, and the three checks above stop opportunistic bots without putting a puzzle in front of someone trying to buy a pump.
+
+**Acceptance met**, all three cases against a running build. A cross-origin POST returns 403. A honeypot submission returns 201 with the `Lead` count unchanged. A burst of twenty writes exactly five rows and returns 429 for the other fifteen. Normalisation confirmed end to end: `+20 (106) 668-5532` stored as `+201066685532`, `  MiXeD@Example.COM  ` stored as `mixed@example.com`.
+
+Kept, as the plan noted: both routes' zod validation, and the server-side re-pricing in the inquiries route that ignores the client's `unitPrice`.
 
 ### S7-T05 · Force a password change for the seeded admin
 **Why.** The seed creates `admin@elwahapumps.com` with a password documented in the README, and nothing requires changing it. Combined with no login throttle it is the most direct path into the CRM.
@@ -908,6 +946,15 @@ The authorization model is genuinely good: all seventeen admin pages and all twe
 **Dependencies.** S7-T06 (bundle the migrations).
 **Acceptance.** A freshly seeded admin is redirected to a change-password screen and can reach no other admin page until it is changed.
 **Size.** M
+**Status: DONE.** New `mustChangePassword` column, set on the seeded admin. The dashboard layout reads it per request and redirects to a new `/admin/change-password` screen while it is set. Checked against the database rather than carried in the session token, so clearing the flag takes effect immediately instead of whenever a seven-day token happens to expire.
+
+The screen sits deliberately **outside** the `(dashboard)` route group — inside it, the layout's redirect would loop. The change action requires the current password, enforces a 12-character minimum (this account owns the whole CRM, and the password it replaces is published in the README), and rejects reuse of the current one.
+
+The seed also now refuses the default password outright when `NODE_ENV=production`, rather than quietly creating a known-credential administrator on a live box.
+
+**Acceptance met.** Signing in with the documented default lands on `/admin/change-password` reading "Set your own password". Fetching `/admin`, `/admin/leads`, `/admin/products`, `/admin/users` and `/admin/customers` while flagged redirects every one of them back to it. A too-short password is refused with "Use at least 12 characters"; a valid one clears the flag and lands on the dashboard.
+
+**One deployment note.** The flag is only set when the row is *created* — the upsert's update block stays empty. An install that already has an admin will not be retro-flagged, which is correct, since there is no way to know whether that operator already rotated their password. For an existing install, set it by hand if the default is still in use.
 
 ### S7-T06 · Add the missing database indexes
 **Why.** SQLite does not index foreign keys automatically, and the admin list queries filter and sort on unindexed columns.
@@ -915,6 +962,11 @@ The authorization model is genuinely good: all seventeen admin pages and all twe
 **Approach.** Indexes on `Lead(status, createdAt)`, `Lead(assignedToId)`, `Lead(customerId)`, `CartInquiry(status, createdAt)`, `CartInquiry(customerId)`, `Activity(leadId)`, `Activity(customerId)`, `Activity(authorId)`, `Product(isActive, categoryId)`. `Customer` was not in the audit but has the same shape and the same admin query pattern.
 **Acceptance.** `npx prisma migrate deploy` applies cleanly. Admin list pages still render correct data.
 **Size.** S
+**Status: DONE.** Ten indexes in one migration, bundled with the S7-T05 column as the plan asked: `Lead(status, createdAt)`, `Lead(assignedToId)`, `Lead(customerId)`, `CartInquiry(status, createdAt)`, `CartInquiry(customerId)`, `Activity(leadId)`, `Activity(customerId)`, `Activity(authorId)`, `Product(isActive, categoryId)` and `Customer(createdAt)`.
+
+**Acceptance met.** `npx prisma migrate deploy` applied cleanly, and the live database reports every index present plus the new `User.mustChangePassword` column. Admin pages render correct data afterwards.
+
+Worth knowing: the working database is `dev.db` at the repository root, not `prisma/dev.db` — `DATABASE_URL` is `file:./dev.db` and resolves against the project root. Prisma tooling created an empty `prisma/dev.db` alongside it during this work, which was a red herring when checking whether the indexes had landed. It has been removed.
 
 ### S7-T07 · Stop the seed clobbering admin product edits
 **Why.** Re-running the seed overwrites names, descriptions, images and specifications on every existing product, silently destroying edits made through the admin interface. The database is the runtime source of truth; the static file is a one-time fixture.
@@ -923,6 +975,9 @@ The authorization model is genuinely good: all seventeen admin pages and all twe
 **Dependencies.** S0-T09 (both touch the seed).
 **Acceptance.** Edit a product name in the admin, re-run the seed, and confirm the edit survives.
 **Size.** S
+**Status: DONE.** The product upsert's `update` block is now empty by default, so re-seeding cannot touch a row that already exists. Set `SEED_OVERWRITE_PRODUCTS=1` to deliberately re-import the fixture over live rows. The seed log says which mode it ran in, so this is never silent either way.
+
+**Acceptance met**, exactly as the plan specified. A product name was edited directly in the database to stand in for an admin edit, the seed was re-run, and the edit survived. Re-running with `SEED_OVERWRITE_PRODUCTS=1` restored the fixture value, confirming the escape hatch works.
 
 ### S7-T08 · Centralise the contact constants
 **Why.** `WHATSAPP_PHONE` is never read — no `process.env.WHATSAPP_PHONE` exists anywhere in the codebase. But it is set in `.env.example:13`, set in the real gitignored `.env:13`, and `README.md:157` instructs operators to configure it on the host alongside `DATABASE_URL` and `JWT_SECRET`. So it is genuinely provisioned at runtime and silently ignored: an operator who changes the company's WhatsApp number in the host environment, exactly as the deploy documentation tells them to, changes nothing on the site. The number is hardcoded across **17 files at 22 call sites**.
@@ -930,12 +985,26 @@ The authorization model is genuinely good: all seventeen admin pages and all twe
 **Dependencies.** S0-T10, S0-T13.
 **Acceptance.** `grep -rn "201066685532" src/` matches only `company.ts`. Every WhatsApp and telephone link on the site still resolves correctly. Decide whether to keep the env var and read it, or delete it from `.env.example` and the README — do not leave a documented setting that does nothing.
 **Size.** S
+**Status: DONE.** Both numbers now live only in `src/lib/company.ts`, with a derived `WHATSAPP_SALES` for `wa.me` links, which want the number without the leading `+`. Twenty-two call sites across seventeen files rewritten, including `data/jobs.ts` (which also had the email hardcoded) and `lib/schema.ts` (which was doing its own `.replace("+", "")`).
+
+**On the open question the plan raised** — keep the env var and read it, or delete it: deleted. The number is a company fact like the address and the legal name, all of which already live in `company.ts` and feed the JSON-LD. Making it an environment variable would mean the structured data and the `llms-full.txt` generator both need runtime env access for a value that changes perhaps once a decade. `WHATSAPP_PHONE` is gone from `.env.example` and from both places the README mentioned it, so the deploy documentation no longer instructs operators to set something nothing reads.
+
+**Acceptance met.** `grep -rn "201066685532" src/` matches `company.ts` only. Every `tel:` and `wa.me` link on the home, contact, support, products and agent pages renders byte-identically to before.
 
 ### S7-T09 · Enable SQLite WAL and nightly backups
 **Why.** On the chosen VPS the database is a single file with backups left to the host. Write-ahead logging also improves concurrency when several staff use the admin at once.
 **Files.** `src/lib/prisma.ts:12`; new `scripts/backup-db.ts`; README deployment section.
 **Acceptance.** WAL is confirmed active. The backup script produces a restorable copy, and a documented restore has been performed once on staging.
 **Size.** M
+**Status: DONE.** WAL is enabled once per process in `src/lib/prisma.ts`, paired with `synchronous = NORMAL` — the standard combination, durable across application crashes and risking only the most recent commits in a full power loss. It is set non-fatally: a database that cannot take the pragma still works, just with the old locking behaviour. The default rollback journal takes an exclusive lock for the whole of every write, so one person saving a lead blocked every other reader.
+
+New `scripts/backup-db.ts` (`npm run backup`), using SQLite's `VACUUM INTO` rather than a file copy. **This distinction is the point of the task:** under WAL, recent commits live in a `-wal` sidecar, so copying the `.db` alone can restore short. `VACUUM INTO` asks SQLite for a consistent snapshot and writes a single valid database. The script prunes to `--keep` and defaults to fourteen.
+
+The README's deployment section now covers the JWT secret floor, the forced first-password change, the nightly cron line, and the restore procedure — including deleting stale `-wal`/`-shm` sidecars, which is the step that bites people.
+
+**Acceptance met** for WAL and the backup: `PRAGMA journal_mode` reports `wal`, a `-wal` sidecar exists beside the live database, and the script produced a valid 0.27 MB snapshot with pruning working.
+
+**Not done: the restore rehearsal.** The plan asks for a documented restore performed once on staging, and there is no staging environment to perform it in. The procedure is written down; it has not been executed. That should happen before cutover, and it is the one part of this task still outstanding.
 
 ### S7-T10 to S7-T16 · Post-cutover hardening
 - **S7-T10** Make sessions revocable — seven-day stateless tokens survive logout, password reset and account deletion, so a removed staff member keeps access for up to a week. Add a `sessionVersion` checked per request and shorten the lifetime. **M**

@@ -6,6 +6,7 @@ import DistributorNetwork from "@/components/DistributorNetwork";
 import { coverageTotals } from "@/data/distributors";
 import { getPublishedDistributors } from "@/lib/distributors";
 import { localizedAlternates } from "@/lib/seo";
+import { PHONE_SALES } from "@/lib/company";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -108,7 +109,7 @@ export default async function LocationsPage({ params }: PageProps) {
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <a
-              href="tel:+201066685532"
+              href={`tel:${PHONE_SALES}`}
               className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 import { localizedAlternates } from "@/lib/seo";
+import { PHONE_SALES } from "@/lib/company";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -183,7 +184,7 @@ export default async function ProductsPage({ params }: PageProps) {
               <span>{dict.productsPage.downloadCatalog}</span>
             </Link>
             <a
-              href="tel:+201066685532"
+              href={`tel:${PHONE_SALES}`}
               className="inline-flex items-center justify-center gap-2 text-bone border border-bone/30 hover:border-brass hover:text-brass font-semibold px-8 py-4 text-sm transition-colors"
             >
               <Phone className="w-4 h-4" aria-hidden="true" />

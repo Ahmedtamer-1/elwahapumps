@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
-import { AGENCY_COUNT } from "@/lib/company";
+import { AGENCY_COUNT, PHONE_SALES, WHATSAPP_SALES } from "@/lib/company";
 import { fill } from "@/lib/format";
 import { localizedAlternates } from "@/lib/seo";
 import { Phone, MessageCircle, Mail, PackageCheck } from "lucide-react";
@@ -30,8 +30,8 @@ const MAINTENANCE_SERVICES = [
   "panel-maintenance",
 ] as const;
 
-const PHONE = "+201066685532";
-const WHATSAPP = "201066685532";
+const PHONE = PHONE_SALES;
+const WHATSAPP = WHATSAPP_SALES;
 
 export default async function SupportPage({ params }: PageProps) {
   const { lang } = await params;

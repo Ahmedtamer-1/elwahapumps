@@ -11,6 +11,7 @@ import {
 } from "@/data/catalogues";
 import { ArrowUpRight, Download, Phone } from "lucide-react";
 import { localizedAlternates } from "@/lib/seo";
+import { PHONE_SALES } from "@/lib/company";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -225,7 +226,7 @@ export default async function CataloguesPage({ params }: PageProps) {
 
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <a
-              href="tel:+201066685532"
+              href={`tel:${PHONE_SALES}`}
               className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-[13px] font-semibold text-bone hover:bg-field transition-colors"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
