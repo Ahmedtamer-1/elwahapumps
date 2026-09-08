@@ -236,7 +236,7 @@ export default async function CataloguesPage({ params }: PageProps) {
               href={`/${lang}/contact`}
               className="inline-flex items-center justify-center border border-pine px-5 py-3 text-[13px] font-semibold text-pine hover:bg-pine hover:text-bone transition-colors"
             >
-              {dict.common.bookNow}
+              {dict.common.requestQuote}
             </Link>
           </div>
         </section>

@@ -180,7 +180,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S8-T01 | Write the content brief for you to fill | M | POST | TODO |
+| S8-T01 | Write the content brief for you to fill | M | POST | PARTIAL |
 | S8-T02 | Brand page shells for the represented manufacturers | L | POST | TODO |
 | S8-T03 | Application and solution page shells | M | POST | TODO |
 | S8-T04 | Bore-size landing pages | M | POST | TODO |
@@ -190,7 +190,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S8-T08 | FAQ blocks with FAQPage schema | M | POST | TODO |
 | S8-T09 | Rebrand the cart as a quote list | M | POST | TODO |
 | S8-T10 | Apply the Arabic glossary and corrections | M | POST | TODO |
-| S8-T11 | Apply the English copy corrections | S | POST | TODO |
+| S8-T11 | Apply the English copy corrections | S | POST | PARTIAL |
 | S8-T12 | Move 156 inline strings into the dictionaries | L | POST | TODO |
 | S8-T13 | Case studies and projects section | L | POST | TODO |
 | S8-T14 | Tender and distributor-application pages | M | POST | TODO |
@@ -1026,6 +1026,11 @@ You supply the copy. Every task here builds the structure, the schema and the co
 **Approach.** A single document requesting: brand descriptions and Arabic transliterations for the represented manufacturers; event dates and venues; ISO certificate number, body and scope; commercial register and tax numbers; the legal entity form; real office hours; warranty terms; five to ten project case studies; the FAQ questions your sales team actually gets; and confirmation of which mailbox receives enquiries.
 **Acceptance.** The brief is delivered and every [Open question](#open-questions) below has an answer.
 **Size.** M
+**Status: PARTIAL — delivered, awaiting answers.** `docs/content-brief.md` is written and is the half of this task that was mine to do. The other half is yours: the acceptance is only met once the answers come back.
+
+It is organised so it can be answered in pieces rather than all at once. Part 1 collects all eleven [Open questions](#open-questions) as short-answer items — several are one word, and they block work that is otherwise finished. The remaining parts ask for company and legal facts, the twelve manufacturers, project proof, the questions your sales team actually gets asked, event dates, Arabic terminology, and the handful of decisions about how you want to sell. A closing table maps each answer to what it releases, so partial answers still move things forward.
+
+Every request in it was checked against the code rather than assumed, which changed some of the numbers the audit carried: three brands have an Arabic name form on the site, not four, and the eight `agentsData` entries hold Arabic *descriptions* while the brand names themselves are Latin-only — so an Arabic speaker searching for a brand by name finds nothing today. Nothing in the brief asks for something already answerable from the repository.
 
 ### S8-T02 to S8-T14 · Structure work, unblocked by the brief
 - **S8-T02** Brand page shells for the represented manufacturers, generated from one registry so the tile list, the route slugs and the schema cannot diverge again. Today four brands have pages, one of them (JEE Pumps) is not an agency at all, and Aristoncavi has no copy anywhere. Depends on S0-T02, S8-T01. **L**
@@ -1037,8 +1042,18 @@ You supply the copy. Every task here builds the structure, the schema and the co
 - **S8-T08** FAQ blocks with `FAQPage` schema on home, products, selector and support. Depends on S8-T01, S1-T09. **M**
 - **S8-T09** Rebrand the cart as a quote list and settle on one primary call to action per page — the product page currently offers four competing actions. Depends on S5-T06. **M**
 - **S8-T10** Apply the Arabic glossary and corrections: one term each for pump, motor, submersible, head and flow; fix the three nominative-plural errors; correct the mistranslation of submersible motor cable as marine cable. Depends on S8-T01. **M**
-- **S8-T11** Apply the English corrections — the Arabic-influenced phrasing, "Book Now" as a business call to action, "Get Latest Price", and the generic home copy. **S**
-- **S8-T12** Move 156 inline `lang === "ar"` string ternaries into the dictionaries so localisation can be reviewed as a whole. Depends on S0-T04. **L**
+- **S8-T11** Apply the English corrections — the Arabic-influenced phrasing, "Book Now" as a business call to action, "Get Latest Price", and the generic home copy. **S** — **PARTIAL.** Two of the three done. "Get Latest Price" on the product page read like a marketplace listing on a site that quotes on request; the Arabic beside it already said "request a price quote", so the English now matches. "Book Now" read like a hotel booking; both its call sites link to the contact page, which is the action `common.requestQuote` already names, so they now use it and the duplicate `bookNow` key is gone from both dictionaries. Verified against a running build: none of the three phrases appears in the rendered HTML of either locale, and "Request a Quote" / "طلب تسعير" render in their place. The third item — the generic home page opening — is **not** done and should not be: rewriting the headline is a voice decision, and per this stage's own rule no task here invents copy. It is asked for in the brief, Part 7.
+- **S8-T12** Move the inline `lang === "ar"` string ternaries into the dictionaries so localisation can be reviewed as a whole. Depends on S0-T04. **L** — **NEEDS A DECISION BEFORE STARTING.** Surveyed rather than started, because it turns on a choice that is not mine to make quietly.
+
+  The real count is **182**, not 156, across 33 files. 181 of them are the simple `cond ? "en" : "ar"` shape and are mechanically safe to move; exactly one is not.
+
+  The obstacle is access, not the strings. **133 sit in 21 files that already receive a dictionary. The other 49 sit in 12 files that do not** — `CartView` (18), `DistributorMap` (7), `error.tsx` (6), `cart/page.tsx` (4), and eight smaller components. Those need either a new prop threaded down from each parent, or a direct dictionary import.
+
+  That choice collides with **S4-T09**, which wants *less* dictionary serialised to the client, not more. Prop-threading is the option compatible with it, and is the one to prefer — but it changes twelve component signatures and their call sites, which is a materially bigger change than "move some strings".
+
+  Doing only the 133 reachable ones would be worse than doing nothing: the stated point of the task is to make localisation reviewable in one place, and a 73% migration leaves a reviewer hunting through twelve files anyway.
+
+  Sequencing note: this should still run **before** S8-T10, not after. Consolidating first means the Arabic glossary gets applied once, in one file, rather than across 33.
 - **S8-T13** Case studies and projects section — "230+ projects" is claimed and none are shown. Depends on S8-T01. **L**
 - **S8-T14** Tender and become-a-distributor pages. Depends on S8-T01. **M**
 

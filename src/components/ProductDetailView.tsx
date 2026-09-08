@@ -198,7 +198,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 className="bg-secondary hover:bg-secondary/90 text-white font-headline-md text-[16px] py-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active-scale-98"
               >
                 <MessageSquare className="w-5 h-5" />
-                {isAr ? "طلب عرض سعر" : "Get Latest Price"}
+                {isAr ? "طلب عرض سعر" : "Request a Quote"}
               </Link>
               <a
                 href={`tel:${PHONE_SALES}`}
