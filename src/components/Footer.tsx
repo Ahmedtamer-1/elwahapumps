@@ -2,7 +2,17 @@ import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 import Logo from "@/components/Logo";
-import { AGENCY_COUNT, FOUNDED, PHONE_SALES, PHONE_SUPPORT, SOCIAL } from "@/lib/company";
+import {
+  AGENCY_COUNT,
+  ENTITY_FORM_AR,
+  ENTITY_FORM_EN,
+  FOUNDED,
+  LEGAL_NAME_AR,
+  LEGAL_NAME_EN,
+  PHONE_SALES,
+  PHONE_SUPPORT,
+  SOCIAL,
+} from "@/lib/company";
 import type { Dictionary } from "../app/[lang]/dictionaries";
 
 interface FooterProps {
@@ -206,7 +216,11 @@ export default function Footer({ lang, dict }: FooterProps) {
             type above the navigation, which is where it used to sit (§1.1). */}
         <div className="pt-6 border-t border-bone/15 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-mono text-[11px] tracking-[0.14em] text-bone/75 text-center md:text-start">
-            &copy; {currentYear} {dict.common.allRightsReserved} · ISO 9001
+            {/* The registered name comes from company.ts, not from a
+                dictionary string — it had already drifted there, with the
+                English reading "El Waha Pumps Company". */}
+            &copy; {currentYear} {dict.common.allRightsReserved}{" "}
+            {isAr ? `${LEGAL_NAME_AR} ${ENTITY_FORM_AR}` : `${LEGAL_NAME_EN} ${ENTITY_FORM_EN}`} · ISO 9001
           </p>
           <div className="flex gap-5">
             <Link
