@@ -21,7 +21,7 @@ export default async function CartPage({ params }: PageProps) {
   const isAr = lang === "ar";
 
   return (
-    <div className="bg-neutral-50 min-h-screen pt-28 pb-20">
+    <div className="bg-neutral-50 min-h-screen pt-10 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-black text-neutral-900 mb-2">
           {isAr ? "سلة الطلب" : "Request Cart"}

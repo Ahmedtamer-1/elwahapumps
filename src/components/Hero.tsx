@@ -79,11 +79,17 @@ export default function Hero({ lang, dict }: HeroProps) {
 
       {/* Content */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className={`max-w-2xl transition-all duration-1000 transform ${isAr ? "ml-auto" : ""} translate-y-0 opacity-100`}>
+        {/* No `isAr` margin/alignment patches anywhere in this block:
+            `dir="rtl"` on <html> already places a narrower block, a fixed
+            -width rule and a flex row against the inline-start edge. The
+            patches were fighting it — `justify-end` in particular pushed
+            the Arabic buttons to the *opposite* side from the headline
+            they belong to (S5-T02). */}
+        <div className="max-w-2xl transition-all duration-1000 transform translate-y-0 opacity-100">
           {/* Brass rule opens the block — the accent pairing for dark
               grounds. The founding date and city that used to sit above it
               are carried by the About page and the footer instead. */}
-          <div className={`w-16 h-[3px] bg-brass mb-6 ${isAr ? "ml-auto" : ""}`} aria-hidden="true" />
+          <div className="w-16 h-[3px] bg-brass mb-6" aria-hidden="true" />
 
           {/* Display level, §05 Table 4. The Arabic uplift in size and
               leading is carried by the [dir=rtl] rules in globals.css. */}
@@ -98,7 +104,7 @@ export default function Hero({ lang, dict }: HeroProps) {
             {fill(dict.hero.subtitle, { count: AGENCY_COUNT })}
           </p>
 
-          <div className={`flex flex-wrap gap-3 mt-9 ${isAr ? "justify-end" : ""}`}>
+          <div className="flex flex-wrap gap-3 mt-9">
             <Link
               href={`/${lang}/contact`}
               className="inline-flex items-center justify-center bg-brass hover:bg-bone text-ink font-semibold text-sm px-8 py-4 transition-colors active-scale-98"
@@ -116,7 +122,10 @@ export default function Hero({ lang, dict }: HeroProps) {
       </div>
 
       {/* Navigation Dots (Bottom Right) */}
-      <div className={`absolute bottom-10 ${isAr ? "left-10" : "right-10 md:right-16"} z-30 flex gap-3`}>
+      {/* `end-*` rather than a left/right ternary: the dots belong in the
+          trailing corner in both languages, and the responsive bump at
+          `md` used to apply to English only. */}
+      <div className="absolute bottom-10 end-10 md:end-16 z-30 flex gap-3">
         {HERO_IMAGES.map((_, idx) => (
           <button
             key={idx}

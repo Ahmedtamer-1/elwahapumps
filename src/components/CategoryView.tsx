@@ -42,10 +42,13 @@ export default function CategoryView({
     );
   }, [products, selectedBrands]);
 
+  // No `md:flex-row-reverse` for Arabic on the row below: `dir="rtl"`
+  // already lays a flex row out right-to-left, so reversing it on top put
+  // the sidebar on the left in *both* languages (S5-T02).
   return (
-    <div className={`flex flex-col md:flex-row min-h-screen bg-white ${isAr ? "md:flex-row-reverse" : ""}`}>
+    <div className="flex flex-col md:flex-row min-h-screen bg-white">
       {/* Sidebar */}
-      <aside className="w-full md:w-72 lg:w-80 bg-[#3f3f3f] text-white shrink-0 p-6 pt-24 md:p-10 md:pt-32 flex flex-col md:min-h-screen">
+      <aside className="w-full md:w-72 lg:w-80 bg-[#3f3f3f] text-white shrink-0 p-6 md:p-10 flex flex-col md:min-h-screen">
         <div className="mb-4">
           <Breadcrumbs
             lang={lang as Locale}
@@ -57,8 +60,12 @@ export default function CategoryView({
             ]}
           />
         </div>
-        <Link href={`/${lang}/products`} className={`text-sm text-neutral-400 hover:text-white flex items-center gap-2 mb-8 group w-fit ${isAr ? "flex-row-reverse" : ""}`}>
-          <ArrowLeft className={`w-4 h-4 group-hover:-translate-x-1 transition-transform ${isAr ? "rotate-180 group-hover:translate-x-1" : ""}`} />
+        {/* The row is not reversed for Arabic — `dir` handles the order,
+            and reversing it as well put the arrow on the far side of the
+            label it points away from. Only the glyph itself flips, which
+            is what `rtl:` variants are for. */}
+        <Link href={`/${lang}/products`} className="text-sm text-neutral-400 hover:text-white flex items-center gap-2 mb-8 group w-fit">
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
           {isAr ? "العودة للمنتجات" : "Back to Products"}
         </Link>
 
@@ -129,7 +136,7 @@ export default function CategoryView({
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 bg-white p-6 pt-24 md:p-12 md:pt-32 lg:p-20 lg:pt-32">
+      <main className="flex-1 bg-white p-6 md:p-12 lg:p-20">
         <div className="max-w-5xl mx-auto flex flex-col gap-12">
           {visibleProducts.map((product) => {
              const titleStr = product.title;

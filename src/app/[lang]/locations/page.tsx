@@ -45,7 +45,7 @@ export default async function LocationsPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-white pb-20">
       {/* Header band. Flat pine — §03.5 allows pine, bone or white only. */}
-      <section className="bg-pine pt-32 pb-14 text-bone">
+      <section className="bg-pine py-16 md:py-20 text-bone">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <span className="spec-label text-brass">
             {isAr ? "شبكة التوزيع" : "Distributor network"}

@@ -407,7 +407,7 @@ export default function Header({ lang, dict }: HeaderProps) {
           </a>
           {/* Western digits everywhere, including the Arabic site (§5.2
               rule 5) — numbers get copied across both languages. */}
-          <span className="font-mono text-[11px] tracking-[0.16em] text-stone block text-center mt-3">
+          <span dir="ltr" className="font-mono text-[11px] tracking-[0.16em] text-stone block text-center mt-3">
             +20 106 668 5532
           </span>
         </div>

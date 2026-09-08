@@ -83,10 +83,10 @@ export default async function ContactPage({ params, searchParams }: PageProps) {
                       {dict.common.phoneLabel}
                     </span>
                     <div className="flex flex-col gap-1 text-neutral-700 text-xs font-semibold">
-                      <a href="tel:+201066685532" className="hover:text-emerald-600 transition-colors">
+                      <a href="tel:+201066685532" dir="ltr" className="hover:text-emerald-600 transition-colors">
                         +20 106 668 5532
                       </a>
-                      <a href="tel:+201068155336" className="hover:text-emerald-600 transition-colors">
+                      <a href="tel:+201068155336" dir="ltr" className="hover:text-emerald-600 transition-colors">
                         +20 106 815 5336
                       </a>
                     </div>

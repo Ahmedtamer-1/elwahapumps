@@ -206,7 +206,7 @@ export default async function CareersPage({ params }: PageProps) {
     <div className="min-h-screen bg-white pb-20">
       {/* 1. Hero. Flat pine — §03.5 allows pine, bone or white only, so no
              stock photograph behind it (§06 rules out other people's). */}
-      <section className="bg-pine pt-32 pb-16 text-bone">
+      <section className="bg-pine py-16 md:py-20 text-bone">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <span className="spec-label text-brass">
             {dict.nav.career || (isAr ? "الوظائف" : "Careers")}
@@ -279,9 +279,13 @@ export default async function CareersPage({ params }: PageProps) {
 
       {/* 3. Open positions. Dropped entirely when there are none, rather than
              left as an empty heading — §1.3 counts empty shells as part of
-             what makes a site read unattended. */}
+             what makes a site read unattended.
+
+             No scroll-margin on the section: html's scroll-padding-top
+             already keeps an anchor jump clear of the fixed header, and
+             the two would stack (S5-T01). */}
       {jobs.length > 0 && (
-        <section id="positions" className="scroll-mt-28 bg-bone py-16">
+        <section id="positions" className="bg-bone py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-t-2 border-pine pt-3">
               <div>

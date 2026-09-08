@@ -73,7 +73,14 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
       </section>
 
       {/* Tabs */}
-      <div className="sticky top-[72px] md:top-[80px] z-40 bg-white/90 backdrop-blur-md pt-6 pb-4 border-b border-neutral-200 mb-10">
+      <div
+        className="sticky z-40 bg-white/90 backdrop-blur-md pt-6 pb-4 border-b border-neutral-200 mb-10"
+        // Flush under the header once the page is scrolled — which it
+        // always is by the time this bar can stick. The old hardcoded
+        // 72/80px sat well above the real header height, so the bar slid
+        // underneath it instead of resting against it (S5-T01).
+        style={{ top: "var(--header-h-scrolled)" }}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center gap-4">
           <Link
             href={`/${lang}/services?tab=all`}

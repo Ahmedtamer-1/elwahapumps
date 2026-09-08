@@ -201,10 +201,53 @@
   --text-label-sm--font-weight: 500;
 }
 
+/*
+ * Height of the fixed header, in one place.
+ *
+ * Header.tsx is `fixed`, so every non-home page has to be pushed down by
+ * exactly its height. That number used to be written out by hand in eight
+ * different files at five different values — none of which matched the
+ * header — so the top of most inner page bands sat behind it (S5-T01).
+ *
+ * Two values, because the header shrinks on scroll:
+ *   --header-h          at rest, for the page offset. Static, so pushing
+ *                       content down never causes a layout shift.
+ *   --header-h-scrolled compact, for anything that has to sit flush under
+ *                       the header while the page is scrolled — the
+ *                       services tab bar, and anchor scroll padding.
+ *
+ * The arithmetic, so this can be recomputed if the header changes:
+ *   logo mark height = x / (165/553)  — Logo.tsx CAP_RATIO, x=16 below
+ *                      `sm`, x=18 above it
+ *   at rest  = py-5 (40) + mark + border-b (1)
+ *   scrolled = py-3 (24) + mark + border-b-2 (2)
+ *   from `lg` both gain the topbar: h-9 (36) + its border-b (1) = 37
+ */
+:root {
+  --header-h: 95px;
+  --header-h-scrolled: 80px;
+}
+
+@media (min-width: 40rem) {
+  :root {
+    --header-h: 102px;
+    --header-h-scrolled: 87px;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-h: 139px;
+    --header-h-scrolled: 124px;
+  }
+}
+
 /* Global scroll behavior */
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  /* The compact height: by the time an anchor jump lands, the page is
+     scrolled and the header has already shrunk. */
+  scroll-padding-top: var(--header-h-scrolled);
 }
 
 body {

@@ -123,9 +123,9 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S5-T01 | Fix the fixed-header offset across all pages | M | PRE | TODO |
-| S5-T02 | Fix RTL direction bugs in Hero and CategoryView | S | PRE | TODO |
-| S5-T03 | Isolate phone numbers from bidi reordering | S | PRE | TODO |
+| S5-T01 | Fix the fixed-header offset across all pages | M | PRE | DONE |
+| S5-T02 | Fix RTL direction bugs in Hero and CategoryView | S | PRE | DONE |
+| S5-T03 | Isolate phone numbers from bidi reordering | S | PRE | DONE |
 | S5-T04 | Build the shared component primitives | L | POST | TODO |
 | S5-T05 | Migrate the home page | M | POST | TODO |
 | S5-T06 | Rebuild the product detail page | L | POST | TODO |
@@ -701,6 +701,15 @@ Per your decision, only breakage fixes ship before cutover; the migration follow
 **Dependencies.** S4-T03 (both touch `template.tsx`).
 **Acceptance.** At 1440 px and at 375 px, the top of the header band is fully visible on about, contact, events, products, careers, catalogues, cart and a product page. Anchor links land below the header, not behind it.
 **Size.** M
+**Status: DONE.** Took the custom-property option rather than restructuring the header to sticky-in-flow — sticky would have changed the home hero's transparent overlay and, because the header shrinks on scroll, would have shifted the page content by 14px mid-scroll (a layout shift the Stage 4 work would rather not pay for).
+
+Two properties in `globals.css`, with the arithmetic documented beside them: `--header-h` (at rest, for the page offset — static, so pushing content down costs no layout shift) and `--header-h-scrolled` (compact, for things that must sit flush under the header once scrolled). `template.tsx` consumes the first; `scroll-padding-top` and the services sticky tab bar consume the second.
+
+Ad hoc patches removed in the same change — nine of them, not the five the audit counted: `pt-32` bands on careers, catalogues, locations, products and selector (all rebased onto the site's own `py-16 md:py-20` band rhythm), `pt-28` on cart, `pt-32` on the product detail wrapper, `pt-24 md:pt-32` twice in `CategoryView`, a stray `mt-10` in `ProductDetailView`, and a `scroll-mt-28` on the careers positions anchor that would have stacked with the new global scroll padding.
+
+Verified against a running production build by measuring real geometry in a browser, not by eye. The three breakpoint values match the header's actual rendered height with 0–1px of clearance: 95/95 at 375px, 102/101 at 800px, 139/138 at 1440px. All eight named pages plus services, selector and a category page report `contentTop >= headerBottom`. The services tab bar rests 1px under the scrolled header (it previously tucked underneath). An injected anchor probe lands at 124px with the header compact at 123px — below it, by 1px.
+
+One note for whoever revisits this: the header's shrink-on-scroll is driven by a React scroll listener, and a programmatic `window.scrollTo` does not trigger it in an automation context — only a real wheel gesture does. Measurements taken after a synthetic scroll will show the at-rest header height and look like a 14px overlap that isn't real.
 
 ### S5-T02 · Fix RTL direction bugs in Hero and CategoryView
 **Why.** These are not polish; they are broken layout in the primary locale. The Hero adds `justify-end` when Arabic, but under `dir="rtl"` flex-end is the left edge, so the Arabic call-to-action buttons sit on the opposite side from the headline they belong to. The category page applies `md:flex-row-reverse` when Arabic, which undoes the RTL flow and puts the sidebar on the left in *both* languages, and its back link combines a reversed row with a rotated arrow so the arrow ends up pointing away from the text.
@@ -709,6 +718,13 @@ Per your decision, only breakage fixes ship before cutover; the migration follow
 **Dependencies.** None.
 **Acceptance.** Side-by-side screenshots of `/ar` and `/en`: hero buttons sit on the same side as the headline in both, and the category sidebar is on the right in Arabic and the left in English.
 **Size.** S
+**Status: DONE.** Deleted the `isAr` layout ternaries in both components. `Hero`: the `justify-end` on the button row (the actual bug — it put the Arabic buttons on the opposite side from their headline), plus two redundant `ml-auto` patches that were re-stating what `dir="rtl"` already does for a narrower block. `CategoryView`: the `md:flex-row-reverse` that un-reversed the RTL row and so put the sidebar on the left in *both* languages, and the back link's `flex-row-reverse`, which moved the arrow to the far side of the label it points away from.
+
+Two ternaries kept deliberately: the hero's background gradient direction, which has no logical-property equivalent, and every `isAr` used to pick *content* rather than layout. The hero slide dots moved from a `left-10`/`right-10 md:right-16` ternary to `end-10 md:end-16` — the responsive bump at `md` had been applying to English only.
+
+Verified by measuring rendered geometry in both locales at 1440px. Arabic: headline centre 988 and buttons centre 1267, both right of the 720 midline. English: 444 and 194, both left. Category sidebar starts at x=1112 of 1440 in Arabic and x=0 in English. Screenshots of both heroes confirm the headline, brass rule and buttons now stack on one side.
+
+Left alone as correct-but-physical, for S5-T11's logical-property sweep: the card padding and corner-button offsets further down `CategoryView`. They produce the right result in both directions today; they are just written as `isAr` physical patches rather than logical properties.
 
 ### S5-T03 · Isolate phone numbers from bidi reordering
 **Why.** Five phone numbers lack `dir="ltr"`, so in Arabic the bidi algorithm moves the leading plus sign to the end and the number renders as `20 106 668 5532+`. The Footer and Careers pages already do this correctly, so the fix is to apply the existing pattern.
@@ -716,6 +732,9 @@ Per your decision, only breakage fixes ship before cutover; the migration follow
 **Dependencies.** None.
 **Acceptance.** On `/ar`, every phone number renders with the plus sign leading.
 **Size.** S
+**Status: DONE.** Applied the Footer's existing `dir="ltr"` pattern to the four places missing it: the header's call-now number, both numbers in the contact page's info panel, the home page's contact strip, and the agent detail page. Catalogues and locations already had it.
+
+Verified programmatically rather than by reading pixels — a bidi reordering is invisible in the DOM text, so the assertion is on computed style: on `/ar`, every element whose text is a phone number reports `direction: ltr` while the document itself reports `rtl`. All five on the contact page, four on the home page and four on an agent page pass. A regex sweep over `src/` finds no remaining phone-number element without a `dir="ltr"` on its opening tag.
 
 ### S5-T04 to S5-T14 · Post-cutover consolidation
 - **S5-T04** Build the primitives: `Button` (replacing eight distinct primary-button recipes), `Card`, `PageBand`, `SectionHead`, `SpecPlate`, all on brand tokens. **L**

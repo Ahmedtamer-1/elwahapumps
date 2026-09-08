@@ -84,7 +84,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
 
   return (
     <div className="min-h-screen bg-black pb-24">
-      <section className="relative bg-neutral-950 px-4 pb-10 pt-32">
+      <section className="relative bg-neutral-950 px-4 py-10">
         <div className="mx-auto max-w-6xl">
           <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-sky-400">
             {t.eyebrow}

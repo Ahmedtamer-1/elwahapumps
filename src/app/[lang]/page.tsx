@@ -207,7 +207,7 @@ export default async function HomePage({ params }: PageProps) {
               className="inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3.5 rounded-xl transition-all shadow-md shadow-emerald-500/10"
             >
               <Phone className="w-5 h-5" />
-              <span>+20 106 668 5532</span>
+              <span dir="ltr">+20 106 668 5532</span>
             </a>
             <Link
               href={`/${lang}/contact`}

@@ -66,7 +66,7 @@ export default async function ProductsPage({ params }: PageProps) {
           that used to sit behind this is another company's photograph, which
           §06 rules out, and a flat ground is what lets the line-art blend
           cleanly anyway. */}
-      <section className="relative pt-32 pb-16 flex flex-col justify-end bg-pine overflow-hidden">
+      <section className="relative py-16 md:py-20 flex flex-col justify-end bg-pine overflow-hidden">
         <div className="relative z-10 w-[95%] max-w-[1600px] mx-auto px-4">
           <div className="mb-14 flex flex-col items-center text-center">
             <h1 className="text-h1 sm:text-display font-extrabold text-bone mt-4">

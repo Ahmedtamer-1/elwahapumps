@@ -41,10 +41,7 @@ export default async function ProductPage({ params }: PageProps) {
           productSchema(lang as Locale, product, `/products/${slug}`),
         )}
       />
-      {/* pt-32 matches the header-clearing padding products/page.tsx already
-          uses; ProductDetailView's own top spacing is a separate, known
-          issue (PLAN.md S5-T01) not touched here. */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Breadcrumbs
           lang={lang as Locale}
           items={[

@@ -239,7 +239,7 @@ export default async function AgentDetailPage({ params }: PageProps) {
                   className="flex items-center justify-center gap-2 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold border border-neutral-800 rounded-xl text-xs transition-all"
                 >
                   <Phone className="w-4 h-4" />
-                  <span>+20 106 668 5532</span>
+                  <span dir="ltr">+20 106 668 5532</span>
                 </a>
               </div>
             </div>
