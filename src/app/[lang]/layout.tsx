@@ -27,8 +27,18 @@ const archivo = Archivo({
   display: "swap",
 });
 
+/**
+ * Arabic only (S4-T11).
+ *
+ * This also carried the `latin` subset. Next injects a preload link per
+ * subset, so that was four extra woff2 files on every page in both locales,
+ * for glyphs that never render from this family: `--font-sans` lists Archivo
+ * first, so Latin always resolves there, and Plex Arabic is only reached for
+ * glyphs Archivo lacks. The `--font-arabic` stack in globals.css is declared
+ * but referenced nowhere, so nothing asks this family for Latin either.
+ */
 const plexArabic = IBM_Plex_Sans_Arabic({
-  subsets: ["arabic", "latin"],
+  subsets: ["arabic"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-plex-arabic",
   display: "swap",

@@ -113,12 +113,12 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S4-T05 | Image formats, cache TTL and asset headers | S | PRE | DONE |
 | S4-T06 | Rename deprecated `priority` to `preload` | S | PRE | DONE |
 | S4-T07 | Add `sizes` to unsized fill images | S | PRE | DONE |
-| S4-T08 | Stop double-rendering the header logo | S | POST | TODO |
+| S4-T08 | Stop double-rendering the header logo | S | POST | DONE |
 | S4-T09 | Pass dictionary slices, not the whole dictionary | M | POST | TODO |
 | S4-T10 | Lighter product DTO for list pages | M | POST | TODO |
-| S4-T11 | Trim font subsets and weights | S | POST | TODO |
-| S4-T12 | Prebuild product and category pages | S | POST | TODO |
-| S4-T13 | Query one product instead of the whole catalogue | S | POST | TODO |
+| S4-T11 | Trim font subsets and weights | S | POST | DONE |
+| S4-T12 | Prebuild product and category pages | S | POST | DONE |
+| S4-T13 | Query one product instead of the whole catalogue | S | POST | DONE |
 
 ### Stage 5 — Design system consolidation
 
@@ -698,6 +698,49 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 - **S4-T11** Trim font subsets — about ten woff2 files preload; Plex Arabic carries a redundant Latin subset that Archivo already covers (`layout.tsx:20-39`). **S**
 - **S4-T12** Prebuild product and category pages with `generateStaticParams` so first visitors do not trigger a cold regeneration; make `/services` static by moving tab filtering client-side. **S**
 - **S4-T13** Query one product instead of the whole catalogue — `getCatalogProduct` loads everything then filters in JavaScript (`lib/products.ts:214-241`); the header mega-menu does the same on every render. **S**
+
+**S4-T08, T11, T12 and T13 done, 10 September 2026.**
+
+- **S4-T13.** `getCatalogProduct` is now a `findFirst` on the unique, indexed
+  `slug`; `getCatalogProductsByCategory` filters in SQL through the category
+  relation the `[isActive, categoryId]` index already covers. Both previously
+  read all 19 products with their 513 variant rows and discarded the rest in
+  JavaScript, on every product and category view. The active check moved into
+  the query so an unpublished product still 404s — verified.
+- **S4-T08.** The header rendered two `<Logo>`s in `hidden sm:block` /
+  `block sm:hidden` wrappers. `display:none` hides an image but does not stop
+  it loading, and the two asked for different `sizes` (42px and 37px), so the
+  browser fetched two optimised variants of the same drawing on every page.
+  Now one element sized from a `--logo-h` custom property, because Logo writes
+  width/height inline and only a merged `style` can win a media query.
+  Measured in the browser: 41.7x60 at 1280px and 37.3x54 at 375px, matching
+  the old x=18 / x=16 renderings exactly. Mark `<img>` elements on the home
+  page went from 4 to 3 — the remaining two are the mobile drawer and the
+  footer, which are separate instances, not duplicates.
+- **S4-T11.** Dropped the redundant `latin` subset from IBM Plex Sans Arabic.
+  **The win was smaller than this plan estimated:** font preloads went from 11
+  to 10, not to 7. Google serves Plex Arabic's Arabic and Latin coverage in one
+  file per weight rather than splitting them the way it does for Latin-only
+  families, so the redundant subset cost one file, not four. The remaining 10
+  are one per declared weight across the three families.
+  **Found while measuring, not fixed:** the declared weights do not match the
+  utilities in use. Archivo declares 400/500/600/800 but `font-bold` (700) is
+  used 86 times and `font-black` (900) 6 times, so Latin bold is synthesised;
+  Plex Arabic declares 400/500/600/700 while `font-extrabold` (800) is used 45
+  times. Correcting that changes how the site looks, so it is a typography
+  decision for the company rather than a performance edit.
+- **S4-T12.** `generateStaticParams` on the product and category routes. Both
+  now build as `● (SSG)` instead of `ƒ (Dynamic)`. The layout's
+  `revalidate = 60` still applies, so this seeds the cache rather than freezing
+  it, and `revalidatePath` from /admin still refreshes immediately. `/services`
+  is left dynamic: making it static means moving its tab filtering client-side,
+  which is S1-T16's concern and a behaviour change, not a build-config one.
+
+**Still open, and now measured.** The category page is 216 KB of HTML for five
+product cards, 164 KB of it (76%) the serialised RSC payload — `CategoryView`
+is a client component, so every product it receives is serialised in full,
+including Tormac's 65 variant rows. That is S4-T10, and it is the largest
+remaining performance win on the site.
 
 ---
 

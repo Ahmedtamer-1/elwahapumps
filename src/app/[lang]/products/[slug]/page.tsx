@@ -2,13 +2,33 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale, Locale } from "../../dictionaries";
 import ProductDetailView from "@/components/ProductDetailView";
-import { getCatalogProduct } from "@/lib/products";
+import { getCatalogProduct, getProductSlugs } from "@/lib/products";
 import { categoryLabel } from "@/data/categories";
 import { localizedAlternates } from "@/lib/seo";
 import { breadcrumbSchema, jsonLdScriptProps, productSchema } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
+}
+
+/**
+ * Prebuild every product in both locales (S4-T12).
+ *
+ * These pages were rendered on demand, so the first visitor to each one paid
+ * for the query and the render — and on a small VPS that first visitor is
+ * often the search-engine crawler forming its impression of the page.
+ *
+ * The layout sets `revalidate = 60`, so this seeds the cache rather than
+ * freezing it: prices stay at most a minute stale, and an edit in /admin
+ * calls revalidatePath for an immediate refresh.
+ *
+ * A product added after the build is not in this list. It still renders —
+ * Next falls back to rendering unknown params on demand — it simply misses
+ * the prebuilt head start.
+ */
+export async function generateStaticParams() {
+  const slugs = await getProductSlugs();
+  return ["ar", "en"].flatMap((lang) => slugs.map((slug) => ({ lang, slug })));
 }
 
 export async function generateMetadata({ params }: PageProps) {

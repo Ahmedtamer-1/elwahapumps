@@ -181,16 +181,31 @@ export default function Header({ lang, dict }: HeaderProps) {
                 brass alif on light grounds, white with brass reversed over
                 the hero. One drawing in two colourways rather than three
                 PNGs in three different greens (§1.2b). */}
-            {/* Responsive switch lives on these wrappers, not on Logo:
-                Logo sets its own `display` inline, which would beat a
-                `hidden` utility class and render both sizes at once. */}
-            <Link href={`/${lang}`} aria-label="El Waha" className="flex items-center min-w-0">
-              <span className="hidden sm:block">
-                <Logo variant="mark" x={18} reversed={isTransparent} preload />
-              </span>
-              <span className="block sm:hidden">
-                <Logo variant="mark" x={16} reversed={isTransparent} />
-              </span>
+            {/* One element, sized in CSS (S4-T08).
+                This used to be two <Logo>s in `hidden sm:block` /
+                `block sm:hidden` wrappers. `display:none` hides an image but
+                does not stop it loading, and the two asked for different
+                `sizes` (42px and 37px), so the browser fetched two separate
+                optimised variants of the same drawing on every page — one of
+                which was never shown.
+
+                The height comes from a custom property rather than a utility
+                class because Logo writes width/height as inline styles, which
+                beat any class; `style` is merged last, so a var set on the
+                wrapper is the one thing that can win a media query here.
+                54px / 60px are the rendered heights the old x=16 / x=18 gave. */}
+            <Link
+              href={`/${lang}`}
+              aria-label="El Waha"
+              className="flex items-center min-w-0 [--logo-h:54px] sm:[--logo-h:60px]"
+            >
+              <Logo
+                variant="mark"
+                x={18}
+                reversed={isTransparent}
+                preload
+                style={{ height: "var(--logo-h)", width: "auto" }}
+              />
             </Link>
 
             {/* Desktop Navigation */}

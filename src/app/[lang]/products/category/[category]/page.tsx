@@ -10,6 +10,20 @@ interface PageProps {
   params: Promise<{ lang: string; category: string }>;
 }
 
+/**
+ * Prebuild all seven categories in both locales (S4-T12).
+ *
+ * The set is fixed and known at build time — the page 404s on anything not in
+ * PRODUCT_CATEGORIES — so there is nothing to discover at runtime. As with the
+ * product pages, the layout's `revalidate = 60` keeps these fresh; this only
+ * removes the cold render the first visitor used to pay for.
+ */
+export async function generateStaticParams() {
+  return ["ar", "en"].flatMap((lang) =>
+    PRODUCT_CATEGORIES.map((category) => ({ lang, category })),
+  );
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { lang, category } = await params;
   if (!hasLocale(lang)) return {};

@@ -233,19 +233,58 @@ export async function getCatalogProducts(lang: string): Promise<CatalogProduct[]
   return rows.map((row) => toCatalogProduct(row, lang));
 }
 
+/**
+ * Slugs of the active catalogue, for `generateStaticParams` (S4-T12).
+ *
+ * Deliberately not `getCatalogProducts().map(p => p.id)`: that would read every
+ * option and variant row and build full DTOs just to take one string from each.
+ */
+export async function getProductSlugs(): Promise<string[]> {
+  const rows = await prisma.product.findMany({
+    where: { isActive: true },
+    orderBy: { createdAt: "asc" },
+    select: { slug: true },
+  });
+  return rows.map((r) => r.slug);
+}
+
+/**
+ * One product, fetched by slug (S4-T13).
+ *
+ * This used to load every active product — with all its options and variant
+ * rows — and then find the wanted one in JavaScript. That is 19 products and
+ * 513 variant rows read, parsed and discarded to render a page that shows one
+ * of them, on every product view. `slug` is unique and indexed, so ask for it.
+ *
+ * `findFirst` rather than `findUnique` because the active check belongs in the
+ * query: an unpublished product must 404, not render.
+ */
 export async function getCatalogProduct(
   slug: string,
   lang: string,
 ): Promise<CatalogProduct | null> {
-  const rows = await getActiveProductRows();
-  const row = rows.find((r) => r.slug === slug);
+  const row = await prisma.product.findFirst({
+    where: { slug, isActive: true },
+    select,
+  });
   return row ? toCatalogProduct(row, lang) : null;
 }
 
+/**
+ * One category's products (S4-T13).
+ *
+ * Also filtered in JavaScript before, after building CatalogProduct objects
+ * for the whole catalogue and throwing most of them away. The category filter
+ * is a relation the `[isActive, categoryId]` index already covers.
+ */
 export async function getCatalogProductsByCategory(
   category: string,
   lang: string,
 ): Promise<CatalogProduct[]> {
-  const products = await getCatalogProducts(lang);
-  return products.filter((p) => p.category === category);
+  const rows = await prisma.product.findMany({
+    where: { isActive: true, category: { slug: category } },
+    orderBy: { createdAt: "asc" },
+    select,
+  });
+  return rows.map((row) => toCatalogProduct(row, lang));
 }
