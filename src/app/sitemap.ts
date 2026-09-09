@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 import { PRODUCT_CATEGORIES } from "@/data/categories";
-import { getCatalogProducts } from "@/lib/products";
+import { getProductSlugs } from "@/lib/products";
 import { events } from "@/data/events";
 import { serviceSlugs } from "./[lang]/services/[slug]/page";
 import { agentSlugs } from "./[lang]/agents/[slug]/page";
@@ -49,14 +49,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/selector",
   ];
 
-  // Product ids (slugs) are locale-independent — one fetch covers both
-  // locale URLs below.
-  const products = await getCatalogProducts("ar");
+  // Slugs are locale-independent — one fetch covers both locale URLs below.
+  // Reads the slug column only (S4-T10): this used to build full catalogue
+  // DTOs, variant rows and all, to take one string from each.
+  const productSlugs = await getProductSlugs();
 
   const entries: MetadataRoute.Sitemap = [
     ...staticPaths.flatMap(entry),
     ...PRODUCT_CATEGORIES.flatMap((slug) => entry(`/products/category/${slug}`)),
-    ...products.flatMap((p) => entry(`/products/${p.id}`)),
+    ...productSlugs.flatMap((slug) => entry(`/products/${slug}`)),
     ...serviceSlugs.flatMap((slug) => entry(`/services/${slug}`)),
     ...agentSlugs.flatMap((slug) => entry(`/agents/${slug}`)),
     ...events.flatMap((e) => entry(`/events/${e.id}`)),

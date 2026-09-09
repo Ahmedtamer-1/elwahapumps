@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 import ProductTeaser from "@/components/ProductTeaser";
 import SelectorForm from "@/components/selector/SelectorForm";
 import SuccessPartners from "@/components/SuccessPartners";
-import { getCatalogProducts } from "@/lib/products";
+import { getCatalogListProducts } from "@/lib/products";
 import { Phone, Mail } from "lucide-react";
 import Link from "next/link";
 import {
@@ -22,7 +22,7 @@ export default async function HomePage({ params }: PageProps) {
   const { lang } = await params;
   const [dict, products] = await Promise.all([
     getDictionary(lang as Locale),
-    getCatalogProducts(lang),
+    getCatalogListProducts(lang),
   ]);
   const isAr = lang === "ar";
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 import type { ProductData } from "@/data/products";
-import type { CatalogProduct } from "@/lib/products";
+import type { CatalogListProduct } from "@/lib/products";
 import type { Dictionary } from "@/app/[lang]/dictionaries";
 import ProductCard from "@/components/ProductCard";
 
@@ -25,7 +25,7 @@ export default function ProductTeaser({
 }: {
   lang: string;
   dict: Dictionary;
-  products: CatalogProduct[];
+  products: CatalogListProduct[];
 }) {
   const categoryLabels = Object.fromEntries(
     PRODUCT_CATEGORIES.map((slug) => [slug, categoryLabel(dict, slug)]),

@@ -37,6 +37,33 @@ export interface CatalogProduct extends ProductData {
   priceMax: number | null;
 }
 
+/**
+ * What a listing actually needs (S4-T10).
+ *
+ * The home teaser and the category view are client components, so every
+ * product handed to them is serialised into the page's RSC payload in full —
+ * options, variant rows, spec tables, model groups and all. On the pumps
+ * category that meant 164 KB of payload, three quarters of the page, to render
+ * five cards; most of it was Tormac's 65 variant rows, which a card never
+ * shows. None of these components reads a price either: they print "Price on
+ * request" unconditionally.
+ *
+ * This carries the eight fields those views actually use. The detail page and
+ * the public API keep the full CatalogProduct.
+ */
+export interface CatalogListProduct {
+  /** The slug. Named `id` to match ProductData, which the cards were built on. */
+  id: string;
+  category: ProductData["category"];
+  title: string;
+  desc: string;
+  gallery: string[];
+  /** The short chips under the title, not the spec table. */
+  specs: string[];
+  modelNo?: string;
+  brand: string | null;
+}
+
 export interface CatalogOptionValue {
   value: string;
   label: string;
@@ -231,6 +258,74 @@ async function getActiveProductRows(): Promise<ProductRow[]> {
 export async function getCatalogProducts(lang: string): Promise<CatalogProduct[]> {
   const rows = await getActiveProductRows();
   return rows.map((row) => toCatalogProduct(row, lang));
+}
+
+/**
+ * Columns a listing card needs. No `options`/`variants` relations, which is
+ * where the weight was — 513 variant rows across the catalogue.
+ */
+const listSelect = {
+  slug: true,
+  nameEn: true,
+  nameAr: true,
+  descEn: true,
+  descAr: true,
+  images: true,
+  specs: true,
+  brand: true,
+  category: { select: { slug: true } },
+} as const;
+
+type ListRow = {
+  slug: string;
+  nameEn: string;
+  nameAr: string;
+  descEn: string | null;
+  descAr: string | null;
+  images: string;
+  specs: string;
+  brand: string | null;
+  category: { slug: string };
+};
+
+function toListProduct(row: ListRow, lang: string): CatalogListProduct {
+  const blob = safeParse<SpecsBlob>(row.specs, {});
+  const gallery = safeParse<string[]>(row.images, []);
+  const isAr = lang === "ar";
+
+  return {
+    id: row.slug,
+    category: row.category.slug as ProductData["category"],
+    title: (isAr ? row.nameAr : row.nameEn) || row.nameEn || row.nameAr || row.slug,
+    desc: (isAr ? row.descAr : row.descEn) || row.descEn || row.descAr || "",
+    gallery: gallery.length > 0 ? gallery : ["/images/products/pump-kurlar.png"],
+    specs: blob.specs ?? [],
+    modelNo: blob.modelNo,
+    brand: row.brand,
+  };
+}
+
+/** The whole catalogue, listing shape (S4-T10). Used by the home teaser. */
+export async function getCatalogListProducts(lang: string): Promise<CatalogListProduct[]> {
+  const rows = await prisma.product.findMany({
+    where: { isActive: true },
+    orderBy: { createdAt: "asc" },
+    select: listSelect,
+  });
+  return rows.map((row) => toListProduct(row, lang));
+}
+
+/** One category, listing shape (S4-T10). Used by the category view. */
+export async function getCatalogListProductsByCategory(
+  category: string,
+  lang: string,
+): Promise<CatalogListProduct[]> {
+  const rows = await prisma.product.findMany({
+    where: { isActive: true, category: { slug: category } },
+    orderBy: { createdAt: "asc" },
+    select: listSelect,
+  });
+  return rows.map((row) => toListProduct(row, lang));
 }
 
 /**

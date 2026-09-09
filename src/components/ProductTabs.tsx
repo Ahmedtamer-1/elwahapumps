@@ -5,7 +5,7 @@ import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { Zap, Droplets, Settings, Layers, Wrench, Cable } from "lucide-react";
 import type { ProductData } from "@/data/products";
-import type { CatalogProduct } from "@/lib/products";
+import type { CatalogListProduct } from "@/lib/products";
 import type { Dictionary } from "../app/[lang]/dictionaries";
 import ProductCard from "@/components/ProductCard";
 
@@ -22,7 +22,7 @@ import ProductCard from "@/components/ProductCard";
 interface ProductTabsProps {
   lang: string;
   dict: Dictionary;
-  products: CatalogProduct[];
+  products: CatalogListProduct[];
 }
 
 function ProductTabsContent({ lang, dict, products }: ProductTabsProps) {

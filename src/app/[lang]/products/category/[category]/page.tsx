@@ -2,7 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale, Locale } from "../../../dictionaries";
 import CategoryView from "@/components/CategoryView";
-import { PRODUCT_CATEGORIES, getCatalogProductsByCategory } from "@/lib/products";
+import { PRODUCT_CATEGORIES, getCatalogListProductsByCategory } from "@/lib/products";
 import { categoryLabel } from "@/data/categories";
 import { localizedAlternates } from "@/lib/seo";
 
@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }: PageProps) {
   }
 
   const [categoryProducts, dict] = await Promise.all([
-    getCatalogProductsByCategory(category, lang),
+    getCatalogListProductsByCategory(category, lang),
     getDictionary(lang as Locale),
   ]);
 

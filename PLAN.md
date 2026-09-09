@@ -115,7 +115,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S4-T07 | Add `sizes` to unsized fill images | S | PRE | DONE |
 | S4-T08 | Stop double-rendering the header logo | S | POST | DONE |
 | S4-T09 | Pass dictionary slices, not the whole dictionary | M | POST | TODO |
-| S4-T10 | Lighter product DTO for list pages | M | POST | TODO |
+| S4-T10 | Lighter product DTO for list pages | M | POST | DONE |
 | S4-T11 | Trim font subsets and weights | S | POST | DONE |
 | S4-T12 | Prebuild product and category pages | S | POST | DONE |
 | S4-T13 | Query one product instead of the whole catalogue | S | POST | DONE |
@@ -736,11 +736,25 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
   is left dynamic: making it static means moving its tab filtering client-side,
   which is S1-T16's concern and a behaviour change, not a build-config one.
 
-**Still open, and now measured.** The category page is 216 KB of HTML for five
-product cards, 164 KB of it (76%) the serialised RSC payload — `CategoryView`
-is a client component, so every product it receives is serialised in full,
-including Tormac's 65 variant rows. That is S4-T10, and it is the largest
-remaining performance win on the site.
+**S4-T10 done, 10 September 2026.** A `CatalogListProduct` type carrying the
+eight fields the cards actually read — id, category, title, desc, gallery,
+spec chips, model code, brand — with its own query that omits the `options`
+and `variants` relations entirely. The home teaser, the category view and the
+cards now take it; the detail page and the public API keep the full DTO.
+
+Measured on `/en/products/category/pumps`: **216 KB -> 114 KB**, with the RSC
+payload 164 KB -> 62 KB. Arabic 130 KB. Nothing regressed: the same 5 products,
+the S0-T15 brand filter, the spec chips and the model codes all still render,
+and the detail page still has its variant matrix.
+
+The sitemap was doing the same thing in miniature — building full catalogue
+DTOs to take one slug from each — and now reads the slug column via
+`getProductSlugs()`. Still lists all 19 products.
+
+**The home page did not move** (422 KB, 192 KB of payload). Its weight is not
+products: it is the dictionary, serialised into every client component that
+takes a `dict` prop, plus 80 KB of srcsets across 80 images. That is S4-T09,
+now the largest remaining performance item.
 
 ---
 

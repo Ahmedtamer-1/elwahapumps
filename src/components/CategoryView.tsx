@@ -5,7 +5,7 @@ import { categoryLabel } from "@/data/categories";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
-import type { CatalogProduct } from "@/lib/products";
+import type { CatalogListProduct } from "@/lib/products";
 import { priceOnRequestLabel } from "@/lib/price";
 import type { Dictionary, Locale } from "../app/[lang]/dictionaries";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -17,7 +17,7 @@ export default function CategoryView({
   lang,
   dict,
 }: {
-  products: CatalogProduct[];
+  products: CatalogListProduct[];
   category: string;
   lang: string;
   dict: Dictionary;

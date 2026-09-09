@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { CatalogProduct } from "@/lib/products";
+import type { CatalogListProduct } from "@/lib/products";
 import { priceOnRequestLabel } from "@/lib/price";
 
 /**
@@ -13,7 +13,7 @@ export default function ProductCard({
   lang,
   label,
 }: {
-  product: CatalogProduct;
+  product: CatalogListProduct;
   lang: string;
   label: string;
 }) {
