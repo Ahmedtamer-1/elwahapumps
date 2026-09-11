@@ -36,7 +36,8 @@ const coordinate = (
     );
 
 const distributorSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(200),
+  nameAr: z.string().trim().min(1, "Arabic name is required").max(200),
+  nameEn: z.string().trim().min(1, "English name is required").max(200),
   phone: z
     .string()
     .trim()
@@ -86,7 +87,8 @@ export async function saveDistributor(
   const id = String(formData.get("id") ?? "");
 
   const parsed = distributorSchema.safeParse({
-    name: formData.get("name"),
+    nameAr: formData.get("nameAr"),
+    nameEn: formData.get("nameEn"),
     phone: formData.get("phone"),
     cityAr: formData.get("cityAr"),
     cityEn: formData.get("cityEn"),
@@ -105,7 +107,8 @@ export async function saveDistributor(
   const d = parsed.data;
 
   const data = {
-    name: d.name,
+    nameAr: d.nameAr,
+    nameEn: d.nameEn,
     // Strip anything that is not a digit, so a pasted "0101 234 5678" saves
     // in the same shape the tel: and wa.me links are built from.
     phone: d.phone.replace(/\D/g, ""),

@@ -13,7 +13,7 @@ export default async function DistributorsAdminPage() {
   await requireUser();
 
   const distributors = await prisma.distributor.findMany({
-    orderBy: [{ region: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
+    orderBy: [{ region: "asc" }, { sortOrder: "asc" }, { nameEn: "asc" }],
   });
 
   const liveCount = distributors.filter((d) => d.isActive).length;
@@ -82,8 +82,11 @@ export default async function DistributorsAdminPage() {
                               href={`/admin/distributors/${d.id}`}
                               className="font-semibold text-ink hover:text-emerald-700 block"
                             >
-                              {d.name}
+                              {d.nameEn}
                             </Link>
+                            <p className="text-xs text-stone" dir="rtl">
+                              {d.nameAr}
+                            </p>
                             <p className="text-xs text-stone-light font-mono" dir="ltr">
                               {d.phone}
                             </p>

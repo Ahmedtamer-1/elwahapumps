@@ -25,7 +25,8 @@ function toRegion(value: string): Region {
 
 type DistributorRow = {
   id: string;
-  name: string;
+  nameAr: string;
+  nameEn: string;
   phone: string;
   cityAr: string;
   cityEn: string;
@@ -38,7 +39,7 @@ type DistributorRow = {
 function toView(row: DistributorRow): Distributor {
   return {
     id: row.id,
-    name: row.name,
+    name: { ar: row.nameAr, en: row.nameEn },
     phone: row.phone,
     city: { ar: row.cityAr, en: row.cityEn },
     region: toRegion(row.region),
@@ -60,7 +61,7 @@ function toView(row: DistributorRow): Distributor {
 export async function getPublishedDistributors(): Promise<Distributor[]> {
   const rows = await prisma.distributor.findMany({
     where: { isActive: true },
-    orderBy: [{ region: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
+    orderBy: [{ region: "asc" }, { sortOrder: "asc" }, { nameEn: "asc" }],
   });
 
   return rows.map(toView);

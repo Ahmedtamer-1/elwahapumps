@@ -26,7 +26,8 @@ export default async function EditDistributorPage({
 
   const values: DistributorFormValues = {
     id: distributor.id,
-    name: distributor.name,
+    nameAr: distributor.nameAr,
+    nameEn: distributor.nameEn,
     phone: distributor.phone,
     cityAr: distributor.cityAr,
     cityEn: distributor.cityEn,
@@ -49,7 +50,7 @@ export default async function EditDistributorPage({
       </Link>
 
       <PageHeader
-        title={distributor.name}
+        title={distributor.nameEn}
         subtitle={`${distributor.cityEn} · ${distributor.phone}`}
         action={
           // Checking the pin is the one thing you cannot do from the form.

@@ -3,7 +3,10 @@
  *
  * Run with:  npx tsx scripts/seed-distributors.ts
  *
- * Name, phone and mapUrl are verbatim from the sheet and authoritative.
+ * Names, phone and mapUrl come from the sheet, as checked and returned by the
+ * owner on 11 Sep 2026. Each name is held in both scripts so neither language
+ * page shows the other's; the English spellings of the Arabic names are
+ * transliterations and should be confirmed before print use.
  * `lat`/`lng` are NOT in the sheet — it carries only a Google Maps *search*
  * link by city name, which has no coordinates in it — so every pin below is a
  * town-centre coordinate looked up from the city name. Accurate enough to put
@@ -13,7 +16,7 @@
  * does not resolve to a single place. Fix those in /admin/distributors once
  * the real locations are known.
  *
- * Safe to re-run: a distributor whose name and phone already exist is skipped,
+ * Safe to re-run: a distributor whose phone is already on file is skipped,
  * so this will not duplicate rows or overwrite edits made in the admin.
  */
 
@@ -30,7 +33,8 @@ function mapsSearch(query: string): string {
 }
 
 interface SeedRow {
-  name: string;
+  nameAr: string;
+  nameEn: string;
   phone: string;
   cityAr: string;
   cityEn: string;
@@ -47,7 +51,8 @@ interface SeedRow {
 const ROWS: SeedRow[] = [
   // ── Greater Cairo & Giza ──────────────────────────────────────────────
   {
-    name: "آبار جروب",
+    nameAr: "آبار جروب",
+    nameEn: "Abar Group",
     phone: "01021991995",
     cityAr: "أبو رواش",
     cityEn: "Abu Rawash",
@@ -58,7 +63,8 @@ const ROWS: SeedRow[] = [
     sortOrder: 1,
   },
   {
-    name: "نور المصطفى",
+    nameAr: "نور المصطفى",
+    nameEn: "Nour El Mostafa",
     phone: "01145069247",
     cityAr: "السبتية",
     cityEn: "El Sabtiya",
@@ -69,7 +75,8 @@ const ROWS: SeedRow[] = [
     sortOrder: 2,
   },
   {
-    name: "مجدي خلاف",
+    nameAr: "مجدي خلاف",
+    nameEn: "Magdy Khallaf",
     phone: "01272448666",
     cityAr: "السبتية",
     cityEn: "El Sabtiya",
@@ -80,21 +87,23 @@ const ROWS: SeedRow[] = [
     sortOrder: 3,
   },
   {
-    name: "Green Solar",
+    nameAr: "جرين سولار",
+    nameEn: "Green Solar",
     phone: "01203637999",
-    cityAr: "الجيزة - طريق الواحات",
-    cityEn: "Giza — Wahat Road",
+    cityAr: "الجيزة - الواحات البحريه",
+    cityEn: "Giza — Bahariya Oasis Road",
     region: "greater-cairo",
     lat: 29.987,
     lng: 31.1313,
-    sheetQuery: "الجيزه - الواحات, Egypt",
+    sheetQuery: "الجيزة - الواحات البحريه, Egypt",
     sortOrder: 4,
-    needsConfirmation: "Wahat Road runs ~350 km. Pinned at the Giza end — ask for the km marker.",
+    needsConfirmation: "Bahariya road runs ~350 km. Pinned at the Giza end — ask for the km marker.",
   },
 
   // ── Upper Egypt ───────────────────────────────────────────────────────
   {
-    name: "خليل سرور",
+    nameAr: "خليل سرور",
+    nameEn: "Khalil Sorour",
     phone: "01098406882",
     cityAr: "المنيا",
     cityEn: "Minya",
@@ -105,7 +114,8 @@ const ROWS: SeedRow[] = [
     sortOrder: 1,
   },
   {
-    name: "Star Sun",
+    nameAr: "ستار صن",
+    nameEn: "Star Sun",
     phone: "01120204442",
     cityAr: "أسيوط",
     cityEn: "Asyut",
@@ -116,7 +126,8 @@ const ROWS: SeedRow[] = [
     sortOrder: 3,
   },
   {
-    name: "عبدالرحمن العربي",
+    nameAr: "عبدالرحمن العربي",
+    nameEn: "Abdelrahman El Araby",
     phone: "01000525848",
     cityAr: "نكلة",
     cityEn: "Nakla",
@@ -130,7 +141,8 @@ const ROWS: SeedRow[] = [
 
   // ── New Valley & the Oases ────────────────────────────────────────────
   {
-    name: "مجدي خلف",
+    nameAr: "مجدي خلف",
+    nameEn: "Magdy Khalaf",
     phone: "01125752380",
     cityAr: "الفرافرة",
     cityEn: "Farafra",
@@ -141,7 +153,8 @@ const ROWS: SeedRow[] = [
     sortOrder: 1,
   },
   {
-    name: "رضا البسيوني",
+    nameAr: "رضا البسيوني",
+    nameEn: "Reda El Bassiouny",
     phone: "01553328611",
     cityAr: "الفرافرة",
     cityEn: "Farafra",
@@ -152,7 +165,8 @@ const ROWS: SeedRow[] = [
     sortOrder: 2,
   },
   {
-    name: "Solar City",
+    nameAr: "سولار سيتي",
+    nameEn: "Solar City",
     phone: "01111753518",
     cityAr: "الداخلة",
     cityEn: "Dakhla",
@@ -163,7 +177,8 @@ const ROWS: SeedRow[] = [
     sortOrder: 3,
   },
   {
-    name: "عبد الحميد جاما",
+    nameAr: "عبد الحميد جاما",
+    nameEn: "Abdel Hamid Gama",
     phone: "01212972544",
     cityAr: "الواحات",
     cityEn: "El Wahat (Bahariya)",
@@ -183,19 +198,20 @@ async function main() {
 
   for (const row of ROWS) {
     const existing = await prisma.distributor.findFirst({
-      where: { name: row.name, phone: row.phone },
+      where: { phone: row.phone },
       select: { id: true },
     });
 
     if (existing) {
-      console.log(`skipped (already exists): ${row.name} — ${row.cityEn}`);
+      console.log(`skipped (already exists): ${row.nameEn} — ${row.cityEn}`);
       skipped++;
       continue;
     }
 
     await prisma.distributor.create({
       data: {
-        name: row.name,
+        nameAr: row.nameAr,
+        nameEn: row.nameEn,
         phone: row.phone,
         cityAr: row.cityAr,
         cityEn: row.cityEn,
@@ -208,11 +224,11 @@ async function main() {
       },
     });
 
-    console.log(`created: ${row.name} — ${row.cityEn}`);
+    console.log(`created: ${row.nameEn} — ${row.cityEn}`);
     created++;
 
     if (row.needsConfirmation) {
-      toConfirm.push(`  ${row.name} (${row.cityAr}): ${row.needsConfirmation}`);
+      toConfirm.push(`  ${row.nameEn} (${row.cityAr}): ${row.needsConfirmation}`);
     }
   }
 

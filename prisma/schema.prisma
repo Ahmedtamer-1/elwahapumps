@@ -221,7 +221,10 @@ model CartInquiry {
 model Distributor {
   id     String @id @default(cuid())
   /// As the company writes it. Several are trading names, not people.
-  name   String
+  /// Held in both languages so the English page never falls back to Arabic
+  /// script mid-sentence — the same split as cityAr/cityEn below.
+  nameAr String
+  nameEn String
   /// Egyptian mobile in local form, e.g. 01012345678.
   phone  String
   cityAr String

@@ -134,7 +134,7 @@ function createPopupContent(
 
   const name = document.createElement("p");
   name.className = "elw-popup__name";
-  name.textContent = d.name;
+  name.textContent = isAr ? d.name.ar : d.name.en;
   root.appendChild(name);
 
   const city = document.createElement("p");
@@ -254,7 +254,10 @@ export default function DistributorMap({
 
     for (const d of distributors) {
       const el = createPinElement();
-      el.setAttribute("aria-label", `${d.name} — ${isAr ? d.city.ar : d.city.en}`);
+      el.setAttribute(
+        "aria-label",
+        `${isAr ? d.name.ar : d.name.en} — ${isAr ? d.city.ar : d.city.en}`,
+      );
       el.addEventListener("click", (event) => {
         event.stopPropagation();
         onSelectRef.current(d.id);

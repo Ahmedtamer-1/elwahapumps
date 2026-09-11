@@ -24,7 +24,8 @@ export const REGION_ORDER: Region[] = ["greater-cairo", "upper-egypt", "oases"];
 /** A distributor as the public page consumes it. */
 export interface Distributor {
   id: string;
-  name: string;
+  /** Both scripts, so neither language shows the other's. */
+  name: { ar: string; en: string };
   phone: string;
   city: { ar: string; en: string };
   region: Region;

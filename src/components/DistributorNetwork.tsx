@@ -59,7 +59,7 @@ function DistributorCard({
         />
         <span className="min-w-0 flex-1">
           <span className="block text-[15px] font-semibold text-ink">
-            {distributor.name}
+            {isAr ? distributor.name.ar : distributor.name.en}
           </span>
           <span className="mt-0.5 block text-[13px] text-stone">
             {isAr ? distributor.city.ar : distributor.city.en}

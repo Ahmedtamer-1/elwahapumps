@@ -10,7 +10,8 @@ import { REGIONS, REGION_LABELS } from "@/data/distributors";
 
 export interface DistributorFormValues {
   id: string;
-  name: string;
+  nameAr: string;
+  nameEn: string;
   phone: string;
   cityAr: string;
   cityEn: string;
@@ -43,14 +44,26 @@ export default function DistributorForm({
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="Name" hint="Person or trading name, as it should appear">
+        <Field label="Name (Arabic)" hint="Person or trading name, as it appears on the Arabic page">
           <input
-            name="name"
+            name="nameAr"
             required
-            defaultValue={distributor?.name ?? ""}
+            dir="rtl"
+            defaultValue={distributor?.nameAr ?? ""}
             className={inputClass}
           />
         </Field>
+        <Field label="Name (English)" hint="The same name in Latin script, for the English page">
+          <input
+            name="nameEn"
+            required
+            defaultValue={distributor?.nameEn ?? ""}
+            className={inputClass}
+          />
+        </Field>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Field label="Phone" hint="11 digits, e.g. 01012345678">
           <input
             name="phone"
