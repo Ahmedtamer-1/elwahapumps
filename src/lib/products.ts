@@ -329,6 +329,35 @@ export async function getCatalogListProductsByCategory(
 }
 
 /**
+ * How many live products sit in each category, keyed by slug.
+ *
+ * The category page's tab bar prints these beside every tab, so a reader can
+ * see what a category holds before opening it. Counted in the database rather
+ * than by fetching each category's products and taking `.length`: the tab bar
+ * needs six numbers, not six lists of DTOs.
+ *
+ * Categories with nothing live in them are absent from the groupBy result, so
+ * the caller reads a missing slug as 0.
+ */
+export async function getCategoryCounts(): Promise<Record<string, number>> {
+  const rows = await prisma.product.groupBy({
+    by: ["categoryId"],
+    where: { isActive: true },
+    _count: { _all: true },
+  });
+
+  const categories = await prisma.category.findMany({ select: { id: true, slug: true } });
+  const slugById = new Map(categories.map((c) => [c.id, c.slug]));
+
+  const counts: Record<string, number> = {};
+  for (const row of rows) {
+    const slug = slugById.get(row.categoryId);
+    if (slug) counts[slug] = row._count._all;
+  }
+  return counts;
+}
+
+/**
  * Slugs of the active catalogue, for `generateStaticParams` (S4-T12).
  *
  * Deliberately not `getCatalogProducts().map(p => p.id)`: that would read every

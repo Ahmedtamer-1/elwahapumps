@@ -1,33 +1,51 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { categoryLabel } from "@/data/categories";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ArrowRight, ArrowLeft } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 import type { CatalogListProduct } from "@/lib/products";
-import { priceOnRequestLabel } from "@/lib/price";
 import type { Dictionary, Locale } from "../app/[lang]/dictionaries";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { brandOrder } from "@/data/brands";
 
+/**
+ * One category of the catalogue, as a grid of cards under a tab bar.
+ *
+ * This was a dark sidebar beside a single column of stacked rows: the filter
+ * and the breadcrumb lived in the sidebar, and each product took the full
+ * width of the page, so four pumps filled two screens and moving to another
+ * category meant going back to /products first.
+ *
+ * The tabs are real links, one per category, not client-side filter state.
+ * Each category already has its own indexable URL, and a reader who lands on
+ * /products/category/motors from search can then reach the other five without
+ * a round trip through the index page.
+ *
+ * The brand filter is the one control that stays client-side — it narrows
+ * what is already on the page, and putting it in the URL would fork the
+ * canonical address of a category into a set of near-identical ones.
+ */
 export default function CategoryView({
   products,
   category,
   lang,
   dict,
+  counts,
 }: {
   products: CatalogListProduct[];
   category: string;
   lang: string;
   dict: Dictionary;
+  /** Live product count per category slug, for the tab bar. */
+  counts: Record<string, number>;
 }) {
   const isAr = lang === "ar";
   const title = categoryLabel(dict, category);
 
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  
+
   // Real manufacturers, read from the product's own brand field.
   //
   // This used to split the model number and take the first word, which is why
@@ -36,7 +54,7 @@ export default function CategoryView({
   // looking for Kurlar, Rovatti, Panelli or Tormac found none of them, and the
   // twelve agencies the company actually holds appeared nowhere.
   //
-  // Ordered to match the agency list in company.ts, so the sidebar, the logo
+  // Ordered to match the agency list in company.ts, so the chips, the logo
   // wall and the agents page all name the manufacturers in the same order.
   const availableBrands = useMemo(() => {
     const brands = new Set<string>();
@@ -51,17 +69,45 @@ export default function CategoryView({
     return products.filter((p) => p.brand && selectedBrands.includes(p.brand));
   }, [products, selectedBrands]);
 
-  // No `md:flex-row-reverse` for Arabic on the row below: `dir="rtl"`
-  // already lays a flex row out right-to-left, so reversing it on top put
-  // the sidebar on the left in *both* languages (S5-T02).
+  const totalCount = useMemo(
+    () => Object.values(counts).reduce((sum, n) => sum + n, 0),
+    [counts],
+  );
+
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-white">
-      {/* Sidebar */}
-      <aside className="w-full md:w-72 lg:w-80 bg-[#3f3f3f] text-bone shrink-0 p-6 md:p-10 flex flex-col md:min-h-screen">
-        <div className="mb-4">
+    <div className="bg-white">
+      {/* Tab bar. Horizontally scrollable on a phone rather than wrapped to
+          three rows — the tabs are a single line of navigation, and a reader
+          who can see the row is cut off knows to push it. */}
+      <nav
+        aria-label={isAr ? "أقسام المنتجات" : "Product categories"}
+        className="border-b border-rule bg-white"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-1 overflow-x-auto">
+            <TabLink
+              href={`/${lang}/products`}
+              label={isAr ? "كل المنتجات" : "All Products"}
+              count={totalCount}
+              active={false}
+            />
+            {PRODUCT_CATEGORIES.map((slug) => (
+              <TabLink
+                key={slug}
+                href={`/${lang}/products/category/${slug}`}
+                label={categoryLabel(dict, slug)}
+                count={counts[slug] ?? 0}
+                active={slug === category}
+              />
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <div className="mb-8">
           <Breadcrumbs
             lang={lang as Locale}
-            dark
             items={[
               { name: dict.nav.home, path: "/" },
               { name: dict.nav.products, path: "/products" },
@@ -69,158 +115,195 @@ export default function CategoryView({
             ]}
           />
         </div>
-        {/* The row is not reversed for Arabic — `dir` handles the order,
-            and reversing it as well put the arrow on the far side of the
-            label it points away from. Only the glyph itself flips, which
-            is what `rtl:` variants are for. */}
-        <Link href={`/${lang}/products`} className="text-sm text-bone/75 hover:text-bone flex items-center gap-2 mb-8 group w-fit">
-          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 rtl:rotate-180 rtl:group-hover:translate-x-1" />
-          {isAr ? "العودة للمنتجات" : "Back to Products"}
-        </Link>
 
-        <div className="flex justify-between items-center mb-6 md:mb-8">
-          {/* The decorative icon is a block-level div, which isn't valid
-              content inside h1 (heading content is phrasing content) — it
-              now sits beside the h1 in a shared flex wrapper instead of
-              nested inside it. */}
-          <div className="flex items-center gap-4">
-            <div
-              className="w-10 h-10 border border-rule flex items-center justify-center opacity-70"
-              aria-hidden="true"
-            >
-              <div className="w-4 h-4 border border-current"></div>
-            </div>
-            <h1 className="text-2xl font-light">{title}</h1>
+        {/* Brand filter.
+            Shown only when a category carries more than one brand. With a
+            single manufacturer the control cannot narrow anything: ticking
+            its one chip only hides the items that have no brand at all, which
+            is not what a reader expects a brand filter to do. Pipes (Astral
+            only) and Electrical (NOVO, plus El Waha's own control panels)
+            fall into that case.
+
+            A group of toggle buttons rather than checkboxes now that it sits
+            in a row: each chip carries its own pressed state, so the state is
+            announced without a label wrapping an invisible input. */}
+        {availableBrands.length > 1 && (
+          <div className="flex flex-wrap items-center gap-2 mb-8 pb-8 border-b border-rule-light">
+            <span className="spec-label text-stone-light me-2">
+              {isAr ? "الماركة" : "Brand"}
+            </span>
+            {availableBrands.map((brand) => {
+              const on = selectedBrands.includes(brand);
+              return (
+                <button
+                  key={brand}
+                  type="button"
+                  aria-pressed={on}
+                  onClick={() =>
+                    setSelectedBrands((prev) =>
+                      prev.includes(brand)
+                        ? prev.filter((b) => b !== brand)
+                        : [...prev, brand],
+                    )
+                  }
+                  className={`px-4 py-2 text-sm font-semibold border transition-colors ${
+                    on
+                      ? "bg-pine text-bone border-pine"
+                      : "bg-white text-stone border-rule hover:border-pine hover:text-pine"
+                  }`}
+                >
+                  {brand}
+                </button>
+              );
+            })}
+            {selectedBrands.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setSelectedBrands([])}
+                className="px-3 py-2 text-sm font-semibold text-stone underline underline-offset-4 hover:text-pine"
+              >
+                {isAr ? "إلغاء التصفية" : "Clear"}
+              </button>
+            )}
           </div>
-          <button
-            className="md:hidden border border-rule px-3 py-1.5 text-xs font-medium uppercase tracking-wider"
-            onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-          >
-            {isFiltersOpen ? (isAr ? "إخفاء الفلاتر" : "Hide Filters") : (isAr ? "إظهار الفلاتر" : "Show Filters")}
-          </button>
-        </div>
+        )}
 
-        <div className={`flex flex-col overflow-hidden transition-all duration-500 ${isFiltersOpen ? "max-h-[2000px] opacity-100 mt-4" : "max-h-0 opacity-0 md:max-h-none md:opacity-100 md:mt-0"}`}>
-          {availableBrands.length > 0 && (
-            <div className="text-sm mb-6">
-              {isAr ? "تصفية حسب :" : "Filter by :"}
-            </div>
-          )}
+        {visibleProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {visibleProducts.map((product) => (
+              <ProductTile
+                key={product.id}
+                product={product}
+                lang={lang}
+                isAr={isAr}
+                categoryName={title}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-stone py-20">
+            {products.length === 0
+              ? isAr
+                ? "لا توجد منتجات في هذا القسم."
+                : "No products found in this category."
+              : isAr
+                ? "لا توجد منتجات مطابقة لهذه التصفية."
+                : "No products match the selected filter."}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
-          {/* Filters */}
-          <div className="flex flex-col gap-8 pb-6 md:pb-0">
-          {/* Brand Filter — wired to actually filter `products` below, on the
-              product's real manufacturer.
+/** One tab. The count is part of the link's text, so it is read out with it. */
+function TabLink({
+  href,
+  label,
+  count,
+  active,
+}: {
+  href: string;
+  label: string;
+  count: number;
+  active: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={`shrink-0 flex items-baseline gap-2 px-4 py-4 text-sm font-semibold border-b-2 -mb-px transition-colors whitespace-nowrap ${
+        active
+          ? "border-brass text-pine"
+          : "border-transparent text-stone hover:text-pine hover:border-rule"
+      }`}
+    >
+      {label}
+      <span className="font-mono text-xs text-stone-light tabular-nums">{count}</span>
+    </Link>
+  );
+}
 
-              Shown only when a category carries more than one brand. With a
-              single manufacturer the control cannot narrow anything: ticking
-              its one box only hides the items that have no brand at all, which
-              is not what a reader expects a brand filter to do. Pipes (Astral
-              only) and Electrical (NOVO, plus El Waha's own control panels)
-              fall into that case. */}
-          {availableBrands.length > 1 && (
-            <div className="flex flex-col gap-3">
-              {/* A filter-group label, not a heading — matches Footer's and
-                  the mega-menu's column labels, and keeps this from
-                  sitting as an h3 before the page's first h2 (the product
-                  titles in the main column). */}
-              <p className="font-bold text-lg mb-1">{isAr ? "الماركة" : "Brand"}</p>
-              <div className="h-px w-full bg-rule mb-2"></div>
-              {availableBrands.map(brand => (
-                <label key={brand} className="flex items-center gap-3 text-sm cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={selectedBrands.includes(brand)}
-                    onChange={() =>
-                      setSelectedBrands((prev) =>
-                        prev.includes(brand)
-                          ? prev.filter((b) => b !== brand)
-                          : [...prev, brand],
-                      )
-                    }
-                    className="w-3.5 h-3.5 bg-transparent border border-white/70 appearance-none checked:bg-white checked:border-white transition-colors cursor-pointer"
-                  />
-                  <span className="group-hover:text-stone-light">{brand}</span>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-        </div>
-      </aside>
+/**
+ * One product card.
+ *
+ * The whole tile is a single link. The "View product" row at the foot is
+ * part of it rather than a second link to the same place — two links with
+ * different names pointing at one product is what a screen reader has to
+ * read twice.
+ */
+function ProductTile({
+  product,
+  lang,
+  isAr,
+  categoryName,
+}: {
+  product: CatalogListProduct;
+  lang: string;
+  isAr: boolean;
+  categoryName: string;
+}) {
+  // Some modelNo values already end in "Series" (e.g. "AP+ Series"), which
+  // used to render as "AP+ Series Series".
+  const series = product.modelNo
+    ? /series\s*$/i.test(product.modelNo)
+      ? product.modelNo
+      : `${product.modelNo} Series`
+    : null;
 
-      {/* Product column. A <div>, not a <main>: the locale layout already
-          renders the page's single <main id="main"> landmark, and nesting a
-          second one inside it broke three axe landmark rules (S6-T12). */}
-      <div className="flex-1 bg-white p-6 md:p-12 lg:p-20">
-        <div className="max-w-5xl mx-auto flex flex-col gap-12">
-          {visibleProducts.map((product) => {
-             const titleStr = product.title;
+  const eyebrow = [product.brand, series].filter(Boolean).join(" · ");
 
-             return (
-               <div key={product.id} className="flex flex-col md:flex-row gap-8 items-center md:items-start group border-b border-rule pb-12 relative w-full">
-                 {/* Product Image */}
-                 <Link href={`/${lang}/products/${product.id}`} className="w-full md:w-72 aspect-[4/3] bg-bone relative shrink-0 cursor-pointer overflow-hidden">
-                   <Image 
-                     src={product.gallery[0] || "/images/placeholder.jpg"} 
-                     alt={titleStr}
-                     fill
-                     className="object-contain p-4 mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-                   />
-                 </Link>
-                 
-                 {/* Product Info */}
-                 <div className={`flex-1 flex flex-col pt-2 w-full ${isAr ? 'md:pr-4' : 'md:pl-4'}`}>
-                   <h2 className="text-xl font-bold text-ink mb-1">{titleStr}</h2>
-                   {/* Some modelNo values already end in "Series" (e.g. "AP+
-                       Series"), which used to render as "AP+ Series Series". */}
-                   <p className="text-sm text-stone mb-4">
-                     {product.modelNo
-                       ? /series\s*$/i.test(product.modelNo)
-                         ? product.modelNo
-                         : `${product.modelNo} Series`
-                       : categoryLabel(dict, category)}
-                   </p>
-                   
-                   <div className="flex flex-col gap-1.5 text-xs text-stone font-medium">
-                     {product.specs.slice(0, 3).map((spec, i) => (
-                       <div key={i} className="flex gap-2">
-                         <span className="text-stone">{isAr ? "ميزة:" : "Feature:"}</span>
-                         <span className="text-stone">{spec}</span>
-                       </div>
-                     ))}
-                   </div>
+  /* The size markers the catalogue quotes — 6"-10", IP68, 50 Hz — pulled out
+     of the spec chips by length. The same array also holds selling phrases
+     ("Corrosion Resistant", "Made in Italy"); those belong in the description,
+     not in a corner of the card's foot, and at that width they pushed the
+     "View product" row onto two lines. Two at most, for the same reason. */
+  const markers = product.specs.filter((s) => s.length <= 12).slice(0, 2);
 
-                   <p className="mt-4 text-lg font-bold text-ink">
-                     {priceOnRequestLabel(lang)}
-                   </p>
-                   
-                   {/* Icon-only, so it needs a name of its own — and one
-                       that says *which* product, since a page of these
-                       otherwise reads as a list of identical "link"s. */}
-                   <Link
-                     href={`/${lang}/products/${product.id}`}
-                     aria-label={isAr ? `عرض ${titleStr}` : `View ${titleStr}`}
-                     className={`absolute bottom-0 ${isAr ? 'left-0' : 'right-0'} translate-y-1/2 w-12 h-12 bg-pine text-white rounded-full flex items-center justify-center hover:bg-emerald-600 transition-colors z-10`}
-                   >
-                     {isAr
-                       ? <ArrowUpRight className="w-5 h-5 scale-x-[-1]" aria-hidden="true" />
-                       : <ArrowUpRight className="w-5 h-5" aria-hidden="true" />}
-                   </Link>
-                 </div>
-               </div>
-             )
-          })}
-          
-          {visibleProducts.length === 0 && (
-             <div className="text-center text-stone py-20">
-                {products.length === 0
-                  ? (isAr ? "لا توجد منتجات في هذا القسم." : "No products found in this category.")
-                  : (isAr ? "لا توجد منتجات مطابقة لهذا التصفية." : "No products match the selected filter.")}
-             </div>
+  return (
+    <Link
+      href={`/${lang}/products/${product.id}`}
+      className="group flex flex-col bg-white border border-rule hover:border-pine transition-colors duration-300"
+    >
+      <div className="relative aspect-[4/3] bg-bone overflow-hidden">
+        <Image
+          src={product.gallery[0] || "/images/placeholder.jpg"}
+          alt={product.title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-contain p-6 mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+        />
+        <span className="absolute top-0 start-0 spec-label bg-pine text-bone px-3 py-1.5">
+          {categoryName}
+        </span>
+      </div>
+
+      <div className="flex flex-col flex-1 p-5">
+        {eyebrow && (
+          <span className="spec-label text-stone-light mb-2">{eyebrow}</span>
+        )}
+        <h2 className="text-lg font-bold text-ink mb-2 group-hover:text-pine transition-colors">
+          {product.title}
+        </h2>
+        <p className="text-sm text-stone leading-relaxed line-clamp-3">
+          {product.desc}
+        </p>
+
+        <div className="mt-5 pt-4 border-t border-rule-light flex items-center justify-between gap-3">
+          <span className="spec-label text-pine inline-flex items-center gap-1.5 shrink-0 whitespace-nowrap">
+            {isAr ? "عرض المنتج" : "View product"}
+            <ArrowRight
+              className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1"
+              aria-hidden="true"
+            />
+          </span>
+          {markers.length > 0 && (
+            <span className="font-mono text-[11px] text-stone-light truncate">
+              {markers.join("  ")}
+            </span>
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -1,8 +1,15 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale, Locale } from "../../../dictionaries";
+import Link from "next/link";
+import { SlidersHorizontal } from "lucide-react";
 import CategoryView from "@/components/CategoryView";
-import { PRODUCT_CATEGORIES, getCatalogListProductsByCategory } from "@/lib/products";
+import PageHeader from "@/components/PageHeader";
+import {
+  PRODUCT_CATEGORIES,
+  getCatalogListProductsByCategory,
+  getCategoryCounts,
+} from "@/lib/products";
 import { categoryLabel } from "@/data/categories";
 import { localizedAlternates } from "@/lib/seo";
 
@@ -44,18 +51,42 @@ export default async function CategoryPage({ params }: PageProps) {
     notFound();
   }
 
-  const [categoryProducts, dict] = await Promise.all([
+  const [categoryProducts, counts, dict] = await Promise.all([
     getCatalogListProductsByCategory(category, lang),
+    getCategoryCounts(),
     getDictionary(lang as Locale),
   ]);
 
+  const isAr = lang === "ar";
+  const title = categoryLabel(dict, category);
+
   return (
     <div className="bg-white min-h-screen">
+      {/* The same masthead every interior page opens on, rather than the
+          category name buried in the old dark sidebar. The eyebrow names the
+          section, so the h1 is free to be the category alone. */}
+      <PageHeader
+        eyebrow={dict.nav.products}
+        title={title}
+        subtitle={dict.productsPage.subtitle}
+      >
+        {/* Sizing is the question a reader arrives at a pump category with,
+            and the selector is the one place on the site that answers it. */}
+        <Link
+          href={`/${lang}/selector`}
+          className="inline-flex items-center gap-2 bg-brass hover:bg-bone text-ink font-semibold text-sm px-8 py-4 transition-colors active-scale-98"
+        >
+          <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+          {isAr ? "افتح دليل اختيار الطلمبة" : "Open the pump selector"}
+        </Link>
+      </PageHeader>
+
       <CategoryView
         products={categoryProducts}
         category={category}
         lang={lang}
         dict={dict}
+        counts={counts}
       />
     </div>
   );
