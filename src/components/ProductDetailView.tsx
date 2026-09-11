@@ -221,18 +221,37 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             {/* The nameplate strip — the figures a buyer checks before reading
                 a word of prose, held between two hairlines. */}
             {nameplate.length > 0 && (
-              <dl className="mt-5 flex flex-wrap border-y border-rule">
+              /* Columns of equal width, not a wrapping row.
+                 Cells used to be sized by their own content, which works while
+                 every value is a figure — "290 m³/h", "700 m". Give one of
+                 them a sentence, as Rovatti's surface range does ("Surface
+                 electric pumps, surface (bare-shaft) pumps, and waste water
+                 electric submersible pumps"), and that cell takes the whole
+                 line on its own, pushing the other two onto a second row that
+                 starts back at the left edge and opens with a divider
+                 belonging to a cell no longer beside anything.
+
+                 Equal columns keep the labels on one line with their values
+                 under them, whatever length the values run to; a long one now
+                 wraps inside its own column. They stack to full width below
+                 the sm breakpoint, where three columns would be too narrow to
+                 read. */
+              <dl className="mt-5 flex flex-col sm:flex-row border-y border-rule">
                 {nameplate.map((spec, i) => (
                   <div
                     key={spec.label}
-                    className={`py-3 ${
-                      i === 0 ? "pe-6" : "px-6 border-s border-rule"
+                    className={`py-3 sm:flex-1 sm:basis-0 sm:min-w-0 ${
+                      i === 0
+                        ? "sm:pe-6"
+                        : "border-t border-rule sm:border-t-0 sm:border-s sm:px-6"
                     }`}
                   >
                     <dt className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone-light">
                       {spec.label}
                     </dt>
-                    <dd className="mt-1 text-[13px] font-semibold text-ink">{spec.value}</dd>
+                    <dd className="mt-1 text-[13px] font-semibold text-ink text-pretty">
+                      {spec.value}
+                    </dd>
                   </div>
                 ))}
               </dl>
