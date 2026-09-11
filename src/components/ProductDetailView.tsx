@@ -49,11 +49,12 @@ const MODEL_COLUMNS = [
    second set of rules. `tabular-nums` stays on the figure cells: the digits
    still line up with each other, they just line up from the other edge.
 
-   The cell borders are `rule` rather than `rule-light` — the grid was faint
-   enough at 0.10 alpha that a wide table stopped reading as a grid at all. */
+   The cell borders are `rule-strong`, the weight added to the palette for
+   exactly this: at rule-light's 0.10 and then rule's 0.14 the grid was still
+   too faint to follow a row across a wide table. */
 const TH =
-  "border border-rule bg-bone px-3.5 py-2.5 text-start font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap";
-const TD = "border border-rule px-3.5 py-2.5 text-start font-mono text-[12.5px] text-ink";
+  "border border-rule-strong bg-bone px-3.5 py-2.5 text-start font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap";
+const TD = "border border-rule-strong px-3.5 py-2.5 text-start font-mono text-[12.5px] text-ink";
 
 /** A specifications plate — key/value pairs, as the nameplate on the unit. */
 function SpecsTable({ specs }: { specs: Record<string, string> }) {

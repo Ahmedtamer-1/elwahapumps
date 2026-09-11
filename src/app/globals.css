@@ -28,6 +28,12 @@
   /* --- The five colours (§04, Fig. 6) -------------------------------- */
   --color-pine: #0e3b2e;  /* brand. primary surface, headings, the mark. no limit */
   --color-field: #16624a;  /* tonal. shapes, dividers, oversized mark — ON PINE ONLY */
+  /* A single step up from pine on the same hue — not a sixth colour so
+     much as pine lifted, for when two pine surfaces meet and need to
+     read as two (the closing band above the footer). Field was too far:
+     at #16624a the band went bright against the footer instead of
+     stepping off it. Bone on this is 9.5:1. ON PINE ONLY, like field. */
+  --color-pine-lift: #114938;
   --color-brass: #d2ab5c;  /* accent. rules, numerals, one button — under 10% of a surface */
   --color-bone: #f6f5ef;  /* paper. secondary sections */
   --color-ink: #141414;  /* body text, spec plates — never a large field */
@@ -39,6 +45,10 @@
   /* Rules and hairlines, as used in the report */
   --color-rule: rgba(20, 20, 20, 0.14);
   --color-rule-light: rgba(20, 20, 20, 0.1);
+  /* For a grid rather than a hairline: a specification table is a mesh of
+     lines, and at rule's 0.14 a wide one stops holding its rows together.
+     Still a line and not a border — 0.28 on white is about #b7b7b7. */
+  --color-rule-strong: rgba(20, 20, 20, 0.28);
 
   /* --- Approved pairings (§04, Fig. 7) ------------------------------
      bone on pine .... 13.1:1 AAA
@@ -222,28 +232,29 @@
  *                       services tab bar, and anchor scroll padding.
  *
  * The arithmetic, so this can be recomputed if the header changes:
- *   logo mark height = x / (165/553)  — Logo.tsx CAP_RATIO, x=16 below
- *                      `sm`, x=18 above it
- *   at rest  = py-5 (40) + mark + border-b (1)
- *   scrolled = py-3 (24) + mark + border-b-2 (2)
+ *   logo mark height = the `--logo-h` set on the logo link in Header.tsx:
+ *                      68px below `sm`, 76px above it
+ *   underline        = mt-1.5 (6) + h-[3px] (3) = 9
+ *   at rest  = py-5 (40) + mark + underline + border-b (1)
+ *   scrolled = py-3 (24) + mark + underline + border-b-2 (2)
  *   from `lg` both gain the topbar: h-9 (36) + its border-b (1) = 37
  */
 :root {
-  --header-h: 95px;
-  --header-h-scrolled: 80px;
+  --header-h: 118px;
+  --header-h-scrolled: 103px;
 }
 
 @media (min-width: 40rem) {
   :root {
-    --header-h: 102px;
-    --header-h-scrolled: 87px;
+    --header-h: 126px;
+    --header-h-scrolled: 111px;
   }
 }
 
 @media (min-width: 64rem) {
   :root {
-    --header-h: 139px;
-    --header-h-scrolled: 124px;
+    --header-h: 163px;
+    --header-h-scrolled: 148px;
   }
 }
 
@@ -290,7 +301,7 @@ body {
 /* Rule 3: never letterspace Arabic — tracking breaks the joins.
    Rule 4: no faux bold, no faux italic, no all-caps.
    Applied to Arabic text nodes rather than the whole document so
-   Latin fragments inside an Arabic page (model codes, "ISO 9001")
+   Latin fragments inside an Arabic page (model codes, "24 / 7")
    keep their own setting. */
 [dir="rtl"] :is(h1, h2, h3, h4, h5, h6, p, li, td, th, span, a, button, label, div) {
   letter-spacing: normal;
