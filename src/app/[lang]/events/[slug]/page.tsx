@@ -6,7 +6,7 @@ import Link from "next/link";
 import EventGallery from "@/components/EventGallery";
 import { ArrowLeft, ArrowRight, Calendar, MapPin } from "lucide-react";
 import { localizedAlternates } from "@/lib/seo";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import { breadcrumbSchema, jsonLdScriptProps } from "@/lib/schema";
 
 interface PageProps {
   params: Promise<{ lang: string; slug: string }>;
@@ -54,20 +54,22 @@ export default async function EventDetailPage({ params }: PageProps) {
 
   return (
     <div className="bg-white min-h-screen pb-20">
+      {/* Schema only — the visible trail was taken off every page, but the
+          BreadcrumbList still tells a search engine where this page sits, and
+          it is what puts the site hierarchy under the result rather than a
+          bare URL. */}
+      <script
+        {...jsonLdScriptProps(
+          breadcrumbSchema(lang as Locale, [
+            { name: dict.nav.home, path: "/" },
+            { name: dict.nav.events, path: "/events" },
+            { name: data.title, path: `/events/${slug}` },
+          ]),
+        )}
+      />
       {/* Header Banner */}
       <section className="bg-pine text-bone py-16 border-b border-bone/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-4">
-            <Breadcrumbs
-              lang={lang as Locale}
-              dark
-              items={[
-                { name: dict.nav.home, path: "/" },
-                { name: dict.nav.events, path: "/events" },
-                { name: data.title, path: `/events/${slug}` },
-              ]}
-            />
-          </div>
           <Link
             href={`/${lang}/events`}
             className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"

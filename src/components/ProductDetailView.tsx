@@ -7,7 +7,6 @@ import { FileText, ShoppingCart, Check } from "lucide-react";
 import type { CatalogProduct } from "@/lib/products";
 import type { Dictionary } from "../app/[lang]/dictionaries";
 import type { ProductModelRow } from "@/data/products";
-import { categoryLabel } from "@/data/categories";
 import { priceOnRequestLabel } from "@/lib/price";
 import { useCart } from "@/components/cart/CartContext";
 import ProductVariantSelector, { useVariantSelection } from "@/components/ProductVariantSelector";
@@ -126,7 +125,15 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
    */
   const nameplate = [
     ...(product.modelNo ? [{ label: t.modelSeries, value: product.modelNo }] : []),
-    ...Object.entries(tableSpecs).map(([label, value]) => ({ label, value })),
+    /* A spec whose own label is the series is dropped here: several
+       products carry both a model number and a "Series" row, and the strip
+       was spending two of its three cells saying Series twice (Tormac TS
+       read "TS - TN" next to "TS (AISI 304) / TN (AISI 316)"). The row
+       itself stays in the technical data table below — this only decides
+       what is worth lifting into the nameplate. */
+    ...Object.entries(tableSpecs)
+      .filter(([label]) => label.trim().toLowerCase() !== t.modelSeries.trim().toLowerCase())
+      .map(([label, value]) => ({ label, value })),
   ].slice(0, 3);
 
   const addToCart = () => {
@@ -146,33 +153,6 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
 
   return (
     <div>
-      {/* Breadcrumb. A product sits three levels down and the page never said
-          so — a buyer arriving from search had no way back up to the category
-          without the browser button. Mono, because it is a path. */}
-      <nav
-        aria-label={isAr ? "مسار التصفح" : "Breadcrumb"}
-        className="bg-bone border-b border-rule"
-      >
-        <ol className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-11 flex items-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.14em] text-stone-light overflow-x-auto">
-          <li className="shrink-0">
-            <Link href={`/${lang}/products`} className="hover:text-pine transition-colors">
-              {t.title}
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li className="shrink-0">
-            <Link
-              href={`/${lang}/products/category/${product.category}`}
-              className="hover:text-pine transition-colors"
-            >
-              {categoryLabel(dict, product.category)}
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li className="text-pine whitespace-nowrap">{title}</li>
-        </ol>
-      </nav>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
           {/* Gallery */}

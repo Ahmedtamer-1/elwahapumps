@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, CheckCircle2, Phone, Mail, Wrench, Shield } from "lucide-react";
 import { localizedAlternates } from "@/lib/seo";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import { breadcrumbSchema, jsonLdScriptProps } from "@/lib/schema";
 import { PHONE_SALES, WHATSAPP_SALES } from "@/lib/company";
 
 interface PageProps {
@@ -183,6 +183,19 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   return (
     <div className="bg-white min-h-screen pb-20">
+      {/* Schema only — the visible trail was taken off every page, but the
+          BreadcrumbList still tells a search engine where this page sits, and
+          it is what puts the site hierarchy under the result rather than a
+          bare URL. */}
+      <script
+        {...jsonLdScriptProps(
+          breadcrumbSchema(lang as Locale, [
+            { name: dict.nav.home, path: "/" },
+            { name: dict.nav.services, path: "/services" },
+            { name: service.title, path: `/services/${slug}` },
+          ]),
+        )}
+      />
       {/*
         Header band. The page is a sales document, so it opens the way the
         printed one does: a brass rule, the service named at display size, the
@@ -235,17 +248,6 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <div className="max-w-3xl">
-            <div className="mb-6">
-              <Breadcrumbs
-                lang={lang as Locale}
-                dark
-                items={[
-                  { name: dict.nav.home, path: "/" },
-                  { name: dict.nav.services, path: "/services" },
-                  { name: service.title, path: `/services/${slug}` },
-                ]}
-              />
-            </div>
             <span aria-hidden className="block h-0.5 w-16 bg-brass mb-6" />
             <h1 className="text-h1 md:text-display font-extrabold">{service.title}</h1>
             {service.short && (

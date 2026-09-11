@@ -6,8 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 import type { CatalogListProduct } from "@/lib/products";
-import type { Dictionary, Locale } from "../app/[lang]/dictionaries";
-import Breadcrumbs from "@/components/Breadcrumbs";
+import type { Dictionary } from "../app/[lang]/dictionaries";
 import { brandOrder } from "@/data/brands";
 
 /**
@@ -105,17 +104,6 @@ export default function CategoryView({
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        <div className="mb-8">
-          <Breadcrumbs
-            lang={lang as Locale}
-            items={[
-              { name: dict.nav.home, path: "/" },
-              { name: dict.nav.products, path: "/products" },
-              { name: title, path: `/products/category/${category}` },
-            ]}
-          />
-        </div>
-
         {/* Brand filter.
             Shown only when a category carries more than one brand. With a
             single manufacturer the control cannot narrow anything: ticking
