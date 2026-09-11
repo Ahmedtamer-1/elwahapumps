@@ -39,9 +39,21 @@ const MODEL_COLUMNS = [
 /* a different idea of what a header looked like.                      */
 /* ------------------------------------------------------------------ */
 
+/* Alignment lives here rather than per cell: every column reads from the start
+   edge, figures included. The numeric columns used to be end-aligned, which is
+   the convention for a column of figures you compare down — but these tables
+   are read across, one model at a time, and the figures ended up sitting far
+   from the model name that owns them with a gap of empty cell between.
+
+   `text-start`, not `text-left`, so the Arabic tables align right without a
+   second set of rules. `tabular-nums` stays on the figure cells: the digits
+   still line up with each other, they just line up from the other edge.
+
+   The cell borders are `rule` rather than `rule-light` — the grid was faint
+   enough at 0.10 alpha that a wide table stopped reading as a grid at all. */
 const TH =
-  "border border-rule-light bg-bone px-3.5 py-2.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap";
-const TD = "border border-rule-light px-3.5 py-2.5 font-mono text-[12.5px] text-ink";
+  "border border-rule bg-bone px-3.5 py-2.5 text-start font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap";
+const TD = "border border-rule px-3.5 py-2.5 text-start font-mono text-[12.5px] text-ink";
 
 /** A specifications plate — key/value pairs, as the nameplate on the unit. */
 function SpecsTable({ specs }: { specs: Record<string, string> }) {
@@ -54,7 +66,7 @@ function SpecsTable({ specs }: { specs: Record<string, string> }) {
         <tbody>
           {entries.map(([key, value], idx) => (
             <tr key={key} className={idx % 2 === 1 ? "bg-bone" : "bg-white"}>
-              <th scope="row" className={`${TH} w-1/3 text-start`}>
+              <th scope="row" className={`${TH} w-1/3`}>
                 {key}
               </th>
               <td className={`${TD} font-medium`}>{value}</td>
@@ -391,9 +403,9 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                           <table className="w-full border-collapse min-w-[560px]">
                             <thead>
                               <tr>
-                                <th className={`${TH} text-start`}>{t.tableModel}</th>
+                                <th className={TH}>{t.tableModel}</th>
                                 {columns.map((col) => (
-                                  <th key={col.key} className={`${TH} text-end`}>
+                                  <th key={col.key} className={TH}>
                                     {t[col.labelKey]}
                                   </th>
                                 ))}
@@ -408,7 +420,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                                   {columns.map((col) => (
                                     /* Figures align on the digit — a column of
                                        ratings is read down, not across. */
-                                    <td key={col.key} className={`${TD} text-end tabular-nums`}>
+                                    <td key={col.key} className={`${TD} tabular-nums`}>
                                       {row[col.key] ?? "—"}
                                     </td>
                                   ))}
@@ -433,11 +445,8 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                         <table className="w-full border-collapse min-w-[720px]">
                           <thead>
                             <tr>
-                              {(isAr ? group.columnsAr : group.columnsEn).map((col, cIdx) => (
-                                <th
-                                  key={col}
-                                  className={`${TH} ${cIdx === 0 ? "text-start" : "text-end"}`}
-                                >
+                              {(isAr ? group.columnsAr : group.columnsEn).map((col) => (
+                                <th key={col} className={TH}>
                                   {col}
                                 </th>
                               ))}
@@ -450,7 +459,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                                 {row.values.map((val, vIdx) => (
                                   <td
                                     key={vIdx}
-                                    className={`${TD} text-end tabular-nums whitespace-nowrap`}
+                                    className={`${TD} tabular-nums whitespace-nowrap`}
                                   >
                                     {val}
                                   </td>
