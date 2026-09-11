@@ -69,7 +69,6 @@ function SpecsTable({ specs }: { specs: Record<string, string> }) {
 
 export default function ProductDetailView({ product, lang, dict, title, desc }: ProductDetailViewProps) {
   const [activeImage, setActiveImage] = useState(0);
-  const [activeDocTab, setActiveDocTab] = useState<"technical" | "overview">("technical");
   const [added, setAdded] = useState(false);
 
   const isAr = lang === "ar";
@@ -93,10 +92,24 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
 
   const tableSpecs = isAr ? product.tableSpecsAr : product.tableSpecsEn;
   const features = isAr ? product.featuresAr : product.featuresEn;
-  const hasDocs = Boolean(
-    (features && features.length > 0) ||
+
+  // What each panel actually holds, kept apart so a tab is never offered
+  // with nothing behind it and the page never opens on an empty panel.
+  const hasOverview = Boolean(features && features.length > 0);
+  const hasTechnical = Boolean(
+    Object.keys(tableSpecs).length > 0 ||
     (product.modelGroups && product.modelGroups.length > 0) ||
     (product.specGroups && product.specGroups.length > 0)
+  );
+  const hasDocs = hasOverview || hasTechnical;
+
+  /* Overview opens first. A reader who has just chosen this product from a
+     category wants to know what it is before they read a seven-column table
+     of model codes; the tables are what they come back for, not what they
+     arrive on. Products with no features fall through to the tables, which
+     is all they have. */
+  const [activeDocTab, setActiveDocTab] = useState<"technical" | "overview">(
+    hasOverview ? "overview" : "technical",
   );
   const t = dict.productsPage;
 
@@ -311,9 +324,13 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
               <div className="border-t-2 border-pine">
                 <div role="tablist" className="flex flex-wrap">
                   {([
-                    { id: "technical", label: t.technicalData },
-                    { id: "overview", label: t.overview },
-                  ] as const).map((tab, i) => {
+                    ...(hasOverview
+                      ? ([{ id: "overview", label: t.overview }] as const)
+                      : []),
+                    ...(hasTechnical
+                      ? ([{ id: "technical", label: t.technicalData }] as const)
+                      : []),
+                  ]).map((tab, i) => {
                     const active = activeDocTab === tab.id;
                     return (
                       <button
