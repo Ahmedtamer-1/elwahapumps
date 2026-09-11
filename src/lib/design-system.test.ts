@@ -44,7 +44,7 @@ const CIRCLE_ALLOWLIST: Record<string, string> = {
   [join("src", "components", "WhatsAppButton.tsx")]: "round floating action button",
   [join("src", "components", "Header.tsx")]: "cart count badge",
   [join("src", "components", "cart", "CartButton.tsx")]: "cart count badge",
-  [join("src", "components", "CategoryView.tsx")]: "round view-product link",
+  [join("src", "components", "ProductDetailView.tsx")]: "bullet dot",
   [join("src", "app", "[lang]", "agents", "[slug]", "page.tsx")]: "bullet dot",
 };
 

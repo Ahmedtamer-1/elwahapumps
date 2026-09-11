@@ -339,15 +339,23 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 {features && features.length > 0 && (
                   <div className="mt-8">
                     <h2 className="spec-label mb-4">{t.features}</h2>
-                    {/* A hairline list rather than a grid of check icons: the
-                        icon was identical on every line and carried nothing. */}
-                    <ul className="grid sm:grid-cols-2 gap-px bg-rule border border-rule">
+                    {/* A plain bulleted list, not the ruled grid of cells this
+                        used to be. Boxed in a border with a hairline between
+                        every entry, it read as a second specification table
+                        sitting above the real ones — and the overview is the
+                        part a reader takes in before any table, so it is set
+                        at reading size rather than caption size. */}
+                    <ul className="max-w-3xl space-y-3">
                       {features.map((feature) => (
-                        <li
-                          key={feature}
-                          className="bg-white px-5 py-4 text-small leading-6 text-ink"
-                        >
-                          {feature}
+                        <li key={feature} className="flex gap-3 text-body-lg text-ink">
+                          {/* Drawn rather than a list marker: `list-disc`
+                              sizes its dot from the font, and at this size
+                              that dot is a blob. */}
+                          <span
+                            aria-hidden="true"
+                            className="mt-[0.7em] h-[5px] w-[5px] shrink-0 rounded-full bg-ink"
+                          />
+                          <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
