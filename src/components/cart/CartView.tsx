@@ -11,10 +11,21 @@ import { WHATSAPP_SALES } from "@/lib/company";
 
 const WHATSAPP_PHONE = WHATSAPP_SALES;
 
-export default function CartView({ lang }: { lang: string }) {
+export default function CartView({
+  lang,
+  defaultName,
+  defaultPhone,
+}: {
+  lang: string;
+  /** Pre-filled for a signed-in customer; both undefined when signed out. */
+  defaultName?: string;
+  defaultPhone?: string;
+}) {
   const { items, count, ready, setQty, remove, clear } = useCart();
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  // Seeded once, then owned by the field: someone sending on behalf of a
+  // colleague must be able to type over what we filled in.
+  const [name, setName] = useState(defaultName ?? "");
+  const [phone, setPhone] = useState(defaultPhone ?? "");
   const [sending, setSending] = useState(false);
   const isAr = lang === "ar";
 

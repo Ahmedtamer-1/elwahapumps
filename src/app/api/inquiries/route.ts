@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { notifyNewCartInquiry } from "@/lib/notify";
 import { guardSubmission, normalisePhone } from "@/lib/form-guard";
+import { getCurrentCustomer } from "@/lib/customer-auth";
 
 const inquirySchema = z.object({
   name: z.string().trim().max(120).optional(),
@@ -46,6 +47,16 @@ export async function POST(request: Request) {
   const { name, items } = parsed.data;
   const phone = normalisePhone(parsed.data.phone);
 
+  /* File it against the account when one is signed in — this is what puts the
+     inquiry on their "My inquiries" page, and what lets the admin see one
+     customer with a history rather than a stream of anonymous carts.
+
+     Read from the session cookie, never from the request body: a customer id
+     the caller can choose is a customer id the caller can borrow. Signed out,
+     this is null and the inquiry is filed exactly as it was before. */
+  const session = await getCurrentCustomer();
+  const customerId = session?.customerId ?? null;
+
   // Price the cart server-side from the catalogue — never trust the client's
   // totals, since the cart lives in the visitor's localStorage.
   const products = await prisma.product.findMany({
@@ -66,8 +77,9 @@ export async function POST(request: Request) {
 
   const inquiry = await prisma.cartInquiry.create({
     data: {
-      name: name || null,
+      name: name || session?.name || null,
       phone,
+      customerId,
       items: JSON.stringify(pricedItems),
       totalEstimate: totalEstimate > 0 ? totalEstimate : null,
       status: "NEW",

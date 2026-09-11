@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, Globe, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, Globe, ChevronDown, User } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
 import Logo from "@/components/Logo";
 import type { Dictionary } from "../app/[lang]/dictionaries";
@@ -193,11 +193,19 @@ export default function Header({ lang, dict }: HeaderProps) {
                 class because Logo writes width/height as inline styles, which
                 beat any class; `style` is merged last, so a var set on the
                 wrapper is the one thing that can win a media query here.
-                54px / 60px are the rendered heights the old x=16 / x=18 gave. */}
+                68px / 76px is the mark a quarter up from the 54px / 60px it
+                stood at, which were the rendered heights of the old x=16 /
+                x=18. `x` is now inert here — the inline height wins. */}
+            {/* The rule that used to sit under the mark is gone — the
+                artwork already carries its own brass accent, and a second
+                one drawn to the logo's width read as an underline on a
+                link rather than as part of the mark. The wrapper stays a
+                `w-fit` box so the link’s hit area is the mark and nothing
+                more. */}
             <Link
               href={`/${lang}`}
               aria-label="El Waha"
-              className="flex items-center min-w-0 [--logo-h:54px] sm:[--logo-h:60px]"
+              className="flex w-fit min-w-0 [--logo-h:68px] sm:[--logo-h:76px]"
             >
               <Logo
                 variant="mark"
@@ -226,11 +234,13 @@ export default function Header({ lang, dict }: HeaderProps) {
                     {
                       id: "pumps",
                       label: dict.productsPage.pumps,
-                      // Surface pumps are their own category, so that entry
-                      // leaves the Pumps column for its own page.
+                      // Submersible and surface pumps are one category. Both
+                      // types still get named here — a buyer scans for the
+                      // words, not the slug — and both land on the same page,
+                      // the way Electrical and Spare Parts already do.
                       items: [
                         { label: types.submersiblePumps, category: "pumps" },
-                        { label: types.surfacePumps, category: "surface-pumps" },
+                        { label: types.surfacePumps, category: "pumps" },
                       ],
                     },
                     {
@@ -420,6 +430,23 @@ export default function Header({ lang, dict }: HeaderProps) {
             <div className="hidden lg:flex items-center gap-4">
               <CartButton lang={lang} isTransparent={isTransparent} />
 
+              {/* Always points at /account. The header is a client component
+                  with no sight of the session, and rendering "sign in" or the
+                  customer's name here would either mismatch on hydration or
+                  force the whole header dynamic. The account page itself
+                  sends a signed-out visitor to the sign-in form, which is the
+                  same destination by a shorter route. */}
+              <Link
+                href={`/${lang}/account`}
+                aria-label={dict.nav.account}
+                title={dict.nav.account}
+                className={`p-2 transition-colors ${
+                  isTransparent ? "text-bone hover:text-brass" : "text-ink hover:text-pine"
+                }`}
+              >
+                <User className="w-5 h-5" aria-hidden="true" />
+              </Link>
+
               {/* Language Switcher. Square corners throughout — the system
                   is built like a machine plate, not a soft UI kit. */}
               <Link
@@ -450,6 +477,15 @@ export default function Header({ lang, dict }: HeaderProps) {
             {/* Mobile Actions */}
             <div className="flex items-center gap-3 lg:hidden">
               <CartButton lang={lang} isTransparent={isTransparent} />
+              <Link
+                href={`/${lang}/account`}
+                aria-label={dict.nav.account}
+                className={`p-2 transition-colors ${
+                  isTransparent ? "text-bone hover:text-brass" : "text-pine hover:text-ink"
+                }`}
+              >
+                <User className="w-5 h-5" aria-hidden="true" />
+              </Link>
               <Link
                 href={toggleLanguage()}
                 className={`p-2 transition-colors ${

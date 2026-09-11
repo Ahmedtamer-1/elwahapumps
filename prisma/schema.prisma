@@ -172,8 +172,31 @@ model Customer {
   leads      Lead[]
   inquiries  CartInquiry[]
   activities Activity[]
+  account    CustomerAccount?
 
   @@index([createdAt])
+}
+
+/// A customer's own sign-in, kept apart from the Customer record it belongs to.
+///
+/// Customer is a CRM record: staff create them from leads and phone calls, and
+/// most will never have a login. This holds only what signing in needs, so a
+/// customer entered by the office is a row without an account, and signing up
+/// with an address the office already has on file attaches to that record
+/// rather than opening a second one for the same person.
+///
+/// Separate from User, which is staff. Nothing here grants admin access.
+model CustomerAccount {
+  id           String   @id @default(cuid())
+  /// Lower-cased on write — the sign-in lookup is exact, and SQLite's
+  /// default collation is case-sensitive.
+  email        String   @unique
+  passwordHash String
+  customerId   String   @unique
+  customer     Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  lastLoginAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Lead {

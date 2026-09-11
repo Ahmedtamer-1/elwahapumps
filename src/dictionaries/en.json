@@ -15,11 +15,11 @@
     "afterSales": "Aftersales Support",
     "localDealer": "Local Dealer",
     "career": "Career",
-    "pumpSelector": "Pump Selector"
+    "pumpSelector": "Pump Selector",
+    "account": "My account"
   },
   "common": {
     "yearsExp": "In the market since 2013",
-    "isoCertified": "ISO 9001 Certified Quality",
     "support24": "24/7 Support & Service",
     "exclusiveAgent": "Exclusive Agent for Leading Brands",
     "requestQuote": "Request a Quote",
@@ -99,7 +99,6 @@
     "all": "All Products",
     "motors": "Motors",
     "pumps": "Pumps",
-    "surfacePumps": "Surface Pumps",
     "electrical": "Electrical Component",
     "pipes": "Pipes",
     "spareParts": "Spare Parts",
@@ -136,7 +135,7 @@
     "motor-hitemp": {
       "title": "Kurlar Submersible Motors",
       "category": "motors",
-      "desc": "Genuine Kurlar submersible motors (6\"-8\"-10\"), rewindable and rated for continuous operation up to 60°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors, manufactured in ISO 9001 certified facilities."
+      "desc": "Genuine Kurlar submersible motors (6\"-8\"-10\"), rewindable and rated for continuous operation up to 60°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors."
     },
     "pump-submersible": {
       "title": "Kurlar Stainless Steel Submersible Pumps",
@@ -155,12 +154,12 @@
     },
     "pump-rovatti-surface": {
       "title": "Rovatti Surface Pumps",
-      "category": "surface-pumps",
+      "category": "pumps",
       "desc": "Italian-built surface pumps from Rovatti Pompe, carried as a complete range: single-stage and multistage centrifugal electric pumps in horizontal and vertical execution, bare-shaft surface pumps for coupling to a motor or engine, and waste water electric submersible pumps with single-channel, double-channel and vortex impellers. Suited to irrigation, water supply and pressure boosting, industrial service water and drainage."
     },
     "pump-tormac-surface": {
       "title": "Tormac Surface Pumps",
-      "category": "surface-pumps",
+      "category": "pumps",
       "desc": "Tormac surface pumps, carried across the range: TCCH close coupled units, TEH and TEC horizontal end-suction centrifugals, THSC horizontal split case pumps for high flows, and TV vertical multistage pumps for high head from a small footprint — with matched induction motors supplied alongside. Used for irrigation, water supply and pressure boosting, and industrial and building services, in 50 Hz."
     },
     "pump-panelli-sx": {
@@ -320,7 +319,7 @@
     "subtitle": "Supplying, installing and maintaining deep-well pumping equipment in Egypt since 2013",
     "p1": "El Waha for Wells and Pump Services began in 2013 as a small 200 m² maintenance centre in Giza, run by a team of five. Today the company operates a 3,000 m² warehouse and workshop with a team of more than 80 specialist engineers and technicians, covers every governorate in Egypt, and has delivered more than 230 agricultural projects.",
     "p2": "We equip deep water wells end to end: column pipes, insulated submersible cable, submersible pumps and motors, and control panels and voltage stabilizers designed for each individual well. Because no two wells are alike, our engineers size every installation against the well's own yield and head before anything is supplied — so the pump that goes down the borehole is the one that will draw the least energy and last the longest in service. That difference shows up in the electricity bill every month, and in how often the irrigation stops.",
-    "p3": "We hold exclusive Egyptian agencies for {count} international manufacturers and work to ISO 9001. Our workshops carry current testing, calibration and rewinding equipment, which means repair and calibration happen under our own supervision rather than at a third party. Our mobile maintenance fleet stays ready to respond around the clock in every Egyptian governorate — because a well that has stopped is not merely a technical fault, it is a growing season at risk.",
+    "p3": "We hold exclusive Egyptian agencies for {count} international manufacturers. Our workshops carry current testing, calibration and rewinding equipment, which means repair and calibration happen under our own supervision rather than at a third party. Our mobile maintenance fleet stays ready to respond around the clock in every Egyptian governorate — because a well that has stopped is not merely a technical fault, it is a growing season at risk.",
     "vision": "Our Vision",
     "visionText": "To be the first choice in Egypt and Africa for sustainable, intelligent water pumping — advancing the water infrastructure that agriculture, industry and communities depend on.",
     "mission": "Our Mission",
@@ -474,11 +473,40 @@
       "governorates": "Governorates covered",
       "quality": "Quality"
     },
-    "productsHeading": "Everything that goes down the borehole",
+    "productsHeading": "Product Range",
     "whyEyebrow": "Why El Waha",
     "whyTitle": "No two wells are alike, so nothing is sized from a table.",
     "whyBody": "Our engineers size every installation against the well's own yield and head before anything is supplied. That difference shows up in the electricity bill every month, and in how often the irrigation stops.",
     "aboutCta": "About the company",
     "responseLabel": "Response, every day of the year"
+  },
+  "account": {
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "signOut": "Sign out",
+    "myAccount": "My account",
+    "loginTitle": "Sign in to your account",
+    "loginSubtitle": "See the inquiries you have sent us and their status, and send new ones without retyping your details.",
+    "registerTitle": "Create an account",
+    "registerSubtitle": "One account keeps your inquiries together and fills your name and number in for you next time.",
+    "name": "Your name",
+    "email": "Email address",
+    "phone": "Mobile number",
+    "phoneHint": "Optional — the number our office calls you back on",
+    "password": "Password",
+    "passwordHint": "At least 8 characters",
+    "confirmPassword": "Confirm password",
+    "noAccount": "No account yet?",
+    "haveAccount": "Already have an account?",
+    "myInquiries": "My inquiries",
+    "noInquiries": "You have not sent an inquiry yet.",
+    "browseProducts": "Browse the products",
+    "inquiryItems": "items",
+    "sentOn": "Sent",
+    "status": "Status",
+    "details": "Your details",
+    "statusNew": "Received",
+    "statusContacted": "Contacted",
+    "statusConverted": "Quoted & closed"
   }
 }
