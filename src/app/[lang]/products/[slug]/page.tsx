@@ -54,7 +54,7 @@ export default async function ProductPage({ params }: PageProps) {
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <div className="bg-white min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-section">
       <script
         {...jsonLdScriptProps(
           productSchema(lang as Locale, product, `/products/${slug}`),

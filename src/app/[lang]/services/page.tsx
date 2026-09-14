@@ -2,7 +2,6 @@ import React from "react";
 import { getDictionary, hasLocale, Locale } from "../dictionaries";
 import ServiceCard from "@/components/ServiceCard";
 import Link from "next/link";
-import PageHeader from "@/components/PageHeader";
 import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
@@ -56,6 +55,12 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
     );
   }
 
+  const isAr = lang === "ar";
+
+  /* The 3-up grid is the widest the lattice gets, so a run that is not a
+     multiple of three is the one that ends on a hole. */
+  const leavesGap = displayServices.length % 3 !== 0;
+
   const tabs = [
     {
       key: "all",
@@ -75,23 +80,28 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
   ];
 
   return (
-    <div className="bg-white min-h-screen pb-20">
-      {/* Header */}
-      <PageHeader
-        eyebrow={dict.nav.services}
-        title={dict.servicesPage.title}
-        subtitle={dict.servicesPage.subtitle}
-      />
+    /* No `min-h-screen` here: body is already a min-h-screen flex column
+       with `flex-grow` on <main> (layout.tsx), so the footer is held down on
+       a short page without this — and with it, the page was a full viewport
+       tall *on top of* the header offset template.tsx adds, which is where
+       the empty band between the last card and the footer came from. */
+    <div className="bg-white pb-10 md:pb-14">
+      {/* No visible masthead: this page is a listing, and the eyebrow,
+          headline and standfirst said nothing the tab bar and the cards do
+          not already say, while pushing the first service well down the
+          page. The h1 stays in the document — a page still needs one for
+          screen readers and for search results — it is just not painted. */}
+      <h1 className="sr-only">{dict.servicesPage.title}</h1>
 
       {/* Tabs.
           A filter bar is navigation, not a set of buttons, so it is set the
-          way the site sets navigation: a bone strip under the masthead, the
+          way the site sets navigation: a bone strip opening the listing, the
           active tab carrying a pine underline. The old pills put a filled
           emerald block on white for the selected state, which is the same
           treatment as the primary call to action further down the page — two
           different meanings wearing one badge. Each tab shows its count in
           mono, so the choice is made before the tap rather than after. */}
-      <div className="sticky z-40 bg-bone border-b border-rule mb-12"
+      <div className="sticky z-40 bg-bone border-b border-rule mb-10"
         // Flush under the header once scrolled. The old hardcoded
         // 72/80px sat above the real header height (S5-T01).
         style={{ top: "var(--header-h-scrolled)" }}>
@@ -103,14 +113,14 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
                 key={t.key}
                 href={`/${lang}/services?tab=${t.key}`}
                 aria-current={active ? "page" : undefined}
-                className={`shrink-0 whitespace-nowrap px-5 sm:px-6 py-4 text-[12.5px] font-semibold border-b-[3px] transition-colors ${
+                className={`shrink-0 whitespace-nowrap px-5 sm:px-6 py-4 text-xs font-semibold border-b-[3px] transition-colors ${
                   active
                     ? "text-pine border-pine"
                     : "text-stone border-transparent hover:text-pine"
                 }`}
               >
                 {t.label}{" "}
-                <span className="font-mono text-[11px] font-medium text-stone-light tabular-nums">
+                <span className="font-mono text-xs font-medium text-stone-light tabular-nums">
                   {t.count}
                 </span>
               </Link>
@@ -155,6 +165,37 @@ export default async function ServicesPage({ params, searchParams }: PageProps) 
               lang={lang}
             />
           ))}
+
+          {/* The plate that closes the lattice.
+              `all` runs to 8 services and `supply` to 5, so both leave one
+              dead cell at the end of the 3-up grid — a hole in what is meant
+              to read as a single divided plate. Rather than pad it, the cell
+              carries the one thing a reader who got to the bottom of the
+              list without finding their job still needs: a way to ask. It is
+              only rendered when the run actually leaves a gap, so the
+              maintenance tab's exact row of three stays exact. */}
+          {leavesGap && (
+            <div className="flex h-full flex-col bg-bone p-8 md:p-9">
+              <span className="spec-label block">
+                {isAr ? "لم تجد ما تبحث عنه؟" : "Not listed?"}
+              </span>
+              <p className="mt-3.5 max-w-[48ch] text-small leading-6 text-ink">
+                {isAr
+                  ? `أخبرنا بإنتاجية البئر وعمقه ويحدّد مهندسونا ${
+                      tab === "supply" ? "التوريد المناسب" : "الخدمة المناسبة"
+                    } على أساسها.`
+                  : `Tell us the well's yield and depth and our engineers will scope the ${
+                      tab === "supply" ? "supply" : "right service"
+                    } against it.`}
+              </p>
+              <Link
+                href={`/${lang}/contact`}
+                className="mt-auto pt-6 self-start inline-flex items-center justify-center bg-pine px-6 py-3.5 text-sm font-semibold text-bone hover:bg-field transition-colors"
+              >
+                {dict.common.requestQuote}
+              </Link>
+            </div>
+          )}
         </div>
       </section>
     </div>

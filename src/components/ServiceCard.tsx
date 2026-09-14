@@ -64,7 +64,13 @@ export default function ServiceCard({
           : "bg-white hover:bg-bone"
       }`}
     >
-      <div className="flex items-baseline gap-3">
+      {/* Wraps below md. The category marker is shrink-0, and in English
+          ("MAINTENANCE & SUPPORT") it plus the title's longest word is wider
+          than a phone's column: the row pushed the card past its grid cell
+          and widened the whole page to ~430px. Wrapping drops the marker
+          under the title instead. Desktop columns are wide enough that the
+          row never needs to wrap, so the layout there is unchanged. */}
+      <div className="flex items-baseline gap-3 max-md:flex-wrap max-md:gap-y-1">
         {index !== undefined && (
           /* Brass only on pine. The mockup sets these numerals in brass on the
              white cards too, but §04's pairing table rules that out and the
@@ -72,7 +78,7 @@ export default function ServiceCard({
              numeral, it is a smudge. On light ground the numeral takes pine,
              which is the same accenting move at a ratio that survives. */
           <span
-            className={`font-mono text-[11px] font-medium tabular-nums ${
+            className={`font-mono text-xs font-medium tabular-nums ${
               onPine ? "text-brass" : "text-pine"
             }`}
             aria-hidden="true"

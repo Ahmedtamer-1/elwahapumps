@@ -194,10 +194,10 @@ function buildPump(): ProductSpec {
     nameEn: "Tormac Stainless Steel Submersible Pumps",
     nameAr: "طلمبات تورماك الغاطسة استانلس ستيل",
     descEn:
-      'Tormac TS series borehole submersible pumps in fully stainless steel construction — AISI 304 as version TS, AISI 316 as version TN — for 4", 6", 8" and 10" wells. Discharge from 0.4 to 280 m³/h and total head to 870 m at 2900 rpm, with NEMA-standard spline coupling and performance certified to ISO 9906:2012 Grade 3B. Manufactured in ISO 9001 facilities.',
+      'Tormac TS series borehole submersible pumps in fully stainless steel construction — AISI 304 as version TS, AISI 316 as version TN — for 4", 6", 8" and 10" wells. Discharge from 0.4 to 280 m³/h and total head to 870 m at 2900 rpm, with NEMA-standard spline coupling and performance certified to ISO 9906:2012 Grade 3B.',
     descAr:
-      'طلمبات تورماك الغاطسة سلسلة TS لآبار الأعماق، بتصنيع كامل من الاستانلس ستيل — درجة AISI 304 في الإصدار TS ودرجة AISI 316 في الإصدار TN — لآبار مقاس 4 و6 و8 و10 بوصة. تصريف من 0.4 حتى 280 م³/ساعة ورفع كلي حتى 870 متر على سرعة 2900 لفة/دقيقة، مع وصلة إسبلاين بمواصفة NEMA وأداء معتمد وفق ISO 9906:2012 درجة 3B. مصنّعة في منشآت معتمدة بشهادة ISO 9001.',
-    image: "/images/products/pump-tormac-ts.jpeg",
+      'طلمبات تورماك الغاطسة سلسلة TS لآبار الأعماق، بتصنيع كامل من الاستانلس ستيل — درجة AISI 304 في الإصدار TS ودرجة AISI 316 في الإصدار TN — لآبار مقاس 4 و6 و8 و10 بوصة. تصريف من 0.4 حتى 280 م³/ساعة ورفع كلي حتى 870 متر على سرعة 2900 لفة/دقيقة، مع وصلة إسبلاين بمواصفة NEMA وأداء معتمد وفق ISO 9906:2012 درجة 3B.',
+    image: "/images/products/pump-tormac-ts.png",
     specsBlob: {
       specs: ["AISI 304 / 316", '4" – 10"', "0.4–280 m³/h"],
       modelNo: "TS - TN",
@@ -216,7 +216,7 @@ function buildPump(): ProductSpec {
         "Power Range": "0.37 kW – 220 kW",
         Speed: "2900 rpm",
         "Discharge Range": "0.4 – 280 m³/h",
-        "Total Head Range": "4 – 870 m",
+        "Total head": "4 – 870 m",
         "Max Operating Pressure": "Up to 8.5 MPa (85 bar)",
         "Shaft Coupling": 'Splines (Keyway / Splines on 10")',
         "Horizontal Installation": "Minimum 30° angle",
@@ -229,7 +229,7 @@ function buildPump(): ProductSpec {
         "مدى القدرة": "0.37 – 220 كيلوواط",
         "السرعة": "2900 لفة/دقيقة",
         "مدى التصريف": "0.4 – 280 م³/ساعة",
-        "مدى الرفع الكلي": "4 – 870 متر",
+        "الضاغط الكلي": "4 – 870 متر",
         "أقصى ضغط تشغيل": "حتى 8.5 ميجاباسكال (85 بار)",
         "وصلة العمود": "إسبلاين (خابور/إسبلاين في مقاس 10 بوصة)",
         "التركيب الأفقي": "بزاوية 30 درجة كحد أدنى",
@@ -392,10 +392,10 @@ function buildMotor(): ProductSpec {
     nameEn: "Tormac ECO Series Submersible Motors",
     nameAr: "مواتير تورماك الغاطسة سلسلة ECO",
     descEn:
-      'Tormac ECO series borehole submersible motors — water-cooled and rewindable in the field. Stainless steel stator shell, housings and motor base resist corrosion; the pressure-equalising diaphragm and shaft seal keep sand and well water out of the winding. Available 4", 6", 8" and 10", 380/415 V three phase, to NEMA mounting standards and ISO 9001.',
+      'Tormac ECO series borehole submersible motors — water-cooled and rewindable in the field. Stainless steel stator shell, housings and motor base resist corrosion; the pressure-equalising diaphragm and shaft seal keep sand and well water out of the winding. Available 4", 6", 8" and 10", 380/415 V three phase, to NEMA mounting standards.',
     descAr:
-      'مواتير تورماك الغاطسة سلسلة ECO لآبار الأعماق، مبردة بالماء، وقابلة لإعادة اللف. جلبة الاستاتور والأغلفة وقاعدة الموتور من الاستانلس ستيل لمقاومة التآكل، مع حجاب معادلة الضغط ومانع تسرب العمود لمنع دخول الرمل ومياه البئر إلى الملفات. متوفرة بمقاسات 4 و6 و8 و10 بوصة، 380/415 فولت ثلاثي الأوجه، بأبعاد تركيب NEMA وشهادة ISO 9001.',
-    image: "/images/products/motor-tormac-eco.jpeg",
+      'مواتير تورماك الغاطسة سلسلة ECO لآبار الأعماق، مبردة بالماء، وقابلة لإعادة اللف. جلبة الاستاتور والأغلفة وقاعدة الموتور من الاستانلس ستيل لمقاومة التآكل، مع حجاب معادلة الضغط ومانع تسرب العمود لمنع دخول الرمل ومياه البئر إلى الملفات. متوفرة بمقاسات 4 و6 و8 و10 بوصة، 380/415 فولت ثلاثي الأوجه، بأبعاد تركيب NEMA.',
+    image: "/images/products/motor-tormac-eco.png",
     specsBlob: {
       specs: ["Rewindable", "IP68", "NEMA Standard"],
       modelNo: "D4 - D10",

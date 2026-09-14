@@ -57,7 +57,10 @@ export default function SelectorForm({
       className={
         onBone
           ? "bg-bone border-t-[3px] border-brass p-8 sm:p-10"
-          : "grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end"
+          : // Two fields across, the button under them. All three on one row
+            // left each input ~60px beside its unit select — too narrow to
+            // show even the "e.g. 60" placeholder.
+            "grid gap-3 sm:grid-cols-2 sm:items-end"
       }
     >
       {onBone && <div className="spec-label mb-5">{dict.dutyPoint}</div>}
@@ -87,7 +90,7 @@ export default function SelectorForm({
         className={
           onBone
             ? "mt-6 flex w-full items-center justify-center gap-2 bg-pine px-6 py-4 font-semibold text-bone transition-colors hover:bg-field"
-            : "inline-flex h-[46px] items-center justify-center gap-2 bg-brass px-6 font-semibold text-ink transition hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-brass"
+            : "inline-flex h-[52px] w-full sm:col-span-2 items-center justify-center gap-2 bg-brass px-6 font-semibold text-ink transition hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-brass"
         }
       >
         <Search size={18} aria-hidden />
@@ -133,7 +136,7 @@ function Field({
         className={
           onBone
             ? "mb-1.5 block text-xs font-semibold text-ink"
-            : "mb-1.5 block font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-bone/55"
+            : "mb-1.5 block font-mono text-xs font-medium uppercase tracking-[0.14em] text-bone/55"
         }
       >
         {label}
@@ -155,13 +158,13 @@ function Field({
           inputMode="decimal"
           type="text"
           autoComplete="off"
-          className="h-[46px] w-full bg-transparent px-3 font-mono text-[15px] text-ink placeholder:text-stone-light focus:outline-none"
+          className="h-[52px] w-full min-w-0 bg-transparent px-4 font-mono text-base text-ink placeholder:text-stone-light focus:outline-none"
         />
         <select
           name={unitName}
           defaultValue={unitValue}
           aria-label={label}
-          className="h-[46px] border-s border-rule bg-bone px-2 font-mono text-xs text-stone focus:outline-none"
+          className="h-[52px] shrink-0 border-s border-rule bg-bone px-2 font-mono text-sm text-stone focus:outline-none"
         >
           {units.map((u) => (
             <option key={u.value} value={u.value}>

@@ -51,10 +51,16 @@ const MODEL_COLUMNS = [
 
    The cell borders are `rule-strong`, the weight added to the palette for
    exactly this: at rule-light's 0.10 and then rule's 0.14 the grid was still
-   too faint to follow a row across a wide table. */
+   too faint to follow a row across a wide table.
+
+   Below md the header may wrap and the padding tightens: unwrapped, a
+   label like "MAX WATER TEMPERATURE" took most of a 288px table and broke
+   the values beside it down to one word per line. The model tables drop
+   their fixed min-width there too, so a three-column series fits the
+   screen and only a genuinely wide table scrolls inside its box. */
 const TH =
-  "border border-rule-strong bg-bone px-3.5 py-2.5 text-start font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap";
-const TD = "border border-rule-strong px-3.5 py-2.5 text-start font-mono text-[12.5px] text-ink";
+  "border border-rule-strong bg-bone px-3.5 py-2.5 text-start font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap max-md:whitespace-normal max-md:tracking-[0.06em] max-md:px-2.5";
+const TD = "border border-rule-strong px-3.5 py-2.5 max-md:px-2.5 text-start font-mono text-xs text-ink";
 
 /** A specifications plate — key/value pairs, as the nameplate on the unit. */
 function SpecsTable({ specs }: { specs: Record<string, string> }) {
@@ -246,10 +252,10 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                         : "border-t border-rule sm:border-t-0 sm:border-s sm:px-6"
                     }`}
                   >
-                    <dt className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone-light">
+                    <dt className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone-light">
                       {spec.label}
                     </dt>
-                    <dd className="mt-1 text-[13px] font-semibold text-ink text-pretty">
+                    <dd className="mt-1 text-sm font-semibold text-ink text-pretty">
                       {spec.value}
                     </dd>
                   </div>
@@ -276,7 +282,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                 href={`/${lang}/contact?subject=${encodeURIComponent(
                   isAr ? `طلب عرض سعر: ${title}` : `Quote Request: ${title}`
                 )}`}
-                className="inline-flex items-center justify-center bg-pine hover:bg-field text-bone font-semibold text-[13.5px] px-8 py-4 transition-colors active-scale-98"
+                className="inline-flex items-center justify-center bg-pine hover:bg-field text-bone font-semibold text-sm px-8 py-4 transition-colors active-scale-98"
               >
                 {t.inquiry}
               </Link>
@@ -286,7 +292,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                   href={catalogueHref(catalogue)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 border border-rule hover:border-pine text-pine font-semibold text-[13.5px] px-8 py-4 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 border border-rule hover:border-pine text-pine font-semibold text-sm px-8 py-4 transition-colors"
                 >
                   <FileText className="w-4 h-4" aria-hidden="true" />
                   {t.downloadCatalog}
@@ -296,7 +302,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
               <button
                 type="button"
                 onClick={addToCart}
-                className="inline-flex items-center justify-center gap-2 border border-rule hover:border-pine text-pine font-semibold text-[13.5px] px-7 py-4 transition-colors"
+                className="inline-flex items-center justify-center gap-2 border border-rule hover:border-pine text-pine font-semibold text-sm px-7 py-4 transition-colors"
               >
                 {added ? (
                   <Check className="w-4 h-4" aria-hidden="true" />
@@ -316,7 +322,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             {/* Size up front: contractors read on phones between jobs, and one
                 of these catalogues is 25 MB. */}
             {catalogue && (
-              <p className="mt-3 font-mono text-[11px] text-stone" dir="ltr">
+              <p className="mt-3 font-mono text-xs text-stone" dir="ltr">
                 {catalogue.brand} · PDF · {catalogue.sizeMb.toFixed(1)} MB
               </p>
             )}
@@ -328,7 +334,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
             mockup draws it: these tables run to seven columns and 720px, and
             in half a container they would be a horizontal scroll on desktop
             as well as on a phone. */}
-        <div className="mt-14">
+        <div className="mt-12">
           {hasDocs ? (
             <>
               {/* Tabs on a pine rule, active carrying brass — the same tab
@@ -351,7 +357,7 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                         type="button"
                         aria-selected={active}
                         onClick={() => setActiveDocTab(tab.id)}
-                        className={`py-3.5 text-[12.5px] font-semibold border-b-2 transition-colors ${
+                        className={`py-3.5 text-xs font-semibold border-b-2 transition-colors ${
                           i === 0 ? "pe-6" : "px-6"
                         } ${active ? "text-pine border-brass" : "text-stone border-transparent hover:text-pine"}`}
                       >
@@ -416,11 +422,11 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                         <h2 className="spec-label mb-1">
                           {group.diameter} {t.modelSeries}
                         </h2>
-                        <p className="font-mono text-[11px] text-stone-light mb-4" dir="ltr">
+                        <p className="font-mono text-xs text-stone-light mb-4" dir="ltr">
                           {group.flowRange}
                         </p>
                         <div className="overflow-x-auto">
-                          <table className="w-full border-collapse min-w-[560px]">
+                          <table className="w-full border-collapse min-w-[560px] max-md:min-w-0">
                             <thead>
                               <tr>
                                 <th className={TH}>{t.tableModel}</th>
@@ -457,12 +463,12 @@ export default function ProductDetailView({ product, lang, dict, title, desc }: 
                     <section key={group.title}>
                       <h2 className="spec-label mb-1">{group.title}</h2>
                       {group.subtitle && (
-                        <p className="font-mono text-[11px] text-stone-light mb-4">
+                        <p className="font-mono text-xs text-stone-light mb-4">
                           {group.subtitle}
                         </p>
                       )}
                       <div className="overflow-x-auto">
-                        <table className="w-full border-collapse min-w-[720px]">
+                        <table className="w-full border-collapse min-w-[720px] max-md:min-w-0">
                           <thead>
                             <tr>
                               {(isAr ? group.columnsAr : group.columnsEn).map((col) => (

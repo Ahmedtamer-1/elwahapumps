@@ -53,7 +53,7 @@ export default async function EventDetailPage({ params }: PageProps) {
   }
 
   return (
-    <div className="bg-white min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-section">
       {/* Schema only — the visible trail was taken off every page, but the
           BreadcrumbList still tells a search engine where this page sits, and
           it is what puts the site hierarchy under the result rather than a
@@ -68,16 +68,16 @@ export default async function EventDetailPage({ params }: PageProps) {
         )}
       />
       {/* Header Banner */}
-      <section className="bg-pine text-bone py-16 border-b border-bone/15">
+      <section className="bg-pine text-bone py-section border-b border-bone/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href={`/${lang}/events`}
-            className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors"
+            className="inline-flex items-center text-xs font-bold text-emerald-400 hover:text-emerald-300 mb-4 transition-colors max-md:min-h-11"
           >
             {lang === "ar" ? <ArrowRight className="w-4 h-4 me-1" /> : <ArrowLeft className="w-4 h-4 me-1" />}
             {dict.eventsPage.backToEvents}
           </Link>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20 mb-3">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-bold border border-emerald-500/20 mb-3">
             <Calendar className="w-3.5 h-3.5" />
             <span>{event.year}</span>
           </div>

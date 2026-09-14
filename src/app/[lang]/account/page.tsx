@@ -111,11 +111,11 @@ export default async function AccountPage({ params }: PageProps) {
                   i === 0 ? "sm:pe-6" : "border-t border-rule sm:border-t-0 sm:border-s sm:px-6"
                 }`}
               >
-                <dt className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone-light">
+                <dt className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone-light">
                   {row.label}
                 </dt>
                 <dd
-                  className="mt-1 text-[13px] font-semibold text-ink"
+                  className="mt-1 text-sm font-semibold text-ink"
                   dir={row.ltr ? "ltr" : undefined}
                 >
                   {row.value}
@@ -146,10 +146,10 @@ export default async function AccountPage({ params }: PageProps) {
                 return (
                   <li key={inquiry.id} className="border border-rule p-5">
                     <div className="flex flex-wrap items-baseline justify-between gap-3 mb-3">
-                      <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-stone-light">
+                      <p className="font-mono text-xs uppercase tracking-[0.14em] text-stone-light">
                         {t.sentOn} {dateFormat.format(inquiry.createdAt)}
                       </p>
-                      <span className="border border-rule bg-bone px-3 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone">
+                      <span className="border border-rule bg-bone px-3 py-1 font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone">
                         {statusLabel[inquiry.status] ?? inquiry.status}
                       </span>
                     </div>
@@ -169,7 +169,7 @@ export default async function AccountPage({ params }: PageProps) {
                         every enquiry is priced by phone — so a figure here
                         would be the only number on the site pretending to be
                         one. */}
-                    <p className="mt-4 border-t border-rule-light pt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-stone-light">
+                    <p className="mt-4 border-t border-rule-light pt-3 font-mono text-xs uppercase tracking-[0.14em] text-stone-light">
                       {items.length} {t.inquiryItems}
                     </p>
                   </li>

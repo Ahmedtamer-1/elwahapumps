@@ -36,7 +36,7 @@ URL: https://elwahapumps.com/en/products/pump-cast-stainless
 
 ### Tormac Stainless Steel Submersible Pumps
 Model: TS - TN
-Tormac TS series borehole submersible pumps in fully stainless steel construction — AISI 304 as version TS, AISI 316 as version TN — for 4", 6", 8" and 10" wells. Discharge from 0.4 to 280 m³/h and total head to 870 m at 2900 rpm, with NEMA-standard spline coupling and performance certified to ISO 9906:2012 Grade 3B. Manufactured in ISO 9001 facilities.
+Tormac TS series borehole submersible pumps in fully stainless steel construction — AISI 304 as version TS, AISI 316 as version TN — for 4", 6", 8" and 10" wells. Discharge from 0.4 to 280 m³/h and total head to 870 m at 2900 rpm, with NEMA-standard spline coupling and performance certified to ISO 9906:2012 Grade 3B.
 Specs: AISI 304 / 316,4" – 10",0.4–280 m³/h
 URL: https://elwahapumps.com/en/products/pump-tormac-ts
 
@@ -51,9 +51,6 @@ Model: 8E - 8ER - 10E - 10ER
 Italian-built borehole pumps from Rovatti Pompe, in cast iron and cast steel with AISI 316 stainless available, in the 8" and 10" sizes most Egyptian wells are cased for. Each size comes in two hydraulics: radial for high head — the 8" reaches 675 m — and mixed-flow for high volume, where the 10" carries up to 420 m³/h. The check valve is built into the delivery bowl.
 Specs: Cast Iron & Cast Steel,8" to 10",Made in Italy
 URL: https://elwahapumps.com/en/products/pump-rovatti
-
-## Surface Pumps
-https://elwahapumps.com/en/products/category/surface-pumps
 
 ### Rovatti Surface Pumps
 Italian-built surface pumps from Rovatti Pompe, carried as a complete range: single-stage and multistage centrifugal electric pumps in horizontal and vertical execution, bare-shaft surface pumps for coupling to a motor or engine, and waste water electric submersible pumps with single-channel, double-channel and vortex impellers. Suited to irrigation, water supply and pressure boosting, industrial service water and drainage.
@@ -70,13 +67,13 @@ https://elwahapumps.com/en/products/category/motors
 
 ### Kurlar Submersible Motors
 Model: KM
-Genuine Kurlar submersible motors (6"-8"-10"), rewindable and rated for continuous operation up to 60°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors, manufactured in ISO 9001 certified facilities.
+Genuine Kurlar submersible motors (6"-8"-10"), rewindable and rated for continuous operation up to 60°C. High-temperature PBN winding wire, water-cooled construction, and a stainless steel shaft deliver a longer service life and lower operating cost than standard motors.
 Specs: HI-TEMP 60°C,IP68,Water-Cooled
 URL: https://elwahapumps.com/en/products/motor-hitemp
 
 ### Tormac ECO Series Submersible Motors
 Model: D4 - D10
-Tormac ECO series borehole submersible motors — water-cooled and rewindable in the field. Stainless steel stator shell, housings and motor base resist corrosion; the pressure-equalising diaphragm and shaft seal keep sand and well water out of the winding. Available 4", 6", 8" and 10", 380/415 V three phase, to NEMA mounting standards and ISO 9001.
+Tormac ECO series borehole submersible motors — water-cooled and rewindable in the field. Stainless steel stator shell, housings and motor base resist corrosion; the pressure-equalising diaphragm and shaft seal keep sand and well water out of the winding. Available 4", 6", 8" and 10", 380/415 V three phase, to NEMA mounting standards.
 Specs: Rewindable,IP68,NEMA Standard
 URL: https://elwahapumps.com/en/products/motor-tormac-eco
 

@@ -9,8 +9,7 @@
 
 ## What we sell
 
-- [Submersible pumps](https://elwahapumps.com/en/products/category/pumps)
-- [Surface pumps](https://elwahapumps.com/en/products/category/surface-pumps)
+- [Pumps: submersible and surface](https://elwahapumps.com/en/products/category/pumps)
 - [Submersible motors](https://elwahapumps.com/en/products/category/motors)
 - [Electrical: inverters, control panels](https://elwahapumps.com/en/products/category/electrical)
 - [Column pipes](https://elwahapumps.com/en/products/category/pipes)
@@ -49,16 +48,12 @@
 ## Brands
 
 Exclusive Egyptian agent for 12 manufacturers (see the summary above for the full
-list). Brand pages exist for: [Kurlar](https://elwahapumps.com/en/agents/kurlar),
-[Astral Pipes](https://elwahapumps.com/en/agents/astral-pipes),
-[PMC](https://elwahapumps.com/en/agents/pmc), [Alka](https://elwahapumps.com/en/agents/alka),
-[NOVO](https://elwahapumps.com/en/agents/novo), [Tormac](https://elwahapumps.com/en/agents/tormac),
-[Üntel](https://elwahapumps.com/en/agents/untel). See
-[all agencies](https://elwahapumps.com/en/agents) for the current list.
+list). The brand logos are shown on the
+[products page](https://elwahapumps.com/en/products).
 
 ## Company
 
-- [About](https://elwahapumps.com/en/about): founded 2013 in Giza; ISO 9001 certified
+- [About](https://elwahapumps.com/en/about): founded 2013 in Giza
 - [Distributors](https://elwahapumps.com/en/locations)
 - [Events](https://elwahapumps.com/en/events)
 - [Careers](https://elwahapumps.com/en/careers)

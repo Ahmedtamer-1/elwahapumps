@@ -13,10 +13,23 @@
   /* --- Type families -------------------------------------------------
      One stack, two scripts. Archivo has no Arabic coverage, so the
      browser falls through to Plex Arabic per-glyph: Latin renders in
-     Archivo and Arabic in Plex Arabic from the same declaration.     */
-  --font-sans: var(--font-archivo), var(--font-plex-arabic), system-ui, sans-serif;
+     Archivo and Arabic in Plex Arabic from the same declaration.
+
+     That only holds while nothing ahead of Plex Arabic covers Arabic.
+     `var(--font-archivo)` expands to "Archivo", "Archivo Fallback", and
+     that fallback is a local("Arial") face with no unicode-range — it
+     claims every glyph, Arabic included. With it second in the stack the
+     browser stopped there: every Arabic page was set in size-adjusted
+     Arial and Plex Arabic was never downloaded. So the stack names Archivo
+     by family (its real faces carry Latin-only unicode-ranges) and moves
+     its fallback behind Plex Arabic. next/font's adjustFontFallback:false
+     is not an alternative — Turbopack emits the fallback face regardless. */
+  --font-sans: "Archivo", var(--font-plex-arabic), "Archivo Fallback", system-ui, sans-serif;
   --font-arabic: var(--font-plex-arabic), system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Same trap as above: Plex Mono's generated fallback covers Arabic too,
+     so it goes behind Plex Arabic — spec labels on Arabic pages carry
+     Arabic words and were rendering them in Arial. */
+  --font-mono: "IBM Plex Mono", var(--font-plex-arabic), "IBM Plex Mono Fallback", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --font-display-lg: var(--font-sans);
   --font-headline-md: var(--font-sans);
@@ -175,14 +188,23 @@
   --text-body--line-height: 26px;
   --text-body--font-weight: 400;
 
-  --text-small: 13px;
-  --text-small--line-height: 20px;
+  --text-small: 14px;
+  --text-small--line-height: 22px;
   --text-small--font-weight: 400;
 
+  /* Tailwind's own xs/sm, a step up from its 12/14 defaults. Between
+     them they set 130+ descriptions, nav links and captions across the
+     site, and at the stock sizes those read as fine print. */
+  --text-xs: 13px;
+  --text-xs--line-height: 20px;
+  --text-sm: 15px;
+  --text-sm--line-height: 24px;
+
   /* Label & spec — mono, wide. The element that makes a spec plate
-     read as a spec plate (§05). */
-  --text-spec: 11px;
-  --text-spec--line-height: 16px;
+     read as a spec plate (§05). 12px is the floor: at 11 the tracked
+     uppercase stopped being legible on pine. */
+  --text-spec: 12px;
+  --text-spec--line-height: 18px;
   --text-spec--letter-spacing: 0.16em;
   --text-spec--font-weight: 500;
 
@@ -210,8 +232,8 @@
   --text-body-lg--line-height: 30px;
   --text-body-lg--font-weight: 400;
 
-  --text-label-sm: 11px;
-  --text-label-sm--line-height: 16px;
+  --text-label-sm: 12px;
+  --text-label-sm--line-height: 18px;
   --text-label-sm--letter-spacing: 0.16em;
   --text-label-sm--font-weight: 500;
 }
@@ -258,6 +280,35 @@
   }
 }
 
+/*
+ * Vertical rhythm between page sections, in one place.
+ *
+ * Sections used to set their own padding by hand — py-16, py-20, py-24,
+ * py-28 — so two stacked sections put 160px or more of empty space between
+ * their content, and up to ~400px where inner margins stacked on top.
+ * One fluid value instead: 40px on a phone rising to 64px from ~1420px,
+ * so the gap between two sections' content is 80–128px.
+ */
+:root {
+  --section-y: clamp(40px, 4.5vw, 64px);
+}
+
+@utility py-section {
+  padding-block: var(--section-y);
+}
+
+@utility pt-section {
+  padding-top: var(--section-y);
+}
+
+@utility pb-section {
+  padding-bottom: var(--section-y);
+}
+
+@utility mt-section {
+  margin-top: var(--section-y);
+}
+
 /* Global scroll behavior */
 html {
   scroll-behavior: smooth;
@@ -288,14 +339,31 @@ body {
   --text-h1--line-height: 58px;
   --text-h2: 30px;
   --text-h2--line-height: 46px;
-  --text-h3: 21px;
-  --text-h3--line-height: 34px;
-  --text-body: 17px;
+  --text-h3: 22px;
+  --text-h3--line-height: 36px;
+  --text-body: 18px;
   --text-body--line-height: 32px;
-  --text-small: 14px;
-  --text-small--line-height: 26px;
-  --text-spec: 13px;
+  --text-small: 16px;
+  --text-small--line-height: 28px;
+  --text-spec: 14px;
   --text-spec--line-height: 22px;
+
+  /* Tailwind's stock sizes get the same uplift. Without this every
+     `text-sm` description and nav link — most of the small text on the
+     site — stayed at the Latin size on Arabic pages, and Arabic at
+     Latin sizes reads a full step smaller. Leading runs ~1.75: Arabic
+     needs room above and below for its ascenders, descenders and dots. */
+  --text-xs: 14px;
+  --text-xs--line-height: 24px;
+  --text-sm: 16px;
+  --text-sm--line-height: 28px;
+  --text-base: 17px;
+  --text-base--line-height: 30px;
+  --text-lg: 20px;
+  --text-lg--line-height: 34px;
+  --text-xl: 22px;
+  --text-xl--line-height: 36px;
+  --leading-relaxed: 1.8;
 }
 
 /* Rule 3: never letterspace Arabic — tracking breaks the joins.
@@ -341,8 +409,9 @@ body {
   /* Eyebrow / spec label — mono, wide, uppercase. §05 Fig. 8 */
   .spec-label {
     font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 16px;
+    /* Through the tokens, so the Arabic uplift above reaches it. */
+    font-size: var(--text-spec);
+    line-height: var(--text-spec--line-height);
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -550,4 +619,53 @@ body {
 /* Fix for active state scale effects */
 .active-scale-98:active {
   transform: scale(0.98);
+}
+
+/* ============================================================
+   Mobile — below 768px, and again at 480px and under.
+
+   Nothing here reaches a desktop layout: every rule sits inside a
+   max-width query. Found by a device audit at 320, 375 and 414 wide.
+   ============================================================ */
+@media (max-width: 767.98px) {
+  /* 14px floor for the Latin side. text-xs (13px) and the mono spec
+     label (12px) set the footer contacts, table headers, form labels and
+     every eyebrow, and on a phone held at arm's length they read as fine
+     print. Arabic already runs 14px and up through the [dir="rtl"] block,
+     so only the ltr tokens move. */
+  [dir="ltr"] {
+    --text-xs: 14px;
+    --text-xs--line-height: 20px;
+    --text-spec: 14px;
+    --text-spec--line-height: 20px;
+  }
+
+  /* At 14px the 0.16em tracking pushes labels such as "MAINTENANCE &
+     SUPPORT" wide enough to wrap or crowd their row. */
+  [dir="ltr"] .spec-label {
+    letter-spacing: 0.1em;
+  }
+
+  /* A single long word in a display heading — "Marine/Submersible" at
+     40px is 383px — has no break opportunity, so it ran past a 288px
+     column and the hero's overflow-hidden cut it off. Break it instead. */
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  /* One step down for the page title on the narrowest phones, so long
+     service names break once rather than mid-word on every line. */
+  [dir="ltr"] {
+    --text-h1: 34px;
+    --text-h1--line-height: 38px;
+  }
+
+  [dir="rtl"] {
+    --text-h1: 36px;
+    --text-h1--line-height: 50px;
+  }
 }

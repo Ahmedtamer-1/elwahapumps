@@ -54,12 +54,14 @@ export default function SuccessPartners({ lang }: SuccessPartnersProps) {
           </div>
         </div>
 
-        {/* The marquee above is decorative (logos, no text an answer engine
-            or a screen reader can use); this is the actual content — every
-            name as selectable text, so the client relationships are real,
-            indexable facts and not just pixels inside a scrolling image
-            strip. */}
-        <p className="mt-6 text-sm leading-relaxed text-stone">
+        {/* Not painted, but not deleted either. The marquee above is
+            decorative — logos, no text an answer engine or a screen reader
+            can use — so this list is the only place the client
+            relationships exist as real, indexable facts rather than pixels
+            inside a scrolling image strip. `sr-only` takes it out of the
+            layout (it was a paragraph-shaped block of grey under the wall)
+            while leaving it in the document for search and assistive tech. */}
+        <p className="sr-only">
           {SUCCESS_PARTNERS.map((partner, idx) => (
             <React.Fragment key={partner.id}>
               {idx > 0 && (isAr ? "، " : ", ")}

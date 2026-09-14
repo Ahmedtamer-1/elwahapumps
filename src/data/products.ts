@@ -261,7 +261,7 @@ export const products: ProductData[] = [
     id: "pump-rovatti",
     category: "pumps",
     gallery: [
-      "/images/products/rovatti-pump.jpeg"
+      "/images/products/rovatti-pump.png"
     ],
     specs: ["Cast Iron & Cast Steel", "8\" to 10\"", "Made in Italy"],
     modelNo: "8E - 8ER - 10E - 10ER",
@@ -309,14 +309,14 @@ export const products: ProductData[] = [
     id: "pump-panelli-sx",
     category: "pumps",
     gallery: [
-      "/images/products/panelli-pump.jpeg"
+      "/images/products/panelli-pump.png"
     ],
     specs: ["Cast Iron & Cast Steel", "8\" & 10\"", "Made in Italy"],
     modelNo: "140-270 SX",
     variants: [],
     tableSpecsEn: {
-      "Diameters": "8\" and 10\" (range spans 6\" to 12\")",
-      "8\" Series": "180 SX — 78, 90, 102, 124 and 140 m³/h nominal, 10-150 HP",
+      "Diameters": "8\" and 10\"",
+      "8\" Series": "10-150 HP",
       "10\" Series": "230 SX — 200, 220, 240 and 280 m³/h nominal, 25-340 HP",
       "Construction": "Cast iron, cast steel, and micro-cast stainless steel",
       "Stainless Grades": "AISI 304, AISI 316, Duplex",
@@ -328,8 +328,8 @@ export const products: ProductData[] = [
       "Origin": "Made in Italy",
     },
     tableSpecsAr: {
-      "الأقطار": "8 و10 بوصة (المدى من 6 إلى 12 بوصة)",
-      "سلسلة 8 بوصة": "180 SX — تصرف اسمي 78 و90 و102 و124 و140 م³/ساعة، 10-150 حصان",
+      "الأقطار": "8 و10 بوصة",
+      "سلسلة 8 بوصة": "10-150 حصان",
       "سلسلة 10 بوصة": "230 SX — تصرف اسمي 200 و220 و240 و280 م³/ساعة، 25-340 حصان",
       "التصنيع": "زهر، صلب مصبوب، واستانلس ستيل مصبوب دقيق",
       "درجات الاستانلس": "AISI 304، AISI 316، دوبلكس",
@@ -363,7 +363,7 @@ export const products: ProductData[] = [
     // states what the range covers and leaves the model choice to the
     // enquiry — hence no variant selector and no model tables.
     id: "pump-rovatti-surface",
-    category: "surface-pumps",
+    category: "pumps",
     gallery: [
       "/images/products/rovatti-surface.png"
     ],
@@ -405,17 +405,15 @@ export const products: ProductData[] = [
     // the range is stated series by series, and the model choice happens in
     // the enquiry rather than through a variant selector.
     id: "pump-tormac-surface",
-    category: "surface-pumps",
+    category: "pumps",
     gallery: [
-      "/images/products/tormac-surface.jpeg"
+      "/images/products/tormac-surface.png"
     ],
     specs: ["Close Coupled to Split Case", "50 Hz", "Motors Included"],
     variants: [],
     tableSpecsEn: {
       "Series": "TCCH, TEH, TEC, THSC and TV, with matching induction motors",
-      "TCCH — Close Coupled": "Pump and motor on one shaft, compact footprint",
       "TEH / TEC — End Suction": "Horizontal end-suction centrifugal pumps",
-      "THSC — Split Case": "Horizontal split case for high-flow duties",
       "TV — Vertical Multistage": "High head from a small floor area",
       "Induction Motors": "Matched motors supplied with the pump",
       "Typical Duties": "Irrigation, water supply and pressure boosting, industrial and building services",
@@ -423,9 +421,7 @@ export const products: ProductData[] = [
     },
     tableSpecsAr: {
       "السلاسل": "TCCH وTEH وTEC وTHSC وTV، مع مواتير حث مناسبة",
-      "TCCH — مباشر على الموتور": "الطلمبة والموتور على عمود واحد بحيز صغير",
       "TEH / TEC — سحب أمامي": "طلمبات طاردة مركزية أفقية بسحب أمامي",
-      "THSC — جسم منشطر": "جسم أفقي منشطر للتصرفات العالية",
       "TV — رأسية متعددة المراحل": "ارتفاع ضخ عالٍ بمساحة أرضية صغيرة",
       "مواتير الحث": "مواتير مناسبة تورد مع الطلمبة",
       "أوجه الاستخدام": "الري، وإمداد المياه ورفع الضغط، وخدمات المصانع والمباني",
@@ -457,30 +453,28 @@ export const products: ProductData[] = [
     specs: ["8\" & 10\"", "40-250 HP", "Class F"],
     variants: [],
     tableSpecsEn: {
-      "Diameters": "8\" and 10\" (catalogue spans 4\" to 12\")",
-      "8\" Standard (50 Hz)": "40-200 HP (30-150 kW), 2900 rpm, 30°C ambient",
-      "8\" Hi-Temp 75 (50 Hz)": "40-150 HP (30-110 kW), rated to 75°C ambient",
-      "10\"": "175-250 HP (130-185 kW), 380-415 V / 50 Hz",
+      "Diameters": "8\" and 10\"",
+      "8\" Standard (50 Hz)": "40-200 HP",
+      "10\"": "175-250 HP",
       "Phase & Poles": "Three-phase, 2-pole",
       "Insulation": "UL Class F",
       "Protection": "IP68 (10\")",
       "Seal System": "Sand Fighter — SiC seal standard on the 10\"",
       "Thrust Rating": "10,000 lb on the 8\" at 30°C",
       "Materials": "300 series stainless shell, or 316 SS / 904 L",
-      "Certification": "Built in ISO 9001 facilities; 10\" is NSF/ANSI 61 certified",
+      "Certification": "10\" is NSF/ANSI 61 certified",
     },
     tableSpecsAr: {
-      "الأقطار": "8 و10 بوصة (الكتالوج يغطي من 4 إلى 12 بوصة)",
-      "8 بوصة قياسي (50 هرتز)": "40-200 حصان (30-150 كيلوواط)، 2900 لفة/دقيقة، حرارة محيطة 30°م",
-      "8 بوصة Hi-Temp 75 (50 هرتز)": "40-150 حصان (30-110 كيلوواط)، حتى 75°م حرارة محيطة",
-      "10 بوصة": "175-250 حصان (130-185 كيلوواط)، 380-415 فولت / 50 هرتز",
+      "الأقطار": "8 و10 بوصة",
+      "8 بوصة قياسي (50 هرتز)": "40-200 حصان",
+      "10 بوصة": "175-250 حصان",
       "الأوجه والأقطاب": "ثلاثي الأوجه، قطبان",
       "العزل": "فئة F حسب UL",
       "الحماية": "IP68 (مقاس 10 بوصة)",
       "نظام الإحكام": "Sand Fighter — سيل SiC قياسي في مقاس 10 بوصة",
       "تحمل الدفع المحوري": "10,000 رطل لمقاس 8 بوصة عند 30°م",
       "الخامات": "جسم استانلس سلسلة 300، أو 316 SS / 904 L",
-      "الشهادات": "مصنعة في منشآت حاصلة على ISO 9001، ومقاس 10 بوصة حاصل على NSF/ANSI 61",
+      "الشهادات": "مقاس 10 بوصة حاصل على NSF/ANSI 61",
     },
     featuresEn: [
       "Sand Fighter seal system — built to keep running in sandy water",
@@ -501,14 +495,14 @@ export const products: ProductData[] = [
     id: "motor-panelli",
     category: "motors",
     gallery: [
-      "/images/products/panelli-motor.jpeg"
+      "/images/products/panelli-motor.png"
     ],
     specs: ["Rewindable", "8\" & 10\"", "Made in Italy"],
     variants: [],
     tableSpecsEn: {
-      "Diameters": "8\" and 10\" (range spans 6\" to 12\")",
+      "Diameters": "8\" and 10\"",
       "Type": "Water-filled, rewindable submersible motor",
-      "Power Range": "0.37 kW (0.5 HP) to 300 kW (400 HP) across the range",
+      "Power Range": "5 HP-250 HP",
       "Frequency": "50 Hz",
       "Coupling": "NEMA-standard, matched to the SX pump ends",
       "Construction": "Cast iron and stainless steel bodies",
@@ -517,9 +511,9 @@ export const products: ProductData[] = [
       "Origin": "Made in Italy",
     },
     tableSpecsAr: {
-      "الأقطار": "8 و10 بوصة (المدى من 6 إلى 12 بوصة)",
+      "الأقطار": "8 و10 بوصة",
       "النوع": "موتور غاطس ممتلئ بالماء وقابل لإعادة اللف",
-      "مدى القدرة": "من 0.37 كيلوواط (0.5 حصان) حتى 300 كيلوواط (400 حصان) عبر المدى",
+      "مدى القدرة": "5 حصان - 250 حصان",
       "التردد": "50 هرتز",
       "الوصلة": "قياسي NEMA، متوافق مع طلمبات SX",
       "التصنيع": "أجسام من الزهر والاستانلس ستيل",
@@ -546,6 +540,7 @@ export const products: ProductData[] = [
     id: "elec-inverter",
     category: "electrical",
     gallery: [
+      "/images/products/electrical-inverter-novo%20collection.png",
       "/images/products/electrical-inverter-novo.png"
     ],
     specs: ["Dynamic MPPT", "Solar + Grid Hybrid", "0.37-400 kW"],
@@ -561,8 +556,7 @@ export const products: ProductData[] = [
       }
     ],
     tableSpecsEn: {
-      "DC Solar Input Voltage": "150V - 900V (model-dependent)",
-      "AC Input (Hybrid Mode)": "220V single-phase / 220V or 380V three-phase, auto solar-grid switching",
+      "DC Solar Input Voltage": "150V - 900V",
       "Output Voltage": "220V (1-phase) / 220V or 380V (3-phase)",
       "Output Frequency": "0-400 Hz adjustable",
       "Rated Output Power": "0.37 kW - 400 kW",
@@ -573,8 +567,7 @@ export const products: ProductData[] = [
       "Weight Range": "1 kg - 232 kg depending on power rating",
     },
     tableSpecsAr: {
-      "جهد إدخال الطاقة الشمسية": "150 - 900 فولت (حسب الموديل)",
-      "إدخال التيار المتردد (وضع الهجين)": "أحادي الطور 220 فولت / ثلاثي الطور 220 أو 380 فولت، تبديل تلقائي بين الطاقة الشمسية والشبكة",
+      "جهد إدخال الطاقة الشمسية": "150 - 900 فولت",
       "جهد الخرج": "220 فولت (أحادي الطور) / 220 أو 380 فولت (ثلاثي الطور)",
       "تردد الخرج": "0-400 هرتز قابل للتعديل",
       "القدرة المقننة للخرج": "0.37 - 400 كيلوواط",
@@ -820,7 +813,7 @@ export const products: ProductData[] = [
     ],
     tableSpecsEn: {
       "Material": "Lead-free uPVC (heavy-metal-free compound)",
-      "Size Range": "1\" (25 mm) to 6\" (165 mm)",
+      "Size Range": "1\" to 6\"",
       "Pressure Classes": "V4 ECO, Medium, Standard, Super Heavy",
       "Jointing": "Square-thread coupler with EPDM 'O' Ring seal",
       "Locking System": "Double SS stud pin + shock-absorbing rubber ring",
@@ -828,7 +821,7 @@ export const products: ProductData[] = [
     },
     tableSpecsAr: {
       "المادة": "يو بي في سي خالٍ من الرصاص (خليط خالٍ من المعادن الثقيلة)",
-      "نطاق المقاسات": "من 1 بوصة (25 مم) إلى 6 بوصة (165 مم)",
+      "نطاق المقاسات": "من 1 بوصة إلى 6 بوصة",
       "فئات الضغط": "V4 ECO، متوسط، قياسي، فائق التحمل",
       "نظام التوصيل": "وصلة ذات سن مربع مع حلقة إحكام EPDM",
       "نظام القفل": "مسامير استانلس ستيل مزدوجة + حلقة مطاطية ماصة للصدمات",
@@ -912,7 +905,7 @@ export const products: ProductData[] = [
     id: "winding-wire-voltson",
     category: "spare-parts",
     gallery: [
-      "/images/products/VOLTSON.jpeg",
+      "/images/products/VOLTSON.png",
       "/images/products/voltson-wire.png"
     ],
     specs: ["ETP Copper 99.95%", "120°C Rated", "IS 8783"],
@@ -926,7 +919,7 @@ export const products: ProductData[] = [
       "High-Voltage Test": "3.5 kV rms, every coil",
       "Size Range": "0.40 - 2.40 mm² (smaller and larger on demand)",
       "Packing": "500 m and 1000 m coils",
-      "Manufacturer": "Voltson India, ISO 9001:2015 certified",
+      "Manufacturer": "Voltson India",
       "Application": "Domestic and industrial submersible pump motors",
     },
     tableSpecsAr: {
@@ -937,7 +930,7 @@ export const products: ProductData[] = [
       "اختبار الجهد العالي": "3.5 كيلو فولت لكل لفة",
       "نطاق المقاسات": "0.40 - 2.40 مم² (مقاسات أصغر وأكبر عند الطلب)",
       "التعبئة": "لفات 500 متر و1000 متر",
-      "جهة التصنيع": "Voltson India، حاصلة على ISO 9001:2015",
+      "جهة التصنيع": "Voltson India",
       "الاستخدام": "مواتير الطلمبات الغاطسة المنزلية والصناعية",
     },
     featuresEn: [

@@ -51,7 +51,6 @@ export const PROJECTS_DELIVERED = "230+";
 export const TEAM_SIZE = "80+";
 export const FACILITY_AREA = "3,000 m²";
 export const RESPONSE_COVER = "24 / 7";
-export const QUALITY_STANDARD = "ISO 9001";
 
 export const AGENCIES = [
   { name: "Kurlar", logo: "/images/brand/kurlar-mark.png" },
@@ -121,11 +120,27 @@ export const ADDRESS = {
 };
 
 /**
- * From the Google Maps embed already published on the contact page
- * (src/app/[lang]/contact/page.tsx) — reused here rather than re-guessed,
- * not independently re-surveyed against the actual plot.
+ * Head office, from the company's own Google Maps listing (supplied 14 Sep
+ * 2026). This replaces the earlier CPC Industrial Complex pin, which sat
+ * about 14 km west of the actual premises.
+ *
+ * Feeds the JSON-LD, the head-office pin on the distributor map, and the map
+ * on the contact page — change it here and all three follow.
  */
-export const GEO = { latitude: 29.977259695663737, longitude: 30.730303102377227 };
+export const GEO = { latitude: 29.9541766, longitude: 30.8704717 };
+
+/** The Google Maps place itself, for "Directions" links. */
+export const HQ_MAP_URL = "https://maps.google.com/?cid=15569346922629761745";
+
+/** Selection id the distributor map and list use for the head-office pin. */
+export const HQ_SELECTION_ID = "el-waha-hq";
+
+/** Keyless embed of the same point, for the contact page iframe. */
+export function hqMapEmbedUrl(lang: string): string {
+  // www.google.com, not maps.google.com: it is the only frame-src the CSP in
+  // next.config.ts allows.
+  return `https://www.google.com/maps?q=${GEO.latitude},${GEO.longitude}&z=16&hl=${lang === "ar" ? "ar" : "en"}&output=embed`;
+}
 
 /** Already linked from the footer; reused here for JSON-LD sameAs. */
 /**
@@ -143,3 +158,41 @@ export const SOCIAL = {
   linkedin: "https://www.linkedin.com/company/el-waha-for-wells-services-and-pumps/",
   instagram: "https://www.instagram.com/elwahapumps1/",
 };
+
+/**
+ * The same four profiles with their glyphs (24×24 stroke paths), shared by
+ * the footer and the contact page so neither can drift to a shorter list.
+ */
+export const SOCIAL_LINKS = [
+  {
+    label: "Facebook",
+    href: SOCIAL.facebook,
+    paths: ["M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"],
+  },
+  {
+    label: "YouTube",
+    href: SOCIAL.youtube,
+    paths: [
+      "M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 11.54a29 29 0 0 0 .46 5.12 2.78 2.78 0 0 0 1.95 1.96C5.12 19 12 19 12 19s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96 29 29 0 0 0 .46-5.12 29 29 0 0 0-.46-5.12z",
+      "M9.75 15.02 15.5 11.54 9.75 8.07z",
+    ],
+  },
+  {
+    label: "LinkedIn",
+    href: SOCIAL.linkedin,
+    paths: [
+      "M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z",
+      "M6 9H2v12h4z",
+      "M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+    ],
+  },
+  {
+    label: "Instagram",
+    href: SOCIAL.instagram,
+    paths: [
+      "M16 2H8a6 6 0 0 0-6 6v8a6 6 0 0 0 6 6h8a6 6 0 0 0 6-6V8a6 6 0 0 0-6-6z",
+      "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",
+      "M17.5 6.5h.01",
+    ],
+  },
+] as const;

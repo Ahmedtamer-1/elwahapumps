@@ -6,6 +6,7 @@ import { getDictionary, hasLocale, Locale } from "./dictionaries";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import SiteChrome from "@/components/SiteChrome";
 import { CartProvider } from "@/components/cart/CartContext";
 import { AGENCY_COUNT, FOUNDED, NAME_AR, NAME_EN } from "@/lib/company";
 import { SITE_URL, localizedAlternates } from "@/lib/seo";
@@ -84,8 +85,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   // point search results start truncating at.
   const siteName = isAr ? NAME_AR : NAME_EN;
   const description = isAr
-    ? `توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام ${FOUNDED}. توكيلات حصرية لـ${AGENCY_COUNT} شركة عالمية، شهادة ISO 9001، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد.`
-    : `Deep-well pumping equipment supplied, installed and maintained across Egypt since ${FOUNDED}. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, ISO 9001 certified, with service for motors, control panels and voltage regulators.`;
+    ? `توريد وتركيب وصيانة طلمبات الأعماق الغاطسة في مصر منذ عام ${FOUNDED}. توكيلات حصرية لـ${AGENCY_COUNT} شركة عالمية، وصيانة للمواتير ولوحات التشغيل ومنظمات الجهد.`
+    : `Deep-well pumping equipment supplied, installed and maintained across Egypt since ${FOUNDED}. Exclusive Egyptian agent for ${AGENCY_COUNT} manufacturers, with service for motors, control panels and voltage regulators.`;
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -161,7 +162,9 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
           {lang === "ar" ? "تخطَّ إلى المحتوى" : "Skip to content"}
         </a>
         <CartProvider>
-          <Header lang={lang} dict={dict} />
+          <SiteChrome>
+            <Header lang={lang} dict={dict} />
+          </SiteChrome>
 
           {/* Main Content Area. tabIndex={-1} so the skip link can actually
               move focus here, not just scroll to it. */}
@@ -169,8 +172,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
             {children}
           </main>
 
-          <Footer lang={lang} dict={dict} />
-          <WhatsAppButton lang={lang} />
+          <SiteChrome>
+            <Footer lang={lang} dict={dict} />
+            <WhatsAppButton lang={lang} />
+          </SiteChrome>
         </CartProvider>
       </body>
     </html>

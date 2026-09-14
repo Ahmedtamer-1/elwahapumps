@@ -18,7 +18,6 @@ const categories = [
   // Was missing from this list while present in src/data/categories.ts and
   // linked from the header nav — silently dropped two products (the Rovatti
   // and Tormac surface pumps) and left the nav link pointing at an empty page.
-  { slug: "surface-pumps", nameEn: en.productsPage.surfacePumps, nameAr: ar.productsPage.surfacePumps },
   { slug: "motors", nameEn: en.productsPage.motors, nameAr: ar.productsPage.motors },
   { slug: "electrical", nameEn: en.productsPage.electrical, nameAr: ar.productsPage.electrical },
   { slug: "pipes", nameEn: en.productsPage.pipes, nameAr: ar.productsPage.pipes },

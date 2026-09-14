@@ -34,7 +34,7 @@ export default function ProductCard({
           className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-4 left-4">
-          <span className="text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 bg-white/90 backdrop-blur-sm text-emerald-600 border border-rule-light">
+          <span className="text-xs uppercase font-bold tracking-wider px-2.5 py-1 bg-white/90 backdrop-blur-sm text-emerald-600 border border-rule-light">
             {label}
           </span>
         </div>
@@ -51,7 +51,7 @@ export default function ProductCard({
         {/* Specs Chips */}
         <div className="flex flex-wrap gap-2 mb-6">
           {product.specs.map((spec, idx) => (
-            <span key={idx} className="inline-flex items-center text-[10px] font-semibold text-stone bg-bone px-2 py-1">
+            <span key={idx} className="inline-flex items-center text-xs font-semibold text-stone bg-bone px-2 py-1">
               {spec}
             </span>
           ))}

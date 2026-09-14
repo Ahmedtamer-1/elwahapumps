@@ -134,7 +134,7 @@ export default function CategoryView({
                         : [...prev, brand],
                     )
                   }
-                  className={`px-4 py-2 text-sm font-semibold border transition-colors ${
+                  className={`px-4 py-2 text-sm font-semibold border transition-colors max-md:min-h-11 ${
                     on
                       ? "bg-pine text-bone border-pine"
                       : "bg-white text-stone border-rule hover:border-pine hover:text-pine"
@@ -148,7 +148,7 @@ export default function CategoryView({
               <button
                 type="button"
                 onClick={() => setSelectedBrands([])}
-                className="px-3 py-2 text-sm font-semibold text-stone underline underline-offset-4 hover:text-pine"
+                className="px-3 py-2 text-sm font-semibold text-stone underline underline-offset-4 hover:text-pine max-md:min-h-11"
               >
                 {isAr ? "إلغاء التصفية" : "Clear"}
               </button>
@@ -286,7 +286,7 @@ function ProductTile({
             />
           </span>
           {markers.length > 0 && (
-            <span className="font-mono text-[11px] text-stone-light truncate">
+            <span className="font-mono text-xs text-stone-light truncate">
               {markers.join("  ")}
             </span>
           )}

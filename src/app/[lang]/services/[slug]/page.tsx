@@ -182,7 +182,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
     .slice(0, 3);
 
   return (
-    <div className="bg-white min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-section">
       {/* Schema only — the visible trail was taken off every page, but the
           BreadcrumbList still tells a search engine where this page sits, and
           it is what puts the site hierarchy under the result rather than a
@@ -237,16 +237,20 @@ export default async function ServiceDetailPage({ params }: PageProps) {
               the column of type, where contrast has to hold, and clears away
               across the rest of the frame so the photograph is legible as a
               photograph. The light tint on top only keeps it in brand colour.
+
+              Below md the type runs the full width of the band, so its line
+              ends sat over the clear 15% side and the subtitle faded into
+              bright sand. The far stops stay heavier there.
             */}
             <div
               aria-hidden
-              className="absolute inset-0 ltr:bg-gradient-to-r rtl:bg-gradient-to-l from-pine via-pine/85 to-pine/15"
+              className="absolute inset-0 ltr:bg-gradient-to-r rtl:bg-gradient-to-l from-pine via-pine/85 to-pine/15 max-md:via-pine/90 max-md:to-pine/70"
             />
             <div aria-hidden className="absolute inset-0 bg-pine/20" />
           </>
         )}
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 md:py-20">
           <div className="max-w-3xl">
             <span aria-hidden className="block h-0.5 w-16 bg-brass mb-6" />
             <h1 className="text-h1 md:text-display font-extrabold">{service.title}</h1>
@@ -258,7 +262,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href={`tel:${PHONE_SALES}`}
-                className="inline-flex items-center gap-2 bg-brass hover:bg-brass/90 text-pine px-6 py-3 text-[13px] font-semibold transition-colors"
+                className="inline-flex items-center gap-2 bg-brass hover:bg-brass/90 text-pine px-6 py-3 text-sm font-semibold transition-colors"
               >
                 <Phone className="w-4 h-4" aria-hidden="true" />
                 <span>{lang === "ar" ? "اتصل الآن" : "Call Now"}</span>
@@ -267,7 +271,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 href={`https://wa.me/${WHATSAPP_SALES}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-bone/30 hover:border-brass hover:text-brass text-bone px-6 py-3 text-[13px] font-semibold transition-colors"
+                className="inline-flex items-center gap-2 border border-bone/30 hover:border-brass hover:text-brass text-bone px-6 py-3 text-sm font-semibold transition-colors"
               >
                 {lang === "ar" ? "تواصل عبر واتساب" : "Message on WhatsApp"}
               </a>
@@ -302,7 +306,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
             {/* B2B Trust Badge — "Exclusive agent" replaces the earlier
                 the earlier unfalsifiable quality-guarantee badge with the real,
-                checkable relationship (see /agents). */}
+                checkable relationship (see AGENCIES in src/lib/company.ts). */}
             <div className="flex flex-col sm:flex-row items-center gap-4 p-5 bg-emerald-50/30 border border-emerald-100/40 text-stone text-xs">
               <Shield className="w-8 h-8 text-emerald-600 shrink-0" />
               <div className="leading-relaxed">
@@ -368,7 +372,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                         <span className="block text-ink text-xs font-bold group-hover:text-emerald-600 transition-colors leading-relaxed">
                           {relService?.title}
                         </span>
-                        <span className="inline-flex items-center text-[10px] font-semibold text-stone group-hover:text-emerald-500 mt-1 transition-colors">
+                        <span className="inline-flex items-center text-xs font-semibold text-stone group-hover:text-emerald-500 mt-1 transition-colors">
                           {lang === "ar" ? "تفاصيل الخدمة" : "Service details"}
                           {lang === "ar" ? <ArrowLeft className="w-3 h-3 ms-1" /> : <ArrowRight className="w-3 h-3 ms-1" />}
                         </span>

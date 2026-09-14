@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { fill } from "@/lib/format";
 import {
-  FOUNDED,
   AGENCY_COUNT,
   GOVERNORATES,
-  QUALITY_STANDARD,
+  PROJECTS_DELIVERED,
+  RESPONSE_COVER,
 } from "@/lib/company";
 
 interface HeroProps {
@@ -18,12 +18,14 @@ interface HeroProps {
     common: { requestQuote: string };
     home: {
       heroStats: {
-        since: string;
         agencies: string;
         governorates: string;
-        quality: string;
       };
+      /* Shared with the Why El Waha plate further down the page, so the two
+         strips cannot label the same figure differently. */
+      responseLabel: string;
     };
+    aboutPage: { stats: { projects: string } };
   };
 }
 
@@ -81,10 +83,10 @@ export default function Hero({ lang, dict }: HeroProps) {
   /* Every figure comes from company.ts, so the strip cannot drift from the
      About page or the footer the way two hand-typed copies would. */
   const heroStats = [
-    { label: dict.home.heroStats.since, value: String(FOUNDED) },
     { label: dict.home.heroStats.agencies, value: String(AGENCY_COUNT) },
     { label: dict.home.heroStats.governorates, value: String(GOVERNORATES) },
-    { label: dict.home.heroStats.quality, value: QUALITY_STANDARD },
+    { label: dict.aboutPage.stats.projects, value: PROJECTS_DELIVERED },
+    { label: dict.home.responseLabel, value: RESPONSE_COVER },
   ];
   const [currentSlide, setCurrentSlide] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -113,8 +115,13 @@ export default function Hero({ lang, dict }: HeroProps) {
        frame index used to be pinned at bottom-8; with a stat strip beneath it
        that approach needs a hard-coded offset per breakpoint, and the strip
        reflows to two columns on a phone. In flow, the three bands simply sit
-       on each other at every width. */
-    <section className="relative w-full h-[85vh] min-h-[600px] overflow-hidden bg-pine flex flex-col">
+       on each other at every width.
+
+       Below md the height is a floor, not a fixed size. On a 568px or 667px
+       phone the copy, buttons, frame index and a two-row stat strip are taller
+       than one screen, and a locked 100svh made the centred copy spill up
+       under the header while the buttons sat on top of the frame labels. */
+    <section className="relative w-full h-[100svh] min-h-[600px] max-md:h-auto max-md:min-h-[100svh] overflow-hidden bg-pine flex flex-col">
       {FRAMES.map((frame, idx) => (
         <div
           key={frame.src}
@@ -160,15 +167,19 @@ export default function Hero({ lang, dict }: HeroProps) {
         </div>
       ))}
 
-      {/* Content — takes the free height and centres inside it. */}
-      <div className="relative z-20 flex-1 flex items-center w-full min-h-0">
+      {/* Content — takes the free height and centres inside it.
+
+          The pad clears the fixed header, which is an overlay: over the hero
+          it is transparent and takes no space in flow, so without this the
+          copy block centres against the full viewport and the logo lands on
+          the brass rule. --header-h is the header's own height, defined once
+          in globals.css and already used by template.tsx to offset every
+          other page — one number, so the hero cannot drift from it. Padding
+          on this child rather than on the section so the stat strip stays
+          inside the 100svh. */}
+      <div className="relative z-20 flex-1 flex items-center w-full min-h-0 pt-[var(--header-h)] max-md:pb-10">
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full`}>
         <div className="max-w-2xl">
-          {/* Brass rule opens the block — the accent pairing for dark
-              grounds. The founding date and city that used to sit above it
-              are carried by the About page and the footer instead. */}
-          <div className="w-16 h-[3px] bg-brass mb-6" aria-hidden="true" />
-
           {/* Display level, §05 Table 4. The Arabic uplift in size and
               leading is carried by the [dir=rtl] rules in globals.css. */}
           <h1 className="text-h1 sm:text-display font-extrabold text-bone text-balance">
@@ -214,7 +225,7 @@ export default function Hero({ lang, dict }: HeroProps) {
                 type="button"
                 onClick={() => setCurrentSlide(idx)}
                 aria-current={active ? "true" : undefined}
-                className={`spec-label border-t-2 pt-2 transition-colors ${
+                className={`spec-label border-t-2 pt-2 max-md:min-h-11 transition-colors ${
                     active
                     ? "border-brass text-brass"
                     : "border-bone/25 text-bone/60 hover:border-bone/60 hover:text-bone"
@@ -228,15 +239,15 @@ export default function Hero({ lang, dict }: HeroProps) {
       </div>
 
       {/* The credentials strip.
-          Four figures a buyer weighs before reading anything else: how long we
-          have been at it, how many agencies we hold, how much of the country
-          we cover, and the standard we work to. They were scattered across the
-          About page and the footer, which is too late — this is the band that
-          decides whether the rest of the page gets read.
+          Four figures a buyer weighs before reading anything else: how many
+          agencies we hold, how much of the country we cover, how much work we
+          have actually delivered, and when we answer the phone. They were
+          scattered across the About page and the footer, which is too late —
+          this is the band that decides whether the rest of the page gets read.
 
           Every value is a Latin run and is isolated as one. Bidi otherwise
-          resolves "ISO 9001" and the bare numerals against the surrounding
-          Arabic and reorders them. */}
+          resolves the slash in "24 / 7" and the bare numerals against the
+          surrounding Arabic and reorders them. */}
       <div className="relative z-30 border-t border-bone/15">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 lg:grid-cols-4">
           {heroStats.map((stat, i) => (
@@ -249,10 +260,10 @@ export default function Hero({ lang, dict }: HeroProps) {
                 i % 2 !== 0 ? "border-s border-bone/15 ps-5" : ""
               } ${i !== 0 ? "lg:border-s lg:border-bone/15 lg:ps-8" : "lg:border-s-0 lg:ps-0"}`}
             >
-              <div className="spec-label text-bone/55">{stat.label}</div>
-              <div dir="ltr" className="mt-1.5 text-xl sm:text-[22px] font-extrabold text-brass">
+              <div dir="ltr" className="text-xl sm:text-[22px] font-extrabold text-brass">
                 {stat.value}
               </div>
+              <div className="spec-label text-bone/55 mt-1.5">{stat.label}</div>
             </div>
           ))}
         </div>

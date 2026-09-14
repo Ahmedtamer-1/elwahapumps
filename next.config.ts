@@ -171,6 +171,13 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        // Surface pumps were folded into Pumps: one category now covers
+        // submersible and surface alike, so the old slug has no page.
+        source: '/:lang/products/category/surface-pumps',
+        destination: '/:lang/products/category/pumps',
+        permanent: true,
+      },
+      {
         // The "Thrust Bearings" category became "Spare Parts" when Motor
         // Winding Wire moved into it, which changed its slug. Anything
         // already pointing at the old URL would otherwise 404 — the Brand

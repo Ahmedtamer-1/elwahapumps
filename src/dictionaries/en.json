@@ -6,14 +6,12 @@
     "supply": "Supply Services",
     "maintenance": "Maintenance Services",
     "products": "Products",
-    "agents": "Agents",
     "contact": "Contact Us",
     "callNow": "Call Now",
     "catalogues": "Catalogues",
     "locations": "Locations",
     "events": "Events",
     "afterSales": "Aftersales Support",
-    "localDealer": "Local Dealer",
     "career": "Career",
     "pumpSelector": "Pump Selector",
     "account": "My account"
@@ -211,49 +209,6 @@
       "title": "Untel Cable",
       "category": "cables",
       "desc": "Genuine Üntel H07VVH6-F PVC flat power and control cable, rated 450/750V, used for power and control wiring inside pump control panels, starter cabinets, and deep well pump stations. IPX8 tested by TÜV for permanent submersion up to 10 bar (100 m), UV resistant, and flame retardant."
-    }
-  },
-  "agentsPage": {
-    "title": "Our Agents & Partners",
-    "subtitle": "El Waha is the authorized agent and distributor for prominent international brands in Egypt, ensuring you get 100% genuine products with warranty.",
-    "agentTitle": "Certified Partner",
-    "viewProducts": "View Products"
-  },
-  "agentsData": {
-    "astral-pipes": {
-      "name": "Astral Pipes",
-      "title": "uPVC Column & Well Casing Pipes",
-      "desc": "A global Indian leader in the production of high-tensile uPVC column pipes and casing pipes for water wells. Known for high load capacity, easy installation, and leak-proof joints."
-    },
-    "pmc": {
-      "name": "PMC",
-      "title": "Electrical Control Components & Panels",
-      "desc": "An international brand specializing in manufacturing electrical control panel components, transformers, and highly reliable stabilizers designed for harsh industrial conditions."
-    },
-    "kurlar": {
-      "name": "Kurlar",
-      "title": "Heavy-Duty Submersible Motors",
-      "desc": "A prominent brand producing stainless steel and cast iron submersible motors with excellent thermal insulation and heat resistance to guarantee long-term operation."
-    },
-    "alka": {
-      "name": "ALKA Thrust Bearing",
-      "title": "Submersible Motor Thrust Bearings",
-      "desc": "The leading manufacturer and supplier of high-quality thrust bearings for submersible motors, ensuring reduced friction and absorption of vertical mechanical loads in deep wells."
-    },
-    "novo": {
-      "name": "NOVO",
-      "title": "Solar Pump Inverters",
-      "desc": "A solar-pumping specialist supplying dynamic-MPPT inverters that run submersible pumps on solar power alone or in an automatic solar-plus-grid hybrid, for agricultural, industrial and off-grid water pumping."
-    },
-    "tormac": {
-      "name": "Tormac",
-      "title": "Submersible Pumps & Motors, 50 Hz",
-      "desc": "A submersible pump and motor manufacturer whose 50 Hz product range we carry as exclusive Egyptian agent, documented across a 124-page pump catalogue and a 42-page motor catalogue."
-    },
-    "untel": {
-      "name": "Üntel",
-      "title": "Submersible Power & Control Cable",
-      "desc": "A cable manufacturer whose H07VVH6-F flat power and control cable is TÜV-certified for permanent submersion to 10 bar, used for wiring inside pump control panels and deep-well pump stations."
     }
   },
   "supportPage": {
@@ -507,6 +462,16 @@
     "details": "Your details",
     "statusNew": "Received",
     "statusContacted": "Contacted",
-    "statusConverted": "Quoted & closed"
+    "statusConverted": "Quoted & closed",
+    "eyebrow": "Account",
+    "backToSite": "Back to site",
+    "panelTitle": "Your quotations, inquiries and service history in one place.",
+    "panelBody": "See every inquiry you have sent us, where it stands, and send the next one without retyping your details.",
+    "emailPlaceholder": "name@company.com",
+    "showPassword": "Show",
+    "hidePassword": "Hide",
+    "statProjects": "Projects",
+    "statResponse": "Response",
+    "statAgencies": "Exclusive agencies"
   }
 }

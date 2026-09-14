@@ -4,7 +4,6 @@ import { events } from "@/data/events";
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, ImageIcon, ArrowLeft, ArrowRight } from "lucide-react";
-import PageHeader from "@/components/PageHeader";
 import { localizedAlternates } from "@/lib/seo";
 
 interface PageProps {
@@ -27,16 +26,20 @@ export default async function EventsPage({ params }: PageProps) {
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <div className="bg-white min-h-screen pb-20">
-      {/* Page Header */}
-      <PageHeader
-        eyebrow={dict.nav.events}
-        title={dict.eventsPage.title}
-        subtitle={dict.eventsPage.subtitle}
-      />
+    /* No `min-h-screen`: the footer is held down by layout.tsx — body is a
+       min-h-screen flex column with `flex-grow` on <main> — so forcing a
+       viewport here only added empty white above it. */
+    <div className="bg-white pb-10 md:pb-14">
+      {/* No visible masthead. The pine PageHeader band put a full-bleed dark
+          plate between the header and the only thing on the page, pushing
+          the first event most of a fold down; the eyebrow and standfirst
+          said nothing the cards do not. The h1 stays in the document — a
+          page still needs one for screen readers and for search results —
+          it is just not painted. */}
+      <h1 className="sr-only">{dict.eventsPage.title}</h1>
 
       {/* Events Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 md:mt-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {events.map((event) => {
             const data = dict.eventsData[event.id as keyof typeof dict.eventsData];
@@ -56,7 +59,7 @@ export default async function EventsPage({ params }: PageProps) {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
-                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 inline-flex items-center gap-1.5 px-3 py-1 bg-pine text-bone text-[10px] font-bold">
+                  <div className="absolute top-3 left-3 rtl:left-auto rtl:right-3 inline-flex items-center gap-1.5 px-3 py-1 bg-pine text-bone text-xs font-bold">
                     <Calendar className="w-3 h-3" />
                     <span>{event.year}</span>
                   </div>
@@ -64,7 +67,7 @@ export default async function EventsPage({ params }: PageProps) {
 
                 <div className="p-6 md:p-8 flex flex-col flex-1">
                   <div className="inline-flex items-center gap-1.5 mb-3">
-                    <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-bold border border-emerald-100/50">
+                    <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-bold border border-emerald-100/50">
                       {dict.eventsPage.eventTag}
                     </span>
                   </div>

@@ -22,6 +22,20 @@ export default function Header({ lang, dict }: HeaderProps) {
   const megaTriggerRef = React.useRef<HTMLAnchorElement>(null);
   /** Set by Escape so returning focus to the trigger doesn't reopen the menu. */
   const megaDismissedRef = React.useRef(false);
+  /**
+   * Hover-close is deferred. There is open header between the trigger and
+   * the panel's top edge, and crossing it fired mouseleave, so the menu
+   * vanished on the way down to a category. Re-entering the trigger or the
+   * panel (a child of the same group) cancels the pending close.
+   */
+  const megaCloseTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelMegaClose = () => {
+    if (megaCloseTimer.current) {
+      clearTimeout(megaCloseTimer.current);
+      megaCloseTimer.current = null;
+    }
+  };
+  useEffect(() => cancelMegaClose, []);
   const drawerRef = React.useRef<HTMLDivElement>(null);
   const drawerCloseRef = React.useRef<HTMLButtonElement>(null);
   const menuToggleRef = React.useRef<HTMLButtonElement>(null);
@@ -129,7 +143,6 @@ export default function Header({ lang, dict }: HeaderProps) {
     { href: `/${lang}/about`, label: dict.nav.about },
     { href: `/${lang}/products`, label: dict.nav.products },
     { href: `/${lang}/selector`, label: dict.nav.pumpSelector || "Pump Selector" },
-    { href: `/${lang}/agents`, label: dict.nav.localDealer || "Local Dealer" },
     { href: `/${lang}/careers`, label: dict.nav.career || "Career" },
   ];
 
@@ -163,7 +176,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                   // No force-caps here: these labels come from the dictionary,
                   // so on the Arabic site the global rule drops the uppercase
                   // and the tracking (§5.2 rules 3 and 4).
-                  className={`font-mono text-[11px] leading-4 font-medium tracking-[0.16em] uppercase transition-colors duration-150 ${
+                  className={`font-mono text-xs font-medium tracking-[0.16em] uppercase transition-colors duration-150 ${
                     isTransparent ? "text-bone/70 hover:text-brass" : "text-stone hover:text-pine"
                   }`}
                 >
@@ -291,10 +304,14 @@ export default function Header({ lang, dict }: HeaderProps) {
                       key={idx}
                       className="group py-6 -my-6 flex items-center"
                       onMouseEnter={() => {
+                        cancelMegaClose();
                         megaDismissedRef.current = false;
                         setMegaOpen(true);
                       }}
-                      onMouseLeave={() => setMegaOpen(false)}
+                      onMouseLeave={() => {
+                        cancelMegaClose();
+                        megaCloseTimer.current = setTimeout(() => setMegaOpen(false), 300);
+                      }}
                       onFocus={() => {
                         // Escape hands focus back to the trigger, which
                         // fires this very handler — without the guard the
@@ -349,7 +366,13 @@ export default function Header({ lang, dict }: HeaderProps) {
                         // transitions are throttled or disabled — while
                         // aria-expanded already said "true". Visibility
                         // now switches immediately; only the fade animates.
-                        className={`absolute top-[100%] left-0 w-full transition-opacity duration-300 z-50 ${
+                        //
+                        // The `before:` strip is a hover bridge: it reaches up
+                        // over the ~22px of header between the trigger group
+                        // and this panel, so the pointer never leaves the
+                        // group on the way down. It shares the panel's
+                        // visibility, so a closed menu catches nothing.
+                        className={`absolute top-[100%] left-0 w-full transition-opacity duration-300 z-50 before:absolute before:inset-x-0 before:bottom-full before:h-7 before:content-[''] ${
                           megaOpen ? "opacity-100 visible" : "opacity-0 invisible"
                         }`}
                       >
@@ -373,7 +396,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                                       <li key={item.label}>
                                         <Link
                                           href={`/${lang}/products/category/${item.category}`}
-                                          className="text-[13px] leading-5 transition-colors block text-stone hover:text-pine"
+                                          className="text-sm transition-colors block text-stone hover:text-pine"
                                         >
                                           {item.label}
                                         </Link>
@@ -387,7 +410,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                             {/* Bottom banner — §07 voice: name the scope
                                 instead of calling it "industrial solutions". */}
                             <div className="mt-8 pt-5 border-t border-rule flex flex-wrap gap-4 items-center justify-between">
-                              <div className="text-[13px] leading-5 text-stone">
+                              <div className="text-sm text-stone">
                                 {lang === "ar"
                                   ? "طلمبات ومواتير ولوحات تشغيل ومواسير وكابلات — من مصدر واحد."
                                   : "Pumps, motors, control panels, pipe and cable — from one supplier."}
@@ -397,7 +420,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                                 // Brass on white is 2.16:1 and the brand doc
                                 // rules it out outright, so the hover darkens
                                 // and underlines instead of going gold.
-                                className="font-mono text-[11px] font-medium tracking-[0.16em] uppercase flex items-center gap-2 transition-colors text-pine hover:text-ink hover:underline underline-offset-4"
+                                className="font-mono text-xs font-medium tracking-[0.16em] uppercase flex items-center gap-2 transition-colors text-pine hover:text-ink hover:underline underline-offset-4"
                               >
                                 {dict.productsPage.all}
                                 <span aria-hidden="true" className="rtl:rotate-180 inline-block">&rarr;</span>
@@ -451,7 +474,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                   is built like a machine plate, not a soft UI kit. */}
               <Link
                 href={toggleLanguage()}
-                className={`flex items-center gap-1.5 px-3 py-2 border text-[13px] font-semibold transition-colors ${
+                className={`flex items-center gap-1.5 px-3 py-2 border text-sm font-semibold transition-colors ${
                   isTransparent
                     ? "border-bone/25 text-bone hover:border-brass hover:text-brass"
                     : "border-rule bg-bone text-ink hover:border-pine hover:text-pine"
@@ -467,20 +490,23 @@ export default function Header({ lang, dict }: HeaderProps) {
                   answered, so it stays a real tel: link. */}
               <a
                 href={`tel:${PHONE_SALES}`}
-                className="flex items-center gap-2 bg-pine hover:bg-emerald-700 text-bone px-4 py-2 text-[13px] font-semibold transition-colors"
+                className="flex items-center gap-2 bg-pine hover:bg-emerald-700 text-bone px-4 py-2 text-sm font-semibold transition-colors"
               >
                 <Phone className="w-4 h-4" aria-hidden="true" />
                 <span>{dict.nav.callNow}</span>
               </a>
             </div>
 
-            {/* Mobile Actions */}
-            <div className="flex items-center gap-3 lg:hidden">
+            {/* Mobile Actions. Each control is 44px square (p-3 around a 20px
+                icon, p-2.5 around the 24px menu icon) — at p-2 they were 36–40px,
+                under the touch minimum. The gap tightens so the row still fits
+                beside the mark at 320 wide. */}
+            <div className="flex items-center gap-1.5 lg:hidden">
               <CartButton lang={lang} isTransparent={isTransparent} />
               <Link
                 href={`/${lang}/account`}
                 aria-label={dict.nav.account}
-                className={`p-2 transition-colors ${
+                className={`p-3 transition-colors ${
                   isTransparent ? "text-bone hover:text-brass" : "text-pine hover:text-ink"
                 }`}
               >
@@ -488,7 +514,7 @@ export default function Header({ lang, dict }: HeaderProps) {
               </Link>
               <Link
                 href={toggleLanguage()}
-                className={`p-2 transition-colors ${
+                className={`p-3 transition-colors ${
                   isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:bg-pine hover:text-bone"
                 }`}
                 aria-label="Change Language"
@@ -499,7 +525,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                 type="button"
                 ref={menuToggleRef}
                 onClick={() => setIsOpen(!isOpen)}
-                className={`p-2 transition-colors ${
+                className={`p-2.5 transition-colors ${
                   isTransparent ? "text-bone hover:text-brass" : "bg-bone text-pine hover:bg-pine hover:text-bone"
                 }`}
                 aria-label="Toggle Menu"
@@ -514,9 +540,12 @@ export default function Header({ lang, dict }: HeaderProps) {
         </div>
       </header>
 
-      {/* Mobile Menu Drawer Overlay */}
+      {/* Mobile Menu Drawer Overlay.
+          Overlay and drawer sit above the floating WhatsApp button (z-50):
+          at z-30/z-40 that button stayed on top of the open menu and covered
+          its links on a phone. Both are lg:hidden, so desktop is untouched. */}
       <div
-        className={`fixed inset-0 z-30 bg-pine/40 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 z-[55] bg-pine/40 transition-opacity duration-300 lg:hidden ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsOpen(false)}
@@ -532,7 +561,10 @@ export default function Header({ lang, dict }: HeaderProps) {
         // `inert`, not `aria-hidden`: aria-hidden left every link inside
         // still focusable, so Tab walked into an off-screen menu.
         inert={!isOpen}
-        className={`fixed inset-y-0 start-0 z-40 w-72 max-w-full bg-white border-e-2 border-brass p-6 flex flex-col justify-between transition-transform duration-300 transform lg:hidden ${
+        // The drawer scrolls as a whole. Only the nav used to scroll (capped at
+        // 70vh), so on a 568px screen the Call Now block below it was pushed
+        // past the bottom edge with no way to reach it.
+        className={`fixed inset-y-0 start-0 z-[60] w-72 max-w-full bg-white border-e-2 border-brass p-6 flex flex-col justify-between overflow-y-auto overscroll-contain transition-transform duration-300 transform lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full rtl:translate-x-full"
         }`}
       >
@@ -545,7 +577,7 @@ export default function Header({ lang, dict }: HeaderProps) {
               type="button"
               ref={drawerCloseRef}
               onClick={() => setIsOpen(false)}
-              className="p-1 text-stone hover:text-pine transition-colors"
+              className="p-2.5 -m-1.5 text-stone hover:text-pine transition-colors"
               aria-label={lang === "ar" ? "إغلاق القائمة" : "Close menu"}
             >
               <X className="w-6 h-6" />
@@ -553,7 +585,7 @@ export default function Header({ lang, dict }: HeaderProps) {
           </div>
 
           {/* Navigation Links */}
-          <nav className="mt-6 space-y-4 overflow-y-auto max-h-[70vh]">
+          <nav className="mt-6 space-y-4">
             <div className="space-y-0.5 mb-6">
               {navLinks.map((link, idx) => {
                 return (
@@ -561,7 +593,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                     key={idx}
                     href={link.href || "#"}
                     onClick={() => setIsOpen(false)}
-                    className="block text-ink hover:text-pine font-semibold text-[15px] py-2 border-b border-rule-light"
+                    className="block text-ink hover:text-pine font-semibold text-[15px] py-3 border-b border-rule-light"
                   >
                     {link.label}
                   </Link>
@@ -579,7 +611,7 @@ export default function Header({ lang, dict }: HeaderProps) {
                     key={idx}
                     href={link.href || "#"}
                     onClick={() => setIsOpen(false)}
-                    className="block text-stone hover:text-pine text-[13px] py-1.5"
+                    className="block text-stone hover:text-pine text-sm py-2.5"
                   >
                     {link.label}
                   </Link>
@@ -600,7 +632,7 @@ export default function Header({ lang, dict }: HeaderProps) {
           </a>
           {/* Western digits everywhere, including the Arabic site (§5.2
               rule 5) — numbers get copied across both languages. */}
-          <span dir="ltr" className="font-mono text-[11px] tracking-[0.16em] text-stone block text-center mt-3">
+          <span dir="ltr" className="font-mono text-xs tracking-[0.16em] text-stone block text-center mt-3">
             +20 106 668 5532
           </span>
         </div>

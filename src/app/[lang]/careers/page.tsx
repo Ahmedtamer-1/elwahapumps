@@ -95,7 +95,7 @@ function JobCard({ job, lang }: { job: JobView; lang: string }) {
 
           {/* Type, place and age of the advert — the three things a candidate
               checks before they read the body. */}
-          <div className="mb-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-stone">
+          <div className="mb-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-stone">
             <span className="inline-flex items-center gap-1.5">
               <Briefcase className="h-4 w-4 shrink-0" aria-hidden="true" />
               {t(job.type)}
@@ -142,7 +142,7 @@ function JobCard({ job, lang }: { job: JobView; lang: string }) {
         <div className="flex shrink-0 flex-col gap-3 lg:w-52">
           <a
             href={applyByEmail(job, lang)}
-            className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
+            className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-sm font-semibold text-bone transition-colors hover:bg-field"
           >
             <Mail className="h-4 w-4" aria-hidden="true" />
             {isAr ? "تقدّم بالبريد" : "Apply by email"}
@@ -151,7 +151,7 @@ function JobCard({ job, lang }: { job: JobView; lang: string }) {
             href={applyByWhatsApp(job, lang)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 border border-pine px-5 py-3 text-[13px] font-semibold text-pine transition-colors hover:bg-pine hover:text-bone"
+            className="inline-flex items-center justify-center gap-2 border border-pine px-5 py-3 text-sm font-semibold text-pine transition-colors hover:bg-pine hover:text-bone"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
             {isAr ? "واتساب" : "WhatsApp"}
@@ -203,10 +203,10 @@ export default async function CareersPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-section">
       {/* 1. Hero. Flat pine — §03.5 allows pine, bone or white only, so no
              stock photograph behind it (§06 rules out other people's). */}
-      <section className="bg-pine py-16 md:py-20 text-bone">
+      <section className="bg-pine py-section text-bone">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <span className="spec-label text-brass">
             {dict.nav.career || (isAr ? "الوظائف" : "Careers")}
@@ -231,7 +231,7 @@ export default async function CareersPage({ params }: PageProps) {
             // this needs no client-side JavaScript to glide.
             <a
               href="#positions"
-              className="mt-8 inline-flex items-center justify-center bg-brass px-6 py-3.5 text-[13px] font-bold text-pine transition-opacity hover:opacity-90"
+              className="mt-8 inline-flex items-center justify-center bg-brass px-6 py-3.5 text-sm font-bold text-pine transition-opacity hover:opacity-90"
             >
               {isAr ? "استعرض الوظائف المتاحة" : "View open positions"}
             </a>
@@ -240,7 +240,7 @@ export default async function CareersPage({ params }: PageProps) {
       </section>
 
       {/* 2. Why work here. */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-section sm:px-6 lg:px-8">
         <div className="mb-10 border-t-2 border-pine pt-3">
           <h2 className="text-h3 font-extrabold text-pine sm:text-h2">
             {isAr ? "لماذا الواحة؟" : "Why El Waha?"}
@@ -268,7 +268,7 @@ export default async function CareersPage({ params }: PageProps) {
                 <h3 className="mt-4 text-[15px] font-semibold text-ink">
                   {benefit.title}
                 </h3>
-                <p className="mt-2 text-[13px] leading-5 text-stone">
+                <p className="mt-2 text-sm text-stone">
                   {benefit.desc}
                 </p>
               </div>
@@ -285,7 +285,7 @@ export default async function CareersPage({ params }: PageProps) {
              already keeps an anchor jump clear of the fixed header, and
              the two would stack (S5-T01). */}
       {jobs.length > 0 && (
-        <section id="positions" className="bg-bone py-16">
+        <section id="positions" className="bg-bone py-section">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4 border-t-2 border-pine pt-3">
               <div>
@@ -315,7 +315,7 @@ export default async function CareersPage({ params }: PageProps) {
       )}
 
       {/* 4. General application, for people whose role is not listed. */}
-      <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
+      <section className="mx-auto mt-section max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-6 border-t-2 border-pine bg-bone p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div className="max-w-2xl">
             <span className="spec-label text-pine">
@@ -328,7 +328,7 @@ export default async function CareersPage({ params }: PageProps) {
                 ? "أرسل سيرتك الذاتية وسنحتفظ بها؛ نتواصل معك عند توفر وظيفة تناسب خبرتك."
                 : "Send us your CV and we will keep it on file, and contact you when a role that fits your experience opens."}
             </p>
-            <p className="mt-3 font-mono text-[11px] leading-4 text-stone" dir="ltr">
+            <p className="mt-3 font-mono text-xs text-stone" dir="ltr">
               {HR_EMAIL}
             </p>
           </div>
@@ -336,14 +336,14 @@ export default async function CareersPage({ params }: PageProps) {
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <a
               href={applyByEmail(null, lang)}
-              className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
+              className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-sm font-semibold text-bone transition-colors hover:bg-field"
             >
               <Mail className="h-4 w-4" aria-hidden="true" />
               {isAr ? "تقديم عام" : "General application"}
             </a>
             <Link
               href={`/${lang}/contact`}
-              className="inline-flex items-center justify-center border border-pine px-5 py-3 text-[13px] font-semibold text-pine transition-colors hover:bg-pine hover:text-bone"
+              className="inline-flex items-center justify-center border border-pine px-5 py-3 text-sm font-semibold text-pine transition-colors hover:bg-pine hover:text-bone"
             >
               {isAr ? "تواصل معنا" : "Contact us"}
             </Link>

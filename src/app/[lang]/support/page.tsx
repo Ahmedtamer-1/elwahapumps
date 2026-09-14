@@ -40,11 +40,13 @@ export default async function SupportPage({ params }: PageProps) {
   const t = dict.supportPage;
   const isAr = lang === "ar";
 
+  /* Two plates, not four. The engineer headcount and the workshop area are
+     company facts that the About page already carries; on a callout page
+     the only numbers that answer "will someone come" are the response time
+     and the reach. stat3/stat4 stay in the dictionaries for that other use. */
   const stats = [
     { value: t.stat1Value, label: t.stat1Label },
     { value: t.stat2Value, label: t.stat2Label },
-    { value: t.stat3Value, label: t.stat3Label },
-    { value: t.stat4Value, label: t.stat4Label },
   ];
 
   const steps = [
@@ -55,7 +57,7 @@ export default async function SupportPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="bg-white min-h-screen pb-20">
+    <div className="bg-white min-h-screen pb-section">
       {/* The photograph is the promise the copy makes, so it sits under the
           headline rather than further down. */}
       <PageHeader
@@ -87,9 +89,15 @@ export default async function SupportPage({ params }: PageProps) {
         </a>
       </PageHeader>
 
-      {/* The numbers a buyer wants before trusting a callout promise. */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* The numbers a buyer wants before trusting a callout promise.
+
+          `relative z-10` is what makes the -mt-10 overlap work: the
+          masthead above is itself positioned, and a positioned element
+          paints over a later static one no matter the source order — so the
+          plates were sliding under the scrim and losing their top half.
+          Position this row too and it comes back over the top. */}
+      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {stats.map((stat) => (
             <div
               key={stat.label}
@@ -107,7 +115,7 @@ export default async function SupportPage({ params }: PageProps) {
       </section>
 
       {/* What we service — the existing maintenance services, not a second copy of them. */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-section">
         <div className="max-w-2xl mb-10">
           <h2 className="text-2xl md:text-3xl font-black text-ink mb-3">
             {t.servicesTitle}
@@ -137,7 +145,7 @@ export default async function SupportPage({ params }: PageProps) {
         <div className="mt-8">
           <Link
             href={`/${lang}/services?tab=maintenance`}
-            className="inline-flex items-center gap-1 text-sm font-bold text-pine hover:text-field"
+            className="inline-flex items-center gap-1 text-sm font-bold text-pine hover:text-field max-md:min-h-11"
           >
             {t.viewAllServices}
             <span>{isAr ? "←" : "→"}</span>
@@ -146,7 +154,7 @@ export default async function SupportPage({ params }: PageProps) {
       </section>
 
       {/* How a callout works. */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-section">
         <div className="max-w-2xl mb-10">
           <h2 className="text-2xl md:text-3xl font-black text-ink mb-3">
             {t.processTitle}
@@ -181,7 +189,7 @@ export default async function SupportPage({ params }: PageProps) {
       </section>
 
       {/* Genuine parts — the agency count comes from company.ts so it cannot drift. */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-section">
         <div className="bg-pine text-bone p-8 md:p-12 flex flex-col md:flex-row items-start gap-6">
           {/* Was emerald-600/20, which the ramp resolves to pine at 20% — a
               chip the same colour as the panel behind it. Field is the tonal
@@ -208,7 +216,7 @@ export default async function SupportPage({ params }: PageProps) {
       </section>
 
       {/* Closing CTA. */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-section">
         <div className="border border-rule p-8 md:p-12 text-center">
           <h2 className="text-2xl md:text-3xl font-black text-ink mb-3">
             {t.ctaTitle}

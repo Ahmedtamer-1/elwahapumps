@@ -1,7 +1,7 @@
 import React from "react";
 import { notFound, redirect } from "next/navigation";
 import { getDictionary, hasLocale, Locale } from "../../dictionaries";
-import PageHeader from "@/components/PageHeader";
+import AuthShell from "@/components/account/AuthShell";
 import { SignInForm } from "@/components/account/AccountForms";
 import { getCurrentCustomer } from "@/lib/customer-auth";
 import { localizedAlternates } from "@/lib/seo";
@@ -36,15 +36,8 @@ export default async function LoginPage({ params, searchParams }: PageProps) {
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <div className="bg-white min-h-screen">
-      <PageHeader
-        eyebrow={dict.nav.account}
-        title={dict.account.loginTitle}
-        subtitle={dict.account.loginSubtitle}
-      />
-      <div className="max-w-md mx-auto px-4 sm:px-6 py-12 md:py-16">
-        <SignInForm lang={lang} dict={dict.account} next={next} />
-      </div>
-    </div>
+    <AuthShell lang={lang} dict={dict.account} title={dict.account.signIn} fullscreen>
+      <SignInForm lang={lang} dict={dict.account} next={next} />
+    </AuthShell>
   );
 }

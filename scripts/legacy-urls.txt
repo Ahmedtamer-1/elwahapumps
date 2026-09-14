@@ -24,11 +24,11 @@
 /our-team/	/about
 /contact-forms-7/	/contact
 
-# --- Latin-slug agent pages ---------------------------------------------
-/pmc/	/agents/pmc
-/alka-thurst-bearing/	/agents/alka
-/astral-pipes/	/agents/astral-pipes
-/jee-pumps/	/agents
+# --- Latin-slug agent pages (brand pages removed; the brand wall is on /products) ---
+/pmc/	/products
+/alka-thurst-bearing/	/products
+/astral-pipes/	/products
+/jee-pumps/	/products
 
 # --- Latin-slug core pages ------------------------------------------
 /contact-us/	/contact
@@ -37,9 +37,9 @@
 
 # --- Arabic-slug top-level pages -----------------------------------
 /التوريدات/	/services
-/كورلار/	/agents/kurlar
+/كورلار/	/products
 /الصيانات/	/support
-/الوكلاء/	/agents
+/الوكلاء/	/products
 /الاعمال-الكهربية/	/products/category/electrical
 /المواتير/	/products/category/motors
 /الطلمبات/	/products/category/pumps
@@ -69,14 +69,14 @@
 /portfolio/nsp-10210/	/products/category/pumps
 
 # --- Portfolio, named (Arabic) ---------------------------------------
-/portfolio/طلمبات-أفقي/	/products/category/surface-pumps
-/portfolio/طلمبات-رأسية/	/products/category/surface-pumps
+/portfolio/طلمبات-أفقي/	/products/category/pumps
+/portfolio/طلمبات-رأسية/	/products/category/pumps
 /portfolio/لوحات-التشغيل-الكهربي/	/products/elec-control-panel
 /portfolio/الانفرتر/	/products/elec-inverter
 /portfolio/طلمبات-غاطسة-الزهر/	/products/category/pumps
 /portfolio/طلمبات-غاطس-wps/	/products/category/pumps
 /portfolio/منظمات-الجهد/	/products/category/electrical
-/portfolio/طلمبات-طرد-مركزي/	/products/category/surface-pumps
+/portfolio/طلمبات-طرد-مركزي/	/products/category/pumps
 /portfolio/مواتير-زهر/	/products/category/motors
 /portfolio/استانلس/	/products/pump-cast-stainless
 /portfolio/ستار-دلتا/	/products/elec-control-panel

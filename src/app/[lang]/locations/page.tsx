@@ -44,9 +44,9 @@ export default async function LocationsPage({ params }: PageProps) {
   const totals = coverageTotals(distributors);
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-section">
       {/* Header band. Flat pine — §03.5 allows pine, bone or white only. */}
-      <section className="bg-pine py-16 md:py-20 text-bone">
+      <section className="bg-pine py-section text-bone">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <span className="spec-label text-brass">
             {isAr ? "شبكة التوزيع" : "Distributor network"}
@@ -79,14 +79,14 @@ export default async function LocationsPage({ params }: PageProps) {
                 <dd className="font-mono text-2xl font-medium leading-none text-brass">
                   {stat.figure}
                 </dd>
-                <dt className="mt-1.5 text-[12px] text-bone/70">{stat.label}</dt>
+                <dt className="mt-1.5 text-xs text-bone/70">{stat.label}</dt>
               </div>
             ))}
           </dl>
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 py-section sm:px-6 lg:px-8">
         {/* No distributors published means no map and no list — the
             head-office panel below carries the page on its own, rather than
             an empty map sitting beside an empty column. */}
@@ -95,7 +95,7 @@ export default async function LocationsPage({ params }: PageProps) {
         )}
 
         {/* No distributor nearby is still a sale — route it to head office. */}
-        <section className="mt-16 flex flex-col gap-6 border-t-2 border-pine bg-bone p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <section className="mt-section flex flex-col gap-6 border-t-2 border-pine bg-bone p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div className="max-w-2xl">
             <span className="spec-label text-pine">
               {isAr ? "لا يوجد موزّع في منطقتك؟" : "No distributor in your area?"}
@@ -110,14 +110,14 @@ export default async function LocationsPage({ params }: PageProps) {
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <a
               href={`tel:${PHONE_SALES}`}
-              className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
+              className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-sm font-semibold text-bone transition-colors hover:bg-field"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
               <span dir="ltr">+20 106 668 5532</span>
             </a>
             <Link
               href={`/${lang}/contact`}
-              className="inline-flex items-center justify-center border border-pine px-5 py-3 text-[13px] font-semibold text-pine transition-colors hover:bg-pine hover:text-bone"
+              className="inline-flex items-center justify-center border border-pine px-5 py-3 text-sm font-semibold text-pine transition-colors hover:bg-pine hover:text-bone"
             >
               {isAr ? "تواصل معنا" : "Contact us"}
             </Link>

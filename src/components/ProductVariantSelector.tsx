@@ -137,7 +137,7 @@ export default function ProductVariantSelector({
                  old surface tokens and a mint focus ring. No outline-none: the
                  brass :focus-visible ring in globals.css stays. */
               className="w-full appearance-none ps-3.5 pe-10 py-3 border border-rule
-            bg-white text-ink font-mono text-[13px] cursor-pointer
+            bg-white text-ink font-mono text-sm cursor-pointer
             hover:border-pine focus:border-pine transition-colors"
             >
               {values.map((v) => (

@@ -69,17 +69,28 @@ export default async function CategoryPage({ params }: PageProps) {
         eyebrow={dict.nav.products}
         title={title}
         subtitle={dict.productsPage.subtitle}
-      >
-        {/* Sizing is the question a reader arrives at a pump category with,
-            and the selector is the one place on the site that answers it. */}
-        <Link
-          href={`/${lang}/selector`}
-          className="inline-flex items-center gap-2 bg-brass hover:bg-bone text-ink font-semibold text-sm px-8 py-4 transition-colors active-scale-98"
-        >
-          <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
-          {isAr ? "افتح دليل اختيار الطلمبة" : "Open the pump selector"}
-        </Link>
-      </PageHeader>
+        aside={
+          /* Sizing is the question a reader arrives at a pump category with,
+             and the selector is the one place on the site that answers it —
+             so it gets its own panel beside the title rather than a button
+             under the copy. */
+          <div className="border border-bone/20 p-6 lg:max-w-sm lg:ms-auto">
+            <span className="spec-label text-bone/60 block">
+              {isAr ? "مش متأكد أي طلمبة تناسبك؟" : "Not sure which pump?"}
+            </span>
+            <p className="mt-3 text-[17px] font-bold text-bone">
+              {isAr ? "اختارها حسب نقطة التشغيل" : "Size it by duty point"}
+            </p>
+            <Link
+              href={`/${lang}/selector`}
+              className="mt-5 flex w-full items-center justify-center gap-2 bg-brass hover:bg-bone text-ink font-semibold text-sm px-6 py-3.5 transition-colors active-scale-98"
+            >
+              <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+              {isAr ? "افتح دليل اختيار الطلمبة" : "Open the pump selector"}
+            </Link>
+          </div>
+        }
+      />
 
       <CategoryView
         products={categoryProducts}

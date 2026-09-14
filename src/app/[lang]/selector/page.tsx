@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { AlertTriangle, FileText, Info } from "lucide-react";
 
 import { getDictionary, hasLocale, Locale } from "../dictionaries";
@@ -92,11 +93,28 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
     /* The page used to be pine end to end, which made a results plate of
        specification tables read as marketing. It is now an ink header band
        carrying the query, and a white plate carrying the answer. */
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-section">
       <section className="bg-ink px-4 sm:px-6 lg:px-8 pt-28 pb-10">
         <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 lg:items-end">
-          <div className="lg:col-span-7">
-            <span className="spec-label text-brass block">{t.eyebrow}</span>
+          <div className="lg:col-span-6">
+            {/* The manufacturer's own mark in place of the brass
+                "Kurlar submersible pumps" label, straight on the ink with
+                no plate behind it. Worth knowing: the wordmark is navy and
+                the swash is red, so the navy half runs dark against this
+                ground — a white-knockout cut of the mark is the fix if it
+                reads too quietly. `t.eyebrow` carries the same words as the
+                alt text, so the page still states the range in text. */}
+            <span className="inline-flex items-center">
+              <Image
+                src="/images/brand/kurlar-mark.png"
+                alt={t.eyebrow}
+                width={669}
+                height={373}
+                quality={95}
+                sizes="300px"
+                className="h-[72px] md:h-20 w-auto object-contain"
+              />
+            </span>
             <h1 className="mt-3.5 text-h2 md:text-h1 font-extrabold text-bone text-balance">
               {t.title}
             </h1>
@@ -106,7 +124,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
           {/* The query sits beside the headline rather than under it: on a
               results page the duty point is a control the reader keeps
               adjusting, not an introduction they read once. */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-6">
             <SelectorForm
               dict={t}
               flow={rawFlow}
@@ -126,7 +144,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
           <Panel>
             <h2 className="text-h3 font-extrabold text-pine">{t.emptyTitle}</h2>
             <p className="mt-2 text-small leading-6 text-stone">{t.emptyBody}</p>
-            <p className="mt-2 font-mono text-[11px] leading-5 text-stone-light">
+            <p className="mt-2 font-mono text-xs text-stone-light">
               {fill(t.emptyRangeNote, {
                 maxFlow: Math.round(limits.maxFlowM3h),
                 maxHead: Math.round(limits.maxHeadM),
@@ -156,7 +174,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
             </p>
             <Link
               href={`/${lang}/contact`}
-              className="mt-5 inline-block bg-pine px-6 py-3.5 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
+              className="mt-5 inline-block bg-pine px-6 py-3.5 text-sm font-semibold text-bone transition-colors hover:bg-field"
             >
               {t.noMatchContact}
             </Link>
@@ -182,7 +200,7 @@ export default async function SelectorPage({ params, searchParams }: PageProps) 
           />
         )}
 
-        <p className="border-t border-rule pt-6 font-mono text-[11px] leading-5 text-stone">
+        <p className="border-t border-rule pt-6 font-mono text-xs text-stone">
           {t.sourceNote} {t.notAdvice}
         </p>
       </div>
@@ -294,7 +312,7 @@ function Results({
           answers the question that was asked. */}
       <section className="border border-rule border-t-[3px] border-t-brass bg-white p-6 sm:p-8">
         <div className="mb-6 flex flex-wrap items-center gap-3">
-          <span className={`border px-2.5 py-1.5 font-mono text-[10px] font-medium uppercase tracking-[0.14em] ${zoneColour}`}>
+          <span className={`border px-2.5 py-1.5 font-mono text-xs font-medium uppercase tracking-[0.14em] ${zoneColour}`}>
             {zoneLabel}
           </span>
           <span className="spec-label text-stone-light">
@@ -344,7 +362,7 @@ function Results({
           <span className="spec-label">
             {t.chartHead} · {t.chartEfficiency} · {t.chartPower}
           </span>
-          <div className="flex flex-wrap gap-4 font-mono text-[11px] text-stone-light">
+          <div className="flex flex-wrap gap-4 font-mono text-xs text-stone-light">
             <span className="text-pine">— {t.chartHead}</span>
             <span className="text-brass">— {t.chartEfficiency}</span>
             <span className="text-stone">— {t.chartPower}</span>
@@ -468,7 +486,7 @@ function Results({
                 </div>
               )}
               {!options.hasExactMatch && (
-                <p className="mt-3 font-mono text-[11px] leading-5 text-stone">
+                <p className="mt-3 font-mono text-xs text-stone">
                   {fill(t.motorNoExact, { hp: options.recommendedHp })}
                 </p>
               )}
@@ -483,7 +501,7 @@ function Results({
                         <Link
                           key={choice.motor.code}
                           href={keep({ pick: variant.code, motor: String(choice.motor.hp) })}
-                          className={`border px-3 py-1.5 font-mono text-[12px] transition-colors ${
+                          className={`border px-3 py-1.5 font-mono text-xs transition-colors max-md:min-h-11 max-md:inline-flex max-md:items-center ${
                               active
                               ? "border-pine bg-pine text-bone"
                               : "border-rule bg-white text-ink hover:border-pine"
@@ -564,7 +582,7 @@ function Results({
                         ) : (
                           <Link
                             href={keep({ pick: candidate.variant.code })}
-                            className="spec-label text-pine hover:text-field transition-colors"
+                            className="spec-label text-pine hover:text-field transition-colors max-md:inline-flex max-md:items-center max-md:min-h-11"
                           >
                             {t.viewDatasheet}
                           </Link>
@@ -582,13 +600,13 @@ function Results({
       <div className="flex flex-wrap gap-3">
         <Link
           href={`/${lang}/contact`}
-          className="inline-flex items-center gap-2 bg-pine px-7 py-4 text-[13px] font-semibold text-bone transition-colors hover:bg-field"
+          className="inline-flex items-center gap-2 bg-pine px-7 py-4 text-sm font-semibold text-bone transition-colors hover:bg-field"
         >
           {t.noMatchContact}
         </Link>
         <Link
           href={`/${lang}/products/${family.productSlug}`}
-          className="inline-flex items-center gap-2 border border-rule px-7 py-4 text-[13px] font-semibold text-pine transition-colors hover:border-pine"
+          className="inline-flex items-center gap-2 border border-rule px-7 py-4 text-sm font-semibold text-pine transition-colors hover:border-pine"
         >
           <FileText size={16} aria-hidden />
           {t.viewProduct}
@@ -611,7 +629,7 @@ function Stat({
 }) {
   return (
     <div className="bg-white p-4">
-      <p className="font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone-light">
+      <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone-light">
         {label}
       </p>
       {/* Mono, tabular: these are readings off a curve, and a row of them is
@@ -623,7 +641,7 @@ function Stat({
       >
         {value}
       </p>
-      {sub && <p className="mt-1 font-mono text-[11px] text-stone">{sub}</p>}
+      {sub && <p className="mt-1 font-mono text-xs text-stone">{sub}</p>}
     </div>
   );
 }
@@ -639,9 +657,9 @@ function Spec({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-rule-light py-2.5 last:border-0">
-      <span className="font-mono text-[11.5px] text-stone">{label}</span>
+      <span className="font-mono text-[11.5px] max-md:text-sm text-stone">{label}</span>
       <span
-        className={`font-mono text-[12.5px] tabular-nums ${
+        className={`font-mono text-xs tabular-nums ${
           highlight ? "font-medium text-pine" : "text-ink"
         }`}
       >
@@ -654,12 +672,12 @@ function Spec({
 /* One cell style for the alternatives table, matching the spec tables on the
    product pages: bone mono headers, mono cells, figures on the digit. */
 const Th = ({ children }: { children?: React.ReactNode }) => (
-  <th className="border border-rule-light bg-bone px-3.5 py-2.5 text-start font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap">
+  <th className="border border-rule-light bg-bone px-3.5 py-2.5 text-start font-mono text-xs font-medium uppercase tracking-[0.14em] text-stone whitespace-nowrap">
     {children}
   </th>
 );
 const Td = ({ children }: { children?: React.ReactNode }) => (
-  <td className="border border-rule-light px-3.5 py-2.5 font-mono text-[12.5px] tabular-nums text-ink whitespace-nowrap">
+  <td className="border border-rule-light px-3.5 py-2.5 font-mono text-xs tabular-nums text-ink whitespace-nowrap">
     {children}
   </td>
 );

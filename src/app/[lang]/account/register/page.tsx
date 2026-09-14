@@ -1,7 +1,7 @@
 import React from "react";
 import { notFound, redirect } from "next/navigation";
 import { getDictionary, hasLocale, Locale } from "../../dictionaries";
-import PageHeader from "@/components/PageHeader";
+import AuthShell from "@/components/account/AuthShell";
 import { RegisterForm } from "@/components/account/AccountForms";
 import { getCurrentCustomer } from "@/lib/customer-auth";
 import { localizedAlternates } from "@/lib/seo";
@@ -31,15 +31,8 @@ export default async function RegisterPage({ params }: PageProps) {
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <div className="bg-white min-h-screen">
-      <PageHeader
-        eyebrow={dict.nav.account}
-        title={dict.account.registerTitle}
-        subtitle={dict.account.registerSubtitle}
-      />
-      <div className="max-w-md mx-auto px-4 sm:px-6 py-12 md:py-16">
-        <RegisterForm lang={lang} dict={dict.account} />
-      </div>
-    </div>
+    <AuthShell lang={lang} dict={dict.account} title={dict.account.signUp}>
+      <RegisterForm lang={lang} dict={dict.account} />
+    </AuthShell>
   );
 }

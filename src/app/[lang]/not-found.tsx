@@ -5,7 +5,7 @@ import Link from "next/link";
  * (an unknown product/category/service/agent/event slug, or any unmatched
  * path caught by [...rest]/page.tsx) — see products/[slug]/page.tsx,
  * products/category/[category]/page.tsx, services/[slug]/page.tsx,
- * agents/[slug]/page.tsx, events/[slug]/page.tsx.
+ * events/[slug]/page.tsx.
  *
  * It is still wrapped by [lang]/layout.tsx (the layout only stops wrapping
  * a not-found boundary when the layout itself is what threw), so the site

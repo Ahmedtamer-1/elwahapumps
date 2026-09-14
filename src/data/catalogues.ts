@@ -42,6 +42,17 @@ export interface Catalogue {
   /** Page count, counted from the file. Sets the expectation before the tap. */
   pages: number;
   category: CatalogueCategory;
+  /**
+   * Extra groups this same file also belongs under on the index.
+   *
+   * A few catalogues are whole-range documents: Kurlar's 2025 catalogue
+   * covers the KM motor series as well as the KP/KPS pumps, which is why
+   * BY_PRODUCT already points `motor-hitemp` at it. Listing it here puts
+   * the one file under Motors too instead of leaving a buyer who opened
+   * Motors to guess that the pump catalogue holds what they need. It stays
+   * a single entry, so the headline counts do not double-count it.
+   */
+  alsoIn?: CatalogueCategory[];
   /** Manufacturer mark under /public/images/brand. Omitted where no logo
    *  file exists — the index typesets the brand name instead. */
   logo?: string;
@@ -57,6 +68,8 @@ export const CATALOGUES: Catalogue[] = [
     sizeMb: 8.4,
     pages: 48,
     category: "pumps",
+    // The KM submersible motor series is in this same document.
+    alsoIn: ["motors"],
     logo: "/images/brand/kurlar-mark.png",
   },
   {
@@ -137,7 +150,10 @@ export const CATALOGUES: Catalogue[] = [
     titleAr: "أسلاك لف المواتير الغاطسة EXCELGRIP",
     sizeMb: 1.2,
     pages: 2,
-    category: "electrical",
+    // Filed under spare parts, not electrical: winding wire is what a
+    // rewind consumes, so it is bought alongside bearings and shaft
+    // couplings rather than alongside inverters and control panels.
+    category: "spare-parts",
     logo: "/images/brand/voltson-mark.png",
   },
   {
@@ -277,7 +293,9 @@ export function cataloguesByCategory(): {
 }[] {
   return CATEGORY_ORDER.map((category) => ({
     category,
-    items: CATALOGUES.filter((c) => c.category === category),
+    items: CATALOGUES.filter(
+      (c) => c.category === category || c.alsoIn?.includes(category)
+    ),
   })).filter((group) => group.items.length > 0);
 }
 

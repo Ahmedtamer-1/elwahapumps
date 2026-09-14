@@ -89,7 +89,7 @@ function CatalogueCard({ catalogue, lang }: { catalogue: Catalogue; lang: string
         {/* What the tap costs, before it is taken. Western digits on the
             Arabic side too (§5.2 rule 5). */}
         <p
-          className="mt-3 font-mono text-[11px] leading-4 text-stone"
+          className="mt-3 font-mono text-xs text-stone"
           dir="ltr"
         >
           PDF · {catalogue.sizeMb.toFixed(1)} MB · {catalogue.pages}{" "}
@@ -102,7 +102,7 @@ function CatalogueCard({ catalogue, lang }: { catalogue: Catalogue; lang: string
             // PDFs open in the browser's viewer; a new tab keeps this index.
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex flex-1 items-center justify-center gap-1.5 bg-pine px-4 py-2.5 text-[13px] font-semibold text-bone hover:bg-field transition-colors"
+            className="inline-flex flex-1 items-center justify-center gap-1.5 bg-pine px-4 py-2.5 text-sm font-semibold text-bone hover:bg-field transition-colors"
           >
             <span>{isAr ? "افتح الكتالوج" : "Open catalogue"}</span>
             <ArrowUpRight className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -111,7 +111,7 @@ function CatalogueCard({ catalogue, lang }: { catalogue: Catalogue; lang: string
           <a
             href={href}
             download
-            className="inline-flex items-center justify-center border border-rule px-3 py-2.5 text-stone hover:border-pine hover:text-pine transition-colors"
+            className="inline-flex items-center justify-center border border-rule px-3 py-2.5 text-stone hover:border-pine hover:text-pine transition-colors max-md:min-w-11 max-md:min-h-11"
             aria-label={
               isAr ? `تحميل ${title} (PDF)` : `Download ${title} (PDF)`
             }
@@ -133,9 +133,9 @@ export default async function CataloguesPage({ params }: PageProps) {
   const totals = catalogueTotals();
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-section">
       {/* Header band. Flat pine — §03.5 allows pine, bone or white only. */}
-      <section className="bg-pine py-16 md:py-20 text-bone">
+      <section className="bg-pine py-section text-bone">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <span className="spec-label text-brass">
             {isAr ? "المكتبة الفنية" : "Technical library"}
@@ -177,7 +177,7 @@ export default async function CataloguesPage({ params }: PageProps) {
                 <dd className="font-mono text-2xl font-medium leading-none text-brass">
                   {stat.figure}
                 </dd>
-                <dt className="mt-1.5 text-[12px] text-bone/70">{stat.label}</dt>
+                <dt className="mt-1.5 text-xs text-bone/70">{stat.label}</dt>
               </div>
             ))}
           </dl>
@@ -187,7 +187,7 @@ export default async function CataloguesPage({ params }: PageProps) {
       {/* One group per product family, in reading order. */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {groups.map((group) => (
-          <section key={group.category} className="mt-14 first:mt-12">
+          <section key={group.category} className="mt-12 first:mt-10">
             <div className="mb-6 flex items-baseline justify-between gap-4 border-t-2 border-pine pt-3">
               <h2 className="text-h3 font-extrabold text-pine">
                 {categoryLabel(dict, group.category)}
@@ -212,7 +212,7 @@ export default async function CataloguesPage({ params }: PageProps) {
         {/* §2.4 value 01: the customer should be able to see the model number
             before they call — and reach an engineer when the sheet is not
             enough. */}
-        <section className="mt-16 flex flex-col gap-6 border-t-2 border-pine bg-bone p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <section className="mt-section flex flex-col gap-6 border-t-2 border-pine bg-bone p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div className="max-w-2xl">
             <span className="spec-label text-pine">
               {isAr ? "لم تجد الكتالوج المطلوب؟" : "Catalogue not listed?"}
@@ -227,14 +227,14 @@ export default async function CataloguesPage({ params }: PageProps) {
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
             <a
               href={`tel:${PHONE_SALES}`}
-              className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-[13px] font-semibold text-bone hover:bg-field transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-pine px-5 py-3 text-sm font-semibold text-bone hover:bg-field transition-colors"
             >
               <Phone className="h-4 w-4" aria-hidden="true" />
               <span dir="ltr">+20 106 668 5532</span>
             </a>
             <Link
               href={`/${lang}/contact`}
-              className="inline-flex items-center justify-center border border-pine px-5 py-3 text-[13px] font-semibold text-pine hover:bg-pine hover:text-bone transition-colors"
+              className="inline-flex items-center justify-center border border-pine px-5 py-3 text-sm font-semibold text-pine hover:bg-pine hover:text-bone transition-colors"
             >
               {dict.common.requestQuote}
             </Link>

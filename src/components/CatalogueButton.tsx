@@ -25,12 +25,12 @@ export function CatalogueLink({ catalogue, lang }: { catalogue: Catalogue; lang:
       <span className="flex flex-col min-w-0 flex-1">
         {/* Brand first — the buyer is choosing between manufacturers. */}
         <span className="spec-label text-pine">{catalogue.brand}</span>
-        <span className="text-[13px] font-semibold text-ink truncate">{title}</span>
+        <span className="text-sm font-semibold text-ink truncate">{title}</span>
       </span>
 
       {/* Size up front: contractors read on phones between jobs (§07), and
           one of these catalogues is 25 MB. */}
-      <span className="font-mono text-[11px] text-stone whitespace-nowrap" dir="ltr">
+      <span className="font-mono text-xs text-stone whitespace-nowrap" dir="ltr">
         PDF · {catalogue.sizeMb.toFixed(1)} MB
       </span>
 
@@ -84,7 +84,7 @@ export default function CatalogueButton({
 
       {/* §2.4 value 01: the customer should be able to see the model number
           before they call. */}
-      <p className="mt-3 font-mono text-[11px] leading-4 text-stone">
+      <p className="mt-3 font-mono text-xs text-stone">
         {isAr
           ? "مواصفات كاملة: معدل التصريف، الرفع، القطر، القدرة والمواد."
           : "Full specifications: flow rate, head, bore diameter, power and materials."}

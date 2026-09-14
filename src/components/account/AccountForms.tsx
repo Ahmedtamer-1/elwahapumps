@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useActionState } from "react";
+import React, { useActionState, useState } from "react";
 import Link from "next/link";
 import {
   registerAccount,
@@ -20,8 +20,53 @@ import type { Dictionary } from "../../app/[lang]/dictionaries";
 
 const field =
   "w-full border border-rule bg-white px-4 py-3 text-body text-ink outline-none transition-colors focus:border-pine focus:ring-2 focus:ring-pine/20";
-const label = "block text-xs font-semibold text-stone mb-1.5";
+const label = "block text-sm font-semibold text-ink mb-2";
 const hint = "mt-1 text-xs text-stone-light";
+const footer = "mt-8 border-t border-rule-light pt-6 text-sm text-stone";
+const footerLink = "font-semibold text-pine hover:underline underline-offset-4";
+
+/**
+ * Password input with a Show/Hide toggle inside the field. The toggle comes
+ * after the input in tab order and is labelled with what it will do next.
+ */
+function PasswordField({
+  id,
+  name,
+  autoComplete,
+  minLength,
+  dict,
+}: {
+  id: string;
+  name: string;
+  autoComplete: string;
+  minLength?: number;
+  dict: Dictionary["account"];
+}) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="relative">
+      <input
+        id={id}
+        name={name}
+        type={visible ? "text" : "password"}
+        required
+        minLength={minLength}
+        autoComplete={autoComplete}
+        dir="ltr"
+        className={`${field} pe-20`}
+      />
+      <button
+        type="button"
+        onClick={() => setVisible((v) => !v)}
+        aria-controls={id}
+        aria-pressed={visible}
+        className="spec-label absolute inset-y-0 end-0 px-4 text-stone hover:text-pine"
+      >
+        {visible ? dict.hidePassword : dict.showPassword}
+      </button>
+    </div>
+  );
+}
 
 function Submit({ children, pending }: { children: React.ReactNode; pending: boolean }) {
   return (
@@ -78,8 +123,9 @@ export function SignInForm({
           required
           autoComplete="email"
           dir="ltr"
+          placeholder={dict.emailPlaceholder}
           defaultValue={state.values?.email ?? ""}
-          className={field}
+          className={`${field} placeholder:font-mono placeholder:text-sm placeholder:text-stone-light`}
         />
       </div>
 
@@ -87,22 +133,16 @@ export function SignInForm({
         <label className={label} htmlFor="password">
           {dict.password}
         </label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-          dir="ltr"
-          className={field}
-        />
+        <PasswordField id="password" name="password" autoComplete="current-password" dict={dict} />
       </div>
 
-      <Submit pending={pending}>{dict.signIn}</Submit>
+      <div className="pt-1">
+        <Submit pending={pending}>{dict.signIn}</Submit>
+      </div>
 
-      <p className="text-center text-sm text-stone">
+      <p className={footer}>
         {dict.noAccount}{" "}
-        <Link href={`/${lang}/account/register`} className="font-semibold text-pine underline underline-offset-4">
+        <Link href={`/${lang}/account/register`} className={footerLink}>
           {dict.signUp}
         </Link>
       </p>
@@ -147,8 +187,9 @@ export function RegisterForm({ lang, dict }: { lang: string; dict: Dictionary["a
           required
           autoComplete="email"
           dir="ltr"
+          placeholder={dict.emailPlaceholder}
           defaultValue={state.values?.email ?? ""}
-          className={field}
+          className={`${field} placeholder:font-mono placeholder:text-sm placeholder:text-stone-light`}
         />
       </div>
 
@@ -175,40 +216,24 @@ export function RegisterForm({ lang, dict }: { lang: string; dict: Dictionary["a
           <label className={label} htmlFor="password">
             {dict.password}
           </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            dir="ltr"
-            className={field}
-          />
+          <PasswordField id="password" name="password" autoComplete="new-password" minLength={8} dict={dict} />
           <p className={hint}>{dict.passwordHint}</p>
         </div>
         <div>
           <label className={label} htmlFor="confirm">
             {dict.confirmPassword}
           </label>
-          <input
-            id="confirm"
-            name="confirm"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            dir="ltr"
-            className={field}
-          />
+          <PasswordField id="confirm" name="confirm" autoComplete="new-password" minLength={8} dict={dict} />
         </div>
       </div>
 
-      <Submit pending={pending}>{dict.signUp}</Submit>
+      <div className="pt-1">
+        <Submit pending={pending}>{dict.signUp}</Submit>
+      </div>
 
-      <p className="text-center text-sm text-stone">
+      <p className={footer}>
         {dict.haveAccount}{" "}
-        <Link href={`/${lang}/account/login`} className="font-semibold text-pine underline underline-offset-4">
+        <Link href={`/${lang}/account/login`} className={footerLink}>
           {dict.signIn}
         </Link>
       </p>

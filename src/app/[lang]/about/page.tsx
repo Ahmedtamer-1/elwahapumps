@@ -71,7 +71,7 @@ export default async function AboutPage({ params }: PageProps) {
       {/* The story, with the workshop alongside it. 7/5 rather than 50/50:
           three paragraphs at half the container run to about 90 characters a
           line, well past comfortable. */}
-      <section className="py-16 md:py-20">
+      <section className="py-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           {/* Ink, not stone. This is the page's primary reading, and §04
               keeps stone for secondary body and captions. */}
@@ -111,7 +111,7 @@ export default async function AboutPage({ params }: PageProps) {
           They are the most persuasive thing on the page — five people in a
           200 m² room to eighty across every governorate is the whole argument
           in two panels — so they now appear. */}
-      <section className="bg-bone border-t border-rule py-16 md:py-20">
+      <section className="bg-bone border-t border-rule py-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-t-2 border-pine pt-4 spec-label">
             {dict.aboutPage.milestonesLabel}
@@ -170,7 +170,7 @@ export default async function AboutPage({ params }: PageProps) {
           commitment, and giving them opposite grounds is the cheapest way to
           say so. Set at body-lg — these are the two sentences on the page
           most likely to be read aloud. */}
-      <section className="py-16 md:py-20">
+      <section className="py-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-7">
           <div className="bg-pine p-9 sm:p-11">
             <div className="spec-label text-brass">{dict.aboutPage.vision}</div>
@@ -192,7 +192,7 @@ export default async function AboutPage({ params }: PageProps) {
           split is worth naming rather than leaving them to infer it. Pine edge
           for supply, brass for service, matching how the two are marked on the
           homepage and the services index. */}
-      <section className="bg-bone border-t border-rule py-16 md:py-20">
+      <section className="bg-bone border-t border-rule py-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="spec-label block">{dict.aboutPage.divisionsLabel}</span>
           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -215,29 +215,30 @@ export default async function AboutPage({ params }: PageProps) {
               elsewhere cannot disagree. A hairline lattice at a fixed cell
               height: the marks are all cut to one canvas, so one box holds
               them at one optical scale. */}
-          <div className="mt-14 border-t-2 border-pine pt-4 flex flex-wrap items-end justify-between gap-x-12 gap-y-3">
+          <div className="mt-12 border-t-2 border-pine pt-4 flex flex-wrap items-end justify-between gap-x-12 gap-y-3">
             <h2 className="text-h3 sm:text-h2 font-extrabold text-pine">
               {dict.aboutPage.agenciesTitle}
             </h2>
-            <p className="text-small leading-6 text-stone max-w-[46ch] pb-1">
-              {dict.aboutPage.agenciesSubtitle}
-            </p>
           </div>
 
           <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-rule border border-rule">
             {AGENCIES.map((agency) => (
               <div
                 key={agency.name}
-                className="relative h-24 bg-white flex items-center justify-center"
+                className="relative h-32 sm:h-36 bg-white flex items-center justify-center"
               >
-                <div className="relative w-full h-10">
+                {/* The marks are cut to one canvas, so the box — not the
+                    artwork — sets their optical scale. Raised from 40px:
+                    the wordmarks (Franklin Electric, Aristoncavi) were
+                    setting type too small to read at arm's length. */}
+                <div className="relative w-full h-16 sm:h-[72px]">
                   <Image
                     src={agency.logo}
                     alt={agency.name}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 17vw"
                     quality={95}
-                    className="object-contain px-4"
+                    className="object-contain px-5 sm:px-6"
                   />
                 </div>
               </div>

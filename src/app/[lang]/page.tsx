@@ -6,11 +6,12 @@ import SuccessPartners from "@/components/SuccessPartners";
 import { getCatalogListProducts } from "@/lib/products";
 import { Phone, Mail } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   PHONE_SALES,
   PROJECTS_DELIVERED,
   TEAM_SIZE,
-  FACILITY_AREA,
+  AGENCY_COUNT,
   RESPONSE_COVER,
 } from "@/lib/company";
 
@@ -38,7 +39,7 @@ export default async function HomePage({ params }: PageProps) {
    * The credentials a buyer checks first — how long, how many agencies, how
    * much of the country, which standard — now open the page in the hero
    * strip. What belongs here is the evidence behind the claim above it: the
-   * projects delivered, the people, the floor space and the response cover.
+   * projects delivered, the people, the agencies and the response cover.
    *
    * Labels are the About page's own stat labels, so the two pages cannot
    * describe the same figures differently, and the figures themselves come
@@ -49,7 +50,7 @@ export default async function HomePage({ params }: PageProps) {
   const plate = [
     { value: PROJECTS_DELIVERED, key: dict.aboutPage.stats.projects },
     { value: TEAM_SIZE, key: dict.aboutPage.stats.team },
-    { value: FACILITY_AREA, key: dict.aboutPage.stats.facility },
+    { value: String(AGENCY_COUNT), key: dict.aboutPage.stats.brands },
     { value: RESPONSE_COVER, key: dict.home.responseLabel },
   ];
 
@@ -59,7 +60,7 @@ export default async function HomePage({ params }: PageProps) {
       <Hero lang={lang} dict={dict} />
 
       {/* 2. Two-Column Supply vs Maintenance Highlight Block */}
-      <section className="py-20 bg-white">
+      <section className="py-section bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Supply block — paper ground, pine rule on top */}
@@ -77,7 +78,7 @@ export default async function HomePage({ params }: PageProps) {
               </div>
               <Link
                 href={`/${lang}/services?tab=supply`}
-                className="inline-flex items-center gap-2 text-emerald-600 group-hover:text-emerald-700 font-bold text-sm w-fit"
+                className="inline-flex items-center gap-2 text-emerald-600 group-hover:text-emerald-700 font-bold text-sm w-fit max-md:min-h-11"
               >
                 <span>{isAr ? "استعرض خدمات التوريد" : "Explore Supply Services"}</span>
                 <span className="transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
@@ -103,7 +104,7 @@ export default async function HomePage({ params }: PageProps) {
               </div>
               <Link
                 href={`/${lang}/services?tab=maintenance`}
-                className="inline-flex items-center gap-2 text-emerald-400 group-hover:text-emerald-300 font-bold text-sm w-fit"
+                className="inline-flex items-center gap-2 text-emerald-400 group-hover:text-emerald-300 font-bold text-sm w-fit max-md:min-h-11"
               >
                 <span>{isAr ? "استعرض خدمات الصيانة" : "Explore Maintenance Services"}</span>
                 <span className="transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1">
@@ -116,7 +117,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* 3. Products Showcase Section */}
-      <section className="py-20 bg-bone border-y border-rule">
+      <section className="py-section bg-bone border-y border-rule">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* The report's chapter opening — pine hairline, eyebrow, heading.
               The heading and the way out of the section share that one rule, so
@@ -126,14 +127,16 @@ export default async function HomePage({ params }: PageProps) {
               a generic one this brand does not need. */}
           <div className="border-t-2 border-pine pt-4 mb-9 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
             <div>
-              <span className="spec-label block">{dict.productsPage.title}</span>
-              <h2 className="text-h2 font-extrabold text-pine mt-3 text-balance max-w-[24ch]">
+              {/* No eyebrow. It was the page title of /products used as a
+                  kicker over a heading that already names the same thing,
+                  so the band opened by saying it twice. */}
+              <h2 className="text-h2 font-extrabold text-pine text-balance max-w-[24ch]">
                 {dict.home.productsHeading}
               </h2>
             </div>
             <Link
               href={`/${lang}/products`}
-              className="spec-label text-pine hover:text-field transition-colors inline-flex items-center gap-1.5 pb-1.5 group"
+              className="spec-label text-pine hover:text-field transition-colors inline-flex items-center gap-1.5 pb-1.5 group max-md:min-h-11"
             >
               {dict.productsPage.all}
               <span
@@ -162,8 +165,22 @@ export default async function HomePage({ params }: PageProps) {
           third would flatten the page. */}
       <section className="bg-ink">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[1fr_460px] gap-10 lg:gap-16">
-          <div className="py-16 lg:py-20">
-            <span className="spec-label text-brass">{sel.eyebrow}</span>
+          <div className="py-section">
+            {/* Kurlar's own mark rather than the brass label, matching the
+                selector page's masthead — no plate, same size, see the note
+                there on how the navy half reads on ink. The alt text is the
+                label's own words, so the range is still stated in text. */}
+            <span className="inline-flex items-center">
+              <Image
+                src="/images/brand/kurlar-mark.png"
+                alt={sel.eyebrow}
+                width={669}
+                height={373}
+                quality={95}
+                sizes="300px"
+                className="h-[72px] md:h-20 w-auto object-contain"
+              />
+            </span>
             <h2 className="mt-4 text-h2 md:text-h1 font-extrabold text-bone text-balance max-w-[22ch]">
               {sel.title}
             </h2>
@@ -190,15 +207,36 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* 5. Why El Waha — the company data plate */}
-      <section className="py-20 bg-pine text-bone">
+      <section className="py-section bg-pine text-bone">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* The claim */}
             <div className="lg:col-span-5">
-              <span className="spec-label text-brass block">
-                {dict.home.whyEyebrow}
-              </span>
-              <h2 className="text-h2 font-extrabold text-bone mt-4 text-balance max-w-[24ch]">
+              {/* Not a spec label any more in anything but its face. This
+                  is the loudest thing in the band on purpose — bigger than
+                  the claim under it and bigger than the figures opposite,
+                  which top out at 40px — so the eye lands here first.
+
+                  `inline-block` on the wrapper is what makes the rule run
+                  the exact width of the words: the box shrink-wraps the
+                  text, so a `w-full` rule inside it measures the line
+                  rather than the column.
+
+                  Tracking comes down from the label's 0.16em to 0.1em. At
+                  44px the original spacing pushed the line past the column
+                  on a laptop; the size is now doing the work the tracking
+                  used to. It steps down twice for narrow screens, where the
+                  full-width line has nowhere to go. */}
+              <div className="inline-block">
+                <span className="spec-label text-brass block text-[26px] sm:text-[34px] lg:text-[44px] leading-[1.15] tracking-[0.1em]">
+                  {dict.home.whyEyebrow}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="mt-3 block h-[3px] w-full bg-brass"
+                />
+              </div>
+              <h2 className="text-h2 font-extrabold text-bone mt-6 text-balance max-w-[24ch]">
                 {dict.home.whyTitle}
               </h2>
               <p className="text-bone/75 text-small leading-relaxed mt-5 max-w-[44ch]">
@@ -206,7 +244,11 @@ export default async function HomePage({ params }: PageProps) {
               </p>
               <Link
                 href={`/${lang}/about`}
-                className="mt-8 inline-flex items-center justify-center text-bone font-semibold text-sm px-7 py-3.5 border border-bone/30 hover:border-brass hover:text-brass transition-colors active-scale-98"
+                /* Filled brass rather than the outlined bone it was: the
+                   same treatment the hero's primary CTA carries, so the two
+                   read as the same kind of action. Ink on brass, never bone
+                   — bone on brass does not clear AA (§04). */
+                className="mt-8 inline-flex items-center justify-center bg-brass text-ink font-semibold text-sm px-7 py-3.5 hover:bg-bone transition-colors active-scale-98"
               >
                 {dict.home.aboutCta}
               </Link>
@@ -216,19 +258,24 @@ export default async function HomePage({ params }: PageProps) {
                 Four figures on rules rather than a definition list: the plate
                 gave every claim a key, a rating and a sentence of prose, which
                 is three levels of hierarchy for what is really one number and
-                what it counts. Brass rules open the top pair, hairlines the
-                second, so the block reads top-down without a box around it. */}
-            <div className="lg:col-span-7">
+                what it counts. Every figure sits on a hairline, so the block
+                reads top-down without a box around it. */}
+            {/* Dropped clear of the eyebrow so the first hairline starts
+                level with the claim rather than with the masthead above it.
+                90px is that block: the 44px eyebrow on its 1.15 leading
+                (51) + the rule and its mt-3 (15) + the h2's own mt-6 (24).
+                `lg` only — below that the grid is a single column and this
+                one already follows the copy down the page. */}
+            <div className="lg:col-span-7 lg:mt-[90px]">
               <dl className="grid grid-cols-1 sm:grid-cols-2">
                 {plate.map((row, i) => (
                   <div
                     key={row.key}
-                    className={`pt-4 pb-7 ${
-                      /* The first row of the pair carries brass, the second a
-                         hairline. On one column every row after the first is a
-                         hairline. */
-                      i < 2 ? "border-t-2 border-brass" : "border-t border-bone/20"
-                    } ${i === 1 ? "max-sm:border-t max-sm:border-bone/20" : ""} ${
+                    /* Every row sits on a hairline. The top pair used to
+                       carry brass, but the band's brass mark is now the rule
+                       under the eyebrow opposite, and two at that weight
+                       competed. */
+                    className={`pt-4 pb-7 border-t border-bone/20 ${
                       i % 2 === 0 ? "sm:pe-7" : "sm:ps-7"
                     }`}
                   >
@@ -237,7 +284,7 @@ export default async function HomePage({ params }: PageProps) {
                         neutral between two numbers and flips it to "7 / 24" on
                         the Arabic page. inline-block keeps the isolate from
                         taking the column's alignment with it. */}
-                    <dd dir="ltr" className="text-h1 font-extrabold text-bone leading-none">
+                    <dd dir="ltr" className="text-h1 font-extrabold text-brass leading-none">
                       <span className="inline-block">{row.value}</span>
                     </dd>
                     <dt className="spec-label text-bone/60 mt-2.5">{row.key}</dt>
@@ -252,8 +299,12 @@ export default async function HomePage({ params }: PageProps) {
       {/* 5. Success Partners Strip — the client roster. */}
       <SuccessPartners lang={lang} />
 
-      {/* 6. Contact CTA Band */}
-      <section className="bg-pine text-bone py-16 border-t border-bone/15">
+      {/* 6. Contact CTA Band.
+          Pine-lift rather than pine: the footer directly under it is pine,
+          and two identical greens ran the closing band and the footer
+          together into one block. It is the same hue one step up, so the
+          band separates without changing the colour of the page. */}
+      <section className="bg-pine-lift text-bone pt-14 pb-10 border-t border-bone/12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:flex items-center justify-between gap-12">
           <div className="mb-8 lg:mb-0 max-w-2xl">
             <h2 className="text-h2 font-extrabold text-bone mb-4">

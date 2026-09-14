@@ -120,7 +120,7 @@ export default function CartView({
             <div className="flex-1 min-w-0">
               <Link
                 href={`/${lang}/products/${item.slug}`}
-                className="font-bold text-ink hover:text-emerald-600 line-clamp-2 text-sm"
+                className="font-bold text-ink hover:text-emerald-600 line-clamp-2 text-sm max-md:py-2.5"
               >
                 {item.name}
               </Link>
@@ -132,7 +132,7 @@ export default function CartView({
                   <button
                     onClick={() => setQty(lineKey(item), item.qty - 1)}
                     aria-label={isAr ? "إنقاص" : "Decrease quantity"}
-                    className="p-1.5 text-stone hover:text-ink"
+                    className="p-1.5 max-md:p-3.5 text-stone hover:text-ink"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
@@ -140,7 +140,7 @@ export default function CartView({
                   <button
                     onClick={() => setQty(lineKey(item), item.qty + 1)}
                     aria-label={isAr ? "زيادة" : "Increase quantity"}
-                    className="p-1.5 text-stone hover:text-ink"
+                    className="p-1.5 max-md:p-3.5 text-stone hover:text-ink"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -149,7 +149,7 @@ export default function CartView({
                 <button
                   onClick={() => remove(lineKey(item))}
                   aria-label={isAr ? "حذف" : "Remove"}
-                  className="p-1.5 text-stone hover:text-red-700 transition-colors"
+                  className="p-1.5 max-md:p-3.5 text-stone hover:text-red-700 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -160,7 +160,7 @@ export default function CartView({
 
         <button
           onClick={clear}
-          className="text-xs font-semibold text-stone hover:text-red-600 transition-colors"
+          className="text-xs font-semibold text-stone hover:text-red-600 transition-colors max-md:min-h-11"
         >
           {isAr ? "إفراغ السلة" : "Clear cart"}
         </button>
@@ -242,7 +242,7 @@ export default function CartView({
                 : "Send request via WhatsApp"}
           </button>
 
-          <p className="text-[11px] text-stone mt-3 text-center leading-relaxed">
+          <p className="text-xs text-stone mt-3 text-center leading-relaxed">
             {isAr
               ? "سيتم فتح واتساب بقائمة منتجاتك، وسيتواصل معك فريق المبيعات لتأكيد السعر النهائي."
               : "WhatsApp opens with your item list. Our sales team will confirm final pricing."}

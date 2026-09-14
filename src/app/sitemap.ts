@@ -4,7 +4,6 @@ import { PRODUCT_CATEGORIES } from "@/data/categories";
 import { getProductSlugs } from "@/lib/products";
 import { events } from "@/data/events";
 import { serviceSlugs } from "./[lang]/services/[slug]/page";
-import { agentSlugs } from "./[lang]/agents/[slug]/page";
 
 const LOCALES = ["ar", "en"] as const;
 
@@ -39,7 +38,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/about",
     "/products",
     "/services",
-    "/agents",
     "/contact",
     "/catalogues",
     "/careers",
@@ -59,7 +57,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...PRODUCT_CATEGORIES.flatMap((slug) => entry(`/products/category/${slug}`)),
     ...productSlugs.flatMap((slug) => entry(`/products/${slug}`)),
     ...serviceSlugs.flatMap((slug) => entry(`/services/${slug}`)),
-    ...agentSlugs.flatMap((slug) => entry(`/agents/${slug}`)),
     ...events.flatMap((e) => entry(`/events/${e.id}`)),
   ];
 

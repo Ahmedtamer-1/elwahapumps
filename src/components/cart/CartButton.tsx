@@ -18,7 +18,8 @@ export default function CartButton({
     <Link
       href={`/${lang}/cart`}
       aria-label={lang === "ar" ? "سلة الطلب" : "Request cart"}
-      className={`relative flex items-center justify-center p-2 transition-colors ${
+      // p-3 below lg makes the tap target 44px; the desktop header keeps p-2.
+      className={`relative flex items-center justify-center p-2 max-lg:p-3 transition-colors ${
           isTransparent
           ? "bg-white/10 text-bone hover:bg-white/20"
           : "bg-bone text-stone hover:text-emerald-600"
@@ -30,7 +31,7 @@ export default function CartButton({
            public site, and a pill badge on a site with no radius anywhere
            reads as a control borrowed from a different kit. Mono figures
            because it is a count. */
-        <span className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 min-w-4.5 h-4.5 px-1 grid place-items-center bg-brass text-ink font-mono text-[10px] font-medium tabular-nums">
+        <span className="absolute -top-1 -right-1 rtl:-right-auto rtl:-left-1 min-w-4.5 h-4.5 px-1 grid place-items-center bg-brass text-ink font-mono text-xs font-medium tabular-nums">
           {count}
         </span>
       )}

@@ -16,6 +16,18 @@ import {
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { internationalPhone, whatsAppLink, type Distributor } from "@/data/distributors";
+import {
+  ADDRESS,
+  GEO,
+  HQ_MAP_URL,
+  HQ_SELECTION_ID,
+  NAME_AR,
+  NAME_EN,
+  PHONE_SALES,
+  WHATSAPP_SALES,
+} from "@/lib/company";
+
+const HQ_COORDS: [number, number] = [GEO.longitude, GEO.latitude];
 
 /**
  * The distributor map.
@@ -114,6 +126,85 @@ function createPinElement(): HTMLButtonElement {
     </svg>
   `;
   return el;
+}
+
+/**
+ * The head-office pin: larger, brass, a factory glyph instead of the dot, a
+ * pulsing ring, and a standing label — so it reads as the company itself
+ * rather than one more distributor among thirty.
+ */
+function createHqPinElement(lang: string): HTMLButtonElement {
+  const el = document.createElement("button");
+  el.type = "button";
+  el.className = "elw-hq";
+  el.innerHTML = `
+    <span class="elw-hq__pulse" aria-hidden="true"></span>
+    <svg viewBox="0 0 24 32" width="46" height="61" aria-hidden="true">
+      <path class="elw-hq__body"
+            d="M12 0C5.4 0 0 5.4 0 12c0 8.5 10.4 18.9 10.9 19.3a1.6 1.6 0 0 0 2.2 0C13.6 30.9 24 20.5 24 12 24 5.4 18.6 0 12 0z"/>
+      <circle class="elw-hq__disc" cx="12" cy="12" r="7.6"/>
+      <path class="elw-hq__glyph"
+            d="M7.2 16.2v-5.1l2.6 1.6v-1.6l2.6 1.6v-1.6l2.6 1.6V7.8h1.8v8.4z"/>
+    </svg>
+  `;
+  const label = document.createElement("span");
+  label.className = "elw-hq__label";
+  label.textContent = lang === "ar" ? "المقر الرئيسي" : "Head office";
+  el.appendChild(label);
+  return el;
+}
+
+function createHqPopupContent(lang: string): HTMLElement {
+  const isAr = lang === "ar";
+  const root = document.createElement("div");
+  root.className = "elw-popup";
+  root.setAttribute("dir", isAr ? "rtl" : "ltr");
+
+  const tag = document.createElement("p");
+  tag.className = "elw-popup__tag";
+  tag.textContent = isAr ? "المقر الرئيسي والمصنع" : "Head office & works";
+  root.appendChild(tag);
+
+  const name = document.createElement("p");
+  name.className = "elw-popup__name";
+  name.textContent = isAr ? NAME_AR : NAME_EN;
+  root.appendChild(name);
+
+  const city = document.createElement("p");
+  city.className = "elw-popup__city";
+  city.textContent = isAr
+    ? `${ADDRESS.localityAr}، ${ADDRESS.regionAr}`
+    : `${ADDRESS.localityEn}, ${ADDRESS.regionEn}`;
+  root.appendChild(city);
+
+  const actions = document.createElement("div");
+  actions.className = "elw-popup__actions";
+
+  const call = document.createElement("a");
+  call.className = "elw-popup__btn elw-popup__btn--primary";
+  call.href = `tel:${PHONE_SALES}`;
+  call.textContent = "+20 106 668 5532";
+  call.setAttribute("dir", "ltr");
+  actions.appendChild(call);
+
+  const wa = document.createElement("a");
+  wa.className = "elw-popup__btn";
+  wa.href = `https://wa.me/${WHATSAPP_SALES}`;
+  wa.target = "_blank";
+  wa.rel = "noopener noreferrer";
+  wa.textContent = isAr ? "واتساب" : "WhatsApp";
+  actions.appendChild(wa);
+
+  const maps = document.createElement("a");
+  maps.className = "elw-popup__btn";
+  maps.href = HQ_MAP_URL;
+  maps.target = "_blank";
+  maps.rel = "noopener noreferrer";
+  maps.textContent = isAr ? "الاتجاهات" : "Directions";
+  actions.appendChild(maps);
+
+  root.appendChild(actions);
+  return root;
 }
 
 /**
@@ -277,10 +368,36 @@ export default function DistributorMap({
         .addTo(map);
     }
 
+    // Head office goes on last so it paints above any distributor pin that
+    // shares its neighbourhood.
+    {
+      const el = createHqPinElement(lang);
+      el.setAttribute(
+        "aria-label",
+        isAr ? `${NAME_AR} — المقر الرئيسي` : `${NAME_EN} — head office`,
+      );
+      el.addEventListener("click", (event) => {
+        event.stopPropagation();
+        onSelectRef.current(HQ_SELECTION_ID);
+      });
+      const popup = new Popup({
+        offset: 64,
+        closeButton: true,
+        closeOnClick: true,
+        maxWidth: "260px",
+        className: "elw-popup-shell elw-popup-shell--hq",
+      }).setDOMContent(createHqPopupContent(lang));
+      markersRef.current[HQ_SELECTION_ID] = new Marker({ element: el, anchor: "bottom" })
+        .setLngLat(HQ_COORDS)
+        .setPopup(popup)
+        .addTo(map);
+    }
+
     // Frame every pin rather than trusting a hardcoded zoom — the network can
     // grow from the admin, and a fixed frame would eventually cut pins off.
-    if (distributors.length > 0) {
+    {
       const bounds = new LngLatBounds();
+      bounds.extend(HQ_COORDS);
       for (const d of distributors) bounds.extend(d.coords);
       map.fitBounds(bounds, {
         padding: { top: 60, bottom: 60, left: 50, right: 50 },
@@ -302,16 +419,21 @@ export default function DistributorMap({
 
     for (const [id, marker] of Object.entries(markersRef.current)) {
       const active = id === selectedId;
-      marker.getElement().classList.toggle("elw-pin--active", active);
+      marker
+        .getElement()
+        .classList.toggle(id === HQ_SELECTION_ID ? "elw-hq--active" : "elw-pin--active", active);
       if (!active && marker.getPopup()?.isOpen()) marker.togglePopup();
     }
 
     if (!selectedId) return;
-    const target = distributors.find((d) => d.id === selectedId);
+    const center =
+      selectedId === HQ_SELECTION_ID
+        ? HQ_COORDS
+        : distributors.find((d) => d.id === selectedId)?.coords;
     const marker = markersRef.current[selectedId];
-    if (!target || !marker) return;
+    if (!center || !marker) return;
 
-    map.flyTo({ center: target.coords, zoom: 11, duration: 900, essential: true });
+    map.flyTo({ center, zoom: selectedId === HQ_SELECTION_ID ? 13 : 11, duration: 900, essential: true });
     if (!marker.getPopup()?.isOpen()) marker.togglePopup();
   }, [selectedId, distributors]);
 
@@ -325,7 +447,7 @@ export default function DistributorMap({
             ? "تعذّر عرض الخريطة على هذا المتصفح"
             : "The map can't be displayed in this browser"}
         </p>
-        <p className="mt-2 max-w-md text-[13px] leading-5 text-stone">
+        <p className="mt-2 max-w-md text-sm text-stone">
           {isAr
             ? "الخريطة تحتاج WebGL2، وهو غير متاح هنا. قائمة الموزّعين بالكامل بأرقام الهواتف موجودة بجانب هذا الإطار، ويفتح زر «الخريطة» موقع كل موزّع على خرائط جوجل."
             : "The map needs WebGL2, which isn't available here. The full distributor list with phone numbers is beside this panel, and each “Maps” button opens that distributor on Google Maps."}
@@ -345,7 +467,7 @@ export default function DistributorMap({
         aria-label={isAr ? "خريطة موزّعي شركة الواحة" : "Map of El Waha distributors"}
       />
 
-      <p className="mt-2 font-mono text-[11px] leading-4 text-stone">
+      <p className="mt-2 font-mono text-xs text-stone">
         {isAr
           ? "اسحب للتحريك، و Ctrl + عجلة الفأرة للتكبير (أو إصبعين على الجوال). اضغط على أي علامة لعرض بيانات الموزّع."
           : "Drag to pan, Ctrl + scroll to zoom (two fingers on mobile). Tap a pin for the distributor's details."}
@@ -380,6 +502,77 @@ export default function DistributorMap({
         .elw-pin--active .elw-pin__eye { fill: var(--color-pine); }
         @media (prefers-reduced-motion: reduce) {
           .elw-pin svg, .elw-pin__body { transition: none; }
+        }
+
+        /* Head-office pin. */
+        /* No position here: MapLibre's .maplibregl-marker sets it to
+           absolute on this same element, and overriding it breaks placement. */
+        .elw-hq {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 0;
+          border: 0;
+          background: transparent;
+          cursor: pointer;
+          line-height: 0;
+          z-index: 5;
+        }
+        .elw-hq svg {
+          position: relative;
+          filter: drop-shadow(0 3px 5px rgba(20, 20, 20, 0.45));
+          transition: transform 160ms ease;
+          transform-origin: 50% 100%;
+        }
+        .elw-hq__body { fill: var(--color-brass); stroke: var(--color-pine); stroke-width: 1.4; }
+        .elw-hq__disc { fill: var(--color-pine); }
+        .elw-hq__glyph { fill: var(--color-brass); }
+        .elw-hq:hover svg { transform: scale(1.08); }
+        .elw-hq--active svg { transform: scale(1.15); }
+        .elw-hq__pulse {
+          position: absolute;
+          bottom: -7px;
+          left: 50%;
+          width: 30px;
+          height: 30px;
+          margin-left: -15px;
+          border-radius: 9999px;
+          background: var(--color-brass);
+          opacity: 0.5;
+          transform: scaleY(0.45);
+          animation: elw-hq-pulse 2s ease-out infinite;
+        }
+        @keyframes elw-hq-pulse {
+          0%   { transform: scale(0.4, 0.18); opacity: 0.7; }
+          100% { transform: scale(1.8, 0.8); opacity: 0; }
+        }
+        .elw-hq__label {
+          position: absolute;
+          bottom: 100%;
+          margin-bottom: 4px;
+          white-space: nowrap;
+          padding: 4px 8px;
+          font-size: 11px;
+          font-weight: 700;
+          line-height: 1.2;
+          color: var(--color-bone);
+          background: var(--color-pine);
+          border-bottom: 2px solid var(--color-brass);
+          box-shadow: 0 2px 6px rgba(20, 20, 20, 0.25);
+        }
+        .elw-popup-shell--hq .maplibregl-popup-content { border-top-color: var(--color-brass); }
+        .elw-popup__tag {
+          margin: 0 0 4px;
+          font-family: var(--font-mono), monospace;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: var(--color-brass);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .elw-hq svg { transition: none; }
+          .elw-hq__pulse { animation: none; opacity: 0; }
         }
 
         /* Popup, in the site's palette rather than MapLibre's default white
