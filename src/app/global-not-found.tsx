@@ -6,18 +6,27 @@ import Link from "next/link";
 import { Archivo, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 
+/*
+ * preload: false on both. Turbopack emits this file's font preloads on
+ * every page of the site, not just on this 404 — a production build showed
+ * all seven of them in the <head> of /ar and /en, pointing at a stylesheet
+ * those pages never load. The families match [lang]/layout.tsx (Archivo as
+ * its variable font, Plex Arabic in the arabic subset) so the files are the
+ * same ones and come from cache.
+ */
 const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400", "600", "800"],
   variable: "--font-archivo",
   display: "swap",
+  preload: false,
 });
 
 const plexArabic = IBM_Plex_Sans_Arabic({
-  subsets: ["arabic", "latin"],
+  subsets: ["arabic"],
   weight: ["400", "600", "700"],
   variable: "--font-plex-arabic",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {

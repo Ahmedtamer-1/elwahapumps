@@ -27,11 +27,17 @@ export default function ProductCard({
     >
       {/* Product Image */}
       <div className="relative w-full h-48 bg-bone flex items-center justify-center p-4">
+        {/* A fixed width, not `fill`. With `fill` and no `sizes`, next/image
+            assumes 100vw: eight candidate widths in every card's srcset, and
+            a desktop browser picking a 1920px file for a card at most ~400px
+            wide. A width gives a 1x/2x pair instead. The classes put the
+            image exactly where `fill` did. */}
         <Image
           src={product.gallery[0]}
           alt={productTitle}
-          fill
-          className="object-contain p-4 group-hover:scale-105 transition-transform duration-500"
+          width={400}
+          height={192}
+          className="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute top-4 left-4">
           <span className="text-xs uppercase font-bold tracking-wider px-2.5 py-1 bg-white/90 backdrop-blur-sm text-emerald-600 border border-rule-light">

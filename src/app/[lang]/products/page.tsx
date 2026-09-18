@@ -6,6 +6,7 @@ import Image from "next/image";
 import { PRODUCT_CATEGORIES, categoryLabel } from "@/data/categories";
 import { localizedAlternates } from "@/lib/seo";
 import { PHONE_SALES, AGENCIES } from "@/lib/company";
+import MarqueeRow from "@/components/MarqueeRow";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -269,41 +270,41 @@ export default async function ProductsPage({ params }: PageProps) {
             {lang === "ar" ? "العلامات التجارية" : "Our brands"}
           </h2>
 
-          <div className="relative w-full overflow-hidden">
-            <div className="flex w-max gap-6 md:gap-8 animate-marquee-left hover:[animation-play-state:paused]">
-              {[...brandsList, ...brandsList].map((brand, idx) => {
-                const isClone = idx >= brandsList.length;
-                const tile = (
-                  <>
-                    <Image
-                      src={brand.logo}
-                      alt={isClone ? "" : brand.name}
-                      fill
-                      quality={95}
-                      className="object-contain"
-                      sizes="(max-width: 768px) 150px, 190px"
-                    />
-                  </>
-                );
-                /* No tile behind the marks — every source PNG has a real
-                   alpha channel, so they sit straight on the white.
-                   Nothing to fade at the edges either, so the gradient mask
-                   over the row is gone with it. */
-                const shell =
-                  "group relative flex w-[150px] md:w-[190px] h-20 md:h-24 shrink-0 items-center justify-center opacity-90 hover:opacity-100 transition-opacity duration-300";
+          <MarqueeRow
+            durationSeconds={32}
+            trackClassName="gap-6 md:gap-8"
+            ariaLabel={lang === "ar" ? "العلامات التجارية" : "Our brands"}
+          >
+            {/* One copy — MarqueeRow clones it for the loop, and hides
+                the clone from assistive tech itself. */}
+            {brandsList.map((brand) => {
+              const tile = (
+                <>
+                  {/* Fixed width, not `fill` + `sizes` — see SuccessPartners. */}
+                  <Image
+                    src={brand.logo}
+                    alt={brand.name}
+                    width={190}
+                    height={96}
+                    quality={95}
+                    className="absolute inset-0 w-full h-full object-contain"
+                  />
+                </>
+              );
+              /* No tile behind the marks — every source PNG has a real
+                 alpha channel, so they sit straight on the white.
+                 Nothing to fade at the edges either, so the gradient mask
+                 over the row is gone with it. */
+              const shell =
+                "group relative flex w-[150px] md:w-[190px] h-20 md:h-24 shrink-0 items-center justify-center opacity-90 hover:opacity-100 transition-opacity duration-300";
 
-                return (
-                  <div
-                    key={`${brand.id}-${idx}`}
-                    className={shell}
-                    aria-hidden={isClone ? true : undefined}
-                  >
-                    {tile}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+              return (
+                <div key={brand.id} className={shell}>
+                  {tile}
+                </div>
+              );
+            })}
+          </MarqueeRow>
 
           <p className="sr-only">
             {brandsList.map((brand, idx) => (

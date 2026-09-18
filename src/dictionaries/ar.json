@@ -14,7 +14,16 @@
     "afterSales": "خدمات ما بعد البيع",
     "career": "الوظائف",
     "pumpSelector": "اختيار الطلمبة",
-    "account": "حسابي"
+    "account": "حسابي",
+    "search": "بحث",
+    "searchPlaceholder": "ابحث باسم المنتج أو الماركة أو رقم الموديل",
+    "searchLabel": "البحث في المنتجات",
+    "searchClose": "إغلاق البحث",
+    "searchLoading": "جارٍ تحميل المنتجات…",
+    "searchNoResults": "لا توجد منتجات مطابقة لـ",
+    "searchError": "البحث غير متاح الآن. تصفّح كتالوج المنتجات بدلاً من ذلك.",
+    "searchResultsCount": "{count} نتيجة",
+    "searchHint": "جرّب اسم ماركة (Kurlar، Tormac) أو سلسلة موديل (KSX)."
   },
   "common": {
     "yearsExp": "نعمل في السوق منذ عام 2013",

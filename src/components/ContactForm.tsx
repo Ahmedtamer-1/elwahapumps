@@ -120,7 +120,13 @@ export default function ContactForm({ lang, dict, initialSubject }: ContactFormP
             readers and the keyboard; autoComplete="off" stops a password
             manager filling it on a real visitor's behalf. */}
         <div className="hidden" aria-hidden="true">
-          <label htmlFor="company">Company (leave blank)</label>
+          {/* In the page's language, like every other label: it is never
+              shown, but it is still text in the document, and an English
+              string on the Arabic page (or the reverse) reads as a
+              leftover to anything that audits or translates the page. */}
+          <label htmlFor="company">
+            {lang === "ar" ? "الشركة (اتركه فارغاً)" : "Company (leave blank)"}
+          </label>
           <input
             id="company"
             name="company"

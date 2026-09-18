@@ -47,6 +47,19 @@ function legacyRedirects() {
   return rules;
 }
 
+// STAGING=1 bakes noindex into this build: robots.txt disallows everything
+// and every response carries X-Robots-Tag. That is right for
+// new.elwahapumps.com and would de-index the real site, and the cPanel app's
+// environment keeps STAGING set until someone removes it. So the build says
+// so, loudly, rather than leaving it to be noticed in Search Console weeks
+// after cutover.
+if (process.env.STAGING === "1") {
+  console.warn(
+    "\n⚠  STAGING=1: this build is NOINDEX (robots.txt Disallow: / and X-Robots-Tag: noindex, nofollow).\n" +
+      "   Correct for new.elwahapumps.com only. Unset STAGING and rebuild before this serves elwahapumps.com.\n",
+  );
+}
+
 const nextConfig: NextConfig = {
   // cPanel's Node.js selector makes node_modules a symlink into
   // ~/nodevenv/<app>/<version>, outside the project, and Turbopack refuses to
@@ -115,10 +128,13 @@ const nextConfig: NextConfig = {
           { key: "X-DNS-Prefetch-Control", value: "on" },
           {
             /*
-              Report-only to start with, as the plan calls for. A CSP that
-              silently breaks the distributor map or the pump selector is
-              worse than none, so this wants a spell watching real traffic
-              before it is switched to the enforcing header.
+              Enforcing. This ran report-only first, as the plan called
+              for — a CSP that silently breaks the distributor map or the
+              pump selector is worse than none — and was switched on once
+              every page (map, selector, contact embed, header search,
+              admin) loaded clean under it with no violations in the
+              console. If something new needs a host, add it below with
+              the reason, the way the existing ones are.
 
               Every allowance below is here because something on the site
               actually needs it — the hosts were taken from the code, not
@@ -141,7 +157,7 @@ const nextConfig: NextConfig = {
               frame-ancestors 'none' blocks clickjacking site-wide; the
               admin area also gets X-Frame-Options below for older clients.
             */
-            key: "Content-Security-Policy-Report-Only",
+            key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",

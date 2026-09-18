@@ -538,57 +538,43 @@ body {
   animation: page-in 0.4s ease-out;
 }
 
-@keyframes marquee-left {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/*
- * Same travel, mirrored, for the Arabic side.
- *
- * The marquee rows are `w-max` blocks inside an `overflow-hidden` parent, so
- * they are pinned to the inline-start edge and spill out of the other one.
- * Under `dir="rtl"` that start edge is the right, and the row spills leftwards
- * — a leftward translate then drags the logos straight out of the clip instead
- * of pulling the queued ones through it, which is why the partner wall and the
- * product teaser both went blank in Arabic. Reversing the sign scrolls with the
- * reading direction and keeps the second copy of the list landing exactly where
- * the first began, so the loop stays seamless in both languages.
- */
-@keyframes marquee-right {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(50%);
-  }
-}
-
-.animate-marquee-left {
-  animation: marquee-left 32s linear infinite;
-}
-
-[dir="rtl"] .animate-marquee-left {
-  animation-name: marquee-right;
-}
-
 /* Respect users who ask for less motion. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  /* The `[dir="rtl"]` variant above outranks a bare class, so it is named here
-     too — otherwise it would put its animation back on for Arabic readers. */
-  .animate-marquee-left,
-  [dir="rtl"] .animate-marquee-left,
+  /* The marquee rows are no longer keyframed — MarqueeRow drives them by
+     scrollLeft and checks this same query itself, so under reduced motion they
+     hold still and only move when the reader moves them. */
   .animate-pulse-subtle,
   .animate-page-in {
     animation: none;
   }
+}
+
+/*
+ * The marquee scroll ports (see MarqueeRow).
+ *
+ * `scroll-behavior` is smooth on `html`, and it inherits — which would put an
+ * easing curve on every one of the sixty `scrollLeft` writes a second the
+ * drift makes, so the row stutters and lags its own animation. It has to be
+ * instant here; the arrow keys lose their glide with it, which is the cheaper
+ * loss.
+ *
+ * The bar itself is hidden. The global one is an 8px pine slab, and three of
+ * them stacked under the card rows read as rules across the page; the drift
+ * and the grab cursor already say the row moves. `overscroll-behavior-x`
+ * keeps a swipe that runs off the end of the row from being taken as a
+ * browser back-gesture.
+ */
+.marquee-scroller {
+  scroll-behavior: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.marquee-scroller::-webkit-scrollbar {
+  display: none;
 }
 
 /* Custom scrollbar */

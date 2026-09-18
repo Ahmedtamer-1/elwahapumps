@@ -2,7 +2,7 @@
 
 ## Context
 
-The El Waha Pumps site has been rebuilt in Next 16.2.10 / React 19.2 / Tailwind 4 / Prisma 7 + SQLite on branch `claude/website-audit-seo-69d962`. **It is not deployed.** `elwahapumps.com` still serves the old WordPress/Yoast site.
+The El Waha Pumps site has been rebuilt in Next 16.2.10 / React 19.2 / Tailwind 4 / Prisma 7 + SQLite on branch `claude/website-audit-seo-69d962`. **It is not deployed to the main domain.** `elwahapumps.com` still serves the old WordPress/Yoast site. *(Updated 19 September 2026: a noindex staging copy has been live at `new.elwahapumps.com` on Namecheap cPanel since 18 September; hosting is cPanel's Node.js app, not the VPS the decisions table below assumed.)*
 
 That single fact sets the strategy. This is not incremental patching of a live site — it is a one-shot cutover where the domain's existing search equity either transfers or is lost. A six-specialist audit found the engineering core sound (correct Next 16 conventions, defence-in-depth admin auth, a tested pump-selection engine, a documented brand system) but the entire discovery layer absent: no sitemap, no robots file, no canonical or hreflang, no structured data, one shared page title across 16 of 18 pages, and no redirect map for the 61 indexed WordPress URLs.
 
@@ -35,19 +35,19 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
 | S0-T01 | Allow `quality={95}` in image config | S | PRE | DONE |
-| S0-T02 | Fix 3 brand links returning 404 | M | PRE | DONE |
+| S0-T02 | Fix 3 brand links returning 404 | M | PRE | DONE — superseded 14 Sep: the `/agents` pages were removed outright (3574267); no page links to them any more |
 | S0-T03 | Fix 3 TypeScript errors in the test file | S | PRE | DONE |
 | S0-T04 | Replace 7 `dict: any` with a typed Dictionary | M | PRE | DONE |
 | S0-T05 | Fix 4 remaining lint errors | S | PRE | DONE |
 | S0-T06 | Fix `hasLocale` prototype-chain bug | S | PRE | DONE |
 | S0-T07 | Add not-found, error and global-not-found pages | M | PRE | DONE |
 | S0-T08 | Delete dummy retail filters from category pages | S | PRE | DONE |
-| S0-T09 | Seed the `surface-pumps` category | S | PRE | DONE |
+| S0-T09 | Seed the `surface-pumps` category | S | PRE | DONE — since folded into `pumps`; the old slug 308s there |
 | S0-T10 | Resolve contradictory company facts | S | PRE | DONE |
 | S0-T11 | Notify a human when a lead arrives | M | PRE | DONE |
 | S0-T12 | Delete the unreferenced 162 MB image folder | S | PRE | DONE |
 | S0-T13 | Delete Vite scaffold and dead components | S | PRE | DONE |
-| S0-T14 | Add npm scripts and CI | S | PRE | DONE |
+| S0-T14 | Add npm scripts and CI | S | PRE | DONE — lint re-fixed 19 Sep (see [Verification pass](#verification-pass--19-september-2026)) |
 | S0-T15 | Give products a real brand, and fix the Brand filter | M | PRE | DONE |
 
 ### Stage 1 — Discovery layer
@@ -83,7 +83,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S2-T06 | Redirect the legacy Yoast sitemap URLs | S | PRE | DONE |
 | S2-T07 | Write the post-cutover redirect verification script | M | PRE | DONE — 68/68 legacy URLs pass locally |
 | S2-T08 | Off-site listing update checklist | S | GATE | PARTIAL — checklist written (docs/off-site-listings-checklist.md); the actual off-site updates need your access to each property |
-| S2-T09 | **CUTOVER** — switch DNS and verify | M | GATE | BLOCKED — requires your action (DNS/hosting access); all PRE work it depends on is done |
+| S2-T09 | **CUTOVER** — switch DNS and verify | M | GATE | BLOCKED — requires your action. Staging is live at new.elwahapumps.com (18 Sep, noindex). At cutover: remove `STAGING` from the cPanel app environment and rebuild |
 
 ### Stage 3 — AI-search readiness
 
@@ -92,7 +92,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S3-T01 | Publish `llms.txt` | S | PRE | DONE |
 | S3-T02 | Declare an AI-crawler policy in robots | S | PRE | DONE |
 | S3-T03 | Render spec tables in HTML, not behind a tab | M | PRE | DONE |
-| S3-T04 | Server-render the home teaser and contact form | M | PRE | DONE |
+| S3-T04 | Server-render the home teaser and contact form | M | PRE | DONE — **decision needed:** since 19 Sep the home teaser server-renders 4 of 19 cards (see S9-T04) |
 | S3-T05 | Remove unbacked marketplace trust badges | S | PRE | DONE |
 | S3-T06 | Add text lists under the logo walls | S | POST | DONE |
 | S3-T07 | Arabic transliterations for 8 brand names | S | POST | BLOCKED |
@@ -100,7 +100,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S3-T09 | Public product read API | M | POST | DONE |
 | S3-T10 | Public pump-selector API | M | POST | DONE |
 | S3-T11 | Generate `llms-full.txt` at build | M | POST | DONE |
-| S3-T12 | Publish the pump-curve dataset | M | POST | BLOCKED |
+| S3-T12 | Publish the pump-curve dataset | M | POST | TODO — unblocked: Kurlar approved publication (Open question 9) |
 
 ### Stage 4 — Performance
 
@@ -114,9 +114,9 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S4-T06 | Rename deprecated `priority` to `preload` | S | PRE | DONE |
 | S4-T07 | Add `sizes` to unsized fill images | S | PRE | DONE |
 | S4-T08 | Stop double-rendering the header logo | S | POST | DONE |
-| S4-T09 | Pass dictionary slices, not the whole dictionary | M | POST | TODO |
+| S4-T09 | Pass dictionary slices, not the whole dictionary | M | POST | PARTIAL — Header and Hero done 19 Sep; ContactForm, CategoryView, ProductDetailView, ProductTabs still take the whole dictionary |
 | S4-T10 | Lighter product DTO for list pages | M | POST | DONE |
-| S4-T11 | Trim font subsets and weights | S | POST | DONE |
+| S4-T11 | Trim font subsets and weights | S | POST | DONE — taken further 19 Sep: 1 font preload per page (S9-T02) |
 | S4-T12 | Prebuild product and category pages | S | POST | DONE |
 | S4-T13 | Query one product instead of the whole catalogue | S | POST | DONE |
 
@@ -152,7 +152,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S6-T07 | Implement the ARIA tabs pattern | M | POST | TODO |
 | S6-T08 | Rebuild the lightbox on native `dialog` | M | POST | TODO |
 | S6-T09 | Fix hero carousel targets, pause and motion | M | POST | TODO |
-| S6-T10 | Give marquees a reduced-motion fallback | S | POST | TODO |
+| S6-T10 | Give marquees a reduced-motion fallback | S | POST | DONE — in the working tree, **not yet committed**: `MarqueeRow` rows are real scroll ports, so under reduced motion they stop drifting but still scroll by wheel, swipe, drag, keys and (home teaser) buttons |
 | S6-T11 | Localise the aria-labels | S | POST | TODO |
 | S6-T12 | Remove the nested main landmark | S | POST | DONE |
 
@@ -160,7 +160,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 
 | ID | Task | Size | Gate | Status |
 |---|---|---|---|---|
-| S7-T01 | Add HTTP security headers | S | PRE | DONE |
+| S7-T01 | Add HTTP security headers | S | PRE | DONE — CSP switched from report-only to enforcing 19 Sep (S9-T06) |
 | S7-T02 | Enforce JWT secret strength and cookie prefix | S | PRE | DONE |
 | S7-T03 | Throttle admin login and close the timing oracle | M | PRE | DONE |
 | S7-T04 | Protect the two public POST endpoints | M | PRE | DONE |
@@ -168,7 +168,7 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S7-T06 | Add the missing database indexes | S | PRE | DONE |
 | S7-T07 | Stop the seed clobbering admin product edits | S | PRE | DONE |
 | S7-T08 | Centralise the contact constants | S | PRE | DONE |
-| S7-T09 | Enable SQLite WAL and nightly backups | M | PRE | DONE |
+| S7-T09 | Enable SQLite WAL and nightly backups | M | PRE | PARTIAL — WAL and backups done; the restore rehearsal the acceptance asks for has still not been performed (staging now exists to do it on) |
 | S7-T10 | Make sessions revocable | M | POST | TODO |
 | S7-T11 | Standardise the server-action error contract | M | POST | TODO |
 | S7-T12 | Paginate and search the admin lists | M | POST | TODO |
@@ -196,7 +196,20 @@ Every audit claim below was re-verified against the working tree on 7 September 
 | S8-T13 | Case studies and projects section | L | POST | TODO |
 | S8-T14 | Tender and distributor-application pages | M | POST | TODO |
 
-**Totals:** 119 tasks. 61 required before cutover, 1 is the cutover, 57 after.
+### Stage 9 — Audit follow-up (19 September 2026)
+
+Six items from a second audit of the staging build. Detail under [Stage 9](#stage-9--audit-follow-up).
+
+| ID | Task | Size | Gate | Status |
+|---|---|---|---|---|
+| S9-T01 | Production build drops noindex and `Disallow: /` | S | GATE | DONE in code — takes effect when `STAGING` is removed at cutover |
+| S9-T02 | Cut font preloads to the critical file(s) | S | POST | DONE — 7 → 1 |
+| S9-T03 | Instant product search in the header | M | POST | DONE |
+| S9-T04 | Initial HTML under 100 KB | M | POST | PARTIAL — home 471 → 161 KB (28 KB gzipped); target not met |
+| S9-T05 | Localise the honeypot label and the English 404 | S | PRE | DONE |
+| S9-T06 | Switch the CSP from report-only to enforcing | S | PRE | DONE |
+
+**Totals (19 September 2026):** 127 tasks — 82 done, 7 partial, 3 blocked, 35 to do. The original plan counted 119; S0-T15 and Stage 9 were added since, and the old count was already off by two.
 
 ---
 
@@ -218,6 +231,7 @@ Things that are broken, ship broken, or make the deploy unsafe. Nothing else sta
 **Dependencies.** None. Note the JEE Pumps question in [Open questions](#open-questions).
 **Acceptance.** `npm run build` succeeds, then for each of `novo`, `tormac`, `untel`, `astral-pipes`, `pmc`, `kurlar`, `alka`: `curl -s -o /dev/null -w "%{http_code} "` against `/ar/agents/<slug>` returns `200`. No link on `/ar/products` resolves to a 404.
 **Size.** M
+**Superseded, 14 September 2026.** The `/agents` pages were removed entirely (commit 3574267), so every `/ar/agents/<slug>` above now returns 404 by design. What still holds is the half of the acceptance that matters: re-checked 19 September, none of the 22 internal links on `/ar/products` returns a 404, and the legacy WordPress brand URLs redirect to live pages (68/68). S8-T02 (brand page shells) is the task that would bring brand pages back.
 
 ### S0-T03 · Fix 3 TypeScript errors in the test file
 **Why it matters.** `tsc --noEmit` fails, so no CI gate can be added and type regressions cannot be caught. All three errors are in test fixtures, not production code.
@@ -560,6 +574,8 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Size.** M
 **Status: DONE.** New Server Component `src/components/ProductTeaser.tsx` replaces the teaser mode of `ProductTabs.tsx` on the home page — no `useSearchParams`, products passed straight through as props. `ContactForm.tsx` takes `initialSubject` as a prop from the page's `searchParams` instead of reading it client-side. Verified: `curl /ar | grep -o "product-card" | wc -l` returns 64 (32 server-rendered cards, doubled marquee).
 
+**Changed 19 September 2026 — decision needed.** S9-T04 cut the home page's HTML by server-rendering only the first 4 teaser cards; the other 15 now mount in the browser after load (`DeferredProductCards.tsx`), and the marquee's second copy is cloned client-side. So `curl /ar | grep -o product-card | wc -l` now returns 8, not 64, and 15 products are no longer in the home page's initial HTML. They are still in the HTML of `/products`, their category pages, the sitemap and `llms-full.txt`. Keep the smaller page, or restore all 19 server-rendered cards for this task's original goal — raise `SERVER_CARDS` in `ProductTeaser.tsx` to 19 to do that.
+
 ### S3-T05 · Remove unbacked marketplace trust badges
 **Why.** "Buyer Protection", "Nationwide Shipping", "Verified Supplier", "Certified Warranty" and "100% Quality Guaranteed" are asserted with no policy behind them. They are wrong for an exclusive-agency distributor and they are the kind of claim an answer engine will repeat as fact.
 **Files.** `src/components/ProductDetailView.tsx:132,162,205-206`, `src/app/[lang]/services/[slug]/page.tsx:275`, and the 25-year warranty claim in `PartnerLogos.tsx:40` (removed by S0-T13).
@@ -665,6 +681,7 @@ Answer engines need a stable entity, facts in the initial HTML, and something to
 **Dependencies.** S0-T12 (delete duplicates before re-encoding, not after).
 **Acceptance.** No file under `public/images` exceeds 1 MB. Every image referenced in `src/` still resolves; `npm run build` succeeds and no page shows a broken image.
 **Size.** M
+**Regressed and re-fixed, 19 September 2026.** Commit 8445f37 added a saved copy of the remove.bg web page — 16 files, ~11 MB, including remove.bg's own scripts (Hotjar, Facebook pixel) — under `public/images/products/`. It broke this acceptance (two files over 1 MB) and, being in `public/`, was served from the site's own origin, where the CSP's `script-src 'self'` would trust those scripts. Deleted from the repository and from the local `deploy/app` copy. It had also been uploaded to staging (`new.elwahapumps.com` served it with a 200); deleted from the server the same day, and the app restarted, since Next caches the list of `public/` files at startup and answered 500 for the deleted paths until then. Both URLs now return 404. `find public/images -type f -size +1M` returns nothing again.
 **Status: DONE.** Ran a one-off `sharp`-based script (not checked in — the job is a single batch, not a repeatable build step) against every file over 1MB under `public/images`: resized to a 2400px long edge, EXIF orientation baked in, re-encoded at 85% JPEG quality / PNG level 9. `public/images` dropped from roughly 345MB to 30MB. The 19 uppercase `.JPG` event photos were renamed to lowercase via a two-step `git mv` (a direct case-only rename is a no-op on Windows/NTFS's case-insensitive filesystem, so git wouldn't otherwise register the case change) so the tracked filenames actually change case, not just the working-tree bytes — a plain filesystem rename would have left git still tracking the old uppercase name, silently reintroducing the exact case-sensitive-host breakage this task exists to fix. `src/data/events.ts` updated from `.JPG` to `.jpg` to match. Verified: `find public/images -type f -size +1M` returns nothing; production build succeeds; every re-encoded photo (hero slides, about/support bands, event galleries) renders correctly against a running server.
 
 ### S4-T05 · Image formats, cache TTL and asset headers
@@ -957,6 +974,8 @@ Both corrected against the actual source. Verified against a running production 
 
 **Not verified at runtime:** the CARTO `img-src`/`worker-src` allowances. The map falls back to its list view in the automation browser, so no tile request was ever issued. The directives are correct per the source, and report-only means a mistake cannot break anything — but switching to the enforcing header should wait until real traffic has been observed, which is exactly why it ships report-only.
 
+**Enforcing since 19 September 2026 (S9-T06).** The header is now `Content-Security-Policy`. Checked against a production build before switching: home, locations (the map rendered its CARTO tiles), contact (Google Maps embed), selector, the header search and admin login, all with zero `Refused to…` console errors.
+
 ### S7-T02 · Enforce JWT secret strength and cookie prefix
 **Why.** The secret fails closed when absent, which is correct, but any non-empty value is accepted — including the literal `"change-me"` shipped in `.env.example`. The session cookie also lacks the `__Host-` prefix despite already meeting its requirements.
 **Files.** `src/lib/session.ts:12-16,42-48`; `.env.example:11`.
@@ -1127,6 +1146,36 @@ Every request in it was checked against the code rather than assumed, which chan
 
 ---
 
+## Stage 9 — Audit follow-up
+
+A second audit, run against the staging copy on 19 September 2026, raised six items. All six were implemented and checked against a local production build the same day. **None is committed yet.**
+
+- **S9-T01 · Noindex only on staging.** Already correct in code: `robots.ts` and the `X-Robots-Tag` header in `next.config.ts` follow `STAGING=1` at build time, and a build without it serves `Allow: /` and no noindex header (verified). The audit flagged it because it audited the staging copy. Added a loud build-time warning whenever `STAGING=1`, since the cPanel app environment keeps the variable until someone removes it. **Cutover step:** remove `STAGING` from the app environment and rebuild.
+- **S9-T02 · Font preloads 7 → 1.** Archivo now loads as its variable font: one file for every weight, and the only preloaded file. Plex Arabic and Plex Mono are `preload: false`. The audit's example was "regular + bold Arabic", but next/font preloads all of a family's weights or none, so preloading Arabic meant four files on every page, English included. Arabic still loads as soon as the stylesheet asks for it, with `display: swap`. Also found: `global-not-found.tsx`'s fonts were being preloaded on every page of the site (Turbopack), pointing at a stylesheet those pages never load. Those are now `preload: false` too.
+- **S9-T03 · Header search.** `HeaderSearch.tsx` is a dialog opened from a header button, `/` or Ctrl/Cmd+K. It matches names in both languages, brands, series and every model number in the selection tables and SKUs. It folds Arabic spelling variants and ignores separators in model numbers. Arrow keys, Enter and Escape work, with a focus trap and scroll lock. The index comes from a new `/api/search` (19 rows, ~4 KB) fetched on first open, so it adds nothing to page HTML.
+- **S9-T04 · HTML size — partial.** Home `/ar` went from 471 KB to 161 KB (63 → 28 KB gzipped). The changes: Header and Hero get dictionary slices (part of S4-T09); the marquees render one copy and clone it client-side (the clone is `aria-hidden` and out of the tab order); the home teaser server-renders 4 of 19 cards (see the S3-T04 note); card and logo images use a fixed width instead of `fill`, which gives a 1x/2x srcset and stops a 320 px card from fetching a 1920 px image; and teaser descriptions are clipped to what the card shows. **Target not met:** most pages are still 100–150 KB, because the App Router sends each page's content twice (HTML plus RSC payload). Next step: finish S4-T09 on the product, category and contact pages.
+- **S9-T05 · Localisation.** The honeypot label follows the page language. `[lang]/not-found.tsx` renders `NotFoundContent.tsx`, which reads the locale from the path, so the English 404 has no Arabic and the Arabic 404 has no English. (`global-not-found.tsx` stays bilingual on purpose: the locale is unknown there.)
+- **S9-T06 · CSP enforcing.** See the S7-T01 note.
+
+## Verification pass — 19 September 2026
+
+Every task marked DONE was re-checked against its own acceptance criterion, on a fresh production build (`next build` + `next start`) and with the greps it names.
+
+**Passed.** All 94 sitemap URLs return 200 with a unique title, exactly one `<h1>`, one `<main>`, one canonical and a meta description (S1-T03/T04/T15, S6-T12). Legacy redirects 68/68 (S2-T02 to S2-T07). Root and Yoast sitemap 308s. OG and Twitter tags with `ar_EG`, hreflang ar/en/x-default, Organization/ProductGroup/BreadcrumbList JSON-LD, noindex on cart and selector results but not on bare selector, canonicals on `?tab`/`?subject`, manifest, one favicon and theme-color, OG image as `image/png`. Prototype keys 404. quality-95 images 200. Brand filters exactly as S0-T15 specifies (plus a new one on motors). Products API (19), selector API (`K6SX-60/17`, matching S3-T10), `llms.txt` as `text/plain`, 4 spec tables in the initial HTML. All five security headers plus admin `X-Frame-Options`. Honeypot: 201 and no row written. Immutable image caching and AVIF. Skip link. `tsc --noEmit` clean. The greps in S0-T04, S0-T08, S4-T01, S4-T03 and S7-T08 return nothing. The ones in S0-T10, S3-T05 and S4-T06 match only code comments that quote the removed text.
+
+**Found and fixed.**
+- `npx eslint .` reported 798 errors, so CI's lint step failed. 794 came from gitignored local copies of the repo (`.claude/worktrees/`, `deploy/app/`), 2 from the cPanel startup file `server.js` (CommonJS by design), and 2 more in `deploy/app`. `eslint.config.mjs` now ignores the local copies and allows `require()` in `server.js`. Result: 0 errors.
+- `tsconfig.json` also type-checked `deploy/app`, and that stale copy failed the build once the dictionaries changed. `deploy`, `dist` and `backups` are now excluded.
+- The remove.bg page in `public/` (see the S4-T04 note).
+
+**Open.**
+- `npm test`: 49/50 pass. The design-system test fails on `shadow-sm` in the uncommitted `MarqueeRow.tsx` arrow buttons. Remove it before committing, or CI goes red.
+- The S3-T04 / S9-T04 trade-off above.
+- Still not verifiable locally: S0-T11 notifications actually arriving (needs mail configured on staging), the S7-T09 restore rehearsal, the Rich Results Test and a Lighthouse baseline (cutover checklist items 5 and 6).
+- Known console noise on `/locations`: a module-script 404 from the map, probably maplibre's worker URL. The map still renders.
+
+---
+
 ## Verification
 
 **Per task.** Each task's acceptance criterion is the command to run. Nothing is marked DONE without it passing.
@@ -1138,6 +1187,7 @@ npm run lint && npm run typecheck && npm test && npm run build
 plus a manual pass over `/ar` and `/en` for home, a product page, a category page, contact and cart.
 
 **Before the cutover gate.**
+0. Remove `STAGING` from the cPanel app environment, then rebuild; the build must **not** print the noindex warning (S9-T01).
 1. `npm run build` clean, no deprecation warnings.
 2. `node scripts/verify-redirects.mjs --target=<staging>` reports zero failures.
 3. `curl` every route in both locales; assert unique titles and one canonical each.

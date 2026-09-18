@@ -14,7 +14,16 @@
     "afterSales": "Aftersales Support",
     "career": "Career",
     "pumpSelector": "Pump Selector",
-    "account": "My account"
+    "account": "My account",
+    "search": "Search",
+    "searchPlaceholder": "Search by product, brand or model number",
+    "searchLabel": "Search products",
+    "searchClose": "Close search",
+    "searchLoading": "Loading products…",
+    "searchNoResults": "No products match",
+    "searchError": "Search is unavailable right now. Browse the product catalogue instead.",
+    "searchResultsCount": "{count} results",
+    "searchHint": "Try a brand (Kurlar, Tormac) or a model series (KSX)."
   },
   "common": {
     "yearsExp": "In the market since 2013",

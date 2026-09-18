@@ -57,7 +57,21 @@ export default async function HomePage({ params }: PageProps) {
   return (
     <div className="flex flex-col w-full overflow-hidden bg-white text-ink">
       {/* 1. Hero */}
-      <Hero lang={lang} dict={dict} />
+      {/* Only the strings Hero reads. It is a client component, so the
+          whole dictionary passed here was serialised into the page's
+          HTML — ~40 KB of copy for every other page on the site. */}
+      <Hero
+        lang={lang}
+        dict={{
+          hero: dict.hero,
+          common: { requestQuote: dict.common.requestQuote },
+          home: {
+            heroStats: dict.home.heroStats,
+            responseLabel: dict.home.responseLabel,
+          },
+          aboutPage: { stats: { projects: dict.aboutPage.stats.projects } },
+        }}
+      />
 
       {/* 2. Two-Column Supply vs Maintenance Highlight Block */}
       <section className="py-section bg-white">

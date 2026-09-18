@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { SUCCESS_PARTNERS } from "@/data/success-partners";
+import MarqueeRow from "@/components/MarqueeRow";
 
 interface SuccessPartnersProps {
   lang: string;
@@ -30,29 +31,36 @@ export default function SuccessPartners({ lang }: SuccessPartnersProps) {
           </h2>
         </div>
 
-        <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
-          <div className="flex w-max gap-3 animate-marquee-left hover:[animation-play-state:paused]">
-            {[...SUCCESS_PARTNERS, ...SUCCESS_PARTNERS].map((partner, idx) => (
-              <div
-                key={`${partner.id}-${idx}`}
-                className="flex w-52 h-28 shrink-0 items-center justify-center bg-white border border-rule hover:border-pine transition-colors duration-300"
-              >
-                {/* Every source file is 669×373 with the mark centred, so one
-                    box and `object-contain` scales the whole roster alike. */}
-                <div className="relative w-full h-20">
-                  <Image
-                    src={partner.logo}
-                    alt={isAr ? partner.name.ar : partner.name.en}
-                    fill
-                    sizes="(max-width: 640px) 208px, 416px"
-                    quality={95}
-                    className="object-contain px-5"
-                  />
-                </div>
+        <MarqueeRow
+          durationSeconds={32}
+          className="[mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+          trackClassName="gap-3"
+          ariaLabel={isAr ? "شركاء النجاح" : "Success Partners"}
+        >
+          {/* One copy — MarqueeRow clones it for the loop. */}
+          {SUCCESS_PARTNERS.map((partner) => (
+            <div
+              key={partner.id}
+              className="flex w-52 h-28 shrink-0 items-center justify-center bg-white border border-rule hover:border-pine transition-colors duration-300"
+            >
+              {/* Every source file is 669×373 with the mark centred, so one
+                  box and `object-contain` scales the whole roster alike. */}
+              <div className="relative w-full h-20">
+                {/* Fixed width rather than `fill` + `sizes`: the box is
+                    always 208px, and `sizes` listed fifteen candidate
+                    widths per logo in the HTML where 1x/2x is all it needs. */}
+                <Image
+                  src={partner.logo}
+                  alt={isAr ? partner.name.ar : partner.name.en}
+                  width={208}
+                  height={116}
+                  quality={95}
+                  className="absolute inset-0 w-full h-full object-contain px-5"
+                />
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </MarqueeRow>
 
         {/* Not painted, but not deleted either. The marquee above is
             decorative — logos, no text an answer engine or a screen reader

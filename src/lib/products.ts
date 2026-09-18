@@ -328,6 +328,64 @@ export async function getCatalogListProductsByCategory(
   return rows.map((row) => toListProduct(row, lang));
 }
 
+/** One row of the header search index — both languages, so one fetch serves either locale. */
+export interface SearchIndexEntry {
+  slug: string;
+  category: string;
+  nameEn: string;
+  nameAr: string;
+  brand: string | null;
+  /** The series name, e.g. "KSX". */
+  modelNo: string | null;
+  /** Every model number in the product's selection tables and SKUs, space-joined. Matched, never shown. */
+  models: string;
+  image: string | null;
+}
+
+/**
+ * The header search index. Descriptions and spec tables are left out: the
+ * search matches names, brands and model numbers, and this ships to the
+ * browser, so it carries nothing else.
+ */
+export async function getSearchIndex(): Promise<SearchIndexEntry[]> {
+  const rows = await prisma.product.findMany({
+    where: { isActive: true },
+    orderBy: { createdAt: "asc" },
+    select: {
+      slug: true,
+      nameEn: true,
+      nameAr: true,
+      brand: true,
+      sku: true,
+      images: true,
+      specs: true,
+      category: { select: { slug: true } },
+      variants: { select: { sku: true } },
+    },
+  });
+
+  return rows.map((row) => {
+    const blob = safeParse<SpecsBlob>(row.specs, {});
+    const models = new Set<string>();
+    for (const group of blob.modelGroups ?? []) {
+      for (const r of group.rows) if (r.model) models.add(r.model);
+    }
+    if (row.sku) models.add(row.sku);
+    for (const v of row.variants) if (v.sku) models.add(v.sku);
+
+    return {
+      slug: row.slug,
+      category: row.category.slug,
+      nameEn: row.nameEn || row.nameAr || row.slug,
+      nameAr: row.nameAr || row.nameEn || row.slug,
+      brand: row.brand,
+      modelNo: blob.modelNo ?? null,
+      models: [...models].join(" "),
+      image: safeParse<string[]>(row.images, [])[0] ?? null,
+    };
+  });
+}
+
 /**
  * How many live products sit in each category, keyed by slug.
  *

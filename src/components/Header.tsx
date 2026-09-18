@@ -3,20 +3,36 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, Globe, ChevronDown, User } from "lucide-react";
+import { Menu, X, Phone, Globe, ChevronDown, User, Search } from "lucide-react";
 import CartButton from "@/components/cart/CartButton";
 import Logo from "@/components/Logo";
+import HeaderSearch, { prefetchSearchIndex } from "@/components/HeaderSearch";
 import type { Dictionary } from "../app/[lang]/dictionaries";
 import { PHONE_SALES } from "@/lib/company";
 
+/**
+ * The slice of the dictionary the header reads. This is a client component,
+ * so everything passed to it is serialised into every page's HTML — the
+ * whole dictionary was ~40 KB of copy for pages the visitor is not on.
+ * The layout builds it (headerDict in [lang]/layout.tsx).
+ */
+export type HeaderDict = {
+  nav: Dictionary["nav"];
+  productsPage: Pick<
+    Dictionary["productsPage"],
+    "types" | "pumps" | "motors" | "electrical" | "pipes" | "spareParts" | "cables" | "all"
+  >;
+};
+
 interface HeaderProps {
   lang: string;
-  dict: Dictionary;
+  dict: HeaderDict;
 }
 
 export default function Header({ lang, dict }: HeaderProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const megaTriggerRef = React.useRef<HTMLAnchorElement>(null);
@@ -152,6 +168,27 @@ export default function Header({ lang, dict }: HeaderProps) {
     { href: `/${lang}/events`, label: dict.nav.events || "Events" },
     { href: `/${lang}/support`, label: dict.nav.afterSales || "Aftersales Support" },
   ];
+
+  const searchLabels = {
+    search: dict.nav.search,
+    searchPlaceholder: dict.nav.searchPlaceholder,
+    searchLabel: dict.nav.searchLabel,
+    searchClose: dict.nav.searchClose,
+    searchLoading: dict.nav.searchLoading,
+    searchNoResults: dict.nav.searchNoResults,
+    searchError: dict.nav.searchError,
+    searchResultsCount: dict.nav.searchResultsCount,
+    searchHint: dict.nav.searchHint,
+    allProducts: dict.productsPage.all,
+  };
+  const categoryLabels: Record<string, string> = {
+    pumps: dict.productsPage.pumps,
+    motors: dict.productsPage.motors,
+    electrical: dict.productsPage.electrical,
+    pipes: dict.productsPage.pipes,
+    "spare-parts": dict.productsPage.spareParts,
+    cables: dict.productsPage.cables,
+  };
 
   return (
     <>
@@ -451,6 +488,35 @@ export default function Header({ lang, dict }: HeaderProps) {
 
             {/* Desktop Action Buttons */}
             <div className="hidden lg:flex items-center gap-4">
+              {/* Search — a field-shaped button rather than a bare icon, so it
+                  reads as search at a glance. It opens the search dialog;
+                  "/" and Ctrl+K open it from anywhere. */}
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                onMouseEnter={prefetchSearchIndex}
+                onFocus={prefetchSearchIndex}
+                aria-label={dict.nav.searchLabel}
+                aria-haspopup="dialog"
+                aria-expanded={searchOpen}
+                className={`flex items-center gap-2 border px-3 py-2 text-sm transition-colors ${
+                  isTransparent
+                    ? "border-bone/25 text-bone/85 hover:border-brass hover:text-brass"
+                    : "border-rule text-stone hover:border-pine hover:text-pine"
+                }`}
+              >
+                <Search className="w-4 h-4" aria-hidden="true" />
+                <span>{dict.nav.search}</span>
+                <kbd
+                  aria-hidden="true"
+                  className={`font-mono text-[11px] leading-none px-1.5 py-1 border ${
+                    isTransparent ? "border-bone/25" : "border-rule"
+                  }`}
+                >
+                  /
+                </kbd>
+              </button>
+
               <CartButton lang={lang} isTransparent={isTransparent} />
 
               {/* Always points at /account. The header is a client component
@@ -502,6 +568,19 @@ export default function Header({ lang, dict }: HeaderProps) {
                 under the touch minimum. The gap tightens so the row still fits
                 beside the mark at 320 wide. */}
             <div className="flex items-center gap-1.5 lg:hidden">
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                onTouchStart={prefetchSearchIndex}
+                aria-label={dict.nav.searchLabel}
+                aria-haspopup="dialog"
+                aria-expanded={searchOpen}
+                className={`p-3 transition-colors ${
+                  isTransparent ? "text-bone hover:text-brass" : "text-pine hover:text-ink"
+                }`}
+              >
+                <Search className="w-5 h-5" aria-hidden="true" />
+              </button>
               <CartButton lang={lang} isTransparent={isTransparent} />
               <Link
                 href={`/${lang}/account`}
@@ -539,6 +618,14 @@ export default function Header({ lang, dict }: HeaderProps) {
           </div>
         </div>
       </header>
+
+      <HeaderSearch
+        lang={lang}
+        labels={searchLabels}
+        categoryLabels={categoryLabels}
+        open={searchOpen}
+        onOpenChange={setSearchOpen}
+      />
 
       {/* Mobile Menu Drawer Overlay.
           Overlay and drawer sit above the floating WhatsApp button (z-50):

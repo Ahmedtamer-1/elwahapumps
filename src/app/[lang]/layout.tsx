@@ -2,8 +2,8 @@ import React from "react";
 import type { Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Archivo, IBM_Plex_Sans_Arabic, IBM_Plex_Mono } from "next/font/google";
-import { getDictionary, hasLocale, Locale } from "./dictionaries";
-import Header from "@/components/Header";
+import { getDictionary, hasLocale, Locale, type Dictionary } from "./dictionaries";
+import Header, { type HeaderDict } from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SiteChrome from "@/components/SiteChrome";
@@ -21,9 +21,26 @@ import "../globals.css";
  * `--font-sans` stack in globals.css lists Archivo before Plex Arabic so
  * the browser resolves each glyph to the family that covers it.
  */
+/*
+ * Font preloads (S4-T11 follow-up). Next injects one <link rel="preload"> per
+ * font file, and this layout used to produce ten: four Archivo weights, four
+ * Plex Arabic weights and two Plex Mono weights, all racing the hero image
+ * for bandwidth on every page. Now:
+ *
+ *  - Archivo loads as its variable font — no `weight` list — so one file
+ *    covers every weight from 400 to 900 (it also gives font-black a real
+ *    900 instead of a synthesised one). It is the one preloaded file: Latin
+ *    resolves to it first on both locales, including the model numbers and
+ *    digits on Arabic pages.
+ *  - Plex Arabic and Plex Mono keep their files but are not preloaded. They
+ *    are still fetched as soon as the stylesheet asks for them, and
+ *    `display: swap` with Next's metric-matched fallback keeps text visible
+ *    and the layout still while they arrive. Plex Arabic is not a variable
+ *    font, so preloading it means all four weights — on English pages too,
+ *    where it renders nothing.
+ */
 const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "800"],
   variable: "--font-archivo",
   display: "swap",
 });
@@ -43,6 +60,7 @@ const plexArabic = IBM_Plex_Sans_Arabic({
   weight: ["400", "500", "600", "700"],
   variable: "--font-plex-arabic",
   display: "swap",
+  preload: false,
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -50,7 +68,26 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
   variable: "--font-plex-mono",
   display: "swap",
+  preload: false,
 });
+
+/** Only what the header reads — it is a client component, so its props ship in every page's HTML. */
+function headerDict(dict: Dictionary): HeaderDict {
+  const p = dict.productsPage;
+  return {
+    nav: dict.nav,
+    productsPage: {
+      types: p.types,
+      pumps: p.pumps,
+      motors: p.motors,
+      electrical: p.electrical,
+      pipes: p.pipes,
+      spareParts: p.spareParts,
+      cables: p.cables,
+      all: p.all,
+    },
+  };
+}
 
 export async function generateStaticParams() {
   return [{ lang: "ar" }, { lang: "en" }];
@@ -163,7 +200,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps) {
         </a>
         <CartProvider>
           <SiteChrome>
-            <Header lang={lang} dict={dict} />
+            <Header lang={lang} dict={headerDict(dict)} />
           </SiteChrome>
 
           {/* Main Content Area. tabIndex={-1} so the skip link can actually
