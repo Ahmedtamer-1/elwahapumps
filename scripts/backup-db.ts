@@ -19,7 +19,9 @@
  * once on staging before trusting it — an untested backup is a guess.
  */
 import "dotenv/config";
-import Database from "better-sqlite3";
+// libsql, not better-sqlite3: same API, and its binary loads on the
+// Namecheap server (glibc 2.28), where better-sqlite3's does not.
+import Database from "libsql";
 import { existsSync, mkdirSync, readdirSync, statSync, unlinkSync } from "node:fs";
 import { join, resolve } from "node:path";
 

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaLibSql } from "@prisma/adapter-libsql";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
@@ -8,7 +8,12 @@ function createClient() {
   if (!url) throw new Error("DATABASE_URL is not set");
 
   // Prisma 7 requires an explicit driver adapter; the schema no longer carries the URL.
-  const adapter = new PrismaBetterSqlite3({ url });
+  // libsql, not better-sqlite3: better-sqlite3's prebuilt binary needs glibc
+  // 2.29, the Namecheap server has 2.28, and shared hosting has no compiler
+  // to build it from source. libsql's binary loads there. It reads and
+  // writes the same SQLite file with the same iso8601 timestamp default, so
+  // switching involves no data migration.
+  const adapter = new PrismaLibSql({ url });
   const client = new PrismaClient({ adapter });
 
   /*
