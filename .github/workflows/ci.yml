@@ -34,5 +34,12 @@ jobs:
       - name: Test
         run: npm test
 
+      # The build reads the catalogue: the prebuild step writes llms-full.txt
+      # from it and every product/category page is prerendered. Against the
+      # empty ci.db it failed with "no such table: main.Product", so the
+      # Build step was red from the start. Migrate and seed a throwaway copy.
+      - name: Prepare database
+        run: npx prisma migrate deploy && npx prisma db seed
+
       - name: Build
         run: npm run build
