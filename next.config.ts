@@ -48,7 +48,18 @@ function legacyRedirects() {
 }
 
 const nextConfig: NextConfig = {
+  // cPanel's Node.js selector makes node_modules a symlink into
+  // ~/nodevenv/<app>/<version>, outside the project, and Turbopack refuses to
+  // build through a symlink that leaves its root. On the server the build runs
+  // with TURBOPACK_ROOT=$HOME so the root covers both. Locally it is unset and
+  // Next infers the root as before.
+  ...(process.env.TURBOPACK_ROOT ? { turbopack: { root: process.env.TURBOPACK_ROOT } } : {}),
   experimental: {
+    // Shared hosting caps the process count (LVE). Next starts one build
+    // worker per CPU it can see (23 there), and spawning fails with EAGAIN.
+    // The server build sets NEXT_BUILD_CPUS=2. Locally it is unset and the
+    // default applies.
+    ...(process.env.NEXT_BUILD_CPUS ? { cpus: Number(process.env.NEXT_BUILD_CPUS) } : {}),
     // The site has two independent root layouts — [lang]/layout.tsx (public,
     // ar/en) and admin/layout.tsx — so there's no single layout to compose a
     // plain not-found.tsx from for genuinely unmatched top-level paths (an
