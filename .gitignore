@@ -60,3 +60,6 @@ __pycache__/
 *.db.bak-*
 /backups/
 *.bak
+
+# deploy bundle made by scripts/make-deploy-zip.ps1 (holds a copy of the database)
+/deploy/

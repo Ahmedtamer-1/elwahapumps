@@ -43,6 +43,14 @@ const AI_TRAINING_BOTS = [
 const PUBLIC_API_ROUTES = ["/api/products", "/api/selector"];
 
 export default function robots(): MetadataRoute.Robots {
+  // The staging copy (new.elwahapumps.com) must stay out of every index, or
+  // it competes with the real site as duplicate content before cutover.
+  // Read at BUILD time (this route is prerendered): build the staging copy
+  // with `STAGING=1 npm run build`, and rebuild without it at cutover.
+  if (process.env.STAGING === "1") {
+    return { rules: [{ userAgent: "*", disallow: "/" }] };
+  }
+
   const disallow = ["/admin", "/api/", "/*/cart"];
   const allow = ["/", ...PUBLIC_API_ROUTES];
 

@@ -78,6 +78,12 @@ const nextConfig: NextConfig = {
 
   async headers() {
     return [
+      // Staging copy only (new.elwahapumps.com): keep every response out of
+      // search indexes. Headers are fixed at build time, so this follows the
+      // STAGING the build ran with, the same as src/app/robots.ts.
+      ...(process.env.STAGING === "1"
+        ? [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }]
+        : []),
       {
         // Applied to everything. HSTS is only honoured over HTTPS, so it is
         // inert in local development and takes effect once deployed.
